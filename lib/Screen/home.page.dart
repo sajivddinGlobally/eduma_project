@@ -203,12 +203,17 @@ class _HomePageState extends State<HomePage> {
           Row(
             children: [
               SizedBox(width: 20.w),
-              Image.asset("assets/book.png"),
+              Image.asset(
+                "assets/book.png",
+                width: 31.w,
+                height: 25.h,
+                fit: BoxFit.cover,
+              ),
               SizedBox(width: 10.w),
               Text(
                 "Continue Learning",
                 style: GoogleFonts.roboto(
-                  fontSize: 26.sp,
+                  fontSize: 23.sp,
                   fontWeight: FontWeight.w600,
                   color: Color(0xFF000000),
                   letterSpacing: -0.4,
@@ -219,12 +224,42 @@ class _HomePageState extends State<HomePage> {
                 Icons.arrow_forward_ios,
                 color: Color(0xFF001E6C),
                 weight: 3,
+                size: 23.sp,
               ),
               SizedBox(width: 20.w),
             ],
           ),
           SizedBox(height: 20.h),
           LearningBody(),
+          // SizedBox(height: 10.h),
+          Row(
+            children: [
+              SizedBox(width: 20.w),
+              Icon(
+                Icons.grid_view_rounded,
+                color: Color(0xFF000000),
+                size: 28.sp,
+              ),
+              SizedBox(width: 10.w),
+              Text(
+                "All Category",
+                style: GoogleFonts.roboto(
+                  fontSize: 23.sp,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xFF000000),
+                  letterSpacing: -0.4,
+                ),
+              ),
+              Spacer(),
+              Icon(
+                Icons.arrow_forward_ios,
+                color: Color(0xFF001E6C),
+                weight: 3,
+                size: 23.sp,
+              ),
+              SizedBox(width: 20.w),
+            ],
+          ),
         ],
       ),
     );
