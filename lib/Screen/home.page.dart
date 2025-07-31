@@ -225,7 +225,6 @@ class _HomePageState extends State<HomePage> {
           ),
           SizedBox(height: 20.h),
           LearningBody(),
-          Text("data"),
         ],
       ),
     );
@@ -246,7 +245,8 @@ class _LearningBodyState extends State<LearningBody> {
   Widget build(BuildContext context) {
     double percent = (currentStep / totalSteps) * 100;
     return Container(
-      height: 220.h,
+      height: 265.h,
+      // color: Colors.amber,
       child: ListView.builder(
         itemCount: 2,
         scrollDirection: Axis.horizontal,
@@ -295,6 +295,30 @@ class _LearningBodyState extends State<LearningBody> {
                     ),
                   ],
                 ),
+                SizedBox(height: 5.h),
+                SizedBox(
+                  width: 250.w,
+                  child: Text(
+                    truncateString(
+                      "15th Online  Workshop based on treatise Part-7 (09-12 jan 2024)",
+                      100,
+                    ),
+                    style: GoogleFonts.roboto(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xFF001E6C),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 5.h),
+                Text(
+                  "By Anil Kumar Singh",
+                  style: GoogleFonts.roboto(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w400,
+                    color: Color.fromARGB(132, 0, 30, 108),
+                  ),
+                ),
               ],
             ),
           );
@@ -302,4 +326,9 @@ class _LearningBodyState extends State<LearningBody> {
       ),
     );
   }
+}
+
+String truncateString(String input, int maxLength) {
+  if (input.length <= maxLength) return input;
+  return input.substring(0, maxLength) + "...";
 }

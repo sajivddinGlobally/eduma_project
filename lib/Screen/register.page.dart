@@ -253,10 +253,7 @@ class _RegisterPageState extends State<RegisterPage> {
               SizedBox(height: 25.h),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    CupertinoPageRoute(builder: (context) => LoginPage()),
-                  );
+                  Navigator.push(context,CupertinoPageRoute(builder: (context) => LoginPage(),));
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF001E6C),
