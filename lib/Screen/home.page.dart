@@ -259,7 +259,15 @@ class _LearningBodyState extends State<LearningBody> {
               children: [
                 Stack(
                   children: [
-                    Image.asset("assets/learning1.png"),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(10.r),
+                      child: Image.asset(
+                        "assets/learning1.png",
+                        width: 295.w,
+                        height: 165.h,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                     // Progress bar
                     Positioned(
                       left: 10.w,
@@ -307,6 +315,7 @@ class _LearningBodyState extends State<LearningBody> {
                       fontSize: 16.sp,
                       fontWeight: FontWeight.w600,
                       color: Color(0xFF001E6C),
+                      letterSpacing: -0.4,
                     ),
                   ),
                 ),
