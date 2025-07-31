@@ -241,6 +241,10 @@ class LearningBody extends StatefulWidget {
 class _LearningBodyState extends State<LearningBody> {
   final int currentStep = 16; // Dynamic value use kar sakte ho
   final int totalSteps = 100;
+  List myList = [
+    {"imageUrl": "assets/learning1.png"},
+    {"imageUrl": "assets/learning2.png"},
+  ];
   @override
   Widget build(BuildContext context) {
     double percent = (currentStep / totalSteps) * 100;
@@ -248,7 +252,7 @@ class _LearningBodyState extends State<LearningBody> {
       height: 265.h,
       // color: Colors.amber,
       child: ListView.builder(
-        itemCount: 2,
+        itemCount: myList.length,
         scrollDirection: Axis.horizontal,
         padding: EdgeInsets.zero,
         itemBuilder: (context, index) {
@@ -262,7 +266,8 @@ class _LearningBodyState extends State<LearningBody> {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(10.r),
                       child: Image.asset(
-                        "assets/learning1.png",
+                        //"assets/learning1.png",
+                        myList[index]["imageUrl"],
                         width: 295.w,
                         height: 165.h,
                         fit: BoxFit.cover,
@@ -272,7 +277,7 @@ class _LearningBodyState extends State<LearningBody> {
                     Positioned(
                       left: 10.w,
                       right: 10.w,
-                      bottom: 26.h,
+                      bottom: 20.h,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
