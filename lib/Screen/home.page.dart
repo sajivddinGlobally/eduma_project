@@ -260,6 +260,47 @@ class _HomePageState extends State<HomePage> {
               SizedBox(width: 20.w),
             ],
           ),
+          SizedBox(height: 20.h),
+          Row(
+            children: [
+              SizedBox(width: 20.w),
+              Image.asset("assets/course.png"),
+              SizedBox(width: 20.w),
+              Image.asset("assets/course.png"),
+            ],
+          ),
+          SizedBox(height: 20.h),
+          Row(
+            children: [
+              SizedBox(width: 20.w),
+              Image.asset(
+                "assets/notebook.png",
+                width: 31.w,
+                height: 31.h,
+                fit: BoxFit.contain,
+              ),
+              SizedBox(width: 10.w),
+              Text(
+                "Popular Courses",
+                style: GoogleFonts.roboto(
+                  fontSize: 23.sp,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xFF000000),
+                  letterSpacing: -0.4,
+                ),
+              ),
+              Spacer(),
+              Icon(
+                Icons.arrow_forward_ios,
+                color: Color(0xFF001E6C),
+                weight: 3,
+                size: 23.sp,
+              ),
+              SizedBox(width: 20.w),
+            ],
+          ),
+          SizedBox(height: 16.h,),
+         
         ],
       ),
     );
