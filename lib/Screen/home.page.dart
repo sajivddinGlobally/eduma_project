@@ -262,13 +262,33 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
             SizedBox(height: 20.h),
-            Row(
-              children: [
-                SizedBox(width: 20.w),
-                Image.asset("assets/course.png"),
-                SizedBox(width: 20.w),
-                Image.asset("assets/course.png"),
-              ],
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  SizedBox(width: 20.w),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(10.r),
+                    child: Image.asset(
+                      "assets/course.png",
+                      width: 200.w,
+                      height: 130.h,
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                  SizedBox(width: 20.w),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(10.r),
+                    child: Image.asset(
+                      "assets/course.png",
+                      width: 200.w,
+                      height: 130.h,
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                  SizedBox(width: 20.w),
+                ],
+              ),
             ),
             SizedBox(height: 20.h),
             Row(
@@ -400,13 +420,19 @@ class _HomePageState extends State<HomePage> {
                           shape: BoxShape.circle,
                           color: Colors.blue,
                         ),
+                        child: ClipOval(
+                          child: Image.asset(
+                            "assets/mahesh.png",
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                       ),
                       SizedBox(width: 7.w),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Annu Agarwal",
+                            "Mahesh Yogi",
                             style: GoogleFonts.roboto(
                               fontSize: 20.sp,
                               fontWeight: FontWeight.w500,
@@ -467,6 +493,12 @@ class _HomePageState extends State<HomePage> {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: Colors.blue,
+                        ),
+                        child: ClipOval(
+                          child: Image.asset(
+                            "assets/annu.png",
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                       SizedBox(width: 7.w),
