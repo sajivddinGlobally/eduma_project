@@ -74,234 +74,237 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(height: 18.h),
-          Padding(
-            padding: EdgeInsets.only(left: 20.w, right: 20.w),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: 18.h),
+            Padding(
+              padding: EdgeInsets.only(left: 20.w, right: 20.w),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Welcome Back, Piyush Kumar",
+                    style: GoogleFonts.roboto(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xff000000),
+                      letterSpacing: -0.4,
+                    ),
+                  ),
+                  Icon(Icons.search, color: Color(0xFF0F0F0F)),
+                ],
+              ),
+            ),
+            SizedBox(height: 12.h),
+            Container(
+              margin: EdgeInsets.only(left: 20.w, right: 20.w),
+              child: TextField(
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.only(left: 20.w, right: 20.w),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30.r),
+                    borderSide: BorderSide(
+                      color: Color.fromARGB(153, 0, 0, 0),
+                      width: 2.w,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30.r),
+                    borderSide: BorderSide(
+                      color: Color.fromARGB(153, 0, 0, 0),
+                      width: 2.w,
+                    ),
+                  ),
+                  hint: Text(
+                    "Searching Courses...",
+                    style: GoogleFonts.roboto(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w400,
+                      color: Color(0xFF777474),
+                      letterSpacing: -0.2,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: 18.h),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(left: 20.w),
+                    padding: EdgeInsets.only(
+                      top: 10.h,
+                      bottom: 10.h,
+                      left: 20.w,
+                      right: 20.w,
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(40.r),
+                      color: Color(0xFF001E6C),
+                    ),
+                    child: Text(
+                      "Backend",
+                      style: GoogleFonts.roboto(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xFFFFFFFF),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 10.w),
+                    padding: EdgeInsets.only(
+                      top: 10.h,
+                      bottom: 10.h,
+                      left: 20.w,
+                      right: 20.w,
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(40.r),
+                      color: Color(0xFFDCF881),
+                    ),
+                    child: Text(
+                      "Programing Language",
+                      style: GoogleFonts.roboto(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 10.w, right: 10.w),
+                    padding: EdgeInsets.only(
+                      top: 10.h,
+                      bottom: 10.h,
+                      left: 20.w,
+                      right: 20.w,
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(40.r),
+                      color: Color(0xFFEB9481),
+                    ),
+                    child: Text(
+                      "Technology",
+                      style: GoogleFonts.roboto(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 30.h),
+            Row(
               children: [
+                SizedBox(width: 20.w),
+                Image.asset(
+                  "assets/book.png",
+                  width: 31.w,
+                  height: 25.h,
+                  fit: BoxFit.cover,
+                ),
+                SizedBox(width: 10.w),
                 Text(
-                  "Welcome Back, Piyush Kumar",
+                  "Continue Learning",
                   style: GoogleFonts.roboto(
-                    fontSize: 16.sp,
+                    fontSize: 23.sp,
                     fontWeight: FontWeight.w600,
-                    color: Color(0xff000000),
+                    color: Color(0xFF000000),
                     letterSpacing: -0.4,
                   ),
                 ),
-                Icon(Icons.search, color: Color(0xFF0F0F0F)),
+                Spacer(),
+                Icon(
+                  Icons.arrow_forward_ios,
+                  color: Color(0xFF001E6C),
+                  weight: 3,
+                  size: 23.sp,
+                ),
+                SizedBox(width: 20.w),
               ],
             ),
-          ),
-          SizedBox(height: 12.h),
-          Container(
-            margin: EdgeInsets.only(left: 20.w, right: 20.w),
-            child: TextField(
-              decoration: InputDecoration(
-                contentPadding: EdgeInsets.only(left: 20.w, right: 20.w),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30.r),
-                  borderSide: BorderSide(
-                    color: Color.fromARGB(153, 0, 0, 0),
-                    width: 2.w,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30.r),
-                  borderSide: BorderSide(
-                    color: Color.fromARGB(153, 0, 0, 0),
-                    width: 2.w,
-                  ),
-                ),
-                hint: Text(
-                  "Searching Courses...",
-                  style: GoogleFonts.roboto(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xFF777474),
-                    letterSpacing: -0.2,
-                  ),
-                ),
-              ),
-            ),
-          ),
-          SizedBox(height: 18.h),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
+            SizedBox(height: 20.h),
+            LearningBody(),
+            // SizedBox(height: 10.h),
+            Row(
               children: [
-                Container(
-                  margin: EdgeInsets.only(left: 20.w),
-                  padding: EdgeInsets.only(
-                    top: 10.h,
-                    bottom: 10.h,
-                    left: 20.w,
-                    right: 20.w,
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(40.r),
-                    color: Color(0xFF001E6C),
-                  ),
-                  child: Text(
-                    "Backend",
-                    style: GoogleFonts.roboto(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w400,
-                      color: Color(0xFFFFFFFF),
-                    ),
+                SizedBox(width: 20.w),
+                Icon(
+                  Icons.grid_view_rounded,
+                  color: Color(0xFF000000),
+                  size: 28.sp,
+                ),
+                SizedBox(width: 10.w),
+                Text(
+                  "All Category",
+                  style: GoogleFonts.roboto(
+                    fontSize: 23.sp,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF000000),
+                    letterSpacing: -0.4,
                   ),
                 ),
-                Container(
-                  margin: EdgeInsets.only(left: 10.w),
-                  padding: EdgeInsets.only(
-                    top: 10.h,
-                    bottom: 10.h,
-                    left: 20.w,
-                    right: 20.w,
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(40.r),
-                    color: Color(0xFFDCF881),
-                  ),
-                  child: Text(
-                    "Programing Language",
-                    style: GoogleFonts.roboto(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.black,
-                    ),
-                  ),
+                Spacer(),
+                Icon(
+                  Icons.arrow_forward_ios,
+                  color: Color(0xFF001E6C),
+                  weight: 3,
+                  size: 23.sp,
                 ),
-                Container(
-                  margin: EdgeInsets.only(left: 10.w, right: 10.w),
-                  padding: EdgeInsets.only(
-                    top: 10.h,
-                    bottom: 10.h,
-                    left: 20.w,
-                    right: 20.w,
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(40.r),
-                    color: Color(0xFFEB9481),
-                  ),
-                  child: Text(
-                    "Technology",
-                    style: GoogleFonts.roboto(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
+                SizedBox(width: 20.w),
               ],
             ),
-          ),
-          SizedBox(height: 30.h),
-          Row(
-            children: [
-              SizedBox(width: 20.w),
-              Image.asset(
-                "assets/book.png",
-                width: 31.w,
-                height: 25.h,
-                fit: BoxFit.cover,
-              ),
-              SizedBox(width: 10.w),
-              Text(
-                "Continue Learning",
-                style: GoogleFonts.roboto(
-                  fontSize: 23.sp,
-                  fontWeight: FontWeight.w600,
-                  color: Color(0xFF000000),
-                  letterSpacing: -0.4,
+            SizedBox(height: 20.h),
+            Row(
+              children: [
+                SizedBox(width: 20.w),
+                Image.asset("assets/course.png"),
+                SizedBox(width: 20.w),
+                Image.asset("assets/course.png"),
+              ],
+            ),
+            SizedBox(height: 20.h),
+            Row(
+              children: [
+                SizedBox(width: 20.w),
+                Image.asset(
+                  "assets/notebook.png",
+                  width: 31.w,
+                  height: 31.h,
+                  fit: BoxFit.contain,
                 ),
-              ),
-              Spacer(),
-              Icon(
-                Icons.arrow_forward_ios,
-                color: Color(0xFF001E6C),
-                weight: 3,
-                size: 23.sp,
-              ),
-              SizedBox(width: 20.w),
-            ],
-          ),
-          SizedBox(height: 20.h),
-          LearningBody(),
-          // SizedBox(height: 10.h),
-          Row(
-            children: [
-              SizedBox(width: 20.w),
-              Icon(
-                Icons.grid_view_rounded,
-                color: Color(0xFF000000),
-                size: 28.sp,
-              ),
-              SizedBox(width: 10.w),
-              Text(
-                "All Category",
-                style: GoogleFonts.roboto(
-                  fontSize: 23.sp,
-                  fontWeight: FontWeight.w600,
-                  color: Color(0xFF000000),
-                  letterSpacing: -0.4,
+                SizedBox(width: 10.w),
+                Text(
+                  "Popular Courses",
+                  style: GoogleFonts.roboto(
+                    fontSize: 23.sp,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF000000),
+                    letterSpacing: -0.4,
+                  ),
                 ),
-              ),
-              Spacer(),
-              Icon(
-                Icons.arrow_forward_ios,
-                color: Color(0xFF001E6C),
-                weight: 3,
-                size: 23.sp,
-              ),
-              SizedBox(width: 20.w),
-            ],
-          ),
-          SizedBox(height: 20.h),
-          Row(
-            children: [
-              SizedBox(width: 20.w),
-              Image.asset("assets/course.png"),
-              SizedBox(width: 20.w),
-              Image.asset("assets/course.png"),
-            ],
-          ),
-          SizedBox(height: 20.h),
-          Row(
-            children: [
-              SizedBox(width: 20.w),
-              Image.asset(
-                "assets/notebook.png",
-                width: 31.w,
-                height: 31.h,
-                fit: BoxFit.contain,
-              ),
-              SizedBox(width: 10.w),
-              Text(
-                "Popular Courses",
-                style: GoogleFonts.roboto(
-                  fontSize: 23.sp,
-                  fontWeight: FontWeight.w600,
-                  color: Color(0xFF000000),
-                  letterSpacing: -0.4,
+                Spacer(),
+                Icon(
+                  Icons.arrow_forward_ios,
+                  color: Color(0xFF001E6C),
+                  weight: 3,
+                  size: 23.sp,
                 ),
-              ),
-              Spacer(),
-              Icon(
-                Icons.arrow_forward_ios,
-                color: Color(0xFF001E6C),
-                weight: 3,
-                size: 23.sp,
-              ),
-              SizedBox(width: 20.w),
-            ],
-          ),
-          SizedBox(height: 16.h,),
-         
-        ],
+                SizedBox(width: 20.w),
+              ],
+            ),
+            SizedBox(height: 16.h),
+            PopularBody(),
+            SizedBox(height: 16.h),
+          ],
+        ),
       ),
     );
   }
@@ -407,6 +410,111 @@ class _LearningBodyState extends State<LearningBody> {
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w400,
                     color: Color.fromARGB(132, 0, 30, 108),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class PopularBody extends StatefulWidget {
+  const PopularBody({super.key});
+
+  @override
+  State<PopularBody> createState() => _PopularBodyState();
+}
+
+class _PopularBodyState extends State<PopularBody> {
+  List popularList = [
+    {
+      "image": "assets/learning1.png",
+      "paid": "₹ 45.00",
+      "title": "Introduction learn Press - LMS Plugin",
+    },
+    {
+      "image": "assets/popular.png",
+      "paid": "Free",
+      "title": "Create an LMS Website With LearnPress",
+    },
+  ];
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 190.h,
+      // color: Colors.amber,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        padding: EdgeInsets.zero,
+        itemCount: popularList.length,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: EdgeInsets.only(left: 20.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Stack(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(10.r),
+                      child: Image.asset(
+                        // "assets/learning1.png",
+                        popularList[index]['image'],
+                        width: 190.w,
+                        height: 125.h,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    Positioned(
+                      right: 8.w,
+                      child: IconButton(
+                        onPressed: () {},
+                        icon: Icon(Icons.favorite_outline, color: Colors.white),
+                      ),
+                    ),
+                    Positioned(
+                      left: 13.w,
+                      bottom: 8.h,
+                      child: Container(
+                        padding: EdgeInsets.only(
+                          left: 10.w,
+                          right: 10.w,
+                          top: 6.h,
+                          bottom: 6.h,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4.r),
+                          color: Color(0xFF001E6C),
+                        ),
+                        child: Text(
+                          // "₹ 45.00",
+                          popularList[index]['paid'],
+                          style: GoogleFonts.roboto(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 10.h),
+                SizedBox(
+                  width: 190.w,
+                  child: Text(
+                    //  "Introduction learn Press - LMS Plugin",
+                    popularList[index]['title'],
+                    style: GoogleFonts.roboto(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xFF000000),
+                      letterSpacing: -0.4,
+                      height: 1.1,
+                    ),
                   ),
                 ),
               ],
