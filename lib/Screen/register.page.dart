@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
 
@@ -254,7 +253,10 @@ class _RegisterPageState extends State<RegisterPage> {
               SizedBox(height: 25.h),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.push(context,CupertinoPageRoute(builder: (context) => LoginPage(),));
+                  Navigator.push(
+                    context,
+                    CupertinoPageRoute(builder: (context) => LoginPage()),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF001E6C),

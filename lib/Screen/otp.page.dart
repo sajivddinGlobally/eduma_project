@@ -1,17 +1,16 @@
-import 'package:eduma_app/Screen/otp.page.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:otp_pin_field/otp_pin_field.dart';
 
-class ForgorPasswordPage extends StatefulWidget {
-  const ForgorPasswordPage({super.key});
+class OtpPage extends StatefulWidget {
+  const OtpPage({super.key});
 
   @override
-  State<ForgorPasswordPage> createState() => _ForgorPasswordPageState();
+  State<OtpPage> createState() => _OtpPageState();
 }
 
-class _ForgorPasswordPageState extends State<ForgorPasswordPage> {
+class _OtpPageState extends State<OtpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +34,7 @@ class _ForgorPasswordPageState extends State<ForgorPasswordPage> {
               SizedBox(height: 10.h),
               Center(
                 child: Text(
-                  "Forget Your Password",
+                  "OTP Verification",
                   style: GoogleFonts.roboto(
                     fontSize: 26.sp,
                     fontWeight: FontWeight.w600,
@@ -44,48 +43,28 @@ class _ForgorPasswordPageState extends State<ForgorPasswordPage> {
                   ),
                 ),
               ),
+              // SizedBox(height: 15.h),
+              // Text(
+              //   "Enter the verification code we just sent on\nyour email address.",
+              //   style: GoogleFonts.roboto(
+              //     fontSize: 13.sp,
+              //     fontWeight: FontWeight.w400,
+              //     color: Color(0xff4D4D4D),
+              //   ),
+              // ),
               SizedBox(height: 15.h),
-              Text(
-                "Your Email Address",
-                style: GoogleFonts.roboto(
-                  fontSize: 13.sp,
-                  fontWeight: FontWeight.w400,
-                  color: Color(0xff4D4D4D),
-                ),
-              ),
-              SizedBox(height: 12.h),
-              TextField(
-                decoration: InputDecoration(
-                  contentPadding: EdgeInsets.only(
-                    left: 19.w,
-                    right: 10.w,
-                    top: 15.h,
-                    bottom: 15.h,
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(40.r),
-                    borderSide: BorderSide(
-                      color: Color.fromARGB(25, 0, 0, 0),
-                      width: 1.w,
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(40.r),
-                    borderSide: BorderSide(
-                      color: Color.fromARGB(25, 0, 0, 0),
-                      width: 1.w,
-                    ),
-                  ),
-                ),
+              OtpPinField(
+                maxLength: 6,
+                keyboardType: TextInputType.number,
+                otpPinFieldDecoration:
+                    OtpPinFieldDecoration.roundedPinBoxDecoration,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                onSubmit: (text) {},
+                onChange: (text) {},
               ),
               SizedBox(height: 20.h),
               ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    CupertinoPageRoute(builder: (context) => OtpPage()),
-                  );
-                },
+                onPressed: () {},
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF001E6C),
                   minimumSize: Size(400.w, 52.h),
@@ -94,7 +73,7 @@ class _ForgorPasswordPageState extends State<ForgorPasswordPage> {
                   ),
                 ),
                 child: Text(
-                  "Reset Password",
+                  "Verify",
                   style: GoogleFonts.roboto(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w500,
