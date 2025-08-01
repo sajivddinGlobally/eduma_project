@@ -1,10 +1,11 @@
+import 'package:eduma_app/Screen/forgorPassword.page.dart';
+import 'package:eduma_app/Screen/home.page.dart';
+import 'package:eduma_app/Screen/register.page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:new_education_app/Screen/forgorPassword.page.dart';
-import 'package:new_education_app/Screen/home.page.dart';
-import 'package:new_education_app/Screen/register.page.dart';
+
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});

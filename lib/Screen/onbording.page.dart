@@ -1,9 +1,10 @@
+import 'package:eduma_app/Screen/home.page.dart';
+import 'package:eduma_app/Screen/login.page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:new_education_app/Screen/home.page.dart';
-import 'package:new_education_app/Screen/login.page.dart';
+
 
 class OnbordingPage extends StatefulWidget {
   const OnbordingPage({super.key});

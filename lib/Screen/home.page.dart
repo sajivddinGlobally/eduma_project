@@ -1,9 +1,9 @@
+import 'package:eduma_app/Screen/login.page.dart';
+import 'package:eduma_app/Screen/register.page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:new_education_app/Screen/login.page.dart';
-import 'package:new_education_app/Screen/register.page.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 
 class HomePage extends StatefulWidget {
