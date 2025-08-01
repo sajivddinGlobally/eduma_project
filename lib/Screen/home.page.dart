@@ -301,8 +301,60 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
             SizedBox(height: 16.h),
-            PopularBody(),
+            PopularBody(
+              popularList: [
+                {
+                  "image": "assets/learning1.png",
+                  "paid": "₹ 45.00",
+                  "title": "Introduction learn Press - LMS Plugin",
+                },
+                {
+                  "image": "assets/popular.png",
+                  "paid": "Free",
+                  "title": "Create an LMS Website With LearnPress",
+                },
+              ],
+            ),
+            SizedBox(height: 10.h),
+            Row(
+              children: [
+                SizedBox(width: 16.w),
+                Icon(Icons.star, color: Color(0xFF000000), size: 28.sp),
+                SizedBox(width: 10.w),
+                Text(
+                  "Newly Added",
+                  style: GoogleFonts.roboto(
+                    fontSize: 23.sp,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF000000),
+                    letterSpacing: -0.4,
+                  ),
+                ),
+                Spacer(),
+                Icon(
+                  Icons.arrow_forward_ios,
+                  color: Color(0xFF001E6C),
+                  weight: 3,
+                  size: 23.sp,
+                ),
+                SizedBox(width: 20.w),
+              ],
+            ),
             SizedBox(height: 16.h),
+            PopularBody(
+              popularList: [
+                {
+                  "image": "assets/new1.png",
+                  "paid": "₹ 45.00",
+                  "title": "Introduction learn Press - LMS Plugin",
+                },
+                {
+                  "image": "assets/new2.png",
+                  "paid": "Free",
+                  "title": "Create an LMS Website With LearnPress",
+                },
+              ],
+            ),
           ],
         ),
       ),
@@ -421,26 +473,10 @@ class _LearningBodyState extends State<LearningBody> {
   }
 }
 
-class PopularBody extends StatefulWidget {
-  const PopularBody({super.key});
+class PopularBody extends StatelessWidget {
+  final List<Map<String, dynamic>> popularList;
+  const PopularBody({super.key, required this.popularList});
 
-  @override
-  State<PopularBody> createState() => _PopularBodyState();
-}
-
-class _PopularBodyState extends State<PopularBody> {
-  List popularList = [
-    {
-      "image": "assets/learning1.png",
-      "paid": "₹ 45.00",
-      "title": "Introduction learn Press - LMS Plugin",
-    },
-    {
-      "image": "assets/popular.png",
-      "paid": "Free",
-      "title": "Create an LMS Website With LearnPress",
-    },
-  ];
   @override
   Widget build(BuildContext context) {
     return Container(
