@@ -1,3 +1,4 @@
+import 'package:eduma_app/Screen/course.page.dart';
 import 'package:eduma_app/Screen/login.page.dart';
 import 'package:eduma_app/Screen/register.page.dart';
 import 'package:flutter/cupertino.dart';
@@ -321,19 +322,27 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
             SizedBox(height: 16.h),
-            PopularBody(
-              popularList: [
-                {
-                  "image": "assets/learning1.png",
-                  "paid": "₹ 45.00",
-                  "title": "Introduction learn Press - LMS Plugin",
-                },
-                {
-                  "image": "assets/popular.png",
-                  "paid": "Free",
-                  "title": "Create an LMS Website With LearnPress",
-                },
-              ],
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  CupertinoPageRoute(builder: (context) => CoursePage()),
+                );
+              },
+              child: PopularBody(
+                popularList: [
+                  {
+                    "image": "assets/learning1.png",
+                    "paid": "₹ 45.00",
+                    "title": "Introduction learn Press - LMS Plugin",
+                  },
+                  {
+                    "image": "assets/popular.png",
+                    "paid": "Free",
+                    "title": "Create an LMS Website With LearnPress",
+                  },
+                ],
+              ),
             ),
             SizedBox(height: 10.h),
             Row(
