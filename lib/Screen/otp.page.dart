@@ -1,3 +1,5 @@
+import 'package:eduma_app/Screen/login.page.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -64,7 +66,12 @@ class _OtpPageState extends State<OtpPage> {
               ),
               SizedBox(height: 20.h),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    CupertinoPageRoute(builder: (context) => LoginPage()),
+                  );
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF001E6C),
                   minimumSize: Size(400.w, 52.h),

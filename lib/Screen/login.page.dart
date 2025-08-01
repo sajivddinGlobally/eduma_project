@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -130,9 +129,15 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
+              SizedBox(height: 6.h),
               Align(
                 alignment: Alignment.centerRight,
                 child: TextButton(
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.zero,
+                    minimumSize: Size(0, 0),
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  ),
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -177,15 +182,21 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
-              //(height: 5.h),
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    CupertinoPageRoute(builder: (context) => RegisterPage()),
-                  );
-                },
-                child: Center(
+              SizedBox(height: 6.h),
+              Center(
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.zero, // Removes default padding
+                    minimumSize: Size(0, 0), // Removes default min size
+                    tapTargetSize:
+                        MaterialTapTargetSize.shrinkWrap, // Shrinks tap area
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute(builder: (context) => RegisterPage()),
+                    );
+                  },
                   child: Text(
                     "Don’t Have account? Sign up",
                     style: GoogleFonts.roboto(
