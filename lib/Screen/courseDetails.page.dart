@@ -18,13 +18,13 @@ class _CourseDetailsPageState extends State<CourseDetailsPage> {
       body: Stack(
         children: [
           Positioned(
-            left: -50,
-            top: -140.h,
+            left: -100,
+            top: -60.h,
             child: Image.asset(
-              "assets/vect.png",
+              "assets/vec.png",
               width: 363.w,
               height: 270.h,
-              fit: BoxFit.fill,
+              fit: BoxFit.fitHeight,
             ),
           ),
           Positioned(

@@ -158,12 +158,12 @@ class _CoursePageState extends State<CoursePage> {
                                       padding: EdgeInsets.only(
                                         left: 16.w,
                                         right: 16.w,
-                                        top: 10.h,
-                                        bottom: 10.h,
+                                        top: 6.h,
+                                        bottom: 6.h,
                                       ),
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(
-                                          4.r,
+                                          7.r,
                                         ),
                                         color: Color(0xFF001E6C),
                                       ),
