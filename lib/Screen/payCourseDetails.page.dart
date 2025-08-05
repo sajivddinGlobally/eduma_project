@@ -561,31 +561,63 @@ class _PayCourseDetailsPageState extends State<PayCourseDetailsPage> {
                               ),
                             ),
                             SizedBox(height: 20.h),
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                minimumSize: Size(400.w, 56.h),
-                                backgroundColor: Color(0xFF001E6C),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5.r),
-                                ),
-                              ),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  CupertinoPageRoute(
-                                    builder: (context) =>
-                                        PayCourseDetailsPage(),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    minimumSize: Size(101.w, 39.h),
+                                    backgroundColor: Color(0xFF001E6C),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5.r),
+                                    ),
                                   ),
-                                );
-                              },
-                              child: Text(
-                                "Start Now",
-                                style: GoogleFonts.roboto(
-                                  fontSize: 18.sp,
-                                  fontWeight: FontWeight.w500,
-                                  color: Color(0xFFFFFFFF),
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      CupertinoPageRoute(
+                                        builder: (context) =>
+                                            PayCourseDetailsPage(),
+                                      ),
+                                    );
+                                  },
+                                  child: Text(
+                                    "Restore",
+                                    style: GoogleFonts.roboto(
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w500,
+                                      color: Color(0xFFFFFFFF),
+                                    ),
+                                  ),
                                 ),
-                              ),
+                                SizedBox(width: 20.w),
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    minimumSize: Size(101.w, 39.h),
+                                    backgroundColor: Color(0xFF001E6C),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5.r),
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      CupertinoPageRoute(
+                                        builder: (context) =>
+                                            PayCourseDetailsPage(),
+                                      ),
+                                    );
+                                  },
+                                  child: Text(
+                                    "Add to Cart",
+                                    style: GoogleFonts.roboto(
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w500,
+                                      color: Color(0xFFFFFFFF),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
