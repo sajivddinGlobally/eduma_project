@@ -1,3 +1,4 @@
+import 'package:eduma_app/Screen/payCourseDetails.page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -285,7 +286,15 @@ class _CourseDetailsPageState extends State<CourseDetailsPage> {
                                   borderRadius: BorderRadius.circular(5.r),
                                 ),
                               ),
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  CupertinoPageRoute(
+                                    builder: (context) =>
+                                        PayCourseDetailsPage(),
+                                  ),
+                                );
+                              },
                               child: Text(
                                 "Start Now",
                                 style: GoogleFonts.roboto(
