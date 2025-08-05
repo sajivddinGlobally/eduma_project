@@ -1,0 +1,393 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+class CourseDetailsPage extends StatefulWidget {
+  const CourseDetailsPage({super.key});
+
+  @override
+  State<CourseDetailsPage> createState() => _CourseDetailsPageState();
+}
+
+class _CourseDetailsPageState extends State<CourseDetailsPage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Color(0xFFFFFFFF),
+      body: Stack(
+        children: [
+          Positioned(
+            left: -50,
+            top: -140.h,
+            child: Image.asset(
+              "assets/vect.png",
+              width: 363.w,
+              height: 270.h,
+              fit: BoxFit.fill,
+            ),
+          ),
+          Positioned(
+            bottom: -40.h,
+            left: 0,
+            right: 0,
+            child: Image.asset(
+              "assets/vec.png",
+              width: 470.w,
+              height: 450.h,
+              fit: BoxFit.fill,
+            ),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 33.h),
+              Row(
+                children: [
+                  SizedBox(width: 20.w),
+                  Container(
+                    width: 37.w,
+                    height: 37.h,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Color.fromARGB(25, 0, 0, 0),
+                    ),
+                    child: IconButton(
+                      style: IconButton.styleFrom(
+                        minimumSize: Size(0, 0),
+                        padding: EdgeInsets.zero,
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: Icon(
+                        Icons.arrow_back,
+                        color: Color(0xFF001E6C),
+                        size: 20.sp,
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 50.w),
+                  Text(
+                    "Course Details",
+                    style: GoogleFonts.roboto(
+                      fontSize: 26.sp,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xFF1B1B1B),
+                      letterSpacing: -0.4,
+                    ),
+                  ),
+                ],
+              ),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(
+                          left: 20.w,
+                          right: 20.w,
+                          top: 20.h,
+                        ),
+                        child: Stack(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(10.r),
+                              child: Image.asset(
+                                "assets/reading.png",
+                                width: 400.w,
+                                height: 254.h,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.topRight,
+                              child: IconButton(
+                                onPressed: () {},
+                                icon: Icon(
+                                  Icons.favorite_border,
+                                  color: Colors.white,
+                                  size: 25.sp,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 20.h),
+                      Row(
+                        children: [
+                          SizedBox(width: 20.w),
+                          Icon(
+                            Icons.access_time,
+                            color: Color(0xFFFE4A55),
+                            size: 18.sp,
+                          ),
+                          SizedBox(width: 8.w),
+                          Text(
+                            "10 week",
+                            style: GoogleFonts.roboto(
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xFF747272),
+                              letterSpacing: -0.4,
+                            ),
+                          ),
+                          SizedBox(width: 8.w),
+                          Icon(
+                            Icons.person,
+                            color: Color(0xFFFE4A55),
+                            size: 18.sp,
+                          ),
+                          SizedBox(width: 8.w),
+                          Text(
+                            "332",
+                            style: GoogleFonts.roboto(
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xFF747272),
+                              letterSpacing: -0.4,
+                            ),
+                          ),
+                          Spacer(),
+                          Text(
+                            "Free",
+                            style: GoogleFonts.roboto(
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xFF000000),
+                            ),
+                          ),
+                          SizedBox(width: 20.w),
+                        ],
+                      ),
+                      SizedBox(height: 20.w),
+                      Padding(
+                        padding: EdgeInsets.only(left: 20.w, right: 20.w),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Overview",
+                              style: GoogleFonts.roboto(
+                                fontSize: 20.sp,
+                                fontWeight: FontWeight.w700,
+                                color: Color(0xFF000000),
+                                letterSpacing: -0.2,
+                              ),
+                            ),
+                            SizedBox(height: 10.h),
+                            Text(
+                              "With over 5 years of experience, I've guided 300+ students to land jobs in top companies like Google, TCS, and Deloitte. My sessions focus on mock interviews, resume building, and effective communication",
+                              style: GoogleFonts.roboto(
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xFF666666),
+                                letterSpacing: -0.4,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 20.w, top: 20.h),
+                        child: Text(
+                          "Curriculum",
+                          style: GoogleFonts.roboto(
+                            fontSize: 20.sp,
+                            fontWeight: FontWeight.w700,
+                            color: Color(0xFF000000),
+                            letterSpacing: -0.2,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 10.w, right: 20.w),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Curriculum(number: 3, icon: Icons.arrow_drop_up),
+                            SizedBox(height: 20.h),
+                            learnbuild(),
+                            SizedBox(height: 10.h),
+                            learnbuild(),
+                            SizedBox(height: 10.h),
+                            learnbuild(),
+                            SizedBox(height: 10.h),
+                            Curriculum(number: 2, icon: Icons.arrow_drop_down),
+                            Curriculum(number: 4, icon: Icons.arrow_drop_down),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 16.h),
+                      Padding(
+                        padding: EdgeInsets.only(left: 20.w, right: 20.w),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Divider(),
+                            Container(
+                              margin: EdgeInsets.only(top: 20.h),
+                              width: 45.w,
+                              height: 45.h,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.grey,
+                                image: DecorationImage(
+                                  image: AssetImage("assets/tesla.png"),
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 10.h),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  "assets/birds.png",
+                                  color: Color(0xFFA0A0A0),
+                                ),
+                                SizedBox(width: 10.w),
+                                Image.asset(
+                                  "assets/call.png",
+                                  color: Color(0xFFA0A0A0),
+                                ),
+                                SizedBox(width: 10.w),
+                                Image.asset(
+                                  "assets/insta.png",
+                                  color: Color(0xFFA0A0A0),
+                                ),
+                                SizedBox(width: 10.w),
+                                Image.asset(
+                                  "assets/a.png",
+                                  color: Color(0xFFA0A0A0),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 20.h),
+                            Text(
+                              "With over 5 years of experience, I've guided 300+ students to land jobs in top companies like Google, TCS, and Deloitte. My sessions focus on mock interviews, resume building, and effective communication",
+                              style: GoogleFonts.roboto(
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xFF666666),
+                                letterSpacing: -0.4,
+                              ),
+                            ),
+                            SizedBox(height: 20.h),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                minimumSize: Size(400.w, 56.h),
+                                backgroundColor: Color(0xFF001E6C),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5.r),
+                                ),
+                              ),
+                              onPressed: () {},
+                              child: Text(
+                                "Start Now",
+                                style: GoogleFonts.roboto(
+                                  fontSize: 18.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Color(0xFFFFFFFF),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(height: 20.h),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget learnbuild() {
+    return Row(
+      children: [
+        SizedBox(width: 10.w),
+        Image.asset(
+          "assets/notebook.png",
+          width: 20.w,
+          height: 20.h,
+          fit: BoxFit.contain,
+          color: Color(0xFF001E6C),
+        ),
+        SizedBox(width: 10.w),
+        Text(
+          "LMS Website and learn Press",
+          style: GoogleFonts.roboto(
+            fontSize: 16.sp,
+            fontWeight: FontWeight.w400,
+            color: Color.fromARGB(153, 0, 0, 0),
+            letterSpacing: -0.4,
+          ),
+        ),
+        Spacer(),
+        Icon(Icons.visibility_outlined, color: Color(0xFF1BB93D)),
+        SizedBox(width: 8.w),
+        Text(
+          "30 Minutes",
+          style: GoogleFonts.roboto(
+            fontSize: 16.sp,
+            fontWeight: FontWeight.w400,
+            color: Color.fromARGB(153, 0, 0, 0),
+            letterSpacing: -0.4,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class Curriculum extends StatelessWidget {
+  final int number;
+  final IconData icon;
+  const Curriculum({super.key, required this.number, required this.icon});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Container(
+          width: 35.w,
+          height: 35.h,
+          padding: EdgeInsets.zero,
+          //color: Colors.amberAccent,
+          child: Icon(icon, size: 40.sp, color: Color(0xFF000000)),
+        ),
+        Padding(
+          padding: EdgeInsets.only(top: 5.h),
+          child: Text(
+            "Learn Press Introduction",
+            style: GoogleFonts.roboto(
+              fontSize: 16.sp,
+              fontWeight: FontWeight.w600,
+              color: Color(0xFF000000),
+            ),
+          ),
+        ),
+        Spacer(),
+        Padding(
+          padding: EdgeInsets.only(top: 5.h),
+          child: Text(
+            number.toString(),
+            style: GoogleFonts.roboto(
+              fontSize: 16.sp,
+              fontWeight: FontWeight.w600,
+              color: Color(0xFF000000),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
