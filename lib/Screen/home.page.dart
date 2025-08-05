@@ -1,4 +1,5 @@
 import 'package:eduma_app/Screen/course.page.dart';
+import 'package:eduma_app/Screen/instructor.page.dart';
 import 'package:eduma_app/Screen/login.page.dart';
 import 'package:eduma_app/Screen/register.page.dart';
 import 'package:flutter/cupertino.dart';
@@ -475,78 +476,88 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
                 ),
-                Container(
-                  padding: EdgeInsets.only(
-                    left: 10.w,
-                    right: 10.w,
-                    bottom: 13.h,
-                    top: 13.h,
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5.r),
-                    color: Color(0xFFFFFFFF),
-                    boxShadow: [
-                      BoxShadow(
-                        offset: Offset(0, 1),
-                        spreadRadius: 0,
-                        blurRadius: 4,
-                        color: Color.fromARGB(63, 0, 0, 0),
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                        builder: (context) => InstructorPage(),
                       ),
-                    ],
-                  ),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 45.w,
-                        height: 45.h,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.blue,
+                    );
+                  },
+                  child: Container(
+                    padding: EdgeInsets.only(
+                      left: 10.w,
+                      right: 10.w,
+                      bottom: 13.h,
+                      top: 13.h,
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5.r),
+                      color: Color(0xFFFFFFFF),
+                      boxShadow: [
+                        BoxShadow(
+                          offset: Offset(0, 1),
+                          spreadRadius: 0,
+                          blurRadius: 4,
+                          color: Color.fromARGB(63, 0, 0, 0),
                         ),
-                        child: ClipOval(
-                          child: Image.asset(
-                            "assets/annu.png",
-                            fit: BoxFit.cover,
+                      ],
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 45.w,
+                          height: 45.h,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.blue,
                           ),
-                        ),
-                      ),
-                      SizedBox(width: 7.w),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Annu Agarwal",
-                            style: GoogleFonts.roboto(
-                              fontSize: 20.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xFF001E6C),
-                              letterSpacing: -0.4,
+                          child: ClipOval(
+                            child: Image.asset(
+                              "assets/annu.png",
+                              fit: BoxFit.cover,
                             ),
                           ),
-                          Text(
-                            "3 Courses    257 Student",
-                            style: GoogleFonts.roboto(
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xFF000000),
-                              letterSpacing: -0.4,
+                        ),
+                        SizedBox(width: 7.w),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Annu Agarwal",
+                              style: GoogleFonts.roboto(
+                                fontSize: 20.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xFF001E6C),
+                                letterSpacing: -0.4,
+                              ),
                             ),
-                          ),
-                          SizedBox(height: 4.h),
-                          Row(
-                            children: [
-                              Image.asset("assets/birds.png"),
-                              SizedBox(width: 10.w),
-                              Image.asset("assets/call.png"),
-                              SizedBox(width: 10.w),
-                              Image.asset("assets/insta.png"),
-                              SizedBox(width: 10.w),
-                              Image.asset("assets/a.png"),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
+                            Text(
+                              "3 Courses    257 Student",
+                              style: GoogleFonts.roboto(
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xFF000000),
+                                letterSpacing: -0.4,
+                              ),
+                            ),
+                            SizedBox(height: 4.h),
+                            Row(
+                              children: [
+                                Image.asset("assets/birds.png"),
+                                SizedBox(width: 10.w),
+                                Image.asset("assets/call.png"),
+                                SizedBox(width: 10.w),
+                                Image.asset("assets/insta.png"),
+                                SizedBox(width: 10.w),
+                                Image.asset("assets/a.png"),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 SizedBox(width: 20.w),

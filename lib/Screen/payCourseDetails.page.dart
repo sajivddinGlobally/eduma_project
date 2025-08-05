@@ -1,3 +1,4 @@
+import 'package:eduma_app/Screen/wishlist.page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -19,7 +20,7 @@ class _PayCourseDetailsPageState extends State<PayCourseDetailsPage> {
       body: Stack(
         children: [
           Positioned(
-            left: -100,
+            left: -120,
             top: -100.h,
             child: Image.asset(
               "assets/vect.png",
@@ -572,15 +573,7 @@ class _PayCourseDetailsPageState extends State<PayCourseDetailsPage> {
                                       borderRadius: BorderRadius.circular(5.r),
                                     ),
                                   ),
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      CupertinoPageRoute(
-                                        builder: (context) =>
-                                            PayCourseDetailsPage(),
-                                      ),
-                                    );
-                                  },
+                                  onPressed: () {},
                                   child: Text(
                                     "Restore",
                                     style: GoogleFonts.roboto(
@@ -603,8 +596,7 @@ class _PayCourseDetailsPageState extends State<PayCourseDetailsPage> {
                                     Navigator.push(
                                       context,
                                       CupertinoPageRoute(
-                                        builder: (context) =>
-                                            PayCourseDetailsPage(),
+                                        builder: (context) => WishlistPage(),
                                       ),
                                     );
                                   },
