@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CourseReviewPage extends StatefulWidget {
   const CourseReviewPage({super.key});
@@ -48,6 +49,14 @@ class _CourseReviewPageState extends State<CourseReviewPage> {
                       ),
                     ),
                     SizedBox(width: 50.w),
+                    Text(
+                      "Course Review",
+                      style: GoogleFonts.roboto(
+                        fontSize: 26.sp,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                      ),
+                    ),
                   ],
                 ),
               ],
