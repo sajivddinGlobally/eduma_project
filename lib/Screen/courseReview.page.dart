@@ -59,6 +59,15 @@ class _CourseReviewPageState extends State<CourseReviewPage> {
                     ),
                   ],
                 ),
+                SizedBox(height: 30.h),
+                Container(
+                  width: 182.w,
+                  height: 182.h,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.amber,
+                  ),
+                ),
               ],
             ),
           ),
