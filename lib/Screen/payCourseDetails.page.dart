@@ -592,14 +592,7 @@ class _PayCourseDetailsPageState extends State<PayCourseDetailsPage> {
                                       borderRadius: BorderRadius.circular(5.r),
                                     ),
                                   ),
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      CupertinoPageRoute(
-                                        builder: (context) => WishlistPage(),
-                                      ),
-                                    );
-                                  },
+                                  onPressed: () {},
                                   child: Text(
                                     "Add to Cart",
                                     style: GoogleFonts.roboto(

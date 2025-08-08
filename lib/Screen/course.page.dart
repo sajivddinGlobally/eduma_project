@@ -50,17 +50,45 @@ class _CoursePageState extends State<CoursePage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(height: 30.h),
-          Center(
-            child: Text(
-              "Courses",
-              style: GoogleFonts.roboto(
-                fontSize: 26.sp,
-                fontWeight: FontWeight.w700,
-                color: Color(0xFF1B1B1B),
-                letterSpacing: -0.4,
+          Row(
+            children: [
+              SizedBox(width: 20.w),
+              Container(
+                width: 37.w,
+                height: 37.h,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Color.fromARGB(25, 0, 0, 0),
+                ),
+                child: IconButton(
+                  style: IconButton.styleFrom(
+                    minimumSize: Size(0, 0),
+                    padding: EdgeInsets.zero,
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: Color(0xFF001E6C),
+                    size: 20.sp,
+                  ),
+                ),
               ),
-            ),
+              SizedBox(width: 20.w),
+              Text(
+                "Courses",
+                style: GoogleFonts.roboto(
+                  fontSize: 26.sp,
+                  fontWeight: FontWeight.w700,
+                  color: Color(0xFF1B1B1B),
+                  letterSpacing: -0.4,
+                ),
+              ),
+            ],
           ),
+
           SizedBox(height: 20.h),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
