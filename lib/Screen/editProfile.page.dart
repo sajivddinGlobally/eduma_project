@@ -11,6 +11,14 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
+  final nameController = TextEditingController();
+  final expController = TextEditingController();
+  final fieldController = TextEditingController();
+  final skillController = TextEditingController();
+  final languageController = TextEditingController();
+  final linkedinController = TextEditingController();
+  final descController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +62,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
             ),
             SizedBox(height: 30.h),
             Container(
-              height: MediaQuery.of(context).size.height,
+              height: MediaQuery.of(context).size.height + 60.h,
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
@@ -68,7 +76,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ProfileBody(name: "You are a"),
+                    ProfileBody(name: "You are a", controller: nameController),
                     SizedBox(height: 20.h),
                     Text(
                       "Upload Profile",
@@ -130,15 +138,27 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       ),
                     ),
                     SizedBox(height: 20.h),
-                    ProfileBody(name: "Total Experience "),
+                    ProfileBody(
+                      name: "Total Experience",
+                      controller: expController,
+                    ),
                     SizedBox(height: 20.h),
-                    ProfileBody(name: "Your Field"),
+                    ProfileBody(
+                      name: "Your Field",
+                      controller: fieldController,
+                    ),
                     SizedBox(height: 20.h),
-                    ProfileBody(name: "Skills"),
+                    ProfileBody(name: "Skills", controller: skillController),
                     SizedBox(height: 20.h),
-                    ProfileBody(name: "Languages known"),
+                    ProfileBody(
+                      name: "Languages known",
+                      controller: languageController,
+                    ),
                     SizedBox(height: 20.h),
-                    ProfileBody(name: "LinkedIn URL"),
+                    ProfileBody(
+                      name: "LinkedIn URL",
+                      controller: linkedinController,
+                    ),
                     SizedBox(height: 20.h),
                     Text(
                       "About ",
@@ -150,6 +170,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     ),
                     SizedBox(height: 10.h),
                     TextFormField(
+                      controller: descController,
                       maxLines: 3,
                       decoration: InputDecoration(
                         contentPadding: EdgeInsets.only(
@@ -184,6 +205,26 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         ),
                       ),
                     ),
+                    SizedBox(height: 30.h),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: Size(400.w, 52.h),
+                        backgroundColor: Color(0xFF001E6C),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(40.r),
+                          side: BorderSide.none,
+                        ),
+                      ),
+                      onPressed: () {},
+                      child: Text(
+                        "Save Profile",
+                        style: GoogleFonts.roboto(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -197,7 +238,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
 class ProfileBody extends StatelessWidget {
   final String name;
-  const ProfileBody({super.key, required this.name});
+  final TextEditingController controller;
+  const ProfileBody({super.key, required this.name, required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -214,6 +256,7 @@ class ProfileBody extends StatelessWidget {
         ),
         SizedBox(height: 10.h),
         TextFormField(
+          controller: controller,
           decoration: InputDecoration(
             contentPadding: EdgeInsets.only(
               left: 20.w,
