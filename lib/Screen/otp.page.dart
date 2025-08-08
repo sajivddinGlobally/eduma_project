@@ -1,3 +1,4 @@
+import 'package:eduma_app/Screen/changePassword.page.dart';
 import 'package:eduma_app/Screen/login.page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -69,7 +70,9 @@ class _OtpPageState extends State<OtpPage> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    CupertinoPageRoute(builder: (context) => LoginPage()),
+                    CupertinoPageRoute(
+                      builder: (context) => ChangePasswordPage(),
+                    ),
                   );
                 },
                 style: ElevatedButton.styleFrom(
