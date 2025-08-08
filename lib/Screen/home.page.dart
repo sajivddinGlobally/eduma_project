@@ -1,6 +1,6 @@
-import 'package:eduma_app/Screen/account.page.dart';
 import 'package:eduma_app/Screen/continueMyCourse.page.dart';
 import 'package:eduma_app/Screen/course.page.dart';
+import 'package:eduma_app/Screen/customProfileDrawer.dart';
 import 'package:eduma_app/Screen/instructor.page.dart';
 import 'package:eduma_app/Screen/login.page.dart';
 import 'package:eduma_app/Screen/register.page.dart';
@@ -21,10 +21,13 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int selectIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
+      drawer: CustomProfileDrawer(),
       backgroundColor: Color(0xFFFFFFFF),
       appBar: selectIndex == 0
           ? AppBar(
@@ -595,9 +598,8 @@ class _HomePageState extends State<HomePage> {
           ? WishlistPage()
           : selectIndex == 2
           ? YoutubePage()
-          : selectIndex == 3
-          ? ShopPage()
-          : AccountPage(),
+          : ShopPage(),
+
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.only(
@@ -621,9 +623,13 @@ class _HomePageState extends State<HomePage> {
           ),
           child: BottomNavigationBar(
             onTap: (value) {
-              setState(() {
-                selectIndex = value;
-              });
+              if (value == 4) {
+                _scaffoldKey.currentState?.openDrawer();
+              } else {
+                setState(() {
+                  selectIndex = value;
+                });
+              }
             },
             currentIndex: selectIndex,
             type: BottomNavigationBarType.fixed,
