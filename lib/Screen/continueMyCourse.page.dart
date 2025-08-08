@@ -1,3 +1,5 @@
+import 'package:eduma_app/Screen/courseReview.page.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -90,73 +92,83 @@ class _ContinueMyCoursePageState extends State<ContinueMyCoursePage> {
                         right: 20.w,
                         top: 20.h,
                       ),
-                      child: Row(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(10.r),
-                            child: Image.asset(
-                              "assets/popular.png",
-                              width: 85.w,
-                              height: 85.h,
-                              fit: BoxFit.cover,
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                              builder: (context) => CourseReviewPage(),
                             ),
-                          ),
-                          SizedBox(width: 20.w),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Technology",
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 12.sp,
-                                    fontWeight: FontWeight.w400,
-                                    color: Color(0xFF000000),
-                                  ),
-                                ),
-                                Text(
-                                  "From Zero to Hero with Node js",
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w600,
-                                    color: Color(0xFF000000),
-                                    letterSpacing: -0.4,
-                                  ),
-                                ),
-                                SizedBox(height: 6.h),
-                                LinearProgressIndicator(
-                                  value: 0.2, // 👈 20% progress
-                                  borderRadius: BorderRadius.circular(10.r),
-                                  stopIndicatorColor: Color(0xFF011E6C),
-                                  backgroundColor: Color(0xFF979797),
-                                  minHeight: 5,
-                                ),
-                                SizedBox(height: 6.h),
-                                Row(
-                                  children: [
-                                    Text(
-                                      "In Progress",
-                                      style: GoogleFonts.poppins(
-                                        fontSize: 14.sp,
-                                        fontWeight: FontWeight.w500,
-                                        color: Color(0xFF001E6C),
-                                      ),
-                                    ),
-                                    Spacer(),
-                                    Text(
-                                      "33 hours",
-                                      style: GoogleFonts.poppins(
-                                        fontSize: 14.sp,
-                                        fontWeight: FontWeight.w400,
-                                        color: Color.fromARGB(132, 0, 0, 0),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
+                          );
+                        },
+                        child: Row(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(10.r),
+                              child: Image.asset(
+                                "assets/popular.png",
+                                width: 85.w,
+                                height: 85.h,
+                                fit: BoxFit.cover,
+                              ),
                             ),
-                          ),
-                        ],
+                            SizedBox(width: 20.w),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Technology",
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 12.sp,
+                                      fontWeight: FontWeight.w400,
+                                      color: Color(0xFF000000),
+                                    ),
+                                  ),
+                                  Text(
+                                    "From Zero to Hero with Node js",
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w600,
+                                      color: Color(0xFF000000),
+                                      letterSpacing: -0.4,
+                                    ),
+                                  ),
+                                  SizedBox(height: 6.h),
+                                  LinearProgressIndicator(
+                                    value: 0.2, // 👈 20% progress
+                                    borderRadius: BorderRadius.circular(10.r),
+                                    stopIndicatorColor: Color(0xFF011E6C),
+                                    backgroundColor: Color(0xFF979797),
+                                    minHeight: 5,
+                                  ),
+                                  SizedBox(height: 6.h),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        "In Progress",
+                                        style: GoogleFonts.poppins(
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.w500,
+                                          color: Color(0xFF001E6C),
+                                        ),
+                                      ),
+                                      Spacer(),
+                                      Text(
+                                        "33 hours",
+                                        style: GoogleFonts.poppins(
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.w400,
+                                          color: Color.fromARGB(132, 0, 0, 0),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     );
                   },
