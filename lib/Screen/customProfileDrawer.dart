@@ -1,3 +1,5 @@
+import 'package:eduma_app/Screen/editProfile.page.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -81,6 +83,14 @@ class _CustomProfileDrawerState extends State<CustomProfileDrawer> {
                           ),
                           Spacer(),
                           InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                CupertinoPageRoute(
+                                  builder: (context) => EditProfilePage(),
+                                ),
+                              );
+                            },
                             child: Container(
                               width: 88.w,
                               height: 34.h,
