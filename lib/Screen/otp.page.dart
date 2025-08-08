@@ -37,7 +37,7 @@ class _OtpPageState extends State<OtpPage> {
               SizedBox(height: 10.h),
               Center(
                 child: Text(
-                  "OTP Verification",
+                  "Enter OTP Code",
                   style: GoogleFonts.roboto(
                     fontSize: 26.sp,
                     fontWeight: FontWeight.w600,
@@ -58,9 +58,10 @@ class _OtpPageState extends State<OtpPage> {
               SizedBox(height: 15.h),
               OtpPinField(
                 maxLength: 6,
+                fieldHeight: 55.h,
+                fieldWidth: 55.w,
                 keyboardType: TextInputType.number,
-                otpPinFieldDecoration:
-                    OtpPinFieldDecoration.roundedPinBoxDecoration,
+                otpPinFieldDecoration: OtpPinFieldDecoration.custom,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 onSubmit: (text) {},
                 onChange: (text) {},
