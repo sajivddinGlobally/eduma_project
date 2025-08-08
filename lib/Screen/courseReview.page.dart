@@ -17,50 +17,52 @@ class _CourseReviewPageState extends State<CourseReviewPage> {
         alignment: Alignment.topCenter,
         children: [
           Column(
-            mainAxisAlignment: MainAxisAlignment.start,
+            // mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
                 height: 215.h,
-                decoration: BoxDecoration(color: Colors.amber),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                decoration: BoxDecoration(color: Color(0xFF001E6C)),
+                child: Column(
                   children: [
-                    SizedBox(width: 30.w),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Container(
-                        height: 44.w,
-                        width: 44.w,
-                        decoration: BoxDecoration(
-                          color: Color.fromARGB(255, 255, 255, 255),
-                          borderRadius: BorderRadius.circular(500.r),
-                        ),
-                        child: Center(
-                          child: Icon(
-                            Icons.arrow_back_ios,
-                            color: Color.fromARGB(255, 4, 0, 0),
-                            size: 15.w,
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(width: 30.w),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: Container(
+                            height: 44.w,
+                            width: 44.w,
+                            decoration: BoxDecoration(
+                              color: Color.fromARGB(255, 255, 255, 255),
+                              borderRadius: BorderRadius.circular(500.r),
+                            ),
+                            child: Center(
+                              child: Icon(
+                                Icons.arrow_back_ios,
+                                color: Color.fromARGB(255, 4, 0, 0),
+                                size: 15.w,
+                              ),
+                            ),
                           ),
                         ),
-                      ),
+                        // Spacer(),
+                        Text(
+                          "College Review",
+                          style: GoogleFonts.roboto(
+                            fontSize: 18.w,
+                            color: Color.fromARGB(255, 255, 255, 255),
+                          ),
+                        ),
+                      ],
                     ),
-                    Spacer(),
-                    Text(
-                      "College Review",
-                      style: GoogleFonts.roboto(
-                        fontSize: 18.w,
-                        color: Color.fromARGB(255, 255, 255, 255),
-                      ),
-                    ),
-                    Spacer(),
-                    SizedBox(width: 70.w),
                   ],
                 ),
               ),
-              SizedBox(height: 150.h),
+              SizedBox(height: 100.h),
               Container(
                 width: MediaQuery.of(context).size.width,
                 color: Colors.white,
@@ -281,10 +283,7 @@ class _CourseReviewPageState extends State<CourseReviewPage> {
                 border: Border.all(color: Colors.white, width: 5),
               ),
               child: ClipOval(
-                child: Image.network(
-                  "snap.data.image", // Replace with your image URL
-                  fit: BoxFit.cover,
-                ),
+                child: Image.network("snap.data.image", fit: BoxFit.cover),
               ),
             ),
           ),
