@@ -567,6 +567,60 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(10.r),
+            topRight: Radius.circular(10.r),
+          ),
+          color: Color(0xFFFFFFFF),
+          boxShadow: [
+            BoxShadow(
+              offset: Offset(0, 1),
+              spreadRadius: 0,
+              blurRadius: 6,
+              color: Color.fromARGB(63, 0, 0, 0),
+            ),
+          ],
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(10.r),
+            topRight: Radius.circular(10.r),
+          ),
+          child: BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
+            backgroundColor: Colors.transparent, // 🔥 important
+            elevation: 0, // 🔥 important
+            selectedLabelStyle: GoogleFonts.inter(
+              fontSize: 12.sp,
+              fontWeight: FontWeight.w500,
+              color: Color(0xFF001E6C),
+            ),
+            showSelectedLabels: true,
+            showUnselectedLabels: true,
+            items: [
+              BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.menu_book_rounded),
+                label: "Library",
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.video_library_outlined),
+                label: "Youtube",
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.shopping_bag_outlined),
+                label: "Shop",
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.person_outline_outlined),
+                label: "Account",
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
