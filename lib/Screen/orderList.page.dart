@@ -98,7 +98,7 @@ class _OrderListPageState extends State<OrderListPage> {
                 Expanded(
                   child: ListView.builder(
                     padding: EdgeInsets.zero,
-                    itemCount: 3,
+                    itemCount: 12,
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: EdgeInsets.only(top: 16.h),
@@ -152,6 +152,22 @@ class _OrderListPageState extends State<OrderListPage> {
                         ),
                       );
                     },
+                  ),
+                ),
+               
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: Size(400.w, 58.h),
+                    backgroundColor: Color(0xFF001E6C),
+                  ),
+                  onPressed: () {},
+                  child: Text(
+                    "Add Entire List to Cart",
+                    style: GoogleFonts.roboto(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xFFFFFFFF),
+                    ),
                   ),
                 ),
               ],
