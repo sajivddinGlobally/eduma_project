@@ -143,7 +143,11 @@ class _OrderListPageState extends State<OrderListPage> {
                               ],
                             ),
                             Spacer(),
-                            Icon(Icons.add_shopping_cart),
+                            Icon(
+                              Icons.add_shopping_cart,
+                              color: Color(0xFF001E6C),
+                              size: 25.sp,
+                            ),
                           ],
                         ),
                       );
