@@ -94,6 +94,81 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                     fit: BoxFit.cover,
                   ),
                 ),
+                SizedBox(height: 10.h),
+                Text(
+                  "Create an LMS Website With LearnPress",
+                  style: GoogleFonts.roboto(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFF000000),
+                    letterSpacing: -0.4,
+                  ),
+                ),
+                SizedBox(height: 10.h),
+                Text(
+                  "The 25th Workshop based on Treasure of Treatise -18 is a deep dive into the ancient scriptures and texts, uncovering hidden gems of knowledge and wisdom. Participants will explore the rich heritage of ancient treatises and unlock valuable insights for personal growth and development.",
+                  style: GoogleFonts.roboto(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xFF000000),
+                    letterSpacing: -1,
+                  ),
+                ),
+                SizedBox(height: 10.h),
+                Row(
+                  children: [
+                    Text(
+                      "₹ 45k",
+                      style: GoogleFonts.roboto(
+                        fontSize: 15.sp,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xFF001E6C),
+                      ),
+                    ),
+                    SizedBox(width: 10.h),
+                    Text(
+                      "24% off",
+                      style: GoogleFonts.roboto(
+                        fontSize: 15.sp,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xFF1BB93D),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 13.h),
+                Row(
+                  children: [
+                    Text(
+                      "₹ 50k",
+                      style: GoogleFonts.roboto(
+                        fontSize: 15.sp,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xFF001E6C),
+                        decoration: TextDecoration.lineThrough,
+                        decorationThickness: 2,
+                      ),
+                    ),
+                    SizedBox(width: 10.h),
+                    Text(
+                      "MRP",
+                      style: GoogleFonts.roboto(
+                        fontSize: 15.sp,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xFF000000),
+                      ),
+                    ),
+                    SizedBox(width: 10.h),
+                    Text(
+                      "(incl. off all texes)",
+                      style: GoogleFonts.roboto(
+                        fontSize: 15.sp,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xFFA49F9F),
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
