@@ -102,7 +102,15 @@ class _OrderListPageState extends State<OrderListPage> {
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: EdgeInsets.only(top: 16.h),
-                        child: Row(children: [Image.asset("assets/shop1.png")]),
+                        child: Row(
+                          children: [
+                            Image.asset(
+                              "assets/shop1.png",
+                              width: 84.w,
+                              height: 69.h,
+                            ),
+                          ],
+                        ),
                       );
                     },
                   ),
