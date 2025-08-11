@@ -237,6 +237,46 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                     ),
                   ],
                 ),
+                SizedBox(height: 30.h),
+                ExpansionTile(
+                  tilePadding: EdgeInsets.zero,
+                  title: Text(
+                    "Information",
+                    style: GoogleFonts.roboto(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xFF000000),
+                    ),
+                  ),
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Customer Care Details",
+                          style: GoogleFonts.roboto(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xFF747474),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(left: 10.w),
+                          // color: Colors.amber,
+                          //width: 200.w,
+                          child: Text(
+                            "In case of any issue,\ncontact us\nE-mail address:\nsupport@zeptonow.com",
+                            style: GoogleFonts.roboto(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xFF747474),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
