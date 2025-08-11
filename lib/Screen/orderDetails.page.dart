@@ -27,17 +27,15 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                 fit: BoxFit.fitHeight,
               ),
             ),
-            Positioned(
-              bottom: -80.h,
-              left: 0,
-              right: 0,
-              child: Image.asset(
-                "assets/vec.png",
-                width: 470.w,
-                height: 450.h,
-                fit: BoxFit.fill,
-              ),
-            ),
+            // Positioned(
+            //   bottom: 10,
+            //   child: Image.asset(
+            //     "assets/vec.png",
+            //     width: 470.w,
+            //     height: 450.h,
+            //     fit: BoxFit.fill,
+            //   ),
+            // ),
             Padding(
               padding: EdgeInsets.only(left: 20.w, right: 20.w),
               child: Column(
@@ -288,8 +286,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                           ),
                           Container(
                             margin: EdgeInsets.only(left: 10.w),
-                            width: 240.w,
-                            color: Colors.amber,
+                            width: 300.w,
                             child: Text(
                               "All images are for representational purposes only. It is advised that you read the batch and manufacturing details, directions for use, allergen information, health and nutritional claims (wherever applicable), and other details mentioned on the label before consuming the product. For combo items, individual prices can be viewed on the page.",
                               style: GoogleFonts.roboto(
@@ -302,8 +299,105 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                           ),
                         ],
                       ),
+                      SizedBox(height: 10.h),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Seller Name:-",
+                            style: GoogleFonts.roboto(
+                              fontSize: 15.sp,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xFF747474),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(left: 10.w),
+                            child: Text(
+                              "Commodum Groceries Private Limited",
+                              style: GoogleFonts.roboto(
+                                fontSize: 15.sp,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xFF747474),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 10.h),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Seller Address:-",
+                            style: GoogleFonts.roboto(
+                              fontSize: 15.sp,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xFF747474),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(left: 10.w),
+                            width: 280.w,
+                            child: Text(
+                              "COMMODUM GROCERIES PRIVATE LIMITED, Regd.Office: 44,Saket Building, Mullick Bazaar, Park Street,Kolkata, West Bengal, India, 700016.For Support ReachOut: supp ort+commodum@zeptonow .com",
+                              style: GoogleFonts.roboto(
+                                fontSize: 15.sp,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xFF747474),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 10.h),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Seller License No.:-",
+                            style: GoogleFonts.roboto(
+                              fontSize: 15.sp,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xFF747474),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(left: 10.w),
+                            child: Text(
+                              "12822999000310",
+                              style: GoogleFonts.roboto(
+                                fontSize: 15.sp,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xFF747474),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 20.h),
                     ],
                   ),
+                  SizedBox(height: 20.h),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: Size(400.w, 58.h),
+                      backgroundColor: Color(0xFF001E6C),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.r),
+                      ),
+                    ),
+                    onPressed: () {},
+                    child: Text(
+                      "Cancel Order",
+                      style: GoogleFonts.roboto(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xFFFFFFFF),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20.h),
                 ],
               ),
             ),
