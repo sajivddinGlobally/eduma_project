@@ -94,6 +94,19 @@ class _OrderListPageState extends State<OrderListPage> {
                     letterSpacing: -0.4,
                   ),
                 ),
+                SizedBox(height: 10.h),
+                Expanded(
+                  child: ListView.builder(
+                    padding: EdgeInsets.zero,
+                    itemCount: 3,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: EdgeInsets.only(top: 16.h),
+                        child: Row(children: [Image.asset("assets/shop1.png")]),
+                      );
+                    },
+                  ),
+                ),
               ],
             ),
           ),
