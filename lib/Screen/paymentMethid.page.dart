@@ -1,3 +1,4 @@
+import 'package:eduma_app/Screen/paymentDetails.page.dart';
 import 'package:eduma_app/Screen/paymentOverfiew.page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -185,6 +186,78 @@ class _PaymentMethidPageState extends State<PaymentMethidPage> {
                   }),
                 ),
               ),
+              SizedBox(height: 30.h),
+              Padding(
+                padding: EdgeInsets.only(left: 30.w, right: 30.w),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 18.r,
+                          backgroundColor: Color(0xFF001E6C),
+                          child: Icon(
+                            Icons.attach_money,
+                            color: Colors.white,
+                            size: 20.sp,
+                          ),
+                        ),
+                        SizedBox(width: 6.w),
+                        Text(
+                          "Total Price",
+                          style: GoogleFonts.inter(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xFF001E6C),
+                            letterSpacing: -0.4,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Text(
+                      "35\$",
+                      style: GoogleFonts.inter(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xFF001E6C),
+                        letterSpacing: -0.4,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Divider(),
+              SizedBox(height: 20.h),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFF001E6C),
+                    minimumSize: Size(double.infinity, 50.h),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                        builder: (context) => PaymentDetailsPage(),
+                      ),
+                    );
+                  },
+                  child: Text(
+                    "Continue",
+                    style: GoogleFonts.inter(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 30.h),
             ],
           ),
         ],
