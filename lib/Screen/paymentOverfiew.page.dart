@@ -76,11 +76,11 @@ class _PaymentOverfiewPageState extends State<PaymentOverfiewPage> {
                 padding: EdgeInsets.symmetric(horizontal: 32.w),
                 child: Row(
                   children: [
-                    _buildStepCircle(1, true),
-                    _buildLine(),
-                    _buildStepCircle(2, false),
-                    _buildLine(),
-                    _buildStepCircle(3, false),
+                    buildStepCircle(number: 1, isActive: true),
+                    buildLine(),
+                    buildStepCircle(number: 2, isActive: false),
+                    buildLine(),
+                    buildStepCircle(number: 3, isActive: false),
                   ],
                 ),
               ),
@@ -253,7 +253,7 @@ class _PaymentOverfiewPageState extends State<PaymentOverfiewPage> {
                 padding: EdgeInsets.symmetric(horizontal: 20.w),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue[900],
+                    backgroundColor: Color(0xFF001E6C),
                     minimumSize: Size(double.infinity, 50.h),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.r),
@@ -270,38 +270,11 @@ class _PaymentOverfiewPageState extends State<PaymentOverfiewPage> {
                   ),
                 ),
               ),
-
               SizedBox(height: 30.h),
             ],
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildStepCircle(int number, bool isActive) {
-    return Container(
-      width: 49.w,
-      height: 49.h,
-      decoration: BoxDecoration(
-        color: isActive ? Color(0xFF001E6C) : Color.fromARGB(51, 0, 3, 108),
-        shape: BoxShape.circle,
-      ),
-      child: Center(
-        child: Text(
-          "$number",
-          style: GoogleFonts.roboto(
-            color: isActive ? Colors.white : Colors.black,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildLine() {
-    return Expanded(
-      child: Container(height: 1.2.h, color: Color(0xFF001E6C)),
     );
   }
 
@@ -320,6 +293,48 @@ class _PaymentOverfiewPageState extends State<PaymentOverfiewPage> {
       shape: StadiumBorder(
         side: BorderSide(color: Color(0xFFDEDEDE), width: 1),
       ),
+    );
+  }
+}
+
+class buildStepCircle extends StatelessWidget {
+  final int number;
+  final bool isActive;
+  const buildStepCircle({
+    super.key,
+    required this.number,
+    required this.isActive,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 49.w,
+      height: 49.h,
+      decoration: BoxDecoration(
+        color: isActive ? Color(0xFF001E6C) : Color.fromARGB(51, 0, 3, 108),
+        shape: BoxShape.circle,
+      ),
+      child: Center(
+        child: Text(
+          "$number",
+          style: GoogleFonts.roboto(
+            color: isActive ? Colors.white : Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class buildLine extends StatelessWidget {
+  const buildLine({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Container(height: 1.2.h, color: Color(0xFF001E6C)),
     );
   }
 }
