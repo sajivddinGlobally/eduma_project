@@ -167,12 +167,12 @@ class _PaymentSuccessPageState extends State<PaymentSuccessPage> {
                     ),
                   ),
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      CupertinoPageRoute(
-                        builder: (context) => PaymentSuccessPage(),
-                      ),
-                    );
+                    // Navigator.push(
+                    //   context,
+                    //   CupertinoPageRoute(
+                    //     builder: (context) => PaymentSuccessPage(),
+                    //   ),
+                    // );
                   },
                   child: Text(
                     "Continue",

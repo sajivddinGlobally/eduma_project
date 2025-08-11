@@ -58,7 +58,7 @@ class _CourseReviewPageState extends State<CourseReviewPage> {
                           Container(
                             margin: EdgeInsets.only(top: 10.h, left: 15.w),
                             child: Text(
-                              "College Review",
+                              "Course Review",
                               style: GoogleFonts.roboto(
                                 fontSize: 18.w,
                                 color: Color.fromARGB(255, 255, 255, 255),
