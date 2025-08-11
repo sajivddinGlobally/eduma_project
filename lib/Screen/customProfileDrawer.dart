@@ -1,4 +1,5 @@
 import 'package:eduma_app/Screen/editProfile.page.dart';
+import 'package:eduma_app/Screen/orderList.page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -155,7 +156,17 @@ class _CustomProfileDrawerState extends State<CustomProfileDrawer> {
                       SizedBox(height: 20.h),
                       tileBuild("assets/lib.png", "Library"),
                       SizedBox(height: 20.h),
-                      tileBuild("assets/or.png", "Order List"),
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                              builder: (context) => OrderListPage(),
+                            ),
+                          );
+                        },
+                        child: tileBuild("assets/or.png", "Order List"),
+                      ),
                       SizedBox(height: 20.h),
                       Row(
                         children: [
