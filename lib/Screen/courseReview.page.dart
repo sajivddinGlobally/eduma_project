@@ -1,3 +1,5 @@
+import 'package:eduma_app/Screen/chating.page.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -194,74 +196,84 @@ class _CourseReviewPageState extends State<CourseReviewPage> {
                           physics: NeverScrollableScrollPhysics(),
                           padding: EdgeInsets.zero,
                           itemBuilder: (context, index) {
-                            return Container(
-                              margin: EdgeInsets.only(top: 10.h),
-                              // width: 400.w,
-                              // height: 110.h,
-                              padding: EdgeInsets.only(
-                                left: 16.w,
-                                right: 16.w,
-                                top: 16.h,
-                                bottom: 16.h,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Color(0xFFF1F2F6),
-                                borderRadius: BorderRadius.circular(20.r),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        Icons.star,
-                                        color: Color(0xFF001E6C),
-                                        size: 20.sp,
-                                      ),
-                                      Icon(
-                                        Icons.star,
-                                        color: Color(0xFF001E6C),
-                                        size: 20.sp,
-                                      ),
-                                      Icon(
-                                        Icons.star,
-                                        color: Color(0xFF001E6C),
-                                        size: 20.sp,
-                                      ),
-                                      Icon(
-                                        Icons.star,
-                                        color: Color(0xFF001E6C),
-                                        size: 20.sp,
-                                      ),
-                                      Icon(
-                                        Icons.star,
-                                        color: Color(0xFF001E6C),
-                                        size: 20.sp,
-                                      ),
-                                    ],
+                            return InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  CupertinoPageRoute(
+                                    builder: (context) => ChatingPage(),
                                   ),
-                                  SizedBox(height: 10.h),
-                                  Text(
-                                    "Rahul helped me prepare for my TCS interview, and I got the job! His tips are spot-on!",
-                                    style: GoogleFonts.roboto(
-                                      fontSize: 13.sp,
-                                      color: Color(0xFF666666),
-                                      fontWeight: FontWeight.w400,
-                                      fontStyle: FontStyle.italic,
-                                      letterSpacing: -0.4,
+                                );
+                              },
+                              child: Container(
+                                margin: EdgeInsets.only(top: 10.h),
+                                // width: 400.w,
+                                // height: 110.h,
+                                padding: EdgeInsets.only(
+                                  left: 16.w,
+                                  right: 16.w,
+                                  top: 16.h,
+                                  bottom: 16.h,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Color(0xFFF1F2F6),
+                                  borderRadius: BorderRadius.circular(20.r),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          Icons.star,
+                                          color: Color(0xFF001E6C),
+                                          size: 20.sp,
+                                        ),
+                                        Icon(
+                                          Icons.star,
+                                          color: Color(0xFF001E6C),
+                                          size: 20.sp,
+                                        ),
+                                        Icon(
+                                          Icons.star,
+                                          color: Color(0xFF001E6C),
+                                          size: 20.sp,
+                                        ),
+                                        Icon(
+                                          Icons.star,
+                                          color: Color(0xFF001E6C),
+                                          size: 20.sp,
+                                        ),
+                                        Icon(
+                                          Icons.star,
+                                          color: Color(0xFF001E6C),
+                                          size: 20.sp,
+                                        ),
+                                      ],
                                     ),
-                                  ),
-                                  SizedBox(height: 10.h),
-                                  Text(
-                                    "- Vinod Shyam ",
-                                    style: GoogleFonts.roboto(
-                                      fontSize: 13.sp,
-                                      color: Color(0xFF666666),
-                                      fontWeight: FontWeight.w400,
-                                      letterSpacing: -0.4,
+                                    SizedBox(height: 10.h),
+                                    Text(
+                                      "Rahul helped me prepare for my TCS interview, and I got the job! His tips are spot-on!",
+                                      style: GoogleFonts.roboto(
+                                        fontSize: 13.sp,
+                                        color: Color(0xFF666666),
+                                        fontWeight: FontWeight.w400,
+                                        fontStyle: FontStyle.italic,
+                                        letterSpacing: -0.4,
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                    SizedBox(height: 10.h),
+                                    Text(
+                                      "- Vinod Shyam ",
+                                      style: GoogleFonts.roboto(
+                                        fontSize: 13.sp,
+                                        color: Color(0xFF666666),
+                                        fontWeight: FontWeight.w400,
+                                        letterSpacing: -0.4,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             );
                           },
