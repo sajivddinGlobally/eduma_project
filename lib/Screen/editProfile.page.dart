@@ -62,7 +62,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
             ),
             SizedBox(height: 30.h),
             Container(
-              height: MediaQuery.of(context).size.height + 60.h,
+              height: MediaQuery.of(context).size.height * 2 / 1.7,
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
