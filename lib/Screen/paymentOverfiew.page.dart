@@ -248,6 +248,28 @@ class _PaymentOverfiewPageState extends State<PaymentOverfiewPage> {
                   ],
                 ),
               ),
+              SizedBox(height: 20.h),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue[900],
+                    minimumSize: Size(double.infinity, 50.h),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                  ),
+                  onPressed: () {},
+                  child: Text(
+                    "Continue",
+                    style: GoogleFonts.inter(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
 
               SizedBox(height: 30.h),
             ],
