@@ -1,3 +1,4 @@
+import 'package:eduma_app/Screen/paymentMethid.page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -259,7 +260,14 @@ class _PaymentOverfiewPageState extends State<PaymentOverfiewPage> {
                       borderRadius: BorderRadius.circular(8.r),
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                        builder: (context) => PaymentMethidPage(),
+                      ),
+                    );
+                  },
                   child: Text(
                     "Continue",
                     style: GoogleFonts.inter(
