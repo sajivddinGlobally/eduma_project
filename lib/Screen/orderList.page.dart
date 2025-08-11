@@ -104,11 +104,46 @@ class _OrderListPageState extends State<OrderListPage> {
                         padding: EdgeInsets.only(top: 16.h),
                         child: Row(
                           children: [
-                            Image.asset(
-                              "assets/shop1.png",
-                              width: 84.w,
-                              height: 69.h,
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(10.r),
+                              child: Image.asset(
+                                "assets/shop1.png",
+                                width: 84.w,
+                                height: 69.h,
+                                fit: BoxFit.cover,
+                              ),
                             ),
+
+                            SizedBox(width: 10.w),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  width: 190.w,
+                                  child: Text(
+                                    "Create an LMS Website With LearnPress",
+                                    style: GoogleFonts.roboto(
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w500,
+                                      color: Color(0xFF000000),
+                                      letterSpacing: -0.4,
+                                      height: 1,
+     ),
+                                  ),
+                                ),
+                                Text(
+                                  "₹ 45k",
+                                  style: GoogleFonts.roboto(
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w500,
+                                    color: Color(0xFF001E6C),
+                                    letterSpacing: -0.4,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Spacer(),
+                            Icon(Icons.list),
                           ],
                         ),
                       );
