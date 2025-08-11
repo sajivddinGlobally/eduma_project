@@ -17,7 +17,6 @@ class _CourseReviewPageState extends State<CourseReviewPage> {
         alignment: Alignment.topCenter,
         children: [
           Column(
-            // mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
@@ -25,6 +24,7 @@ class _CourseReviewPageState extends State<CourseReviewPage> {
                 decoration: BoxDecoration(color: Color(0xFF001E6C)),
                 child: Column(
                   children: [
+                    SizedBox(height: 30.h),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -40,7 +40,8 @@ class _CourseReviewPageState extends State<CourseReviewPage> {
                               color: Color.fromARGB(255, 255, 255, 255),
                               borderRadius: BorderRadius.circular(500.r),
                             ),
-                            child: Center(
+                            child: Padding(
+                              padding: EdgeInsets.only(left: 6.w),
                               child: Icon(
                                 Icons.arrow_back_ios,
                                 color: Color.fromARGB(255, 4, 0, 0),
@@ -49,12 +50,14 @@ class _CourseReviewPageState extends State<CourseReviewPage> {
                             ),
                           ),
                         ),
-                        // Spacer(),
-                        Text(
-                          "College Review",
-                          style: GoogleFonts.roboto(
-                            fontSize: 18.w,
-                            color: Color.fromARGB(255, 255, 255, 255),
+                        Container(
+                          margin: EdgeInsets.only(top: 10.h, left: 15.w),
+                          child: Text(
+                            "College Review",
+                            style: GoogleFonts.roboto(
+                              fontSize: 18.w,
+                              color: Color.fromARGB(255, 255, 255, 255),
+                            ),
                           ),
                         ),
                       ],
@@ -62,7 +65,7 @@ class _CourseReviewPageState extends State<CourseReviewPage> {
                   ],
                 ),
               ),
-              SizedBox(height: 100.h),
+
               Container(
                 width: MediaQuery.of(context).size.width,
                 color: Colors.white,
@@ -283,7 +286,7 @@ class _CourseReviewPageState extends State<CourseReviewPage> {
                 border: Border.all(color: Colors.white, width: 5),
               ),
               child: ClipOval(
-                child: Image.network("snap.data.image", fit: BoxFit.cover),
+                child: Image.asset("assets/reviewimage.png", fit: BoxFit.cover),
               ),
             ),
           ),
