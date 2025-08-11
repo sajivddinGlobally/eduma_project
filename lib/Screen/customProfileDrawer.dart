@@ -1,5 +1,6 @@
 import 'package:eduma_app/Screen/editProfile.page.dart';
 import 'package:eduma_app/Screen/orderList.page.dart';
+import 'package:eduma_app/Screen/paymentOverfiew.page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -155,7 +156,17 @@ class _CustomProfileDrawerState extends State<CustomProfileDrawer> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  tileBuild("assets/pay.png", "Payment Method"),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (context) => PaymentOverfiewPage(),
+                        ),
+                      );
+                    },
+                    child: tileBuild("assets/pay.png", "Payment Method"),
+                  ),
                   SizedBox(height: 20.h),
                   tileBuild("assets/help.png", "Help Centerd"),
                   SizedBox(height: 20.h),
