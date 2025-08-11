@@ -823,7 +823,13 @@ class PopularBody extends StatelessWidget {
                     ),
                     Positioned(
                       right: 8.w,
+                      top: 10.h,
                       child: IconButton(
+                        style: IconButton.styleFrom(
+                          minimumSize: Size(0, 0),
+                          padding: EdgeInsets.zero,
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        ),
                         onPressed: () {},
                         icon: Icon(Icons.favorite_outline, color: Colors.white),
                       ),
