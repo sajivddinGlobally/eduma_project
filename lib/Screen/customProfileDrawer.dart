@@ -53,6 +53,7 @@ class _CustomProfileDrawerState extends State<CustomProfileDrawer> {
                               child: Icon(
                                 Icons.arrow_back,
                                 color: Colors.white,
+                                size: 20.sp,
                               ),
                             ),
                           ),
@@ -147,15 +148,15 @@ class _CustomProfileDrawerState extends State<CustomProfileDrawer> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       tileBuild("assets/pay.png", "Payment Method"),
-                      SizedBox(height: 15.h),
+                      SizedBox(height: 20.h),
                       tileBuild("assets/help.png", "Help Centerd"),
-                      SizedBox(height: 15.h),
+                      SizedBox(height: 20.h),
                       tileBuild("assets/invite.png", "Invite Friend"),
-                      SizedBox(height: 15.h),
+                      SizedBox(height: 20.h),
                       tileBuild("assets/lib.png", "Library"),
-                      SizedBox(height: 15.h),
+                      SizedBox(height: 20.h),
                       tileBuild("assets/or.png", "Order List"),
-                      SizedBox(height: 15.h),
+                      SizedBox(height: 20.h),
                       Row(
                         children: [
                           Image.asset("assets/lan.png"),
@@ -179,7 +180,7 @@ class _CustomProfileDrawerState extends State<CustomProfileDrawer> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 15.h),
+                      SizedBox(height: 20.h),
                       Row(
                         children: [
                           Icon(
@@ -198,7 +199,7 @@ class _CustomProfileDrawerState extends State<CustomProfileDrawer> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 15.h),
+                      SizedBox(height: 20.h),
                       Row(
                         children: [
                           Icon(
@@ -232,7 +233,7 @@ class _CustomProfileDrawerState extends State<CustomProfileDrawer> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 15.h),
+                      SizedBox(height: 20.h),
                       Row(
                         children: [
                           Icon(
