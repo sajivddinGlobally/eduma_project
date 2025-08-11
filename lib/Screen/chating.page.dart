@@ -73,20 +73,25 @@ class _ChatingPageState extends State<ChatingPage> {
           SizedBox(height: 40.h),
           Row(
             children: [
-              Container(
-                margin: EdgeInsets.only(left: 20.w),
-                width: 44.w,
-                height: 44.h,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Color(0xFF262626),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.only(left: 6.w),
-                  child: Icon(
-                    Icons.arrow_back_ios,
-                    color: Colors.white,
-                    size: 20.sp,
+              InkWell(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Container(
+                  margin: EdgeInsets.only(left: 20.w),
+                  width: 44.w,
+                  height: 44.h,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Color(0xFF262626),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 6.w),
+                    child: Icon(
+                      Icons.arrow_back_ios,
+                      color: Colors.white,
+                      size: 20.sp,
+                    ),
                   ),
                 ),
               ),

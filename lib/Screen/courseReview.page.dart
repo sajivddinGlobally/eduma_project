@@ -1,3 +1,4 @@
+import 'package:eduma_app/Screen/chat.inbox.page.dart';
 import 'package:eduma_app/Screen/chating.page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -201,7 +202,7 @@ class _CourseReviewPageState extends State<CourseReviewPage> {
                                 Navigator.push(
                                   context,
                                   CupertinoPageRoute(
-                                    builder: (context) => ChatingPage(),
+                                    builder: (context) => ChatInboxPage(),
                                   ),
                                 );
                               },
