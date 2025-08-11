@@ -128,7 +128,7 @@ class _OrderListPageState extends State<OrderListPage> {
                                       color: Color(0xFF000000),
                                       letterSpacing: -0.4,
                                       height: 1,
-     ),
+                                    ),
                                   ),
                                 ),
                                 Text(
@@ -143,7 +143,7 @@ class _OrderListPageState extends State<OrderListPage> {
                               ],
                             ),
                             Spacer(),
-                            Icon(Icons.list),
+                            Icon(Icons.add_shopping_cart),
                           ],
                         ),
                       );
