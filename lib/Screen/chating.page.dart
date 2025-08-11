@@ -42,14 +42,19 @@ class _ChatingPageState extends State<ChatingPage> {
 
     // ✅ Optional: preload some messages
     _messages.addAll([
-      {'text': "Hello", 'isSender': true},
-      {'text': "Does this has features similar to my phone?", 'isSender': true},
+      {'text': "And the HR round?", 'isSender': true},
       {
-        'text': "Yes this product has same feature as the one you told me ",
+        'text':
+            "Be honest and confident. Practice answers for common questions like strengths, weaknesses, and career goals.",
         'isSender': false,
       },
-      {'text': "Awesome, thanks for letting me know!", 'isSender': true},
-      {'text': "When can i expect this product Delivery ?", 'isSender': true},
+      {'text': "Any tips to stay calm?", 'isSender': true},
+      {
+        'text':
+            "Stick to a schedule, practice mock interviews, and take breaks. Rejections happen—learn and move forward.",
+        'isSender': false,
+      },
+      {'text': "Thanks! This really helps.", 'isSender': true},
     ]);
 
     // ✅ Scroll after a frame
@@ -62,71 +67,71 @@ class _ChatingPageState extends State<ChatingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFF1B1B1B),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 40.h),
-            Row(
-              children: [
-                Container(
-                  margin: EdgeInsets.only(left: 20.w),
-                  width: 44.w,
-                  height: 44.h,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Color(0xFF262626),
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 6.w),
-                    child: Icon(
-                      Icons.arrow_back_ios,
-                      color: Colors.white,
-                      size: 20.sp,
-                    ),
-                  ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(height: 40.h),
+          Row(
+            children: [
+              Container(
+                margin: EdgeInsets.only(left: 20.w),
+                width: 44.w,
+                height: 44.h,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Color(0xFF262626),
                 ),
-                Spacer(),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Mike Pena",
-                      style: GoogleFonts.roboto(
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
-                      ),
-                    ),
-                    Text(
-                      "Online",
-                      style: GoogleFonts.roboto(
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xFFDCF881),
-                      ),
-                    ),
-                  ],
-                ),
-                Spacer(),
-                Container(
-                  margin: EdgeInsets.only(right: 20.w),
-                  width: 44.w,
-                  height: 44.h,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Color(0xFF262626),
-                  ),
+                child: Padding(
+                  padding: EdgeInsets.only(left: 6.w),
                   child: Icon(
-                    Icons.more_horiz_outlined,
+                    Icons.arrow_back_ios,
                     color: Colors.white,
                     size: 20.sp,
                   ),
                 ),
-              ],
-            ),
-            SizedBox(height: 30.h),
-            Container(
+              ),
+              Spacer(),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    "Mike Pena",
+                    style: GoogleFonts.roboto(
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                    ),
+                  ),
+                  Text(
+                    "Online",
+                    style: GoogleFonts.roboto(
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xFFDCF881),
+                    ),
+                  ),
+                ],
+              ),
+              Spacer(),
+              Container(
+                margin: EdgeInsets.only(right: 20.w),
+                width: 44.w,
+                height: 44.h,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Color(0xFF262626),
+                ),
+                child: Icon(
+                  Icons.more_horiz_outlined,
+                  color: Colors.white,
+                  size: 20.sp,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 30.h),
+          Expanded(
+            child: Container(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
               decoration: BoxDecoration(
@@ -145,7 +150,11 @@ class _ChatingPageState extends State<ChatingPage> {
                       child: SingleChildScrollView(
                         controller: _scrollController, // ✅ Important
                         child: Padding(
-                          padding: EdgeInsets.only(left: 20.w, right: 20.w),
+                          padding: EdgeInsets.only(
+                            left: 20.w,
+                            right: 20.w,
+                            top: 20.h,
+                          ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -175,64 +184,61 @@ class _ChatingPageState extends State<ChatingPage> {
                 ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
       bottomSheet: Container(
-        width: MediaQuery.of(context).size.width,
-        height: 74.h,
-        decoration: BoxDecoration(color: Color(0xffFFFFFF)),
+        color: Colors.white,
         child: Padding(
-          padding: EdgeInsets.only(
-            left: 20.w,
-            right: 20.w,
-            bottom: 13.h,
-            top: 13.h,
-          ),
-          child: Row(
-            children: [
-              Expanded(
-                child: TextField(
-                  controller: messageController,
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Color.fromARGB(255, 233, 232, 235),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.r),
-                      borderSide: BorderSide.none,
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.r),
-                      borderSide: BorderSide.none,
-                    ),
-                    hint: Text(
-                      "Type Message",
-                      style: GoogleFonts.inter(
-                        fontSize: 15.sp,
-                        fontWeight: FontWeight.w500,
-                        color: Color.fromARGB(255, 140, 140, 148),
-                        letterSpacing: -0.2,
-                      ),
-                    ),
-                  ),
+          padding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 10.h),
+          child: TextField(
+            controller: messageController,
+            decoration: InputDecoration(
+              contentPadding: EdgeInsets.only(
+                left: 16.w,
+                right: 16.w,
+                top: 16.h,
+                bottom: 16.h,
+              ),
+              filled: true,
+              fillColor: Color(0xFFF1F2F6),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(50.r),
+                borderSide: BorderSide.none,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(50.r),
+                borderSide: BorderSide.none,
+              ),
+              hint: Text(
+                "Enter Message...",
+                style: GoogleFonts.inter(
+                  fontSize: 15.sp,
+                  fontWeight: FontWeight.w500,
+                  color: Color.fromARGB(255, 140, 140, 148),
+                  letterSpacing: -0.2,
                 ),
               ),
-              SizedBox(width: 8.w),
-              InkWell(
-                onTap: () {
+              prefixIcon: Padding(
+                padding: EdgeInsets.all(12), // kam padding
+                child: CircleAvatar(
+                  radius: 12.r,
+                  backgroundColor: Color(0xFF001E6C),
+                  child: Icon(Icons.add, size: 16.sp, color: Colors.white),
+                ),
+              ),
+              suffixIcon: IconButton(
+                style: IconButton.styleFrom(
+                  minimumSize: Size(0, 0),
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  padding: EdgeInsets.zero,
+                ),
+                onPressed: () {
                   _handleSendMessage();
                 },
-                child: Container(
-                  width: 48.w,
-                  height: 46.h,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.r),
-                    color: Color(0xff4A3DFE),
-                  ),
-                  child: Icon(Icons.send, color: Colors.white),
-                ),
+                icon: Icon(Icons.send, color: Color(0xFF001E6C)),
               ),
-            ],
+            ),
           ),
         ),
       ),
@@ -255,13 +261,14 @@ class ChatBubble extends StatelessWidget {
           maxWidth: MediaQuery.of(context).size.width * 0.75,
         ),
         decoration: BoxDecoration(
-          color: isSender ? Color(0xff00D0B8) : Color(0xFFFFFFFF),
+          color: isSender ? Color(0xFF001E6C) : Color(0xFFFFFFFF),
           borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(16.r),
-            topRight: Radius.circular(16.r),
-            bottomLeft: Radius.circular(isSender ? 16.r : 0),
-            bottomRight: Radius.circular(isSender ? 0 : 16.r),
+            topLeft: Radius.circular(isSender ? 16.r : 0),
+            topRight: Radius.circular(isSender ? 0 : 16.r),
+            bottomLeft: Radius.circular(16.r),
+            bottomRight: Radius.circular(16.r),
           ),
+          border: Border.all(color: Color(0xFF263238)),
         ),
         child: Text(
           message,
