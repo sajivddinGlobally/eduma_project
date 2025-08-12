@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:eduma_app/Screen/forgorPassword.page.dart';
 import 'package:eduma_app/Screen/home.page.dart';
 import 'package:eduma_app/Screen/register.page.dart';
+import 'package:eduma_app/config/core/showFlushbar.dart';
 import 'package:eduma_app/config/network/api.state.dart';
 import 'package:eduma_app/config/utils/pretty.dio.dart';
 import 'package:eduma_app/data/Controller/loadingController.dart';
@@ -178,13 +181,23 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   );
                   try {
                     final service = APIStateNetwork(createDio());
-                    final response = service.login(body);
-                  } catch (e) {}
-
-                  Navigator.push(
-                    context,
-                    CupertinoPageRoute(builder: (context) => HomePage()),
-                  );
+                    final response = await service.login(body);
+                    if (response != null) {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute(builder: (context) => HomePage()),
+                      );
+                      showSuccessMessage(context, "Login SuccessFull");
+                      loadingProvider.state = false;
+                    } else {
+                      showErrorMessage(context, "Invalid credentials");
+                      log("Login failed");
+                    }
+                  } catch (e) {
+                    loadingProvider.state = false;
+                    showErrorMessage(context, e.toString());
+                    log(e.toString());
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF001E6C),
@@ -193,15 +206,19 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     borderRadius: BorderRadius.circular(40.r),
                   ),
                 ),
-                child: Text(
-                  "Login",
-                  style: GoogleFonts.roboto(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.white,
-                    letterSpacing: -1,
-                  ),
-                ),
+                child: isLoading
+                    ? Center(
+                        child: CircularProgressIndicator(color: Colors.white),
+                      )
+                    : Text(
+                        "Login",
+                        style: GoogleFonts.roboto(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                          letterSpacing: -1,
+                        ),
+                      ),
               ),
               SizedBox(height: 6.h),
               Center(

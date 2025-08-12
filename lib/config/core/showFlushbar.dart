@@ -14,7 +14,7 @@ void showErrorMessage(BuildContext context, String message) {
   ).show(context);
 }
 
-void showSuccessMessage(String message, BuildContext context) {
+void showSuccessMessage(BuildContext context, String message) {
   Flushbar(
     message: message,
     margin: const EdgeInsets.all(10),
