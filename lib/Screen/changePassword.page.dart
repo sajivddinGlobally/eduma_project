@@ -130,6 +130,27 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
               SizedBox(height: 20.h),
               ElevatedButton(
                 onPressed: () async {
+                  if (newpasswordController.text.trim().isEmpty ||
+                      confirmedPassController.text.trim().isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text("Please fill in all fields."),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                    return;
+                  }
+                  if (newpasswordController.text.trim() !=
+                      confirmedPassController.text.trim()) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text("Password do not match"),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                    return;
+                  }
+
                   isLoading.update((state) => true);
                   final body = ResetPassBodyModel(
                     resetToken: widget.resetToken,
