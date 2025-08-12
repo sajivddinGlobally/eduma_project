@@ -440,6 +440,33 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                           ),
                         ),
                 ),
+                SizedBox(height: 6.h),
+                Center(
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.zero, // Removes default padding
+                      minimumSize: Size(0, 0), // Removes default min size
+                      tapTargetSize:
+                          MaterialTapTargetSize.shrinkWrap, // Shrinks tap area
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute(builder: (context) => LoginPage()),
+                      );
+                    },
+                    child: Text(
+                      "I Have Already Account? Login",
+                      style: GoogleFonts.roboto(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xFF7F7F7F),
+                        letterSpacing: -0.4,
+                      ),
+                    ),
+                  ),
+                ),
+
                 SizedBox(height: 20.h),
               ],
             ),
