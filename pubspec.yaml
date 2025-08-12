@@ -46,6 +46,8 @@ dependencies:
   riverpod: ^2.6.1
   flutter_riverpod: ^2.6.1
   another_flushbar: ^1.12.30
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
 
 
 

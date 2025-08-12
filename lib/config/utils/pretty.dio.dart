@@ -47,6 +47,39 @@ createDio() {
           );
         }
         handler.next(e);
+
+        
+        // final statusCode = e.response?.statusCode;
+        // final errorData = e.response?.data;
+        // String cleanedMessage = "Something went wrong";
+
+        // if (errorData is Map) {
+        //   cleanedMessage =
+        //       errorData["message"] ??
+        //       errorData["msg"] ??
+        //       errorData["error"] ??
+        //       "Something went wrong";
+        // } else if (errorData is String) {
+        //   cleanedMessage = errorData;
+        // }
+
+        // cleanedMessage = cleanedMessage
+        //     .toString()
+        //     .replaceAll(RegExp(r'<[^>]*>'), '')
+        //     .trim();
+
+        // log("API Error ($statusCode): $cleanedMessage");
+
+        // final globalContext = navigatorKey.currentContext;
+        // if (globalContext != null) {
+        //   ScaffoldMessenger.of(globalContext).showSnackBar(
+        //     SnackBar(
+        //       content: Text(cleanedMessage),
+        //       backgroundColor: Colors.red,
+        //     ),
+        //   );
+        // }
+        // handler.next(e);
       },
     ),
   );
