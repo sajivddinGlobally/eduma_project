@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:eduma_app/Screen/onbording.page.dart';
 import 'package:eduma_app/config/utils/navigatorKey.dart';
 import 'package:flutter/material.dart';
