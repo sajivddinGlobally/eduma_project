@@ -1,22 +1,31 @@
 import 'package:eduma_app/Screen/forgorPassword.page.dart';
 import 'package:eduma_app/Screen/home.page.dart';
 import 'package:eduma_app/Screen/register.page.dart';
+import 'package:eduma_app/config/network/api.state.dart';
+import 'package:eduma_app/config/utils/pretty.dio.dart';
+import 'package:eduma_app/data/Controller/loadingController.dart';
+import 'package:eduma_app/data/Model/loginBodyModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class LoginPage extends StatefulWidget {
+class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  ConsumerState<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageState extends ConsumerState<LoginPage> {
   bool isShow = true;
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final isLoading = ref.watch(loadingController);
+    final loadingProvider = ref.read(loadingController.notifier);
     return Scaffold(
       backgroundColor: Color(0xFFFFFFFF),
       body: SingleChildScrollView(
@@ -58,6 +67,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               SizedBox(height: 12.h),
               TextField(
+                controller: emailController,
                 obscureText: isShow ? true : false,
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.only(
@@ -106,6 +116,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               SizedBox(height: 12.h),
               TextField(
+                controller: passwordController,
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.only(
                     left: 19.w,
@@ -159,7 +170,17 @@ class _LoginPageState extends State<LoginPage> {
               ),
               SizedBox(height: 20.h),
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
+                  loadingProvider.state = true;
+                  final body = LoginBodyModel(
+                    username: emailController.text,
+                    password: passwordController.text,
+                  );
+                  try {
+                    final service = APIStateNetwork(createDio());
+                    final response = service.login(body);
+                  } catch (e) {}
+
                   Navigator.push(
                     context,
                     CupertinoPageRoute(builder: (context) => HomePage()),

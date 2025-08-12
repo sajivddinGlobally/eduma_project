@@ -45,6 +45,7 @@ dependencies:
   json_annotation: ^4.9.0
   riverpod: ^2.6.1
   flutter_riverpod: ^2.6.1
+  another_flushbar: ^1.12.30
 
 
 
