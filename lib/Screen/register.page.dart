@@ -1,18 +1,26 @@
+import 'dart:developer';
+
 import 'package:eduma_app/Screen/login.page.dart';
-import 'package:eduma_app/config/utils/navigatorKey.dart';
+import 'package:eduma_app/config/core/showFlushbar.dart';
+import 'package:eduma_app/config/network/api.state.dart';
+import 'package:eduma_app/config/utils/pretty.dio.dart';
+import 'package:eduma_app/data/Controller/loadingController.dart';
+import 'package:eduma_app/data/Model/registerBodyCustomeModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class RegisterPage extends StatefulWidget {
+class RegisterPage extends ConsumerStatefulWidget {
   const RegisterPage({super.key});
 
   @override
-  State<RegisterPage> createState() => _RegisterPageState();
+  ConsumerState<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
+class _RegisterPageState extends ConsumerState<RegisterPage> {
+  final _formKey = GlobalKey<FormState>();
   bool isShow = true;
   bool isObsecure = true;
   bool isCheck = false;
@@ -30,8 +38,10 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
+    final isloadingController = ref.watch(loadingController);
+    final isLoading = ref.read(loadingController.notifier);
     return Form(
-      key: navigatorKey,
+      key: _formKey,
       child: Scaffold(
         backgroundColor: Color(0xFFFFFFFF),
         body: SingleChildScrollView(
@@ -95,6 +105,20 @@ class _RegisterPageState extends State<RegisterPage> {
                         width: 1.w,
                       ),
                     ),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(40.r),
+                      borderSide: BorderSide(
+                        color: Color.fromARGB(25, 0, 0, 0),
+                        width: 1.w,
+                      ),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(40.r),
+                      borderSide: BorderSide(
+                        color: Color.fromARGB(25, 0, 0, 0),
+                        width: 1.w,
+                      ),
+                    ),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -133,6 +157,20 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                     focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(40.r),
+                      borderSide: BorderSide(
+                        color: Color.fromARGB(25, 0, 0, 0),
+                        width: 1.w,
+                      ),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(40.r),
+                      borderSide: BorderSide(
+                        color: Color.fromARGB(25, 0, 0, 0),
+                        width: 1.w,
+                      ),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(40.r),
                       borderSide: BorderSide(
                         color: Color.fromARGB(25, 0, 0, 0),
@@ -181,6 +219,20 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                     focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(40.r),
+                      borderSide: BorderSide(
+                        color: Color.fromARGB(25, 0, 0, 0),
+                        width: 1.w,
+                      ),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(40.r),
+                      borderSide: BorderSide(
+                        color: Color.fromARGB(25, 0, 0, 0),
+                        width: 1.w,
+                      ),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(40.r),
                       borderSide: BorderSide(
                         color: Color.fromARGB(25, 0, 0, 0),
@@ -242,6 +294,20 @@ class _RegisterPageState extends State<RegisterPage> {
                         width: 1.w,
                       ),
                     ),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(40.r),
+                      borderSide: BorderSide(
+                        color: Color.fromARGB(25, 0, 0, 0),
+                        width: 1.w,
+                      ),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(40.r),
+                      borderSide: BorderSide(
+                        color: Color.fromARGB(25, 0, 0, 0),
+                        width: 1.w,
+                      ),
+                    ),
                     suffixIcon: IconButton(
                       onPressed: () {
                         setState(() {
@@ -297,11 +363,60 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 SizedBox(height: 25.h),
                 ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      CupertinoPageRoute(builder: (context) => LoginPage()),
-                    );
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      if (passwordController.text.trim() !=
+                          confirmPassController.text.trim()) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text("Password do not match"),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                        return;
+                      }
+                      if (!isCheck) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              "Please accept the terms and conditions",
+                            ),
+                          ),
+                        );
+                        return;
+                      }
+                      isLoading.update((state) => true);
+                      final body = RegisterBodyCustomeModel(
+                        username: userNameController.text,
+                        email: emailController.text,
+                        password: passwordController.text,
+                        confirmPassword: confirmPassController.text,
+                      );
+                      try {
+                        final service = APIStateNetwork(createDio());
+                        final response = await service.customeRegister(body);
+                        if (response.success == true) {
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            CupertinoPageRoute(
+                              builder: (context) => LoginPage(),
+                            ),
+                            (route) => false,
+                          );
+                          showSuccessMessage(context, response.message);
+                          isLoading.update((state) => false);
+                        } else {
+                          isLoading.update((state) => false);
+                          ScaffoldMessenger.of(
+                            context,
+                          ).showSnackBar(SnackBar(content: Text("data")));
+                        }
+                      } catch (e) {
+                        isLoading.update((state) => false);
+                        showErrorMessage(e.toString());
+                        log(e.toString());
+                      }
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF001E6C),
@@ -310,15 +425,19 @@ class _RegisterPageState extends State<RegisterPage> {
                       borderRadius: BorderRadius.circular(40.r),
                     ),
                   ),
-                  child: Text(
-                    "Sign Up",
-                    style: GoogleFonts.roboto(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.white,
-                      letterSpacing: -1,
-                    ),
-                  ),
+                  child: isloadingController
+                      ? Center(
+                          child: CircularProgressIndicator(color: Colors.white),
+                        )
+                      : Text(
+                          "Sign Up",
+                          style: GoogleFonts.roboto(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white,
+                            letterSpacing: -1,
+                          ),
+                        ),
                 ),
                 SizedBox(height: 20.h),
               ],
