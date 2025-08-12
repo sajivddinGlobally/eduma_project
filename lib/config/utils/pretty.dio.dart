@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'package:dio/dio.dart';
-import 'package:eduma_app/config/core/showFlushbar.dart';
-import 'package:eduma_app/main.dart';
+import 'package:eduma_app/config/utils/navigatorKey.dart';
 import 'package:flutter/material.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 

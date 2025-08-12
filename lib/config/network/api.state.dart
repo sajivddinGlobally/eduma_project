@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:eduma_app/data/Model/loginBodyModel.dart';
 import 'package:eduma_app/data/Model/loginResModel.dart';
+import 'package:eduma_app/data/Model/registerBodyCustomeModel.dart';
+import 'package:eduma_app/data/Model/registerResCustomeModel.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'api.state.g.dart';
@@ -11,4 +13,9 @@ abstract class APIStateNetwork {
 
   @POST("/jwt-auth/v1/token")
   Future<LoginResModel> login(@Body() LoginBodyModel body);
+
+  @POST("/custom/v1/register")
+  Future<RegisterResCustomeModel> customeRegister(
+    @Body() RegisterBodyCustomeModel body,
+  );
 }

@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:another_flushbar/flushbar.dart';
-import 'package:eduma_app/main.dart';
+import 'package:eduma_app/config/utils/navigatorKey.dart';
 import 'package:flutter/material.dart';
 
 void showErrorMessage(String message) {

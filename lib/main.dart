@@ -1,9 +1,10 @@
 import 'package:eduma_app/Screen/onbording.page.dart';
+import 'package:eduma_app/config/utils/navigatorKey.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
 void main() {
   runApp(ProviderScope(child: const MyApp()));
 }
