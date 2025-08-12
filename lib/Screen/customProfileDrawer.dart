@@ -1,3 +1,4 @@
+import 'package:eduma_app/Screen/course.page.dart';
 import 'package:eduma_app/Screen/editProfile.page.dart';
 import 'package:eduma_app/Screen/orderList.page.dart';
 import 'package:eduma_app/Screen/paymentOverfiew.page.dart';
@@ -173,7 +174,15 @@ class _CustomProfileDrawerState extends State<CustomProfileDrawer> {
                   SizedBox(height: 20.h),
                   tileBuild("assets/invite.png", "Invite Friend"),
                   SizedBox(height: 20.h),
-                  tileBuild("assets/lib.png", "Library"),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute(builder: (context) => CoursePage()),
+                      );
+                    },
+                    child: tileBuild("assets/lib.png", "Library"),
+                  ),
                   SizedBox(height: 20.h),
                   InkWell(
                     onTap: () {
