@@ -1,6 +1,7 @@
 import 'package:eduma_app/Screen/editProfile.page.dart';
 import 'package:eduma_app/Screen/orderList.page.dart';
 import 'package:eduma_app/Screen/paymentOverfiew.page.dart';
+import 'package:eduma_app/Screen/wishlist.page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -184,6 +185,18 @@ class _CustomProfileDrawerState extends State<CustomProfileDrawer> {
                       );
                     },
                     child: tileBuild("assets/or.png", "Order List"),
+                  ),
+                  SizedBox(height: 20.h),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (context) => WishlistPage(),
+                        ),
+                      );
+                    },
+                    child: tileBuild("assets/wishlist.png", "Wishlist"),
                   ),
                   SizedBox(height: 20.h),
                   Row(

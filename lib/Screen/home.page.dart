@@ -595,7 +595,7 @@ class _HomePageState extends State<HomePage> {
               ),
             )
           : selectIndex == 1
-          ? WishlistPage()
+          ? CoursePage()
           : selectIndex == 2
           ? YoutubePage()
           : ShopPage(),

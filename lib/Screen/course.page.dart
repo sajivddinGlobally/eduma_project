@@ -52,30 +52,30 @@ class _CoursePageState extends State<CoursePage> {
           SizedBox(height: 30.h),
           Row(
             children: [
-              SizedBox(width: 20.w),
-              Container(
-                width: 37.w,
-                height: 37.h,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Color.fromARGB(25, 0, 0, 0),
-                ),
-                child: IconButton(
-                  style: IconButton.styleFrom(
-                    minimumSize: Size(0, 0),
-                    padding: EdgeInsets.zero,
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  icon: Icon(
-                    Icons.arrow_back,
-                    color: Color(0xFF001E6C),
-                    size: 20.sp,
-                  ),
-                ),
-              ),
+              //SizedBox(width: 20.w),
+              // Container(
+              //   width: 37.w,
+              //   height: 37.h,
+              //   decoration: BoxDecoration(
+              //     shape: BoxShape.circle,
+              //     color: Color.fromARGB(25, 0, 0, 0),
+              //   ),
+              //   child: IconButton(
+              //     style: IconButton.styleFrom(
+              //       minimumSize: Size(0, 0),
+              //       padding: EdgeInsets.zero,
+              //       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              //     ),
+              //     onPressed: () {
+              //       Navigator.pop(context);
+              //     },
+              //     icon: Icon(
+              //       Icons.arrow_back,
+              //       color: Color(0xFF001E6C),
+              //       size: 20.sp,
+              //     ),
+              //   ),
+              // ),
               SizedBox(width: 20.w),
               Text(
                 "Courses",
