@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:eduma_app/Screen/forgorPassword.page.dart';
 import 'package:eduma_app/Screen/home.page.dart';
 import 'package:eduma_app/Screen/register.page.dart';
@@ -174,6 +173,16 @@ class _LoginPageState extends ConsumerState<LoginPage> {
               SizedBox(height: 20.h),
               ElevatedButton(
                 onPressed: () async {
+                  if (emailController.text.isEmpty ||
+                      passwordController.text.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text("Please Enter User Name and Password"),
+                      ),
+                    );
+                    return;
+                  }
+
                   loadingProvider.state = true;
                   final body = LoginBodyModel(
                     username: emailController.text,
@@ -183,11 +192,12 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     final service = APIStateNetwork(createDio());
                     final response = await service.login(body);
                     if (response != null) {
+                      showSuccessMessage(context, "Login SuccessFull");
                       Navigator.push(
                         context,
                         CupertinoPageRoute(builder: (context) => HomePage()),
                       );
-                      showSuccessMessage(context, "Login SuccessFull");
+
                       loadingProvider.state = false;
                     } else {
                       showErrorMessage("Invalid credentials");
@@ -195,7 +205,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     }
                   } catch (e) {
                     loadingProvider.state = false;
-                   // showErrorMessage(e.toString());
+                    // showErrorMessage(e.toString());
                     log(e.toString());
                   }
                 },

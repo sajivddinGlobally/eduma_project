@@ -381,6 +381,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                             content: Text(
                               "Please accept the terms and conditions",
                             ),
+                            backgroundColor: Colors.red,
                           ),
                         );
                         return;
@@ -413,7 +414,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                         }
                       } catch (e) {
                         isLoading.update((state) => false);
-                        showErrorMessage(e.toString());
+                        //showErrorMessage(e.toString());
                         log(e.toString());
                       }
                     }

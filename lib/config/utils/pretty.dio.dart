@@ -24,33 +24,54 @@ createDio() {
         handler.next(response);
       },
       onError: (DioException e, handler) {
+        // final statusCode = e.response?.statusCode;
+        // if (statusCode == 403) {
+        //   final errorData = e.response?.data;
+        //   final errorMessage = errorData?["message"] ?? "Something went wrong";
+
+        //   // Clean HTML tags
+        //   final cleanedMessage = errorMessage
+        //       .toString()
+        //       .replaceAll(RegExp(r'<[^>]*>'), '')
+        //       .trim();
+
+        //   log("API Error: $cleanedMessage");
+        //   // Get global context
+        //   final globalContext = navigatorKey.currentContext;
+        //   if (globalContext != null) {
+        //     ScaffoldMessenger.of(globalContext).showSnackBar(
+        //       SnackBar(
+        //         content: Text(cleanedMessage),
+        //         backgroundColor: Colors.red,
+        //       ),
+        //     );
+        //   }
+        // } else {
+        //   log("API Error: ${e.message}");
+        // }
         final statusCode = e.response?.statusCode;
-        if (statusCode == 403) {
-          final errorData = e.response?.data;
-          final errorMessage = errorData?["message"] ?? "Something went wrong";
+        final errorData = e.response?.data;
+        final errorMessage = errorData?["message"] ?? "Something went wrong";
 
-          // Clean HTML tags
-          final cleanedMessage = errorMessage
-              .toString()
-              .replaceAll(RegExp(r'<[^>]*>'), '')
-              .trim();
+        // HTML tags clean karne ka code
+        final cleanedMessage = errorMessage
+            .toString()
+            .replaceAll(RegExp(r'<[^>]*>'), '')
+            .trim();
 
-          log("API Error: $cleanedMessage");
-          // Get global context
-          final globalContext = navigatorKey.currentContext;
-          if (globalContext != null) {
-            ScaffoldMessenger.of(globalContext).showSnackBar(
-              SnackBar(
-                content: Text(cleanedMessage),
-                backgroundColor: Colors.red,
-              ),
-            );
-          }
-        } else {
-          log("API Error: ${e.message}");
+        log("API Error ($statusCode): $cleanedMessage");
+
+        // Global context ke through SnackBar show karo
+        final globalContext = navigatorKey.currentContext;
+        if (globalContext != null) {
+          ScaffoldMessenger.of(globalContext).showSnackBar(
+            SnackBar(
+              content: Text(cleanedMessage),
+              backgroundColor: Colors.red,
+            ),
+          );
         }
-
-        handler.next(e); // Pass the error forward
+        handler.next(e);
       },
     ),
   );
