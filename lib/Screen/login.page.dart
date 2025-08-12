@@ -192,12 +192,12 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     final service = APIStateNetwork(createDio());
                     final response = await service.login(body);
                     if (response != null) {
-                      showSuccessMessage(context, "Login SuccessFull");
-                      Navigator.push(
+                      Navigator.pushAndRemoveUntil(
                         context,
                         CupertinoPageRoute(builder: (context) => HomePage()),
+                        (route) => false,
                       );
-
+                      showSuccessMessage(context, "Login SuccessFull");
                       loadingProvider.state = false;
                     } else {
                       showErrorMessage("Invalid credentials");

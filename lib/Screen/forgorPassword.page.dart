@@ -1,11 +1,9 @@
 import 'dart:developer';
-
 import 'package:eduma_app/Screen/otp.page.dart';
 import 'package:eduma_app/config/core/showFlushbar.dart';
 import 'package:eduma_app/config/network/api.state.dart';
 import 'package:eduma_app/config/utils/pretty.dio.dart';
 import 'package:eduma_app/data/Controller/loadingController.dart';
-import 'package:eduma_app/data/Controller/sendOTPController.dart';
 import 'package:eduma_app/data/Model/sendOTPBodyModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
