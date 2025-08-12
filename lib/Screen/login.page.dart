@@ -71,7 +71,42 @@ class _LoginPageState extends ConsumerState<LoginPage> {
               SizedBox(height: 12.h),
               TextField(
                 controller: emailController,
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.only(
+                    left: 19.w,
+                    right: 10.w,
+                    top: 15.h,
+                    bottom: 15.h,
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(40.r),
+                    borderSide: BorderSide(
+                      color: Color.fromARGB(25, 0, 0, 0),
+                      width: 1.w,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(40.r),
+                    borderSide: BorderSide(
+                      color: Color.fromARGB(25, 0, 0, 0),
+                      width: 1.w,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 20.h),
+              Text(
+                "Password",
+                style: GoogleFonts.roboto(
+                  fontSize: 13.sp,
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xff4D4D4D),
+                ),
+              ),
+              SizedBox(height: 12.h),
+              TextField(
                 obscureText: isShow ? true : false,
+                controller: passwordController,
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.only(
                     left: 19.w,
@@ -104,41 +139,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           ? Icons.visibility_off_outlined
                           : Icons.visibility_outlined,
                       color: Color(0xFF8D8383),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 20.h),
-              Text(
-                "Password",
-                style: GoogleFonts.roboto(
-                  fontSize: 13.sp,
-                  fontWeight: FontWeight.w400,
-                  color: Color(0xff4D4D4D),
-                ),
-              ),
-              SizedBox(height: 12.h),
-              TextField(
-                controller: passwordController,
-                decoration: InputDecoration(
-                  contentPadding: EdgeInsets.only(
-                    left: 19.w,
-                    right: 10.w,
-                    top: 15.h,
-                    bottom: 15.h,
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(40.r),
-                    borderSide: BorderSide(
-                      color: Color.fromARGB(25, 0, 0, 0),
-                      width: 1.w,
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(40.r),
-                    borderSide: BorderSide(
-                      color: Color.fromARGB(25, 0, 0, 0),
-                      width: 1.w,
                     ),
                   ),
                 ),
@@ -190,12 +190,12 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       showSuccessMessage(context, "Login SuccessFull");
                       loadingProvider.state = false;
                     } else {
-                      showErrorMessage(context, "Invalid credentials");
+                      showErrorMessage("Invalid credentials");
                       log("Login failed");
                     }
                   } catch (e) {
                     loadingProvider.state = false;
-                    showErrorMessage(context, e.toString());
+                   // showErrorMessage(e.toString());
                     log(e.toString());
                   }
                 },
