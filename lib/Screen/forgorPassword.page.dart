@@ -1,19 +1,31 @@
+import 'dart:developer';
+
 import 'package:eduma_app/Screen/otp.page.dart';
+import 'package:eduma_app/config/core/showFlushbar.dart';
+import 'package:eduma_app/config/network/api.state.dart';
+import 'package:eduma_app/config/utils/pretty.dio.dart';
+import 'package:eduma_app/data/Controller/loadingController.dart';
+import 'package:eduma_app/data/Controller/sendOTPController.dart';
+import 'package:eduma_app/data/Model/sendOTPBodyModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class ForgorPasswordPage extends StatefulWidget {
+class ForgorPasswordPage extends ConsumerStatefulWidget {
   const ForgorPasswordPage({super.key});
 
   @override
-  State<ForgorPasswordPage> createState() => _ForgorPasswordPageState();
+  ConsumerState<ForgorPasswordPage> createState() => _ForgorPasswordPageState();
 }
 
-class _ForgorPasswordPageState extends State<ForgorPasswordPage> {
+class _ForgorPasswordPageState extends ConsumerState<ForgorPasswordPage> {
+  final emailController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final loadingProvider = ref.watch(loadingController);
+    final isLoading = ref.read(loadingController.notifier);
     return Scaffold(
       backgroundColor: Color(0xFFFFFFFF),
       body: SingleChildScrollView(
@@ -55,6 +67,7 @@ class _ForgorPasswordPageState extends State<ForgorPasswordPage> {
               ),
               SizedBox(height: 12.h),
               TextField(
+                controller: emailController,
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.only(
                     left: 19.w,
@@ -80,11 +93,31 @@ class _ForgorPasswordPageState extends State<ForgorPasswordPage> {
               ),
               SizedBox(height: 20.h),
               ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    CupertinoPageRoute(builder: (context) => OtpPage()),
-                  );
+                onPressed: () async {
+                  if (emailController.text.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text("Please enter email")),
+                    );
+                    return;
+                  }
+                  isLoading.update((state) => true);
+                  final body = SendOtpBodyModel(email: emailController.text);
+                  try {
+                    final service = APIStateNetwork(createDio());
+                    final response = await service.sendOTP(body);
+                    if (response.success == true) {
+                      Navigator.pushReplacement(
+                        context,
+                        CupertinoPageRoute(builder: (context) => OtpPage()),
+                      );
+                    }
+                    showSuccessMessage(context, response.message);
+                    isLoading.update((state) => false);
+                  } catch (e) {
+                    isLoading.update((state) => false);
+                    log(e.toString());
+                    //showSuccessMessage(context, "Error : ${e.toString()}");
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF001E6C),
@@ -93,15 +126,19 @@ class _ForgorPasswordPageState extends State<ForgorPasswordPage> {
                     borderRadius: BorderRadius.circular(40.r),
                   ),
                 ),
-                child: Text(
-                  "Reset Password",
-                  style: GoogleFonts.roboto(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.white,
-                    letterSpacing: -1,
-                  ),
-                ),
+                child: loadingProvider
+                    ? Center(
+                        child: CircularProgressIndicator(color: Colors.white),
+                      )
+                    : Text(
+                        "Reset Password",
+                        style: GoogleFonts.roboto(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                          letterSpacing: -1,
+                        ),
+                      ),
               ),
               SizedBox(height: 20.h),
             ],
