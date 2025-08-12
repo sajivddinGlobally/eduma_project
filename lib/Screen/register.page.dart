@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:eduma_app/Screen/login.page.dart';
 import 'package:eduma_app/config/core/showFlushbar.dart';
 import 'package:eduma_app/config/network/api.state.dart';
+import 'package:eduma_app/config/utils/navigatorKey.dart';
 import 'package:eduma_app/config/utils/pretty.dio.dart';
 import 'package:eduma_app/data/Controller/loadingController.dart';
 import 'package:eduma_app/data/Model/registerBodyCustomeModel.dart';
@@ -20,7 +21,6 @@ class RegisterPage extends ConsumerStatefulWidget {
 }
 
 class _RegisterPageState extends ConsumerState<RegisterPage> {
-  final _formKey = GlobalKey<FormState>();
   bool isShow = true;
   bool isObsecure = true;
   bool isCheck = false;
@@ -41,7 +41,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
     final isloadingController = ref.watch(loadingController);
     final isLoading = ref.read(loadingController.notifier);
     return Form(
-      key: _formKey,
+      key: formKey,
       child: Scaffold(
         backgroundColor: Color(0xFFFFFFFF),
         body: SingleChildScrollView(
@@ -364,7 +364,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                 SizedBox(height: 25.h),
                 ElevatedButton(
                   onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
+                    if (formKey.currentState!.validate()) {
                       if (passwordController.text.trim() !=
                           confirmPassController.text.trim()) {
                         ScaffoldMessenger.of(context).showSnackBar(
