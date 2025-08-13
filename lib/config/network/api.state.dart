@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:eduma_app/data/Model/allCategoryModel.dart';
+import 'package:eduma_app/data/Model/allCoursesModel.dart';
 import 'package:eduma_app/data/Model/loginBodyModel.dart';
 import 'package:eduma_app/data/Model/loginResModel.dart';
 import 'package:eduma_app/data/Model/popularCourseDetailsModel.dart';
@@ -40,11 +41,9 @@ abstract class APIStateNetwork {
   @GET("/custom/v1/popular-courses")
   Future<List<PopularCourseModel>> popularCourse();
 
-  @GET("/custom/v1/popular-courses{id}")
-  Future<List<PopularCourseDetailsModel>> popularCourseDetails(
-    @Path() String id,
-  );
-
-  @GET("/custom/v1/categories")
-  Future<AllCategoryModel> allCategory();
+  @GET("/custom/v1/popular-courses/{id}")
+  Future<PopularCourseDetailsModel> popularCourseDetails(@Path() String id);
+  // courses
+  @GET("/custom/v1/courses")
+  Future<AllCoursesModel> allCourses();
 }

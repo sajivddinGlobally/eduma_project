@@ -194,32 +194,25 @@ class _APIStateNetwork implements APIStateNetwork {
   }
 
   @override
-  Future<List<PopularCourseDetailsModel>> popularCourseDetails(
-    String id,
-  ) async {
+  Future<PopularCourseDetailsModel> popularCourseDetails(String id) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<List<PopularCourseDetailsModel>>(
+    final _options = _setStreamType<PopularCourseDetailsModel>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/custom/v1/popular-courses${id}',
+            '/custom/v1/popular-courses/${id}',
             queryParameters: queryParameters,
             data: _data,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<List<dynamic>>(_options);
-    late List<PopularCourseDetailsModel> _value;
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late PopularCourseDetailsModel _value;
     try {
-      _value = _result.data!
-          .map(
-            (dynamic i) =>
-                PopularCourseDetailsModel.fromJson(i as Map<String, dynamic>),
-          )
-          .toList();
+      _value = PopularCourseDetailsModel.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -228,25 +221,25 @@ class _APIStateNetwork implements APIStateNetwork {
   }
 
   @override
-  Future<AllCategoryModel> allCategory() async {
+  Future<AllCoursesModel> allCourses() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<AllCategoryModel>(
+    final _options = _setStreamType<AllCoursesModel>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/custom/v1/categories',
+            '/custom/v1/courses',
             queryParameters: queryParameters,
             data: _data,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late AllCategoryModel _value;
+    late AllCoursesModel _value;
     try {
-      _value = AllCategoryModel.fromJson(_result.data!);
+      _value = AllCoursesModel.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

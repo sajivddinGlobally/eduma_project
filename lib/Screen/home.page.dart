@@ -6,10 +6,11 @@ import 'package:eduma_app/Screen/courseDetails.page.dart';
 import 'package:eduma_app/Screen/customProfileDrawer.dart';
 import 'package:eduma_app/Screen/instructor.page.dart';
 import 'package:eduma_app/Screen/login.page.dart';
+import 'package:eduma_app/Screen/payCourseDetails.page.dart';
 import 'package:eduma_app/Screen/register.page.dart';
 import 'package:eduma_app/Screen/shop.page.dart';
 import 'package:eduma_app/Screen/youtube.page.dart';
-import 'package:eduma_app/data/Controller/allCategoryController.dart';
+import 'package:eduma_app/data/Controller/allCoursesController.dart';
 import 'package:eduma_app/data/Controller/popularCourseController.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +34,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   Widget build(BuildContext context) {
     var box = Hive.box("userBox");
     final popularCourseProvider = ref.watch(popularCourseController);
-    final allCategoryProvider = ref.watch(allCategoryController);
+    final allCoursesProvider = ref.watch(allCoursesController);
     return Scaffold(
       key: _scaffoldKey,
       drawer: CustomProfileDrawer(),
@@ -300,35 +301,54 @@ class _HomePageState extends ConsumerState<HomePage> {
                     ],
                   ),
                   SizedBox(height: 20.h),
-                  allCategoryProvider.when(
-                    data: (allCategory) {
+                  allCoursesProvider.when(
+                    data: (allCourses) {
                       return Container(
                         height: 150.h,
                         //color: Colors.amber,
                         child: ListView.builder(
-                          itemCount: allCategory.data.length,
+                          itemCount: allCourses.data.length,
                           scrollDirection: Axis.horizontal,
                           padding: EdgeInsets.zero,
                           itemBuilder: (context, index) {
                             return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 SizedBox(width: 20.w),
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(10.r),
-                                  child: Image.network(
-                                    //"assets/course.png",
-                                    allCategory.data[index].thumbnail,
-                                    width: 200.w,
-                                    height: 130.h,
-                                    fit: BoxFit.fill,
-                                    errorBuilder: (context, error, stackTrace) {
-                                      return Image.network(
-                                        "https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg",
+                                Container(
+                                  margin: EdgeInsets.only(left: 20.w),
+                                  child: InkWell(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        CupertinoPageRoute(
+                                          builder: (context) =>
+                                              CourseDetailsPage(
+                                                id: allCourses.data[index].id
+                                                    .toString(),
+                                              ),
+                                        ),
+                                      );
+                                    },
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10.r),
+                                      child: Image.network(
+                                        // "assets/course.png",
+                                        allCourses.data[index].thumbnail.medium
+                                            .toString(),
                                         width: 200.w,
                                         height: 130.h,
                                         fit: BoxFit.fill,
-                                      );
-                                    },
+                                        errorBuilder: (context, error, stackTrace) {
+                                          return Image.network(
+                                            "https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg",
+                                            width: 200.w,
+                                            height: 130.h,
+                                            fit: BoxFit.fill,
+                                          );
+                                        },
+                                      ),
+                                    ),
                                   ),
                                 ),
                                 // SizedBox(width: 20.w),
@@ -406,7 +426,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                                             context,
                                             CupertinoPageRoute(
                                               builder: (context) =>
-                                                  CourseDetailsPage(
+                                                  PayCourseDetailsPage(
                                                     id: course[index].id
                                                         .toString(),
                                                   ),

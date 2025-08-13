@@ -1,17 +1,19 @@
 import 'package:eduma_app/Screen/courseDetails.page.dart';
+import 'package:eduma_app/data/Controller/allCoursesController.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class CoursePage extends StatefulWidget {
+class CoursePage extends ConsumerStatefulWidget {
   const CoursePage({super.key});
 
   @override
-  State<CoursePage> createState() => _CoursePageState();
+  ConsumerState<CoursePage> createState() => _CoursePageState();
 }
 
-class _CoursePageState extends State<CoursePage> {
+class _CoursePageState extends ConsumerState<CoursePage> {
   List<Map<String, dynamic>> courseList = [
     {
       "image": "assets/reading.png",
@@ -44,6 +46,7 @@ class _CoursePageState extends State<CoursePage> {
   ];
   @override
   Widget build(BuildContext context) {
+    final allCourseProvider = ref.watch(allCoursesController);
     return Scaffold(
       backgroundColor: Color(0xFFFFFFFF),
       body: Column(
@@ -88,7 +91,6 @@ class _CoursePageState extends State<CoursePage> {
               ),
             ],
           ),
-
           SizedBox(height: 20.h),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
@@ -103,169 +105,199 @@ class _CoursePageState extends State<CoursePage> {
               ],
             ),
           ),
-          Expanded(
-            child: Container(
-              height: MediaQuery.of(context).size.height,
-              child: SingleChildScrollView(
-                child: Stack(
-                  children: [
-                    Positioned(
-                      left: -120,
-                      top: 115.h,
-                      child: Image.asset(
-                        "assets/vect.png",
-                        width: 363.w,
-                        height: 270.h,
-                      ),
-                    ),
-                    Positioned(
-                      left: 0,
-                      right: 0,
-                      bottom: 100.h,
-                      child: Image.asset(
-                        "assets/vec.png",
-                        width: 466.w,
-                        height: 440.h,
-                        fit: BoxFit.fill,
-                      ),
-                    ),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      padding: EdgeInsets.zero,
-                      itemCount: courseList.length,
-                      itemBuilder: (context, index) {
-                        return Container(
-                          margin: EdgeInsets.only(
-                            left: 20.w,
-                            right: 20.w,
-                            top: 20.h,
+          allCourseProvider.when(
+            data: (allCourse) {
+              return Expanded(
+                child: Container(
+                  height: MediaQuery.of(context).size.height,
+                  child: SingleChildScrollView(
+                    child: Stack(
+                      children: [
+                        Positioned(
+                          left: -120,
+                          top: 115.h,
+                          child: Image.asset(
+                            "assets/vect.png",
+                            width: 363.w,
+                            height: 270.h,
                           ),
-                          width: 400.w,
-                          //  height: 361.h,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Stack(
+                        ),
+                        Positioned(
+                          left: 0,
+                          right: 0,
+                          bottom: 100.h,
+                          child: Image.asset(
+                            "assets/vec.png",
+                            width: 466.w,
+                            height: 440.h,
+                            fit: BoxFit.fill,
+                          ),
+                        ),
+                        ListView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          padding: EdgeInsets.zero,
+                          itemCount: allCourse.data.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              margin: EdgeInsets.only(
+                                left: 20.w,
+                                right: 20.w,
+                                top: 20.h,
+                              ),
+                              width: 400.w,
+                              //  height: 361.h,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  InkWell(
-                                    onTap: () {
-                                      // Navigator.push(
-                                      //   context,
-                                      //   CupertinoPageRoute(
-                                      //     builder: (context) =>
-                                      //         CourseDetailsPage(id: courseList,),
-                                      //   ),
-                                      // );
-                                    },
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(20.r),
-                                      child: Image.asset(
-                                        courseList[index]['image'].toString(),
-                                        width: 400.w,
-                                        height: 263.h,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ),
-                                  Align(
-                                    alignment: Alignment.topRight,
-                                    child: IconButton(
-                                      onPressed: () {},
-                                      icon: Icon(
-                                        Icons.favorite_border,
-                                        color: Colors.white,
-                                        size: 25.sp,
-                                      ),
-                                    ),
-                                  ),
-                                  Positioned(
-                                    left: 25.w,
-                                    bottom: 25.h,
-                                    child: Container(
-                                      padding: EdgeInsets.only(
-                                        left: 16.w,
-                                        right: 16.w,
-                                        top: 6.h,
-                                        bottom: 6.h,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(
-                                          7.r,
-                                        ),
-                                        color: Color(0xFF001E6C),
-                                      ),
-                                      child: Text(
-                                        courseList[index]['paid'].toString(),
-                                        style: GoogleFonts.roboto(
-                                          fontSize: 18.sp,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.white,
-                                          letterSpacing: -0.4,
+                                  Stack(
+                                    children: [
+                                      InkWell(
+                                        onTap: () {
+                                          // Navigator.push(
+                                          //   context,
+                                          //   CupertinoPageRoute(
+                                          //     builder: (context) =>
+                                          //         CourseDetailsPage(id: courseList,),
+                                          //   ),
+                                          // );
+                                        },
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(
+                                            20.r,
+                                          ),
+                                          child: Image.network(
+                                            // courseList[index]['image']
+                                            //     .toString(),
+                                            allCourse
+                                                .data[index]
+                                                .thumbnail
+                                                .medium
+                                                .toString(),
+                                            width: 400.w,
+                                            height: 263.h,
+                                            fit: BoxFit.cover,
+                                          ),
                                         ),
                                       ),
-                                    ),
+                                      Align(
+                                        alignment: Alignment.topRight,
+                                        child: IconButton(
+                                          onPressed: () {},
+                                          icon: Icon(
+                                            Icons.favorite_border,
+                                            color: Colors.white,
+                                            size: 25.sp,
+                                          ),
+                                        ),
+                                      ),
+                                      Positioned(
+                                        left: 25.w,
+                                        bottom: 25.h,
+                                        child: Container(
+                                          padding: EdgeInsets.only(
+                                            left: 16.w,
+                                            right: 16.w,
+                                            top: 6.h,
+                                            bottom: 6.h,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(
+                                              7.r,
+                                            ),
+                                            color: Color(0xFF001E6C),
+                                          ),
+                                          child: Text(
+                                            // courseList[index]['paid']
+                                            //     .toString(),
+                                            allCourse
+                                                .data[index]
+                                                .pricing
+                                                .priceLabel
+                                                .name,
+                                            style: GoogleFonts.roboto(
+                                              fontSize: 18.sp,
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.white,
+                                              letterSpacing: -0.4,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
-                              SizedBox(height: 15.h),
-                              Text(
-                                courseList[index]['course'].toString(),
-                                style: GoogleFonts.roboto(
-                                  fontSize: 18.sp,
-                                  fontWeight: FontWeight.w500,
-                                  color: Color.fromARGB(140, 0, 0, 0),
-                                  letterSpacing: -0.4,
-                                ),
-                              ),
-                              SizedBox(height: 8.h),
-                              Text(
-                                courseList[index]['courseName'].toString(),
-                                style: GoogleFonts.roboto(
-                                  fontSize: 24.sp,
-                                  fontWeight: FontWeight.w500,
-                                  color: Color(0xFF001E6C),
-                                  letterSpacing: -0.4,
-                                  height: 1,
-                                ),
-                              ),
-                              SizedBox(height: 8.h),
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.access_time,
-                                    color: Color(0xFFFE4A55),
-                                  ),
-                                  SizedBox(width: 8.w),
+                                  SizedBox(height: 15.h),
                                   Text(
-                                    "Durations : ",
+                                    courseList[index]['course'].toString(),
                                     style: GoogleFonts.roboto(
                                       fontSize: 18.sp,
                                       fontWeight: FontWeight.w500,
-                                      color: Color(0xFF000000),
+                                      color: Color.fromARGB(140, 0, 0, 0),
                                       letterSpacing: -0.4,
                                     ),
                                   ),
+                                  SizedBox(height: 8.h),
                                   Text(
-                                    courseList[index]['time'].toString(),
+                                    courseList[index]['courseName'].toString(),
                                     style: GoogleFonts.roboto(
-                                      fontSize: 16.sp,
+                                      fontSize: 24.sp,
                                       fontWeight: FontWeight.w500,
-                                      color: Color(0xFF747272),
+                                      color: Color(0xFF001E6C),
                                       letterSpacing: -0.4,
+                                      height: 1,
                                     ),
+                                  ),
+                                  SizedBox(height: 8.h),
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.access_time,
+                                        color: Color(0xFFFE4A55),
+                                      ),
+                                      SizedBox(width: 8.w),
+                                      Text(
+                                        "Durations : ",
+                                        style: GoogleFonts.roboto(
+                                          fontSize: 18.sp,
+                                          fontWeight: FontWeight.w500,
+                                          color: Color(0xFF000000),
+                                          letterSpacing: -0.4,
+                                        ),
+                                      ),
+                                      Text(
+                                        //courseList[index]['time'].toString(),
+                                        allCourse
+                                                .data[index]
+                                                .courseInfo
+                                                .duration
+                                                .hours +
+                                            allCourse
+                                                .data[index]
+                                                .courseInfo
+                                                .duration
+                                                .minutes,
+                                        style: GoogleFonts.roboto(
+                                          fontSize: 16.sp,
+                                          fontWeight: FontWeight.w500,
+                                          color: Color(0xFF747272),
+                                          letterSpacing: -0.4,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
-                            ],
-                          ),
-                        );
-                      },
+                            );
+                          },
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
+              );
+            },
+            error: (error, stackTrace) => Center(child: Text(error.toString())),
+            loading: () => Center(child: CircularProgressIndicator()),
           ),
           SizedBox(height: 30.h),
         ],

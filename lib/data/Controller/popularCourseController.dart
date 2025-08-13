@@ -12,7 +12,7 @@ final popularCourseController = FutureProvider<List<PopularCourseModel>>((
 });
 
 final popularCourseDetailsController =
-    FutureProvider.family<List<PopularCourseDetailsModel>, String>((
+    FutureProvider.family<PopularCourseDetailsModel,String>((
       ref,
       id,
     ) async {
