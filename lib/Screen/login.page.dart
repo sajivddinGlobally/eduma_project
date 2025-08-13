@@ -5,7 +5,7 @@ import 'package:eduma_app/Screen/register.page.dart';
 import 'package:eduma_app/config/core/showFlushbar.dart';
 import 'package:eduma_app/config/network/api.state.dart';
 import 'package:eduma_app/config/utils/pretty.dio.dart';
-import 'package:eduma_app/data/Controller/loadingController.dart';
+
 import 'package:eduma_app/data/Model/loginBodyModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -24,10 +24,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   bool isShow = true;
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
-    final isLoading = ref.watch(loadingController);
-    final loadingProvider = ref.read(loadingController.notifier);
     return Scaffold(
       backgroundColor: Color(0xFFFFFFFF),
       body: SingleChildScrollView(
@@ -183,7 +182,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     return;
                   }
 
-                  loadingProvider.state = true;
+                  setState(() {
+                    isLoading = true;
+                  });
                   final body = LoginBodyModel(
                     username: emailController.text,
                     password: passwordController.text,
@@ -198,13 +199,17 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         (route) => false,
                       );
                       showSuccessMessage(context, "Login SuccessFull");
-                      loadingProvider.state = false;
+                      setState(() {
+                        isLoading = false;
+                      });
                     } else {
                       showErrorMessage("Invalid credentials");
                       log("Login failed");
                     }
                   } catch (e) {
-                    loadingProvider.state = false;
+                    setState(() {
+                      isLoading = false;
+                    });
                     // showErrorMessage(e.toString());
                     log(e.toString());
                   }

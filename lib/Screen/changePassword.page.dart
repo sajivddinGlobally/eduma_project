@@ -4,7 +4,6 @@ import 'package:eduma_app/Screen/login.page.dart';
 import 'package:eduma_app/config/core/showFlushbar.dart';
 import 'package:eduma_app/config/network/api.state.dart';
 import 'package:eduma_app/config/utils/pretty.dio.dart';
-import 'package:eduma_app/data/Controller/loadingController.dart';
 import 'package:eduma_app/data/Model/resetPassBodyModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -23,10 +22,9 @@ class ChangePasswordPage extends ConsumerStatefulWidget {
 class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
   final newpasswordController = TextEditingController();
   final confirmedPassController = TextEditingController();
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
-    final loadingProvider = ref.watch(loadingController);
-    final isLoading = ref.read(loadingController.notifier);
     return Scaffold(
       backgroundColor: Color(0xFFFFFFFF),
       body: SingleChildScrollView(
@@ -150,8 +148,10 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
                     );
                     return;
                   }
+                  setState(() {
+                    isLoading = true;
+                  });
 
-                  isLoading.update((state) => true);
                   final body = ResetPassBodyModel(
                     resetToken: widget.resetToken,
                     newPassword: newpasswordController.text,
@@ -168,9 +168,13 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
                       );
                     }
                     showSuccessMessage(context, response.message);
-                    isLoading.update((state) => false);
+                    setState(() {
+                      isLoading = false;
+                    });
                   } catch (e) {
-                    isLoading.update((state) => false);
+                    setState(() {
+                      isLoading = false;
+                    });
                     log(e.toString());
                   }
                 },
@@ -181,7 +185,7 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
                     borderRadius: BorderRadius.circular(40.r),
                   ),
                 ),
-                child: loadingProvider
+                child: isLoading
                     ? Center(
                         child: CircularProgressIndicator(color: Colors.white),
                       )

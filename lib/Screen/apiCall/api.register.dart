@@ -1,11 +1,9 @@
 import 'dart:developer';
-
 import 'package:eduma_app/Screen/login.page.dart';
 import 'package:eduma_app/config/core/showFlushbar.dart';
 import 'package:eduma_app/config/network/api.state.dart';
 import 'package:eduma_app/config/utils/navigatorKey.dart';
 import 'package:eduma_app/config/utils/pretty.dio.dart';
-import 'package:eduma_app/data/Controller/loadingController.dart';
 import 'package:eduma_app/data/Model/registerBodyCustomeModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +38,6 @@ mixin RegisterApi<T extends ConsumerStatefulWidget> on ConsumerState<T> {
         );
         return;
       }
-      final isLoading = ref.watch(loadingController.notifier);
 
       final body = RegisterBodyCustomeModel(
         username: userNameController.text,
@@ -48,7 +45,7 @@ mixin RegisterApi<T extends ConsumerStatefulWidget> on ConsumerState<T> {
         password: passwordController.text,
         confirmPassword: confirmPassController.text,
       );
-      isLoading.update((state) => true);
+
       setState(() {
         loading = true;
       });
@@ -62,12 +59,11 @@ mixin RegisterApi<T extends ConsumerStatefulWidget> on ConsumerState<T> {
             (route) => false,
           );
           showSuccessMessage(context, response.message);
-          isLoading.update((state) => false);
+
           setState(() {
             loading = false;
           });
         } else {
-          isLoading.update((state) => true);
           setState(() {
             loading = false;
           });
@@ -76,7 +72,9 @@ mixin RegisterApi<T extends ConsumerStatefulWidget> on ConsumerState<T> {
           ).showSnackBar(SnackBar(content: Text("data")));
         }
       } catch (e) {
-        isLoading.update((state) => false);
+        setState(() {
+          loading = false;
+        });
         //showErrorMessage(e.toString());
         log(e.toString());
       }

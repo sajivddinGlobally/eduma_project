@@ -5,7 +5,6 @@ import 'package:eduma_app/config/core/showFlushbar.dart';
 import 'package:eduma_app/config/network/api.state.dart';
 import 'package:eduma_app/config/utils/navigatorKey.dart';
 import 'package:eduma_app/config/utils/pretty.dio.dart';
-import 'package:eduma_app/data/Controller/loadingController.dart';
 import 'package:eduma_app/data/Model/registerBodyCustomeModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +23,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
   bool isShow = true;
   bool isObsecure = true;
   bool isCheck = false;
+  bool isLoading = false;
 
   final userNameController = TextEditingController();
   final emailController = TextEditingController();
@@ -38,8 +38,6 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    final isloadingController = ref.watch(loadingController);
-    final isLoading = ref.read(loadingController.notifier);
     return Form(
       key: formKey,
       child: Scaffold(
@@ -386,7 +384,9 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                         );
                         return;
                       }
-                      isLoading.update((state) => true);
+                      setState(() {
+                        isLoading = true;
+                      });
                       final body = RegisterBodyCustomeModel(
                         username: userNameController.text,
                         email: emailController.text,
@@ -405,15 +405,21 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                             (route) => false,
                           );
                           showSuccessMessage(context, response.message);
-                          isLoading.update((state) => false);
+                          setState(() {
+                            isLoading = false;
+                          });
                         } else {
-                          isLoading.update((state) => false);
+                          setState(() {
+                            isLoading = false;
+                          });
                           ScaffoldMessenger.of(
                             context,
                           ).showSnackBar(SnackBar(content: Text("data")));
                         }
                       } catch (e) {
-                        isLoading.update((state) => false);
+                        setState(() {
+                          isLoading = false;
+                        });
                         //showErrorMessage(e.toString());
                         log(e.toString());
                       }
@@ -426,7 +432,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                       borderRadius: BorderRadius.circular(40.r),
                     ),
                   ),
-                  child: isloadingController
+                  child: isLoading
                       ? Center(
                           child: CircularProgressIndicator(color: Colors.white),
                         )

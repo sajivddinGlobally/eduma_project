@@ -3,7 +3,7 @@ import 'package:eduma_app/Screen/otp.page.dart';
 import 'package:eduma_app/config/core/showFlushbar.dart';
 import 'package:eduma_app/config/network/api.state.dart';
 import 'package:eduma_app/config/utils/pretty.dio.dart';
-import 'package:eduma_app/data/Controller/loadingController.dart';
+
 import 'package:eduma_app/data/Model/sendOTPBodyModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,10 +20,9 @@ class ForgorPasswordPage extends ConsumerStatefulWidget {
 
 class _ForgorPasswordPageState extends ConsumerState<ForgorPasswordPage> {
   final emailController = TextEditingController();
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
-    final loadingProvider = ref.watch(loadingController);
-    final isLoading = ref.read(loadingController.notifier);
     return Scaffold(
       backgroundColor: Color(0xFFFFFFFF),
       body: SingleChildScrollView(
@@ -98,7 +97,9 @@ class _ForgorPasswordPageState extends ConsumerState<ForgorPasswordPage> {
                     );
                     return;
                   }
-                  isLoading.update((state) => true);
+                  setState(() {
+                    isLoading = true;
+                  });
                   final body = SendOtpBodyModel(email: emailController.text);
                   try {
                     final service = APIStateNetwork(createDio());
@@ -110,9 +111,13 @@ class _ForgorPasswordPageState extends ConsumerState<ForgorPasswordPage> {
                       );
                     }
                     showSuccessMessage(context, response.message);
-                    isLoading.update((state) => false);
+                    setState(() {
+                      isLoading = false;
+                    });
                   } catch (e) {
-                    isLoading.update((state) => false);
+                    setState(() {
+                      isLoading = false;
+                    });
                     log(e.toString());
                     //showSuccessMessage(context, "Error : ${e.toString()}");
                   }
@@ -124,7 +129,7 @@ class _ForgorPasswordPageState extends ConsumerState<ForgorPasswordPage> {
                     borderRadius: BorderRadius.circular(40.r),
                   ),
                 ),
-                child: loadingProvider
+                child: isLoading
                     ? Center(
                         child: CircularProgressIndicator(color: Colors.white),
                       )

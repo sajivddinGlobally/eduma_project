@@ -1,11 +1,9 @@
 import 'dart:developer';
-
 import 'package:eduma_app/Screen/changePassword.page.dart';
 import 'package:eduma_app/Screen/login.page.dart';
 import 'package:eduma_app/config/core/showFlushbar.dart';
 import 'package:eduma_app/config/network/api.state.dart';
 import 'package:eduma_app/config/utils/pretty.dio.dart';
-import 'package:eduma_app/data/Controller/loadingController.dart';
 import 'package:eduma_app/data/Model/verifyOTPBodyModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -23,10 +21,9 @@ class OtpPage extends ConsumerStatefulWidget {
 
 class _OtpPageState extends ConsumerState<OtpPage> {
   String otpValue = "";
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
-    final loadingProvider = ref.watch(loadingController);
-    final isLoading = ref.read(loadingController.notifier);
     return Scaffold(
       backgroundColor: Color(0xFFFFFFFF),
       body: SingleChildScrollView(
@@ -82,7 +79,9 @@ class _OtpPageState extends ConsumerState<OtpPage> {
               SizedBox(height: 20.h),
               ElevatedButton(
                 onPressed: () async {
-                  isLoading.update((state) => true);
+                  setState(() {
+                    isLoading = true;
+                  });
                   final body = VerifyOtpBodyModel(otp: otpValue);
                   try {
                     final serivce = APIStateNetwork(createDio());
@@ -98,9 +97,13 @@ class _OtpPageState extends ConsumerState<OtpPage> {
                       );
                       showSuccessMessage(context, response.message);
                     }
-                    isLoading.update((state) => false);
+                    setState(() {
+                      isLoading = false;
+                    });
                   } catch (e) {
-                    isLoading.update((state) => false);
+                    setState(() {
+                      isLoading = false;
+                    });
                     log(e.toString());
                   }
                 },
@@ -111,7 +114,7 @@ class _OtpPageState extends ConsumerState<OtpPage> {
                     borderRadius: BorderRadius.circular(40.r),
                   ),
                 ),
-                child: loadingProvider
+                child: isLoading
                     ? Center(
                         child: CircularProgressIndicator(color: Colors.white),
                       )
