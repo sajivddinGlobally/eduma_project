@@ -334,7 +334,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                                       borderRadius: BorderRadius.circular(10.r),
                                       child: Image.network(
                                         // "assets/course.png",
-                                        allCourses.data[index].thumbnail.medium
+                                        allCourses.data[index].thumbnail.large
                                             .toString(),
                                         width: 200.w,
                                         height: 130.h,
