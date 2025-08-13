@@ -20,15 +20,15 @@ class _CourseDetailsPageState extends ConsumerState<CourseDetailsPage> {
   @override
   Widget build(BuildContext context) {
     final courseDetailsProvider = ref.watch(
-      popularCourseDetailsController(widget.id),
+      popularCourseDetailsController("6476"),
     );
     return Scaffold(
       backgroundColor: Color(0xFFFFFFFF),
       body: courseDetailsProvider.when(
         data: (courseDetails) {
-          if (courseDetails.isEmpty) {
-            return Center(child: Text("No Course Available"));
-          }
+          // if (courseDetails.isEmpty) {
+          //   return Center(child: Text("No Course Available"));
+          // }
           return Stack(
             children: [
               Positioned(
@@ -112,9 +112,9 @@ class _CourseDetailsPageState extends ConsumerState<CourseDetailsPage> {
                                 children: [
                                   ClipRRect(
                                     borderRadius: BorderRadius.circular(10.r),
-                                    child: Image.network(
-                                      // "assets/reading.png",
-                                      courseDetails[index].thumbnail,
+                                    child: Image.asset(
+                                       "assets/reading.png",
+                                      //courseDetails[index].data.images.full,
                                       width: 400.w,
                                       height: 254.h,
                                       fit: BoxFit.cover,
@@ -198,7 +198,8 @@ class _CourseDetailsPageState extends ConsumerState<CourseDetailsPage> {
                                   ),
                                   SizedBox(height: 10.h),
                                   Text(
-                                    "With over 5 years of experience, I've guided 300+ students to land jobs in top companies like Google, TCS, and Deloitte. My sessions focus on mock interviews, resume building, and effective communication",
+                                    // "With over 5 years of experience, I've guided 300+ students to land jobs in top companies like Google, TCS, and Deloitte. My sessions focus on mock interviews, resume building, and effective communication",
+                                    courseDetails[index].data.excerpt,
                                     style: GoogleFonts.roboto(
                                       fontSize: 16.sp,
                                       fontWeight: FontWeight.w400,
@@ -317,7 +318,7 @@ class _CourseDetailsPageState extends ConsumerState<CourseDetailsPage> {
             ],
           );
         },
-        error: (error, stackTrace) => Center(child: Text(e.toString())),
+        error: (error, stackTrace) => Center(child: Text(error.toString())),
         loading: () => Center(child: CircularProgressIndicator()),
       ),
       bottomSheet: Padding(

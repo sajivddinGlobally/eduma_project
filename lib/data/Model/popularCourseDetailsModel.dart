@@ -4,57 +4,83 @@
 
 import 'dart:convert';
 
-List<PopularCourseDetailsModel> popularCourseDetailsModelFromJson(String str) => List<PopularCourseDetailsModel>.from(json.decode(str).map((x) => PopularCourseDetailsModel.fromJson(x)));
+PopularCourseDetailsModel popularCourseDetailsModelFromJson(String str) => PopularCourseDetailsModel.fromJson(json.decode(str));
 
-String popularCourseDetailsModelToJson(List<PopularCourseDetailsModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String popularCourseDetailsModelToJson(PopularCourseDetailsModel data) => json.encode(data.toJson());
 
 class PopularCourseDetailsModel {
+    bool success;
+    Data data;
+
+    PopularCourseDetailsModel({
+        required this.success,
+        required this.data,
+    });
+
+    factory PopularCourseDetailsModel.fromJson(Map<String, dynamic> json) => PopularCourseDetailsModel(
+        success: json["success"],
+        data: Data.fromJson(json["data"]),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "success": success,
+        "data": data.toJson(),
+    };
+}
+
+class Data {
     int id;
     String title;
     String excerpt;
     String description;
-    String thumbnail;
-    String permalink;
-    Price price;
-    PriceRaw priceRaw;
-    Duration duration;
-    Difficulty difficulty;
-    List<Category> categories;
+    Images images;
+    Pricing pricing;
     dynamic enrollCount;
     Rating rating;
+    List<Category> categories;
+    List<dynamic> tags;
+    List<dynamic> features;
+    List<dynamic> requirements;
+    List<dynamic> outcomes;
+    List<Topic> topics;
+    List<dynamic> reviews;
     Author author;
 
-    PopularCourseDetailsModel({
+    Data({
         required this.id,
         required this.title,
         required this.excerpt,
         required this.description,
-        required this.thumbnail,
-        required this.permalink,
-        required this.price,
-        required this.priceRaw,
-        required this.duration,
-        required this.difficulty,
-        required this.categories,
+        required this.images,
+        required this.pricing,
         required this.enrollCount,
         required this.rating,
+        required this.categories,
+        required this.tags,
+        required this.features,
+        required this.requirements,
+        required this.outcomes,
+        required this.topics,
+        required this.reviews,
         required this.author,
     });
 
-    factory PopularCourseDetailsModel.fromJson(Map<String, dynamic> json) => PopularCourseDetailsModel(
+    factory Data.fromJson(Map<String, dynamic> json) => Data(
         id: json["id"],
         title: json["title"],
         excerpt: json["excerpt"],
         description: json["description"],
-        thumbnail: json["thumbnail"],
-        permalink: json["permalink"],
-        price: priceValues.map[json["price"]]!,
-        priceRaw: PriceRaw.fromJson(json["price_raw"]),
-        duration: Duration.fromJson(json["duration"]),
-        difficulty: difficultyValues.map[json["difficulty"]]!,
-        categories: List<Category>.from(json["categories"].map((x) => categoryValues.map[x]!)),
+        images: Images.fromJson(json["images"]),
+        pricing: Pricing.fromJson(json["pricing"]),
         enrollCount: json["enroll_count"],
         rating: Rating.fromJson(json["rating"]),
+        categories: List<Category>.from(json["categories"].map((x) => Category.fromJson(x))),
+        tags: List<dynamic>.from(json["tags"].map((x) => x)),
+        features: List<dynamic>.from(json["features"].map((x) => x)),
+        requirements: List<dynamic>.from(json["requirements"].map((x) => x)),
+        outcomes: List<dynamic>.from(json["outcomes"].map((x) => x)),
+        topics: List<Topic>.from(json["topics"].map((x) => Topic.fromJson(x))),
+        reviews: List<dynamic>.from(json["reviews"].map((x) => x)),
         author: Author.fromJson(json["author"]),
     );
 
@@ -63,146 +89,166 @@ class PopularCourseDetailsModel {
         "title": title,
         "excerpt": excerpt,
         "description": description,
-        "thumbnail": thumbnail,
-        "permalink": permalink,
-        "price": priceValues.reverse[price],
-        "price_raw": priceRaw.toJson(),
-        "duration": duration.toJson(),
-        "difficulty": difficultyValues.reverse[difficulty],
-        "categories": List<dynamic>.from(categories.map((x) => categoryValues.reverse[x])),
+        "images": images.toJson(),
+        "pricing": pricing.toJson(),
         "enroll_count": enrollCount,
         "rating": rating.toJson(),
+        "categories": List<dynamic>.from(categories.map((x) => x.toJson())),
+        "tags": List<dynamic>.from(tags.map((x) => x)),
+        "features": List<dynamic>.from(features.map((x) => x)),
+        "requirements": List<dynamic>.from(requirements.map((x) => x)),
+        "outcomes": List<dynamic>.from(outcomes.map((x) => x)),
+        "topics": List<dynamic>.from(topics.map((x) => x.toJson())),
+        "reviews": List<dynamic>.from(reviews.map((x) => x)),
         "author": author.toJson(),
     };
 }
 
 class Author {
     int id;
-    Name name;
-    Email email;
+    String name;
     String avatarUrl;
+    String bio;
+    SocialLinks socialLinks;
 
     Author({
         required this.id,
         required this.name,
-        required this.email,
         required this.avatarUrl,
+        required this.bio,
+        required this.socialLinks,
     });
 
     factory Author.fromJson(Map<String, dynamic> json) => Author(
         id: json["id"],
-        name: nameValues.map[json["name"]]!,
-        email: emailValues.map[json["email"]]!,
+        name: json["name"],
         avatarUrl: json["avatar_url"],
+        bio: json["bio"],
+        socialLinks: SocialLinks.fromJson(json["social_links"]),
     );
 
     Map<String, dynamic> toJson() => {
         "id": id,
-        "name": nameValues.reverse[name],
-        "email": emailValues.reverse[email],
+        "name": name,
         "avatar_url": avatarUrl,
+        "bio": bio,
+        "social_links": socialLinks.toJson(),
     };
 }
 
-enum Email {
-    NAYNIL1033_GMAIL_COM
-}
+class SocialLinks {
+    String website;
+    String facebook;
+    String twitter;
+    String linkedin;
 
-final emailValues = EnumValues({
-    "naynil1033@gmail.com": Email.NAYNIL1033_GMAIL_COM
-});
-
-enum Name {
-    ANIL_KUMAR_SINGH
-}
-
-final nameValues = EnumValues({
-    "Anil Kumar Singh": Name.ANIL_KUMAR_SINGH
-});
-
-enum Category {
-    INTERACTION_PRACTICAL_AMP_QUERY_SESSION,
-    WORKSHOP_BASED_ON_DIAGNOSIS_AND_TREATMENT
-}
-
-final categoryValues = EnumValues({
-    "Interaction Practical &amp; Query Session": Category.INTERACTION_PRACTICAL_AMP_QUERY_SESSION,
-    "Workshop based on Diagnosis and Treatment": Category.WORKSHOP_BASED_ON_DIAGNOSIS_AND_TREATMENT
-});
-
-enum Difficulty {
-    ALL_LEVELS,
-    BEGINNER,
-    INTERMEDIATE
-}
-
-final difficultyValues = EnumValues({
-    "All_levels": Difficulty.ALL_LEVELS,
-    "Beginner": Difficulty.BEGINNER,
-    "Intermediate": Difficulty.INTERMEDIATE
-});
-
-class Duration {
-    String hours;
-    String minutes;
-
-    Duration({
-        required this.hours,
-        required this.minutes,
+    SocialLinks({
+        required this.website,
+        required this.facebook,
+        required this.twitter,
+        required this.linkedin,
     });
 
-    factory Duration.fromJson(Map<String, dynamic> json) => Duration(
-        hours: json["hours"],
-        minutes: json["minutes"],
+    factory SocialLinks.fromJson(Map<String, dynamic> json) => SocialLinks(
+        website: json["website"],
+        facebook: json["facebook"],
+        twitter: json["twitter"],
+        linkedin: json["linkedin"],
     );
 
     Map<String, dynamic> toJson() => {
-        "hours": hours,
-        "minutes": minutes,
+        "website": website,
+        "facebook": facebook,
+        "twitter": twitter,
+        "linkedin": linkedin,
     };
 }
 
-enum Price {
-    PAID
+class Category {
+    int id;
+    String name;
+    String slug;
+    String url;
+
+    Category({
+        required this.id,
+        required this.name,
+        required this.slug,
+        required this.url,
+    });
+
+    factory Category.fromJson(Map<String, dynamic> json) => Category(
+        id: json["id"],
+        name: json["name"],
+        slug: json["slug"],
+        url: json["url"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "id": id,
+        "name": name,
+        "slug": slug,
+        "url": url,
+    };
 }
 
-final priceValues = EnumValues({
-    "paid": Price.PAID
-});
+class Images {
+    String thumbnail;
+    String large;
+    String full;
+    String gallery;
 
-class PriceRaw {
-    int regularPrice;
-    int salePrice;
-    int displayPrice;
-    int taxRate;
-    int taxAmount;
-    bool showInclTaxLabel;
+    Images({
+        required this.thumbnail,
+        required this.large,
+        required this.full,
+        required this.gallery,
+    });
 
-    PriceRaw({
-        required this.regularPrice,
+    factory Images.fromJson(Map<String, dynamic> json) => Images(
+        thumbnail: json["thumbnail"],
+        large: json["large"],
+        full: json["full"],
+        gallery: json["gallery"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "thumbnail": thumbnail,
+        "large": large,
+        "full": full,
+        "gallery": gallery,
+    };
+}
+
+class Pricing {
+    String price;
+    String salePrice;
+    bool isFree;
+    String priceLabel;
+    int discountPercentage;
+
+    Pricing({
+        required this.price,
         required this.salePrice,
-        required this.displayPrice,
-        required this.taxRate,
-        required this.taxAmount,
-        required this.showInclTaxLabel,
+        required this.isFree,
+        required this.priceLabel,
+        required this.discountPercentage,
     });
 
-    factory PriceRaw.fromJson(Map<String, dynamic> json) => PriceRaw(
-        regularPrice: json["regular_price"],
+    factory Pricing.fromJson(Map<String, dynamic> json) => Pricing(
+        price: json["price"],
         salePrice: json["sale_price"],
-        displayPrice: json["display_price"],
-        taxRate: json["tax_rate"],
-        taxAmount: json["tax_amount"],
-        showInclTaxLabel: json["show_incl_tax_label"],
+        isFree: json["is_free"],
+        priceLabel: json["price_label"],
+        discountPercentage: json["discount_percentage"],
     );
 
     Map<String, dynamic> toJson() => {
-        "regular_price": regularPrice,
+        "price": price,
         "sale_price": salePrice,
-        "display_price": displayPrice,
-        "tax_rate": taxRate,
-        "tax_amount": taxAmount,
-        "show_incl_tax_label": showInclTaxLabel,
+        "is_free": isFree,
+        "price_label": priceLabel,
+        "discount_percentage": discountPercentage,
     };
 }
 
@@ -234,14 +280,34 @@ class Rating {
     };
 }
 
-class EnumValues<T> {
-    Map<String, T> map;
-    late Map<T, String> reverseMap;
+class Topic {
+    String? id;
+    String? title;
+    String? summary;
+    List<dynamic> lessons;
+    List<dynamic> quizzes;
 
-    EnumValues(this.map);
+    Topic({
+        required this.id,
+        required this.title,
+        required this.summary,
+        required this.lessons,
+        required this.quizzes,
+    });
 
-    Map<T, String> get reverse {
-            reverseMap = map.map((k, v) => MapEntry(v, k));
-            return reverseMap;
-    }
+    factory Topic.fromJson(Map<String, dynamic> json) => Topic(
+        id: json["id"],
+        title: json["title"],
+        summary: json["summary"],
+        lessons: List<dynamic>.from(json["lessons"].map((x) => x)),
+        quizzes: List<dynamic>.from(json["quizzes"].map((x) => x)),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "id": id,
+        "title": title,
+        "summary": summary,
+        "lessons": List<dynamic>.from(lessons.map((x) => x)),
+        "quizzes": List<dynamic>.from(quizzes.map((x) => x)),
+    };
 }

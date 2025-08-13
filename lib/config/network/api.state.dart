@@ -40,7 +40,7 @@ abstract class APIStateNetwork {
   @GET("/custom/v1/popular-courses")
   Future<List<PopularCourseModel>> popularCourse();
 
-  @GET("/custom/v1/courses-by-category?category_id={id}")
+  @GET("/custom/v1/popular-course/{id}")
   Future<List<PopularCourseDetailsModel>> popularCourseDetails(
     @Path() String id,
   );
