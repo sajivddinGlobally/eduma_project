@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hive_flutter/adapters.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
@@ -27,6 +28,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   bool isLoading = false;
   @override
   Widget build(BuildContext context) {
+    var box = Hive.box("userBox");
     return Scaffold(
       backgroundColor: Color(0xFFFFFFFF),
       body: SingleChildScrollView(
@@ -171,49 +173,57 @@ class _LoginPageState extends ConsumerState<LoginPage> {
               ),
               SizedBox(height: 20.h),
               ElevatedButton(
-                onPressed: () async {
-                  if (emailController.text.isEmpty ||
-                      passwordController.text.isEmpty) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text("Please Enter User Name and Password"),
-                      ),
-                    );
-                    return;
-                  }
+                onPressed: isLoading
+                    ? null
+                    : () async {
+                        if (emailController.text.isEmpty ||
+                            passwordController.text.isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                "Please Enter User Name and Password",
+                              ),
+                            ),
+                          );
+                          return;
+                        }
 
-                  setState(() {
-                    isLoading = true;
-                  });
-                  final body = LoginBodyModel(
-                    username: emailController.text,
-                    password: passwordController.text,
-                  );
-                  try {
-                    final service = APIStateNetwork(createDio());
-                    final response = await service.login(body);
-                    if (response != null) {
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        CupertinoPageRoute(builder: (context) => HomePage()),
-                        (route) => false,
-                      );
-                      showSuccessMessage(context, "Login SuccessFull");
-                      setState(() {
-                        isLoading = false;
-                      });
-                    } else {
-                      showErrorMessage("Invalid credentials");
-                      log("Login failed");
-                    }
-                  } catch (e) {
-                    setState(() {
-                      isLoading = false;
-                    });
-                    // showErrorMessage(e.toString());
-                    log(e.toString());
-                  }
-                },
+                        setState(() {
+                          isLoading = true;
+                        });
+                        final body = LoginBodyModel(
+                          username: emailController.text,
+                          password: passwordController.text,
+                        );
+                        try {
+                          final service = APIStateNetwork(createDio());
+                          final response = await service.login(body);
+                          await box.put("name", response.storeName);
+                          await box.put("token", response.token);
+                          if (response != null) {
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              CupertinoPageRoute(
+                                builder: (context) => HomePage(),
+                              ),
+                              (route) => false,
+                            );
+                            showSuccessMessage(context, "Login SuccessFull");
+                            setState(() {
+                              isLoading = false;
+                            });
+                          } else {
+                            showErrorMessage("Invalid credentials");
+                            log("Login failed");
+                          }
+                        } catch (e) {
+                          setState(() {
+                            isLoading = false;
+                          });
+                          // showErrorMessage(e.toString());
+                          log(e.toString());
+                        }
+                      },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF001E6C),
                   minimumSize: Size(400.w, 52.h),
@@ -223,7 +233,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 ),
                 child: isLoading
                     ? Center(
-                        child: CircularProgressIndicator(color: Colors.white),
+                        child: CircularProgressIndicator(
+                          color: Color(0xFF001E6C),
+                        ),
                       )
                     : Text(
                         "Login",

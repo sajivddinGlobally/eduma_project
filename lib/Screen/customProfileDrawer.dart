@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hive_flutter/adapters.dart';
 
 class CustomProfileDrawer extends StatefulWidget {
   const CustomProfileDrawer({super.key});
@@ -19,6 +20,7 @@ class _CustomProfileDrawerState extends State<CustomProfileDrawer> {
   bool isCheck = false;
   @override
   Widget build(BuildContext context) {
+    var box = Hive.box("userBox");
     return Padding(
       padding: EdgeInsets.all(15),
       child: Container(
@@ -309,7 +311,16 @@ class _CustomProfileDrawerState extends State<CustomProfileDrawer> {
             Spacer(),
             Divider(),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                box.clear();
+                Navigator.pop(context);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text("Logout Successfull"),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+              },
               child: SizedBox(
                 child: Row(
                   children: [
