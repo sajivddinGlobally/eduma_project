@@ -1,320 +1,350 @@
+import 'dart:math';
+
 import 'package:eduma_app/Screen/payCourseDetails.page.dart';
+import 'package:eduma_app/data/Controller/popularCourseController.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class CourseDetailsPage extends StatefulWidget {
-  const CourseDetailsPage({super.key});
+class CourseDetailsPage extends ConsumerStatefulWidget {
+  final String id;
+  const CourseDetailsPage({super.key, required this.id});
 
   @override
-  State<CourseDetailsPage> createState() => _CourseDetailsPageState();
+  ConsumerState<CourseDetailsPage> createState() => _CourseDetailsPageState();
 }
 
-class _CourseDetailsPageState extends State<CourseDetailsPage> {
+class _CourseDetailsPageState extends ConsumerState<CourseDetailsPage> {
   @override
   Widget build(BuildContext context) {
+    final courseDetailsProvider = ref.watch(
+      popularCourseDetailsController(widget.id),
+    );
     return Scaffold(
       backgroundColor: Color(0xFFFFFFFF),
-      body: Stack(
-        children: [
-          Positioned(
-            left: -100,
-            top: -60.h,
-            child: Image.asset(
-              "assets/vec.png",
-              width: 363.w,
-              height: 270.h,
-              fit: BoxFit.fitHeight,
-            ),
-          ),
-          Positioned(
-            bottom: -40.h,
-            left: 0,
-            right: 0,
-            child: Image.asset(
-              "assets/vec.png",
-              width: 470.w,
-              height: 450.h,
-              fit: BoxFit.fill,
-            ),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+      body: courseDetailsProvider.when(
+        data: (courseDetails) {
+          if (courseDetails.isEmpty) {
+            return Center(child: Text("No Course Available"));
+          }
+          return Stack(
             children: [
-              SizedBox(height: 33.h),
-              Row(
-                children: [
-                  SizedBox(width: 20.w),
-                  Container(
-                    width: 37.w,
-                    height: 37.h,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Color.fromARGB(25, 0, 0, 0),
-                    ),
-                    child: IconButton(
-                      style: IconButton.styleFrom(
-                        minimumSize: Size(0, 0),
-                        padding: EdgeInsets.zero,
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      ),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      icon: Icon(
-                        Icons.arrow_back,
-                        color: Color(0xFF001E6C),
-                        size: 20.sp,
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 50.w),
-                  Text(
-                    "Course Details",
-                    style: GoogleFonts.roboto(
-                      fontSize: 26.sp,
-                      fontWeight: FontWeight.w700,
-                      color: Color(0xFF1B1B1B),
-                      letterSpacing: -0.4,
-                    ),
-                  ),
-                ],
+              Positioned(
+                left: -100,
+                top: -60.h,
+                child: Image.asset(
+                  "assets/vec.png",
+                  width: 363.w,
+                  height: 270.h,
+                  fit: BoxFit.fitHeight,
+                ),
               ),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+              Positioned(
+                bottom: -40.h,
+                left: 0,
+                right: 0,
+                child: Image.asset(
+                  "assets/vec.png",
+                  width: 470.w,
+                  height: 450.h,
+                  fit: BoxFit.fill,
+                ),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 33.h),
+                  Row(
                     children: [
-                      Padding(
-                        padding: EdgeInsets.only(
-                          left: 20.w,
-                          right: 20.w,
-                          top: 20.h,
+                      SizedBox(width: 20.w),
+                      Container(
+                        width: 37.w,
+                        height: 37.h,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Color.fromARGB(25, 0, 0, 0),
                         ),
-                        child: Stack(
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(10.r),
-                              child: Image.asset(
-                                "assets/reading.png",
-                                width: 400.w,
-                                height: 254.h,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            Align(
-                              alignment: Alignment.topRight,
-                              child: IconButton(
-                                onPressed: () {},
-                                icon: Icon(
-                                  Icons.favorite_border,
-                                  color: Colors.white,
-                                  size: 25.sp,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: 20.h),
-                      Row(
-                        children: [
-                          SizedBox(width: 20.w),
-                          Icon(
-                            Icons.access_time,
-                            color: Color(0xFFFE4A55),
-                            size: 18.sp,
+                        child: IconButton(
+                          style: IconButton.styleFrom(
+                            minimumSize: Size(0, 0),
+                            padding: EdgeInsets.zero,
+                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                           ),
-                          SizedBox(width: 8.w),
-                          Text(
-                            "10 week",
-                            style: GoogleFonts.roboto(
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w400,
-                              color: Color(0xFF747272),
-                              letterSpacing: -0.4,
-                            ),
-                          ),
-                          SizedBox(width: 8.w),
-                          Icon(
-                            Icons.person,
-                            color: Color(0xFFFE4A55),
-                            size: 18.sp,
-                          ),
-                          SizedBox(width: 8.w),
-                          Text(
-                            "332",
-                            style: GoogleFonts.roboto(
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w400,
-                              color: Color(0xFF747272),
-                              letterSpacing: -0.4,
-                            ),
-                          ),
-                          Spacer(),
-                          Text(
-                            "Free",
-                            style: GoogleFonts.roboto(
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w400,
-                              color: Color(0xFF000000),
-                            ),
-                          ),
-                          SizedBox(width: 20.w),
-                        ],
-                      ),
-                      SizedBox(height: 20.w),
-                      Padding(
-                        padding: EdgeInsets.only(left: 20.w, right: 20.w),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Overview",
-                              style: GoogleFonts.roboto(
-                                fontSize: 20.sp,
-                                fontWeight: FontWeight.w700,
-                                color: Color(0xFF000000),
-                                letterSpacing: -0.2,
-                              ),
-                            ),
-                            SizedBox(height: 10.h),
-                            Text(
-                              "With over 5 years of experience, I've guided 300+ students to land jobs in top companies like Google, TCS, and Deloitte. My sessions focus on mock interviews, resume building, and effective communication",
-                              style: GoogleFonts.roboto(
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xFF666666),
-                                letterSpacing: -0.4,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 20.w, top: 20.h),
-                        child: Text(
-                          "Curriculum",
-                          style: GoogleFonts.roboto(
-                            fontSize: 20.sp,
-                            fontWeight: FontWeight.w700,
-                            color: Color(0xFF000000),
-                            letterSpacing: -0.2,
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: Icon(
+                            Icons.arrow_back,
+                            color: Color(0xFF001E6C),
+                            size: 20.sp,
                           ),
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 10.w, right: 20.w),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Curriculum(number: 3, icon: Icons.arrow_drop_up),
-                            SizedBox(height: 20.h),
-                            learnbuild(),
-                            SizedBox(height: 10.h),
-                            learnbuild(),
-                            SizedBox(height: 10.h),
-                            learnbuild(),
-                            SizedBox(height: 10.h),
-                            Curriculum(number: 2, icon: Icons.arrow_drop_down),
-                            Curriculum(number: 4, icon: Icons.arrow_drop_down),
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: 16.h),
-                      Padding(
-                        padding: EdgeInsets.only(left: 20.w, right: 20.w),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Divider(),
-                            Container(
-                              margin: EdgeInsets.only(top: 20.h),
-                              width: 45.w,
-                              height: 45.h,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.grey,
-                                image: DecorationImage(
-                                  image: AssetImage("assets/tesla.png"),
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: 10.h),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Image.asset(
-                                  "assets/birds.png",
-                                  color: Color(0xFFA0A0A0),
-                                ),
-                                SizedBox(width: 10.w),
-                                Image.asset(
-                                  "assets/call.png",
-                                  color: Color(0xFFA0A0A0),
-                                ),
-                                SizedBox(width: 10.w),
-                                Image.asset(
-                                  "assets/insta.png",
-                                  color: Color(0xFFA0A0A0),
-                                ),
-                                SizedBox(width: 10.w),
-                                Image.asset(
-                                  "assets/a.png",
-                                  color: Color(0xFFA0A0A0),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 20.h),
-                            Text(
-                              "With over 5 years of experience, I've guided 300+ students to land jobs in top companies like Google, TCS, and Deloitte. My sessions focus on mock interviews, resume building, and effective communication",
-                              style: GoogleFonts.roboto(
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xFF666666),
-                                letterSpacing: -0.4,
-                              ),
-                            ),
-                            SizedBox(height: 20.h),
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                minimumSize: Size(400.w, 56.h),
-                                backgroundColor: Color(0xFF001E6C),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5.r),
-                                ),
-                              ),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  CupertinoPageRoute(
-                                    builder: (context) =>
-                                        PayCourseDetailsPage(),
-                                  ),
-                                );
-                              },
-                              child: Text(
-                                "Start Now",
-                                style: GoogleFonts.roboto(
-                                  fontSize: 18.sp,
-                                  fontWeight: FontWeight.w500,
-                                  color: Color(0xFFFFFFFF),
-                                ),
-                              ),
-                            ),
-                          ],
+                      SizedBox(width: 50.w),
+                      Text(
+                        "Course Details",
+                        style: GoogleFonts.roboto(
+                          fontSize: 26.sp,
+                          fontWeight: FontWeight.w700,
+                          color: Color(0xFF1B1B1B),
+                          letterSpacing: -0.4,
                         ),
                       ),
                     ],
                   ),
-                ),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: courseDetails.length,
+                      padding: EdgeInsets.zero,
+                      itemBuilder: (context, index) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(
+                                left: 20.w,
+                                right: 20.w,
+                                top: 20.h,
+                              ),
+                              child: Stack(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(10.r),
+                                    child: Image.network(
+                                      // "assets/reading.png",
+                                      courseDetails[index].thumbnail,
+                                      width: 400.w,
+                                      height: 254.h,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                  Align(
+                                    alignment: Alignment.topRight,
+                                    child: IconButton(
+                                      onPressed: () {},
+                                      icon: Icon(
+                                        Icons.favorite_border,
+                                        color: Colors.white,
+                                        size: 25.sp,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(height: 20.h),
+                            Row(
+                              children: [
+                                SizedBox(width: 20.w),
+                                Icon(
+                                  Icons.access_time,
+                                  color: Color(0xFFFE4A55),
+                                  size: 18.sp,
+                                ),
+                                SizedBox(width: 8.w),
+                                Text(
+                                  "10 week",
+                                  style: GoogleFonts.roboto(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w400,
+                                    color: Color(0xFF747272),
+                                    letterSpacing: -0.4,
+                                  ),
+                                ),
+                                SizedBox(width: 8.w),
+                                Icon(
+                                  Icons.person,
+                                  color: Color(0xFFFE4A55),
+                                  size: 18.sp,
+                                ),
+                                SizedBox(width: 8.w),
+                                Text(
+                                  "332",
+                                  style: GoogleFonts.roboto(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w400,
+                                    color: Color(0xFF747272),
+                                    letterSpacing: -0.4,
+                                  ),
+                                ),
+                                Spacer(),
+                                Text(
+                                  "Free",
+                                  style: GoogleFonts.roboto(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w400,
+                                    color: Color(0xFF000000),
+                                  ),
+                                ),
+                                SizedBox(width: 20.w),
+                              ],
+                            ),
+                            SizedBox(height: 20.w),
+                            Padding(
+                              padding: EdgeInsets.only(left: 20.w, right: 20.w),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Overview",
+                                    style: GoogleFonts.roboto(
+                                      fontSize: 20.sp,
+                                      fontWeight: FontWeight.w700,
+                                      color: Color(0xFF000000),
+                                      letterSpacing: -0.2,
+                                    ),
+                                  ),
+                                  SizedBox(height: 10.h),
+                                  Text(
+                                    "With over 5 years of experience, I've guided 300+ students to land jobs in top companies like Google, TCS, and Deloitte. My sessions focus on mock interviews, resume building, and effective communication",
+                                    style: GoogleFonts.roboto(
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w400,
+                                      color: Color(0xFF666666),
+                                      letterSpacing: -0.4,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(left: 20.w, top: 20.h),
+                              child: Text(
+                                "Curriculum",
+                                style: GoogleFonts.roboto(
+                                  fontSize: 20.sp,
+                                  fontWeight: FontWeight.w700,
+                                  color: Color(0xFF000000),
+                                  letterSpacing: -0.2,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(left: 10.w, right: 20.w),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Curriculum(
+                                    number: 3,
+                                    icon: Icons.arrow_drop_up,
+                                  ),
+                                  SizedBox(height: 20.h),
+                                  learnbuild(),
+                                  SizedBox(height: 10.h),
+                                  learnbuild(),
+                                  SizedBox(height: 10.h),
+                                  learnbuild(),
+                                  SizedBox(height: 10.h),
+                                  Curriculum(
+                                    number: 2,
+                                    icon: Icons.arrow_drop_down,
+                                  ),
+                                  Curriculum(
+                                    number: 4,
+                                    icon: Icons.arrow_drop_down,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(height: 16.h),
+                            Padding(
+                              padding: EdgeInsets.only(left: 20.w, right: 20.w),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Divider(),
+                                  Container(
+                                    margin: EdgeInsets.only(top: 20.h),
+                                    width: 45.w,
+                                    height: 45.h,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Colors.grey,
+                                      image: DecorationImage(
+                                        image: AssetImage("assets/tesla.png"),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(height: 10.h),
+                                  Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Image.asset(
+                                        "assets/birds.png",
+                                        color: Color(0xFFA0A0A0),
+                                      ),
+                                      SizedBox(width: 10.w),
+                                      Image.asset(
+                                        "assets/call.png",
+                                        color: Color(0xFFA0A0A0),
+                                      ),
+                                      SizedBox(width: 10.w),
+                                      Image.asset(
+                                        "assets/insta.png",
+                                        color: Color(0xFFA0A0A0),
+                                      ),
+                                      SizedBox(width: 10.w),
+                                      Image.asset(
+                                        "assets/a.png",
+                                        color: Color(0xFFA0A0A0),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 20.h),
+                                  Text(
+                                    "With over 5 years of experience, I've guided 300+ students to land jobs in top companies like Google, TCS, and Deloitte. My sessions focus on mock interviews, resume building, and effective communication",
+                                    style: GoogleFonts.roboto(
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w400,
+                                      color: Color(0xFF666666),
+                                      letterSpacing: -0.4,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                  ),
+                ],
               ),
-              SizedBox(height: 20.h),
             ],
+          );
+        },
+        error: (error, stackTrace) => Center(child: Text(e.toString())),
+        loading: () => Center(child: CircularProgressIndicator()),
+      ),
+      bottomSheet: Padding(
+        padding: EdgeInsets.only(bottom: 10.h),
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            minimumSize: Size(400.w, 56.h),
+            backgroundColor: Color(0xFF001E6C),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(5.r),
+            ),
           ),
-        ],
+          onPressed: () {
+            Navigator.push(
+              context,
+              CupertinoPageRoute(builder: (context) => PayCourseDetailsPage()),
+            );
+          },
+          child: Text(
+            "Start Now",
+            style: GoogleFonts.roboto(
+              fontSize: 18.sp,
+              fontWeight: FontWeight.w500,
+              color: Color(0xFFFFFFFF),
+            ),
+          ),
+        ),
       ),
     );
   }

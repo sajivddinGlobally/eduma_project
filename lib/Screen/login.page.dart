@@ -198,8 +198,10 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         try {
                           final service = APIStateNetwork(createDio());
                           final response = await service.login(body);
-                          await box.put("name", response.storeName);
+                          await box.put("storeName", response.storeName);
                           await box.put("token", response.token);
+                          await box.put("userEmail", response.userEmail);
+
                           if (response != null) {
                             Navigator.pushAndRemoveUntil(
                               context,

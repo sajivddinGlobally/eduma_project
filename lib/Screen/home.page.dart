@@ -1,33 +1,39 @@
+import 'dart:math';
+
 import 'package:eduma_app/Screen/continueMyCourse.page.dart';
 import 'package:eduma_app/Screen/course.page.dart';
+import 'package:eduma_app/Screen/courseDetails.page.dart';
 import 'package:eduma_app/Screen/customProfileDrawer.dart';
 import 'package:eduma_app/Screen/instructor.page.dart';
 import 'package:eduma_app/Screen/login.page.dart';
 import 'package:eduma_app/Screen/register.page.dart';
 import 'package:eduma_app/Screen/shop.page.dart';
-import 'package:eduma_app/Screen/wishlist.page.dart';
 import 'package:eduma_app/Screen/youtube.page.dart';
+import 'package:eduma_app/data/Controller/allCategoryController.dart';
+import 'package:eduma_app/data/Controller/popularCourseController.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  ConsumerState<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends ConsumerState<HomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int selectIndex = 0;
   @override
   Widget build(BuildContext context) {
     var box = Hive.box("userBox");
-
+    final popularCourseProvider = ref.watch(popularCourseController);
+    final allCategoryProvider = ref.watch(allCategoryController);
     return Scaffold(
       key: _scaffoldKey,
       drawer: CustomProfileDrawer(),
@@ -104,7 +110,7 @@ class _HomePageState extends State<HomePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Welcome Back, ${box.get("name")}",
+                          "Welcome Back, ${box.get("storeName")}",
                           style: GoogleFonts.roboto(
                             fontSize: 16.sp,
                             fontWeight: FontWeight.w600,
@@ -294,33 +300,57 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
                   SizedBox(height: 20.h),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [
-                        SizedBox(width: 20.w),
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(10.r),
-                          child: Image.asset(
-                            "assets/course.png",
-                            width: 200.w,
-                            height: 130.h,
-                            fit: BoxFit.fill,
-                          ),
+                  allCategoryProvider.when(
+                    data: (allCategory) {
+                      return Container(
+                        height: 150.h,
+                        //color: Colors.amber,
+                        child: ListView.builder(
+                          itemCount: allCategory.data.length,
+                          scrollDirection: Axis.horizontal,
+                          padding: EdgeInsets.zero,
+                          itemBuilder: (context, index) {
+                            return Column(
+                              children: [
+                                SizedBox(width: 20.w),
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(10.r),
+                                  child: Image.network(
+                                    //"assets/course.png",
+                                    allCategory.data[index].thumbnail,
+                                    width: 200.w,
+                                    height: 130.h,
+                                    fit: BoxFit.fill,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return Image.network(
+                                        "https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg",
+                                        width: 200.w,
+                                        height: 130.h,
+                                        fit: BoxFit.fill,
+                                      );
+                                    },
+                                  ),
+                                ),
+                                // SizedBox(width: 20.w),
+                                // ClipRRect(
+                                //   borderRadius: BorderRadius.circular(10.r),
+                                //   child: Image.asset(
+                                //     "assets/course.png",
+                                //     width: 200.w,
+                                //     height: 130.h,
+                                //     fit: BoxFit.fill,
+                                //   ),
+                                // ),
+                                // SizedBox(width: 20.w),
+                              ],
+                            );
+                          },
                         ),
-                        SizedBox(width: 20.w),
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(10.r),
-                          child: Image.asset(
-                            "assets/course.png",
-                            width: 200.w,
-                            height: 130.h,
-                            fit: BoxFit.fill,
-                          ),
-                        ),
-                        SizedBox(width: 20.w),
-                      ],
-                    ),
+                      );
+                    },
+                    error: (error, stackTrace) =>
+                        Center(child: Text(e.toString())),
+                    loading: () => Center(child: CircularProgressIndicator()),
                   ),
                   SizedBox(height: 20.h),
                   Row(
@@ -353,26 +383,124 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
                   SizedBox(height: 16.h),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        CupertinoPageRoute(builder: (context) => CoursePage()),
+                  popularCourseProvider.when(
+                    data: (course) {
+                      return Container(
+                        height: 190.h,
+                        //color: Colors.amber,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          padding: EdgeInsets.zero,
+                          itemCount: course.length,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: EdgeInsets.only(left: 10.w, right: 10.w),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Stack(
+                                    children: [
+                                      InkWell(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            CupertinoPageRoute(
+                                              builder: (context) =>
+                                                  CourseDetailsPage(
+                                                    id: course[index].id
+                                                        .toString(),
+                                                  ),
+                                            ),
+                                          );
+                                        },
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(
+                                            10.r,
+                                          ),
+                                          child: Image.network(
+                                            // "assets/learning1.png",
+                                            course[index].thumbnail,
+                                            width: 190.w,
+                                            height: 125.h,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
+                                      Positioned(
+                                        right: 8.w,
+                                        top: 10.h,
+                                        child: IconButton(
+                                          style: IconButton.styleFrom(
+                                            minimumSize: Size(0, 0),
+                                            padding: EdgeInsets.zero,
+                                            tapTargetSize: MaterialTapTargetSize
+                                                .shrinkWrap,
+                                          ),
+                                          onPressed: () {},
+                                          icon: Icon(
+                                            Icons.favorite_outline,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                      Positioned(
+                                        left: 13.w,
+                                        bottom: 8.h,
+                                        child: Container(
+                                          padding: EdgeInsets.only(
+                                            left: 10.w,
+                                            right: 10.w,
+                                            top: 6.h,
+                                            bottom: 6.h,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(
+                                              4.r,
+                                            ),
+                                            color: Color(0xFF001E6C),
+                                          ),
+                                          child: Text(
+                                            "₹ 45.00",
+                                            //course[index].p
+                                            style: GoogleFonts.roboto(
+                                              fontSize: 12.sp,
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 10.h),
+                                  SizedBox(
+                                    width: 190.w,
+                                    child: Text(
+                                      overflow: TextOverflow.clip,
+                                      //  "Introduction learn Press - LMS Plugin",
+                                      truncateString(course[index].title, 35),
+                                      style: GoogleFonts.roboto(
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.w500,
+                                        color: Color(0xFF000000),
+                                        letterSpacing: -0.4,
+                                        height: 1.1,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
                       );
                     },
-                    child: PopularBody(
-                      popularList: [
-                        {
-                          "image": "assets/learning1.png",
-                          "paid": "₹ 45.00",
-                          "title": "Introduction learn Press - LMS Plugin",
-                        },
-                        {
-                          "image": "assets/popular.png",
-                          "paid": "Free",
-                          "title": "Create an LMS Website With LearnPress",
-                        },
-                      ],
+                    error: (error, stackTrace) =>
+                        Center(child: Text(error.toString())),
+                    loading: () => Center(
+                      child: CircularProgressIndicator(
+                        color: Color(0xFF001E6C),
+                      ),
                     ),
                   ),
                   SizedBox(height: 10.h),

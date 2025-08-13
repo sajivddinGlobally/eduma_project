@@ -131,7 +131,8 @@ class _CustomProfileDrawerState extends State<CustomProfileDrawer> {
                   Padding(
                     padding: EdgeInsets.only(left: 12.w),
                     child: Text(
-                      "Annu Agarwal",
+                      // "Annu Agarwal",
+                      box.get("storeName").toString(),
                       style: GoogleFonts.roboto(
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w400,
@@ -142,7 +143,8 @@ class _CustomProfileDrawerState extends State<CustomProfileDrawer> {
                   Padding(
                     padding: EdgeInsets.only(left: 12.w),
                     child: Text(
-                      "AnnuAgarwal.gmail.com",
+                      // "AnnuAgarwal.gmail.com",
+                      box.get("userEmail").toString(),
                       style: GoogleFonts.roboto(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w400,

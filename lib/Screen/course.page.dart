@@ -150,13 +150,13 @@ class _CoursePageState extends State<CoursePage> {
                                 children: [
                                   InkWell(
                                     onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        CupertinoPageRoute(
-                                          builder: (context) =>
-                                              CourseDetailsPage(),
-                                        ),
-                                      );
+                                      // Navigator.push(
+                                      //   context,
+                                      //   CupertinoPageRoute(
+                                      //     builder: (context) =>
+                                      //         CourseDetailsPage(id: courseList,),
+                                      //   ),
+                                      // );
                                     },
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(20.r),

@@ -1,6 +1,9 @@
 import 'package:dio/dio.dart';
+import 'package:eduma_app/data/Model/allCategoryModel.dart';
 import 'package:eduma_app/data/Model/loginBodyModel.dart';
 import 'package:eduma_app/data/Model/loginResModel.dart';
+import 'package:eduma_app/data/Model/popularCourseDetailsModel.dart';
+import 'package:eduma_app/data/Model/popularCourseModel.dart';
 import 'package:eduma_app/data/Model/registerBodyCustomeModel.dart';
 import 'package:eduma_app/data/Model/registerResCustomeModel.dart';
 import 'package:eduma_app/data/Model/resetPassBodyModel.dart';
@@ -33,4 +36,15 @@ abstract class APIStateNetwork {
 
   @POST("/custom/v1/reset-password")
   Future<ResetPassResModel> resetPassword(@Body() ResetPassBodyModel body);
+
+  @GET("/custom/v1/popular-courses")
+  Future<List<PopularCourseModel>> popularCourse();
+
+  @GET("/custom/v1/courses-by-category?category_id={id}")
+  Future<List<PopularCourseDetailsModel>> popularCourseDetails(
+    @Path() String id,
+  );
+
+  @GET("/custom/v1/categories")
+  Future<AllCategoryModel> allCategory();
 }
