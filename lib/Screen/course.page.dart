@@ -228,7 +228,8 @@ class _CoursePageState extends ConsumerState<CoursePage> {
                                   ),
                                   SizedBox(height: 15.h),
                                   Text(
-                                    courseList[index]['course'].toString(),
+                                    //courseList[index]['course'].toString(),
+                                    allCourse.data[index].shortDescription,
                                     style: GoogleFonts.roboto(
                                       fontSize: 18.sp,
                                       fontWeight: FontWeight.w500,
@@ -238,7 +239,8 @@ class _CoursePageState extends ConsumerState<CoursePage> {
                                   ),
                                   SizedBox(height: 8.h),
                                   Text(
-                                    courseList[index]['courseName'].toString(),
+                                    // courseList[index]['courseName'].toString(),
+                                    allCourse.data[index].title,
                                     style: GoogleFonts.roboto(
                                       fontSize: 24.sp,
                                       fontWeight: FontWeight.w500,
