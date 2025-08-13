@@ -349,7 +349,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                       );
                     },
                     error: (error, stackTrace) =>
-                        Center(child: Text(e.toString())),
+                        Center(child: Text(error.toString())),
                     loading: () => Center(child: CircularProgressIndicator()),
                   ),
                   SizedBox(height: 20.h),
@@ -511,6 +511,50 @@ class _HomePageState extends ConsumerState<HomePage> {
                       SizedBox(width: 10.w),
                       Text(
                         "Newly Added",
+                        style: GoogleFonts.roboto(
+                          fontSize: 23.sp,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xFF000000),
+                          letterSpacing: -0.4,
+                        ),
+                      ),
+                      Spacer(),
+                      Icon(
+                        Icons.arrow_forward_ios,
+                        color: Color(0xFF001E6C),
+                        weight: 3,
+                        size: 23.sp,
+                      ),
+                      SizedBox(width: 20.w),
+                    ],
+                  ),
+                  SizedBox(height: 16.h),
+                  PopularBody(
+                    popularList: [
+                      {
+                        "image": "assets/new1.png",
+                        "paid": "₹ 45.00",
+                        "title": "Introduction learn Press - LMS Plugin",
+                      },
+                      {
+                        "image": "assets/new2.png",
+                        "paid": "Free",
+                        "title": "Create an LMS Website With LearnPress",
+                      },
+                    ],
+                  ),
+                  SizedBox(height: 10.h),
+                  Row(
+                    children: [
+                      SizedBox(width: 16.w),
+                      Icon(
+                        Icons.qr_code,
+                        color: Color(0xFF000000),
+                        size: 28.sp,
+                      ),
+                      SizedBox(width: 10.w),
+                      Text(
+                        "All Product",
                         style: GoogleFonts.roboto(
                           fontSize: 23.sp,
                           fontWeight: FontWeight.w600,

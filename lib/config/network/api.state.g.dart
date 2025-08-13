@@ -205,7 +205,7 @@ class _APIStateNetwork implements APIStateNetwork {
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/custom/v1/popular-course/${id}',
+            '/custom/v1/popular-courses${id}',
             queryParameters: queryParameters,
             data: _data,
           )

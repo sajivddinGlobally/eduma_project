@@ -9,79 +9,50 @@ PopularCourseDetailsModel popularCourseDetailsModelFromJson(String str) => Popul
 String popularCourseDetailsModelToJson(PopularCourseDetailsModel data) => json.encode(data.toJson());
 
 class PopularCourseDetailsModel {
-    bool success;
-    Data data;
-
-    PopularCourseDetailsModel({
-        required this.success,
-        required this.data,
-    });
-
-    factory PopularCourseDetailsModel.fromJson(Map<String, dynamic> json) => PopularCourseDetailsModel(
-        success: json["success"],
-        data: Data.fromJson(json["data"]),
-    );
-
-    Map<String, dynamic> toJson() => {
-        "success": success,
-        "data": data.toJson(),
-    };
-}
-
-class Data {
     int id;
     String title;
     String excerpt;
     String description;
-    Images images;
-    Pricing pricing;
+    String thumbnail;
+    String permalink;
+    String price;
     dynamic enrollCount;
     Rating rating;
-    List<Category> categories;
-    List<dynamic> tags;
-    List<dynamic> features;
-    List<dynamic> requirements;
-    List<dynamic> outcomes;
-    List<Topic> topics;
-    List<dynamic> reviews;
+    dynamic popularityScore;
     Author author;
+    Map<String, List<String>> meta;
+    List<Topic> topics;
 
-    Data({
+    PopularCourseDetailsModel({
         required this.id,
         required this.title,
         required this.excerpt,
         required this.description,
-        required this.images,
-        required this.pricing,
+        required this.thumbnail,
+        required this.permalink,
+        required this.price,
         required this.enrollCount,
         required this.rating,
-        required this.categories,
-        required this.tags,
-        required this.features,
-        required this.requirements,
-        required this.outcomes,
-        required this.topics,
-        required this.reviews,
+        required this.popularityScore,
         required this.author,
+        required this.meta,
+        required this.topics,
     });
 
-    factory Data.fromJson(Map<String, dynamic> json) => Data(
+    factory PopularCourseDetailsModel.fromJson(Map<String, dynamic> json) => PopularCourseDetailsModel(
         id: json["id"],
         title: json["title"],
         excerpt: json["excerpt"],
         description: json["description"],
-        images: Images.fromJson(json["images"]),
-        pricing: Pricing.fromJson(json["pricing"]),
+        thumbnail: json["thumbnail"],
+        permalink: json["permalink"],
+        price: json["price"],
         enrollCount: json["enroll_count"],
         rating: Rating.fromJson(json["rating"]),
-        categories: List<Category>.from(json["categories"].map((x) => Category.fromJson(x))),
-        tags: List<dynamic>.from(json["tags"].map((x) => x)),
-        features: List<dynamic>.from(json["features"].map((x) => x)),
-        requirements: List<dynamic>.from(json["requirements"].map((x) => x)),
-        outcomes: List<dynamic>.from(json["outcomes"].map((x) => x)),
-        topics: List<Topic>.from(json["topics"].map((x) => Topic.fromJson(x))),
-        reviews: List<dynamic>.from(json["reviews"].map((x) => x)),
+        popularityScore: json["popularity_score"],
         author: Author.fromJson(json["author"]),
+        meta: Map.from(json["meta"]).map((k, v) => MapEntry<String, List<String>>(k, List<String>.from(v.map((x) => x)))),
+        topics: List<Topic>.from(json["topics"].map((x) => Topic.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
@@ -89,18 +60,15 @@ class Data {
         "title": title,
         "excerpt": excerpt,
         "description": description,
-        "images": images.toJson(),
-        "pricing": pricing.toJson(),
+        "thumbnail": thumbnail,
+        "permalink": permalink,
+        "price": price,
         "enroll_count": enrollCount,
         "rating": rating.toJson(),
-        "categories": List<dynamic>.from(categories.map((x) => x.toJson())),
-        "tags": List<dynamic>.from(tags.map((x) => x)),
-        "features": List<dynamic>.from(features.map((x) => x)),
-        "requirements": List<dynamic>.from(requirements.map((x) => x)),
-        "outcomes": List<dynamic>.from(outcomes.map((x) => x)),
-        "topics": List<dynamic>.from(topics.map((x) => x.toJson())),
-        "reviews": List<dynamic>.from(reviews.map((x) => x)),
+        "popularity_score": popularityScore,
         "author": author.toJson(),
+        "meta": Map.from(meta).map((k, v) => MapEntry<String, dynamic>(k, List<dynamic>.from(v.map((x) => x)))),
+        "topics": List<dynamic>.from(topics.map((x) => x.toJson())),
     };
 }
 
@@ -108,147 +76,27 @@ class Author {
     int id;
     String name;
     String avatarUrl;
-    String bio;
-    SocialLinks socialLinks;
+    String phone;
 
     Author({
         required this.id,
         required this.name,
         required this.avatarUrl,
-        required this.bio,
-        required this.socialLinks,
+        required this.phone,
     });
 
     factory Author.fromJson(Map<String, dynamic> json) => Author(
         id: json["id"],
         name: json["name"],
         avatarUrl: json["avatar_url"],
-        bio: json["bio"],
-        socialLinks: SocialLinks.fromJson(json["social_links"]),
+        phone: json["phone"],
     );
 
     Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
         "avatar_url": avatarUrl,
-        "bio": bio,
-        "social_links": socialLinks.toJson(),
-    };
-}
-
-class SocialLinks {
-    String website;
-    String facebook;
-    String twitter;
-    String linkedin;
-
-    SocialLinks({
-        required this.website,
-        required this.facebook,
-        required this.twitter,
-        required this.linkedin,
-    });
-
-    factory SocialLinks.fromJson(Map<String, dynamic> json) => SocialLinks(
-        website: json["website"],
-        facebook: json["facebook"],
-        twitter: json["twitter"],
-        linkedin: json["linkedin"],
-    );
-
-    Map<String, dynamic> toJson() => {
-        "website": website,
-        "facebook": facebook,
-        "twitter": twitter,
-        "linkedin": linkedin,
-    };
-}
-
-class Category {
-    int id;
-    String name;
-    String slug;
-    String url;
-
-    Category({
-        required this.id,
-        required this.name,
-        required this.slug,
-        required this.url,
-    });
-
-    factory Category.fromJson(Map<String, dynamic> json) => Category(
-        id: json["id"],
-        name: json["name"],
-        slug: json["slug"],
-        url: json["url"],
-    );
-
-    Map<String, dynamic> toJson() => {
-        "id": id,
-        "name": name,
-        "slug": slug,
-        "url": url,
-    };
-}
-
-class Images {
-    String thumbnail;
-    String large;
-    String full;
-    String gallery;
-
-    Images({
-        required this.thumbnail,
-        required this.large,
-        required this.full,
-        required this.gallery,
-    });
-
-    factory Images.fromJson(Map<String, dynamic> json) => Images(
-        thumbnail: json["thumbnail"],
-        large: json["large"],
-        full: json["full"],
-        gallery: json["gallery"],
-    );
-
-    Map<String, dynamic> toJson() => {
-        "thumbnail": thumbnail,
-        "large": large,
-        "full": full,
-        "gallery": gallery,
-    };
-}
-
-class Pricing {
-    String price;
-    String salePrice;
-    bool isFree;
-    String priceLabel;
-    int discountPercentage;
-
-    Pricing({
-        required this.price,
-        required this.salePrice,
-        required this.isFree,
-        required this.priceLabel,
-        required this.discountPercentage,
-    });
-
-    factory Pricing.fromJson(Map<String, dynamic> json) => Pricing(
-        price: json["price"],
-        salePrice: json["sale_price"],
-        isFree: json["is_free"],
-        priceLabel: json["price_label"],
-        discountPercentage: json["discount_percentage"],
-    );
-
-    Map<String, dynamic> toJson() => {
-        "price": price,
-        "sale_price": salePrice,
-        "is_free": isFree,
-        "price_label": priceLabel,
-        "discount_percentage": discountPercentage,
+        "phone": phone,
     };
 }
 
@@ -281,33 +129,109 @@ class Rating {
 }
 
 class Topic {
-    String? id;
-    String? title;
-    String? summary;
-    List<dynamic> lessons;
-    List<dynamic> quizzes;
+    String topicId;
+    String topicTitle;
+    String topicContent;
+    dynamic topicMeta;
+    List<Lesson> lessons;
 
     Topic({
-        required this.id,
-        required this.title,
-        required this.summary,
+        required this.topicId,
+        required this.topicTitle,
+        required this.topicContent,
+        required this.topicMeta,
         required this.lessons,
-        required this.quizzes,
     });
 
     factory Topic.fromJson(Map<String, dynamic> json) => Topic(
-        id: json["id"],
-        title: json["title"],
-        summary: json["summary"],
-        lessons: List<dynamic>.from(json["lessons"].map((x) => x)),
-        quizzes: List<dynamic>.from(json["quizzes"].map((x) => x)),
+        topicId: json["topic_id"],
+        topicTitle: json["topic_title"],
+        topicContent: json["topic_content"],
+        topicMeta: json["topic_meta"],
+        lessons: List<Lesson>.from(json["lessons"].map((x) => Lesson.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
-        "id": id,
-        "title": title,
-        "summary": summary,
-        "lessons": List<dynamic>.from(lessons.map((x) => x)),
+        "topic_id": topicId,
+        "topic_title": topicTitle,
+        "topic_content": topicContent,
+        "topic_meta": topicMeta,
+        "lessons": List<dynamic>.from(lessons.map((x) => x.toJson())),
+    };
+}
+
+class Lesson {
+    String lessonId;
+    String lessonTitle;
+    String lessonContent;
+    LessonMeta lessonMeta;
+    List<dynamic> quizzes;
+    List<dynamic> assignments;
+
+    Lesson({
+        required this.lessonId,
+        required this.lessonTitle,
+        required this.lessonContent,
+        required this.lessonMeta,
+        required this.quizzes,
+        required this.assignments,
+    });
+
+    factory Lesson.fromJson(Map<String, dynamic> json) => Lesson(
+        lessonId: json["lesson_id"],
+        lessonTitle: json["lesson_title"],
+        lessonContent: json["lesson_content"],
+        lessonMeta: LessonMeta.fromJson(json["lesson_meta"]),
+        quizzes: List<dynamic>.from(json["quizzes"].map((x) => x)),
+        assignments: List<dynamic>.from(json["assignments"].map((x) => x)),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "lesson_id": lessonId,
+        "lesson_title": lessonTitle,
+        "lesson_content": lessonContent,
+        "lesson_meta": lessonMeta.toJson(),
         "quizzes": List<dynamic>.from(quizzes.map((x) => x)),
+        "assignments": List<dynamic>.from(assignments.map((x) => x)),
+    };
+}
+
+class LessonMeta {
+    List<String>? tutorAttachments;
+    List<String> wpStatisticsWordsCount;
+    List<String>? video;
+
+    LessonMeta({
+        this.tutorAttachments,
+        required this.wpStatisticsWordsCount,
+        this.video,
+    });
+
+    factory LessonMeta.fromJson(Map<String, dynamic> json) => LessonMeta(
+        tutorAttachments: json["_tutor_attachments"] == null ? [] : List<String>.from(json["_tutor_attachments"]!.map((x) => x)),
+        wpStatisticsWordsCount: List<String>.from(json["wp_statistics_words_count"].map((x) => x)),
+        video: json["_video"] == null ? [] : List<String>.from(json["_video"]!.map((x) => x)),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "_tutor_attachments": tutorAttachments == null ? [] : List<dynamic>.from(tutorAttachments!.map((x) => x)),
+        "wp_statistics_words_count": List<dynamic>.from(wpStatisticsWordsCount.map((x) => x)),
+        "_video": video == null ? [] : List<dynamic>.from(video!.map((x) => x)),
+    };
+}
+
+class TopicMetaClass {
+    List<DateTime> wpOldDate;
+
+    TopicMetaClass({
+        required this.wpOldDate,
+    });
+
+    factory TopicMetaClass.fromJson(Map<String, dynamic> json) => TopicMetaClass(
+        wpOldDate: List<DateTime>.from(json["_wp_old_date"].map((x) => DateTime.parse(x))),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "_wp_old_date": List<dynamic>.from(wpOldDate.map((x) => "${x.year.toString().padLeft(4, '0')}-${x.month.toString().padLeft(2, '0')}-${x.day.toString().padLeft(2, '0')}")),
     };
 }
