@@ -1,5 +1,3 @@
-
-
 import 'package:eduma_app/Screen/continueMyCourse.page.dart';
 import 'package:eduma_app/Screen/course.page.dart';
 import 'package:eduma_app/Screen/courseDetails.page.dart';
@@ -37,6 +35,24 @@ class _HomePageState extends ConsumerState<HomePage> {
     var box = Hive.box("userBox");
     final popularCourseProvider = ref.watch(popularCourseController);
     final allCoursesProvider = ref.watch(allCoursesController);
+
+    if (popularCourseProvider.isLoading || allCoursesProvider.isLoading) {
+      return Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(color: Color(0xFF001E6C)),
+        ),
+      );
+    }
+    if (popularCourseProvider.hasError || allCoursesProvider.hasError) {
+      return Scaffold(
+        body: Center(
+          child: Text(
+            popularCourseProvider.error.toString(),
+            style: GoogleFonts.inter(fontSize: 20.sp, color: Colors.red),
+          ),
+        ),
+      );
+    }
     return Scaffold(
       key: _scaffoldKey,
       drawer: CustomProfileDrawer(),
