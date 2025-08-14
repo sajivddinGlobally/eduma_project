@@ -351,7 +351,7 @@ class _CustomProfileDrawerState extends State<CustomProfileDrawer> {
   Widget tileBuild(String image, String name) {
     return Row(
       children: [
-        Image.asset(image),
+        Image.asset(image, color: Color(0xFF001E6C)),
         SizedBox(width: 10.w),
         Text(
           name,
