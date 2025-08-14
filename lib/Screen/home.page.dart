@@ -465,7 +465,6 @@ class _HomePageState extends ConsumerState<HomePage> {
                                                   setState(
                                                     () => isLoading = true,
                                                   );
-
                                                   isWishlisted =
                                                       await WishlistControllerClass.toggle(
                                                         context: context,

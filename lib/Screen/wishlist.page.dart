@@ -163,6 +163,8 @@ class _WishlistPageState extends ConsumerState<WishlistPage> {
                                               response.message,
                                             );
                                           }
+                                          // ✅ Pura wishlist provider refresh
+                                          ref.invalidate(getWishlistController);
                                         } catch (e) {
                                           log(e.toString());
                                         }
