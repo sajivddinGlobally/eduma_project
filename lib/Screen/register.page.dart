@@ -36,6 +36,9 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
     });
   }
 
+  String? selectedRole;
+  final List<String> roles = ["Student", "Instructor"];
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -191,6 +194,82 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                 ),
                 SizedBox(height: 20.h),
                 Text(
+                  "Select Role",
+                  style: GoogleFonts.roboto(
+                    fontSize: 13.sp,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xff4D4D4D),
+                  ),
+                ),
+                SizedBox(height: 12.h),
+                DropdownButtonFormField<String>(
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.only(
+                      // left: 19.w,
+                      // right: 10.w,
+                      top: 15.h,
+                      bottom: 15.h,
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(40.r),
+                      borderSide: BorderSide(
+                        color: Color.fromARGB(25, 0, 0, 0),
+                        width: 1.w,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(40.r),
+                      borderSide: BorderSide(
+                        color: Color.fromARGB(25, 0, 0, 0),
+                        width: 1.w,
+                      ),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(40.r),
+                      borderSide: BorderSide(
+                        color: Color.fromARGB(25, 0, 0, 0),
+                        width: 1.w,
+                      ),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(40.r),
+                      borderSide: BorderSide(
+                        color: Color.fromARGB(25, 0, 0, 0),
+                        width: 1.w,
+                      ),
+                    ),
+                  ),
+                  icon: Icon(Icons.arrow_drop_down, color: Colors.grey),
+                  padding: EdgeInsets.only(left: 20.w, right: 20.w),
+                  value: selectedRole,
+                  hint: Text(
+                    "Select Role",
+                    style: GoogleFonts.roboto(
+                      fontSize: 13.sp,
+                      fontWeight: FontWeight.w400,
+                      color: Color(0xff4D4D4D),
+                    ),
+                  ),
+                  items: roles.map((role) {
+                    return DropdownMenuItem(
+                      value: role,
+                      child: Text(
+                        role,
+                        style: GoogleFonts.roboto(
+                          fontSize: 15.sp,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      selectedRole = value;
+                    });
+                  },
+                ),
+                SizedBox(height: 20.h),
+                Text(
                   "Password",
                   style: GoogleFonts.roboto(
                     fontSize: 13.sp,
@@ -327,6 +406,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                     return null;
                   },
                 ),
+
                 SizedBox(height: 15.h),
                 InkWell(
                   onTap: toggleCheckbox,
@@ -362,68 +442,70 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                 SizedBox(height: 25.h),
                 ElevatedButton(
                   onPressed: () async {
-                    if (formKey.currentState!.validate()) {
-                      if (passwordController.text.trim() !=
-                          confirmPassController.text.trim()) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text("Password do not match"),
-                            backgroundColor: Colors.red,
-                          ),
-                        );
-                        return;
-                      }
-                      if (!isCheck) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              "Please accept the terms and conditions",
-                            ),
-                            backgroundColor: Colors.red,
-                          ),
-                        );
-                        return;
-                      }
-                      setState(() {
-                        isLoading = true;
-                      });
-                      final body = RegisterBodyCustomeModel(
-                        username: userNameController.text,
-                        email: emailController.text,
-                        password: passwordController.text,
-                        confirmPassword: confirmPassController.text,
-                      );
-                      try {
-                        final service = APIStateNetwork(createDio());
-                        final response = await service.customeRegister(body);
-                        if (response.success == true) {
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            CupertinoPageRoute(
-                              builder: (context) => LoginPage(),
-                            ),
-                            (route) => false,
-                          );
-                          showSuccessMessage(context, response.message);
-                          setState(() {
-                            isLoading = false;
-                          });
-                        } else {
-                          setState(() {
-                            isLoading = false;
-                          });
-                          ScaffoldMessenger.of(
-                            context,
-                          ).showSnackBar(SnackBar(content: Text("data")));
-                        }
-                      } catch (e) {
-                        setState(() {
-                          isLoading = false;
-                        });
-                        //showErrorMessage(e.toString());
-                        log(e.toString());
-                      }
-                    }
+                    // if (formKey.currentState!.validate()) {
+                    //   if (passwordController.text.trim() !=
+                    //       confirmPassController.text.trim()) {
+                    //     ScaffoldMessenger.of(context).showSnackBar(
+                    //       SnackBar(
+                    //         content: Text("Password do not match"),
+                    //         backgroundColor: Colors.red,
+                    //       ),
+                    //     );
+                    //     return;
+                    //   }
+                    //   if (!isCheck) {
+                    //     ScaffoldMessenger.of(context).showSnackBar(
+                    //       SnackBar(
+                    //         content: Text(
+                    //           "Please accept the terms and conditions",
+                    //         ),
+                    //         backgroundColor: Colors.red,
+                    //       ),
+                    //     );
+                    //     return;
+                    //   }
+                    //   setState(() {
+                    //     isLoading = true;
+                    //   });
+                    //   final body = RegisterBodyModel(
+                    //     username: userNameController.text,
+                    //     email: emailController.text,
+                    //     password: passwordController.text,
+                    //     confirmPassword: confirmPassController.text,
+                    //     roleType: ""
+
+                    //   );
+                    //   try {
+                    //     final service = APIStateNetwork(createDio());
+                    //     final response = await service.customeRegister(body);
+                    //     if (response.success == true) {
+                    //       Navigator.pushAndRemoveUntil(
+                    //         context,
+                    //         CupertinoPageRoute(
+                    //           builder: (context) => LoginPage(),
+                    //         ),
+                    //         (route) => false,
+                    //       );
+                    //       showSuccessMessage(context, response.message);
+                    //       setState(() {
+                    //         isLoading = false;
+                    //       });
+                    //     } else {
+                    //       setState(() {
+                    //         isLoading = false;
+                    //       });
+                    //       ScaffoldMessenger.of(
+                    //         context,
+                    //       ).showSnackBar(SnackBar(content: Text("data")));
+                    //     }
+                    //   } catch (e) {
+                    //     setState(() {
+                    //       isLoading = false;
+                    //     });
+                    //     //showErrorMessage(e.toString());
+                    //     log(e.toString());
+                    //   }
+                    // }
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF001E6C),

@@ -1,31 +1,34 @@
 // To parse this JSON data, do
 //
-//     final registerBodyCustomeModel = registerBodyCustomeModelFromJson(jsonString);
+//     final registerBodyModel = registerBodyModelFromJson(jsonString);
 
 import 'dart:convert';
 
-RegisterBodyCustomeModel registerBodyCustomeModelFromJson(String str) => RegisterBodyCustomeModel.fromJson(json.decode(str));
+RegisterBodyModel registerBodyModelFromJson(String str) => RegisterBodyModel.fromJson(json.decode(str));
 
-String registerBodyCustomeModelToJson(RegisterBodyCustomeModel data) => json.encode(data.toJson());
+String registerBodyModelToJson(RegisterBodyModel data) => json.encode(data.toJson());
 
-class RegisterBodyCustomeModel {
+class RegisterBodyModel {
     String username;
     String email;
     String password;
     String confirmPassword;
+    String roleType;
 
-    RegisterBodyCustomeModel({
+    RegisterBodyModel({
         required this.username,
         required this.email,
         required this.password,
         required this.confirmPassword,
+        required this.roleType,
     });
 
-    factory RegisterBodyCustomeModel.fromJson(Map<String, dynamic> json) => RegisterBodyCustomeModel(
+    factory RegisterBodyModel.fromJson(Map<String, dynamic> json) => RegisterBodyModel(
         username: json["username"],
         email: json["email"],
         password: json["password"],
         confirmPassword: json["confirm_password"],
+        roleType: json["role_type"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -33,5 +36,6 @@ class RegisterBodyCustomeModel {
         "email": email,
         "password": password,
         "confirm_password": confirmPassword,
+        "role_type": roleType,
     };
 }

@@ -1,33 +1,37 @@
 // To parse this JSON data, do
 //
-//     final registerResCustomeModel = registerResCustomeModelFromJson(jsonString);
+//     final registerResModel = registerResModelFromJson(jsonString);
 
 import 'dart:convert';
 
-RegisterResCustomeModel registerResCustomeModelFromJson(String str) => RegisterResCustomeModel.fromJson(json.decode(str));
+RegisterResModel registerResModelFromJson(String str) => RegisterResModel.fromJson(json.decode(str));
 
-String registerResCustomeModelToJson(RegisterResCustomeModel data) => json.encode(data.toJson());
+String registerResModelToJson(RegisterResModel data) => json.encode(data.toJson());
 
-class RegisterResCustomeModel {
+class RegisterResModel {
     bool success;
     String message;
     int userId;
+    String role;
 
-    RegisterResCustomeModel({
+    RegisterResModel({
         required this.success,
         required this.message,
         required this.userId,
+        required this.role,
     });
 
-    factory RegisterResCustomeModel.fromJson(Map<String, dynamic> json) => RegisterResCustomeModel(
+    factory RegisterResModel.fromJson(Map<String, dynamic> json) => RegisterResModel(
         success: json["success"],
         message: json["message"],
         userId: json["user_id"],
+        role: json["role"],
     );
 
     Map<String, dynamic> toJson() => {
         "success": success,
         "message": message,
         "user_id": userId,
+        "role": role,
     };
 }

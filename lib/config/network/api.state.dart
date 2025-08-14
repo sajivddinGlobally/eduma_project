@@ -29,8 +29,8 @@ abstract class APIStateNetwork {
   Future<LoginResModel> login(@Body() LoginBodyModel body);
 
   @POST("/custom/v1/register")
-  Future<RegisterResCustomeModel> customeRegister(
-    @Body() RegisterBodyCustomeModel body,
+  Future<RegisterResModel> customeRegister(
+    @Body() RegisterResModel body,
   );
 
   @POST("/custom/v1/send-otp")
