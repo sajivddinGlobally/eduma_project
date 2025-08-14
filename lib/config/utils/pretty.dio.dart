@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:eduma_app/config/utils/navigatorKey.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 createDio() {
@@ -15,9 +16,18 @@ createDio() {
     ),
   );
 
+  var box = Hive.box("userBox");
+  var token = box.get("token");
+
   dio.interceptors.add(
     InterceptorsWrapper(
       onRequest: (options, handler) {
+        options.headers.addAll({
+          // 'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          //'Authorization': 'Bearer $token',
+          if (token != null) 'Authorization': 'Bearer $token',
+        });
         handler.next(options);
       },
       onResponse: (response, handler) {
@@ -48,7 +58,6 @@ createDio() {
         }
         handler.next(e);
 
-        
         // final statusCode = e.response?.statusCode;
         // final errorData = e.response?.data;
         // String cleanedMessage = "Something went wrong";
