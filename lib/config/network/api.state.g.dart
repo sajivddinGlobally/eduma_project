@@ -48,7 +48,7 @@ class _APIStateNetwork implements APIStateNetwork {
   }
 
   @override
-  Future<RegisterResModel> customeRegister(RegisterResModel body) async {
+  Future<RegisterResModel> customeRegister(RegisterBodyModel body) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};

@@ -30,7 +30,7 @@ abstract class APIStateNetwork {
 
   @POST("/custom/v1/register")
   Future<RegisterResModel> customeRegister(
-    @Body() RegisterResModel body,
+    @Body() RegisterBodyModel body,
   );
 
   @POST("/custom/v1/send-otp")

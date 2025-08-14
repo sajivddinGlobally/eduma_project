@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:eduma_app/Screen/apiCall/api.register.dart';
 import 'package:eduma_app/Screen/login.page.dart';
 import 'package:eduma_app/config/core/showFlushbar.dart';
 import 'package:eduma_app/config/network/api.state.dart';
@@ -19,26 +20,8 @@ class RegisterPage extends ConsumerStatefulWidget {
   ConsumerState<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _RegisterPageState extends ConsumerState<RegisterPage> {
-  bool isShow = true;
-  bool isObsecure = true;
-  bool isCheck = false;
-  bool isLoading = false;
-
-  final userNameController = TextEditingController();
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-  final confirmPassController = TextEditingController();
-
-  void toggleCheckbox() {
-    setState(() {
-      isCheck = !isCheck;
-    });
-  }
-
-  String? selectedRole;
-  final List<String> roles = ["Student", "Instructor"];
-
+class _RegisterPageState extends ConsumerState<RegisterPage>
+    with RegisterApi<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -239,6 +222,12 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                       ),
                     ),
                   ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Please Select Role";
+                    }
+                    return null;
+                  },
                   icon: Icon(Icons.arrow_drop_down, color: Colors.grey),
                   padding: EdgeInsets.only(left: 20.w, right: 20.w),
                   value: selectedRole,
@@ -441,72 +430,8 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                 ),
                 SizedBox(height: 25.h),
                 ElevatedButton(
-                  onPressed: () async {
-                    // if (formKey.currentState!.validate()) {
-                    //   if (passwordController.text.trim() !=
-                    //       confirmPassController.text.trim()) {
-                    //     ScaffoldMessenger.of(context).showSnackBar(
-                    //       SnackBar(
-                    //         content: Text("Password do not match"),
-                    //         backgroundColor: Colors.red,
-                    //       ),
-                    //     );
-                    //     return;
-                    //   }
-                    //   if (!isCheck) {
-                    //     ScaffoldMessenger.of(context).showSnackBar(
-                    //       SnackBar(
-                    //         content: Text(
-                    //           "Please accept the terms and conditions",
-                    //         ),
-                    //         backgroundColor: Colors.red,
-                    //       ),
-                    //     );
-                    //     return;
-                    //   }
-                    //   setState(() {
-                    //     isLoading = true;
-                    //   });
-                    //   final body = RegisterBodyModel(
-                    //     username: userNameController.text,
-                    //     email: emailController.text,
-                    //     password: passwordController.text,
-                    //     confirmPassword: confirmPassController.text,
-                    //     roleType: ""
+                  onPressed: isLoading ? null : () => registerCall(),
 
-                    //   );
-                    //   try {
-                    //     final service = APIStateNetwork(createDio());
-                    //     final response = await service.customeRegister(body);
-                    //     if (response.success == true) {
-                    //       Navigator.pushAndRemoveUntil(
-                    //         context,
-                    //         CupertinoPageRoute(
-                    //           builder: (context) => LoginPage(),
-                    //         ),
-                    //         (route) => false,
-                    //       );
-                    //       showSuccessMessage(context, response.message);
-                    //       setState(() {
-                    //         isLoading = false;
-                    //       });
-                    //     } else {
-                    //       setState(() {
-                    //         isLoading = false;
-                    //       });
-                    //       ScaffoldMessenger.of(
-                    //         context,
-                    //       ).showSnackBar(SnackBar(content: Text("data")));
-                    //     }
-                    //   } catch (e) {
-                    //     setState(() {
-                    //       isLoading = false;
-                    //     });
-                    //     //showErrorMessage(e.toString());
-                    //     log(e.toString());
-                    //   }
-                    // }
-                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF001E6C),
                     minimumSize: Size(400.w, 52.h),
