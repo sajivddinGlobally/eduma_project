@@ -568,7 +568,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                     children: [
                       SizedBox(width: 16.w),
                       Icon(
-                        Icons.qr_code,
+                        Icons.grid_view_rounded,
                         color: Color(0xFF000000),
                         size: 28.sp,
                       ),
