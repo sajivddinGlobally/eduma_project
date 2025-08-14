@@ -236,12 +236,10 @@ class _WishlistPageState extends ConsumerState<WishlistPage> {
                 },
                 error: (error, stackTrace) =>
                     Center(child: Text(error.toString())),
-                loading: () => Center(
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height / 2,
-                    child: CircularProgressIndicator(),
-                  ),
+                loading: () => SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height / 2,
+                  child: Center(child: CircularProgressIndicator()),
                 ),
               ),
             ],
