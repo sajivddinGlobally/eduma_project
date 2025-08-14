@@ -3,6 +3,7 @@ import 'package:eduma_app/data/Model/allCategoryModel.dart';
 import 'package:eduma_app/data/Model/allCoursesModel.dart';
 import 'package:eduma_app/data/Model/deleteWishlistResModel.dart';
 import 'package:eduma_app/data/Model/getWishlistModel.dart';
+import 'package:eduma_app/data/Model/instructorModel.dart';
 import 'package:eduma_app/data/Model/loginBodyModel.dart';
 import 'package:eduma_app/data/Model/loginResModel.dart';
 import 'package:eduma_app/data/Model/popularCourseDetailsModel.dart';
@@ -29,9 +30,7 @@ abstract class APIStateNetwork {
   Future<LoginResModel> login(@Body() LoginBodyModel body);
 
   @POST("/custom/v1/register")
-  Future<RegisterResModel> customeRegister(
-    @Body() RegisterBodyModel body,
-  );
+  Future<RegisterResModel> customeRegister(@Body() RegisterBodyModel body);
 
   @POST("/custom/v1/send-otp")
   Future<SendOtpResModel> sendOTP(@Body() SendOtpBodyModel body);
@@ -59,4 +58,7 @@ abstract class APIStateNetwork {
 
   @DELETE("/custom/v1/wishlist")
   Future<DeletewishlistResModel> deleteWishlist(@Body() WishlistBodyModel body);
+
+  @GET("/custom/v1/instructors")
+  Future<List<InstructorModel>> instructor();
 }

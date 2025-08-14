@@ -211,7 +211,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                               ),
                               (route) => false,
                             );
-
                             showSuccessMessage(context, "Login Successfull");
 
                             setState(() {
