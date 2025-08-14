@@ -12,6 +12,7 @@ import 'package:eduma_app/Screen/shop.page.dart';
 import 'package:eduma_app/Screen/youtube.page.dart';
 import 'package:eduma_app/data/Controller/allCoursesController.dart';
 import 'package:eduma_app/data/Controller/popularCourseController.dart';
+import 'package:eduma_app/data/Controller/wishlistControllerClass.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -30,6 +31,8 @@ class HomePage extends ConsumerStatefulWidget {
 class _HomePageState extends ConsumerState<HomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int selectIndex = 0;
+  bool isLoading = false;
+  bool isWishlisted = false;
   @override
   Widget build(BuildContext context) {
     var box = Hive.box("userBox");
@@ -456,11 +459,49 @@ class _HomePageState extends ConsumerState<HomePage> {
                                             tapTargetSize: MaterialTapTargetSize
                                                 .shrinkWrap,
                                           ),
-                                          onPressed: () {},
-                                          icon: Icon(
-                                            Icons.favorite_outline,
-                                            color: Colors.white,
-                                          ),
+                                          onPressed: isLoading
+                                              ? null
+                                              : () async {
+                                                  setState(
+                                                    () => isLoading = true,
+                                                  );
+
+                                                  isWishlisted =
+                                                      await WishlistControllerClass.toggle(
+                                                        context: context,
+                                                        courseId:
+                                                            course[index].id,
+                                                        userId: box.get(
+                                                          "storeId",
+                                                        ),
+                                                        currentStatus:
+                                                            isWishlisted,
+                                                      );
+                                                  setState(
+                                                    () => isLoading = false,
+                                                  );
+                                                },
+                                          icon: isLoading
+                                              ? SizedBox(
+                                                  height: 20,
+                                                  width: 20,
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                        strokeWidth: 2,
+                                                        color: Color(
+                                                          0xFF001E6C,
+                                                        ),
+                                                      ),
+                                                )
+                                              : Icon(
+                                                  isWishlisted
+                                                      ? Icons.favorite
+                                                      : Icons.favorite_border,
+                                                  color: isWishlisted
+                                                      ? Colors.red
+                                                      : Colors.white,
+                                                  size: 25.sp,
+                                                ),
                                         ),
                                       ),
                                       Positioned(

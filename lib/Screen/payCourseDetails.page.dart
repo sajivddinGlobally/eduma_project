@@ -1,10 +1,12 @@
 import 'package:eduma_app/data/Controller/popularCourseController.dart';
+import 'package:eduma_app/data/Controller/wishlistControllerClass.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hive_flutter/adapters.dart';
 
 class PayCourseDetailsPage extends ConsumerStatefulWidget {
   final String id;
@@ -16,8 +18,11 @@ class PayCourseDetailsPage extends ConsumerStatefulWidget {
 }
 
 class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
+  bool isLoading = false;
+  bool isWishlisted = false;
   @override
   Widget build(BuildContext context) {
+    var box = Hive.box("userBox");
     final courseDetailsProvider = ref.watch(
       popularCourseDetailsController(widget.id),
     );
@@ -113,12 +118,43 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                 Align(
                                   alignment: Alignment.topRight,
                                   child: IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(
-                                      Icons.favorite_border,
-                                      color: Colors.white,
-                                      size: 25.sp,
-                                    ),
+                                    // style: IconButton.styleFrom(
+                                    //   minimumSize: Size(0, 0),
+                                    //   padding: EdgeInsets.zero,
+                                    //   tapTargetSize: MaterialTapTargetSize
+                                    //       .shrinkWrap,
+                                    // ),
+                                    onPressed: isLoading
+                                        ? null
+                                        : () async {
+                                            setState(() => isLoading = true);
+                                            isWishlisted =
+                                                await WishlistControllerClass.toggle(
+                                                  context: context,
+                                                  courseId: courseDetails.id,
+                                                  userId: box.get("storeId"),
+                                                  currentStatus: isWishlisted,
+                                                );
+                                            setState(() => isLoading = false);
+                                          },
+                                    icon: isLoading
+                                        ? SizedBox(
+                                            height: 20,
+                                            width: 20,
+                                            child: CircularProgressIndicator(
+                                              strokeWidth: 2,
+                                              color: Color(0xFF001E6C),
+                                            ),
+                                          )
+                                        : Icon(
+                                            isWishlisted
+                                                ? Icons.favorite
+                                                : Icons.favorite_border,
+                                            color: isWishlisted
+                                                ? Colors.red
+                                                : Colors.white,
+                                            size: 25.sp,
+                                          ),
                                   ),
                                 ),
                               ],

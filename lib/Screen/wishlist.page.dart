@@ -1,9 +1,16 @@
+import 'dart:developer';
+
+import 'package:eduma_app/config/core/showFlushbar.dart';
+import 'package:eduma_app/config/network/api.state.dart';
+import 'package:eduma_app/config/utils/pretty.dio.dart';
 import 'package:eduma_app/data/Controller/getWishlistController.dart';
+import 'package:eduma_app/data/Model/wishlistBodyModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hive/hive.dart';
 
 class WishlistPage extends ConsumerStatefulWidget {
   const WishlistPage({super.key});
@@ -31,6 +38,7 @@ class _WishlistPageState extends ConsumerState<WishlistPage> {
   ];
   @override
   Widget build(BuildContext context) {
+    var box = Hive.box("userBox");
     final fetchWishlistProvider = ref.watch(getWishlistController);
     return Scaffold(
       backgroundColor: Color(0xFFFFFFFF),
@@ -138,7 +146,27 @@ class _WishlistPageState extends ConsumerState<WishlistPage> {
                                   Align(
                                     alignment: Alignment.topRight,
                                     child: IconButton(
-                                      onPressed: () {},
+                                      onPressed: () async {
+                                        final body = WishlistBodyModel(
+                                          courseId: wishlist.items[index].id,
+                                          userId: box.get("storeId"),
+                                        );
+                                        try {
+                                          final service = APIStateNetwork(
+                                            createDio(),
+                                          );
+                                          final response = await service
+                                              .deleteWishlist(body);
+                                          if (response != null) {
+                                            showSuccessMessage(
+                                              context,
+                                              response.message,
+                                            );
+                                          }
+                                        } catch (e) {
+                                          log(e.toString());
+                                        }
+                                      },
                                       icon: Icon(
                                         Icons.delete,
                                         color: Colors.red,
