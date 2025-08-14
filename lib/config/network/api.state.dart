@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:eduma_app/data/Model/allCategoryModel.dart';
 import 'package:eduma_app/data/Model/allCoursesModel.dart';
+import 'package:eduma_app/data/Model/getWishlistModel.dart';
 import 'package:eduma_app/data/Model/loginBodyModel.dart';
 import 'package:eduma_app/data/Model/loginResModel.dart';
 import 'package:eduma_app/data/Model/popularCourseDetailsModel.dart';
@@ -51,4 +52,7 @@ abstract class APIStateNetwork {
 
   @POST("/custom/v1/wishlist")
   Future<WishlistResModel> wishlist(@Body() WishlistBodyModel body);
+
+  @GET("/custom/v1/wishlist")
+  Future<GetwishlistModel> fetchWishlist();
 }
