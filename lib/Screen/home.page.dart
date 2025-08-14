@@ -31,7 +31,7 @@ class HomePage extends ConsumerStatefulWidget {
 class _HomePageState extends ConsumerState<HomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int selectIndex = 0;
-  bool isLoading = false;
+  bool loading = false;
   bool isWishlisted = false;
   @override
   Widget build(BuildContext context) {
@@ -459,11 +459,11 @@ class _HomePageState extends ConsumerState<HomePage> {
                                             tapTargetSize: MaterialTapTargetSize
                                                 .shrinkWrap,
                                           ),
-                                          onPressed: isLoading
+                                          onPressed: loading
                                               ? null
                                               : () async {
                                                   setState(
-                                                    () => isLoading = true,
+                                                    () => loading = true,
                                                   );
                                                   isWishlisted =
                                                       await WishlistControllerClass.toggle(
@@ -477,10 +477,10 @@ class _HomePageState extends ConsumerState<HomePage> {
                                                             isWishlisted,
                                                       );
                                                   setState(
-                                                    () => isLoading = false,
+                                                    () => loading = false,
                                                   );
                                                 },
-                                          icon: isLoading
+                                          icon: loading
                                               ? SizedBox(
                                                   height: 20,
                                                   width: 20,

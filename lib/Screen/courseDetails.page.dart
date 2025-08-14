@@ -141,6 +141,7 @@ class _CourseDetailsPageState extends ConsumerState<CourseDetailsPage> {
                                                   currentStatus: isWishlisted,
                                                 );
                                             setState(() => isLoading = false);
+
                                             // final body = WishlistBodyModel(
                                             //   courseId: courseDetails.id,
                                             //   userId: box.get("storeId"),
@@ -149,9 +150,8 @@ class _CourseDetailsPageState extends ConsumerState<CourseDetailsPage> {
                                             //   final service = APIStateNetwork(
                                             //     createDio(),
                                             //   );
-                                            //   final response = await service.wishlist(
-                                            //     body,
-                                            //   );
+                                            //   final response = await service
+                                            //       .wishlist(body);
                                             //   if (response != null) {
                                             //     showSuccessMessage(
                                             //       context,

@@ -1,6 +1,12 @@
+import 'dart:developer';
+
 import 'package:eduma_app/Screen/courseDetails.page.dart';
+import 'package:eduma_app/config/core/showFlushbar.dart';
+import 'package:eduma_app/config/network/api.state.dart';
+import 'package:eduma_app/config/utils/pretty.dio.dart';
 import 'package:eduma_app/data/Controller/allCoursesController.dart';
 import 'package:eduma_app/data/Controller/wishlistControllerClass.dart';
+import 'package:eduma_app/data/Model/wishlistBodyModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -53,6 +59,7 @@ class _CoursePageState extends ConsumerState<CoursePage> {
   Widget build(BuildContext context) {
     var box = Hive.box("userBox");
     final allCourseProvider = ref.watch(allCoursesController);
+    final wishlistState = ref.watch(wishlistNotifierProvider);
     return Scaffold(
       backgroundColor: Color(0xFFFFFFFF),
       body: Column(
@@ -192,35 +199,48 @@ class _CoursePageState extends ConsumerState<CoursePage> {
                                       Align(
                                         alignment: Alignment.topRight,
                                         child: IconButton(
-                                          // style: IconButton.styleFrom(
-                                          //   minimumSize: Size(0, 0),
-                                          //   padding: EdgeInsets.zero,
-                                          //   tapTargetSize: MaterialTapTargetSize
-                                          //       .shrinkWrap,
-                                          // ),
-                                          onPressed: isLoading
+                                          onPressed: wishlistState.isLoading
                                               ? null
                                               : () async {
-                                                  setState(
-                                                    () => isLoading = true,
-                                                  );
-                                                  isWishlisted =
-                                                      await WishlistControllerClass.toggle(
-                                                        context: context,
+                                                  final body =
+                                                      WishlistBodyModel(
                                                         courseId: allCourse
                                                             .data[index]
                                                             .id,
                                                         userId: box.get(
                                                           "storeId",
                                                         ),
-                                                        currentStatus:
-                                                            isWishlisted,
                                                       );
-                                                  setState(
-                                                    () => isLoading = false,
-                                                  );
+
+                                                  // ref
+                                                  //     .read(
+                                                  //       wishlistNotifierProvider
+                                                  //           .notifier,
+                                                  //     )
+                                                  //     .addToWishlist(body);
+
+                                                  // Icon turant change karne ke liye local toggle
+                                                  setState(() {
+                                                    isWishlisted =
+                                                        !isWishlisted;
+                                                  });
+
+                                                  final result = await ref
+                                                      .read(
+                                                        wishlistNotifierProvider
+                                                            .notifier,
+                                                      )
+                                                      .addToWishlist(body);
+
+                                                  // Agar API fail ho jaaye toh icon wapas original state me
+                                                  if (!result) {
+                                                    setState(() {
+                                                      isWishlisted =
+                                                          !isWishlisted;
+                                                    });
+                                                  }
                                                 },
-                                          icon: isLoading
+                                          icon: wishlistState.isLoading
                                               ? SizedBox(
                                                   height: 20,
                                                   width: 20,

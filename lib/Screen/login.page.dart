@@ -23,7 +23,7 @@ class LoginPage extends ConsumerStatefulWidget {
 
 class _LoginPageState extends ConsumerState<LoginPage> {
   bool isShow = true;
-  final emailController = TextEditingController();
+  final userName = TextEditingController();
   final passwordController = TextEditingController();
   bool isLoading = false;
   @override
@@ -70,7 +70,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
               ),
               SizedBox(height: 12.h),
               TextField(
-                controller: emailController,
+                controller: userName,
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.only(
                     left: 19.w,
@@ -176,7 +176,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 onPressed: isLoading
                     ? null
                     : () async {
-                        if (emailController.text.isEmpty ||
+                        if (userName.text.isEmpty ||
                             passwordController.text.isEmpty) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
@@ -192,7 +192,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           isLoading = true;
                         });
                         final body = LoginBodyModel(
-                          username: emailController.text,
+                          username: userName.text,
                           password: passwordController.text,
                         );
                         try {

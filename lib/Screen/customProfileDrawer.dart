@@ -1,5 +1,6 @@
 import 'package:eduma_app/Screen/course.page.dart';
 import 'package:eduma_app/Screen/editProfile.page.dart';
+import 'package:eduma_app/Screen/onbording.page.dart';
 import 'package:eduma_app/Screen/orderList.page.dart';
 import 'package:eduma_app/Screen/paymentOverfiew.page.dart';
 import 'package:eduma_app/Screen/wishlist.page.dart';
@@ -321,6 +322,11 @@ class _CustomProfileDrawerState extends State<CustomProfileDrawer> {
                     content: Text("Logout Successfull"),
                     backgroundColor: Colors.red,
                   ),
+                );
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  CupertinoPageRoute(builder: (context) => OnbordingPage()),
+                  (route) => false,
                 );
               },
               child: SizedBox(

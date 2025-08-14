@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:eduma_app/Screen/home.page.dart';
 import 'package:eduma_app/Screen/onbording.page.dart';
 import 'package:eduma_app/config/utils/navigatorKey.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +8,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 void main() async {
-  
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   await Hive.openBox("userBox");
@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
               // tested with just a hot reload.
               colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             ),
-            home: OnbordingPage(),
+            home: token == null ? OnbordingPage() : HomePage(),
           );
         },
       ),
