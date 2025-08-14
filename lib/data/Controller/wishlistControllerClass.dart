@@ -31,68 +31,68 @@ class WishlistControllerClass {
   }
 }
 
-class WishlistState {
-  final bool isLoading;
-  final String? successMessage;
-  final String? errorMessage;
+// class WishlistState {
+//   final bool isLoading;
+//   final String? successMessage;
+//   final String? errorMessage;
 
-  const WishlistState({
-    this.isLoading = false,
-    this.successMessage,
-    this.errorMessage,
-  });
+//   const WishlistState({
+//     this.isLoading = false,
+//     this.successMessage,
+//     this.errorMessage,
+//   });
 
-  WishlistState copyWith({
-    bool? isLoading,
-    String? successMessage,
-    String? errorMessage,
-  }) {
-    return WishlistState(
-      isLoading: isLoading ?? this.isLoading,
-      successMessage: successMessage,
-      errorMessage: errorMessage,
-    );
-  }
+//   WishlistState copyWith({
+//     bool? isLoading,
+//     String? successMessage,
+//     String? errorMessage,
+//   }) {
+//     return WishlistState(
+//       isLoading: isLoading ?? this.isLoading,
+//       successMessage: successMessage,
+//       errorMessage: errorMessage,
+//     );
+//   }
 
-  // @override
-  // List<Object?> get props => [isLoading, successMessage, errorMessage];
-}
+//   // @override
+//   // List<Object?> get props => [isLoading, successMessage, errorMessage];
+// }
 
-class WishlistNotifier extends StateNotifier<WishlistState> {
-  WishlistNotifier() : super(const WishlistState());
+// class WishlistNotifier extends StateNotifier<WishlistState> {
+//   WishlistNotifier() : super(const WishlistState());
 
-  Future addToWishlist(WishlistBodyModel body) async {
-    state = state.copyWith(
-      isLoading: true,
-      errorMessage: null,
-      successMessage: null,
-    );
+//   Future<bool> addToWishlist(WishlistBodyModel body) async {
+//     state = state.copyWith(
+//       isLoading: true,
+//       errorMessage: null,
+//       successMessage: null,
+//     );
 
-    try {
-      final service = APIStateNetwork(createDio());
-      final response = await service.wishlist(body);
+//     try {
+//       final service = APIStateNetwork(createDio());
+//       final response = await service.wishlist(body);
 
-      if (response != null) {
-        state = state.copyWith(
-          isLoading: false,
-          successMessage: response.message,
-        );
-        return response;
-      } else {
-        state = state.copyWith(
-          isLoading: false,
-          errorMessage: "Something went wrong",
-        );
-        return null;
-      }
-    } catch (e) {
-      state = state.copyWith(isLoading: false, errorMessage: e.toString());
-      return null;
-    }
-  }
-}
+//       if (response != null) {
+//         state = state.copyWith(
+//           isLoading: false,
+//           successMessage: response.message,
+//         );
+//         return true;
+//       } else {
+//         state = state.copyWith(
+//           isLoading: false,
+//           errorMessage: "Something went wrong",
+//         );
+//         return false;
+//       }
+//     } catch (e) {
+//       state = state.copyWith(isLoading: false, errorMessage: e.toString());
+//       return false;
+//     }
+//   }
+// }
 
-final wishlistNotifierProvider =
-    StateNotifierProvider<WishlistNotifier, WishlistState>(
-      (ref) => WishlistNotifier(),
-    );
+// final wishlistNotifierProvider =
+//     StateNotifierProvider<WishlistNotifier, WishlistState>(
+//       (ref) => WishlistNotifier(),
+//     );

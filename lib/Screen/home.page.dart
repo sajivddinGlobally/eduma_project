@@ -13,6 +13,7 @@ import 'package:eduma_app/Screen/youtube.page.dart';
 import 'package:eduma_app/data/Controller/allCoursesController.dart';
 import 'package:eduma_app/data/Controller/popularCourseController.dart';
 import 'package:eduma_app/data/Controller/wishlistControllerClass.dart';
+import 'package:eduma_app/data/Model/popularCourseModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -31,8 +32,6 @@ class HomePage extends ConsumerStatefulWidget {
 class _HomePageState extends ConsumerState<HomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int selectIndex = 0;
-  bool loading = false;
-  bool isWishlisted = false;
   @override
   Widget build(BuildContext context) {
     var box = Hive.box("userBox");
@@ -416,141 +415,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                           padding: EdgeInsets.zero,
                           itemCount: course.length,
                           itemBuilder: (context, index) {
-                            return Padding(
-                              padding: EdgeInsets.only(left: 10.w, right: 10.w),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Stack(
-                                    children: [
-                                      InkWell(
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            CupertinoPageRoute(
-                                              builder: (context) =>
-                                                  PayCourseDetailsPage(
-                                                    id: course[index].id
-                                                        .toString(),
-                                                  ),
-                                            ),
-                                          );
-                                        },
-                                        child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(
-                                            10.r,
-                                          ),
-                                          child: Image.network(
-                                            // "assets/learning1.png",
-                                            course[index].thumbnail,
-                                            width: 190.w,
-                                            height: 125.h,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                      ),
-                                      Positioned(
-                                        right: 8.w,
-                                        top: 10.h,
-                                        child: IconButton(
-                                          style: IconButton.styleFrom(
-                                            minimumSize: Size(0, 0),
-                                            padding: EdgeInsets.zero,
-                                            tapTargetSize: MaterialTapTargetSize
-                                                .shrinkWrap,
-                                          ),
-                                          onPressed: loading
-                                              ? null
-                                              : () async {
-                                                  setState(
-                                                    () => loading = true,
-                                                  );
-                                                  isWishlisted =
-                                                      await WishlistControllerClass.toggle(
-                                                        context: context,
-                                                        courseId:
-                                                            course[index].id,
-                                                        userId: box.get(
-                                                          "storeId",
-                                                        ),
-                                                        currentStatus:
-                                                            isWishlisted,
-                                                      );
-                                                  setState(
-                                                    () => loading = false,
-                                                  );
-                                                },
-                                          icon: loading
-                                              ? SizedBox(
-                                                  height: 20,
-                                                  width: 20,
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                        strokeWidth: 2,
-                                                        color: Color(
-                                                          0xFF001E6C,
-                                                        ),
-                                                      ),
-                                                )
-                                              : Icon(
-                                                  isWishlisted
-                                                      ? Icons.favorite
-                                                      : Icons.favorite_border,
-                                                  color: isWishlisted
-                                                      ? Colors.red
-                                                      : Colors.white,
-                                                  size: 25.sp,
-                                                ),
-                                        ),
-                                      ),
-                                      Positioned(
-                                        left: 13.w,
-                                        bottom: 8.h,
-                                        child: Container(
-                                          padding: EdgeInsets.only(
-                                            left: 10.w,
-                                            right: 10.w,
-                                            top: 6.h,
-                                            bottom: 6.h,
-                                          ),
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(
-                                              4.r,
-                                            ),
-                                            color: Color(0xFF001E6C),
-                                          ),
-                                          child: Text(
-                                            "₹ 45.00",
-                                            //course[index].p
-                                            style: GoogleFonts.roboto(
-                                              fontSize: 12.sp,
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 10.h),
-                                  SizedBox(
-                                    width: 190.w,
-                                    child: Text(
-                                      overflow: TextOverflow.clip,
-                                      //  "Introduction learn Press - LMS Plugin",
-                                      truncateString(course[index].title, 35),
-                                      style: GoogleFonts.roboto(
-                                        fontSize: 16.sp,
-                                        fontWeight: FontWeight.w500,
-                                        color: Color(0xFF000000),
-                                        letterSpacing: -0.4,
-                                        height: 1.1,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            );
+                            return PopularCour(data: course[index]);
                           },
                         ),
                       );
@@ -909,6 +774,134 @@ class _HomePageState extends ConsumerState<HomePage> {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class PopularCour extends StatefulWidget {
+  final PopularCourseModel data;
+  const PopularCour({required this.data, super.key});
+
+  @override
+  State<PopularCour> createState() => _PopularCourState();
+}
+
+class _PopularCourState extends State<PopularCour> {
+  bool loading = false;
+  bool isWishlisted = false;
+  @override
+  Widget build(BuildContext context) {
+    var box = Hive.box("userBox");
+    return Padding(
+      padding: EdgeInsets.only(left: 10.w, right: 10.w),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Stack(
+            children: [
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                      builder: (context) =>
+                          PayCourseDetailsPage(id: widget.data.id.toString()),
+                    ),
+                  );
+                },
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10.r),
+                  child: Image.network(
+                    // "assets/learning1.png",
+                    widget.data.thumbnail,
+                    width: 190.w,
+                    height: 125.h,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              Positioned(
+                right: 8.w,
+                top: 10.h,
+                child: IconButton(
+                  style: IconButton.styleFrom(
+                    minimumSize: Size(0, 0),
+                    padding: EdgeInsets.zero,
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  ),
+                  onPressed: loading
+                      ? null
+                      : () async {
+                          setState(() => loading = true);
+                          isWishlisted = await WishlistControllerClass.toggle(
+                            context: context,
+                            courseId: widget.data.id,
+                            userId: box.get("storeId"),
+                            currentStatus: isWishlisted,
+                          );
+                          setState(() => loading = false);
+                        },
+                  icon: loading
+                      ? SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: Color(0xFF001E6C),
+                          ),
+                        )
+                      : Icon(
+                          isWishlisted ? Icons.favorite : Icons.favorite_border,
+                          color: isWishlisted ? Colors.red : Colors.white,
+                          size: 25.sp,
+                        ),
+                ),
+              ),
+              Positioned(
+                left: 13.w,
+                bottom: 8.h,
+                child: Container(
+                  padding: EdgeInsets.only(
+                    left: 10.w,
+                    right: 10.w,
+                    top: 6.h,
+                    bottom: 6.h,
+                  ),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(4.r),
+                    color: Color(0xFF001E6C),
+                  ),
+                  child: Text(
+                    "₹ 45.00",
+                    //course[index].p
+                    style: GoogleFonts.roboto(
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 10.h),
+          SizedBox(
+            width: 190.w,
+            child: Text(
+              overflow: TextOverflow.clip,
+              //  "Introduction learn Press - LMS Plugin",
+              truncateString(widget.data.title, 35),
+              style: GoogleFonts.roboto(
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w500,
+                color: Color(0xFF000000),
+                letterSpacing: -0.4,
+                height: 1.1,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
