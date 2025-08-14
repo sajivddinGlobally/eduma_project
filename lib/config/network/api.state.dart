@@ -13,6 +13,8 @@ import 'package:eduma_app/data/Model/sendOTPBodyModel.dart';
 import 'package:eduma_app/data/Model/sendOTPResModel.dart';
 import 'package:eduma_app/data/Model/verifyOTPBodyModel.dart';
 import 'package:eduma_app/data/Model/verifyOTPResModel.dart';
+import 'package:eduma_app/data/Model/wishlistBodyModel.dart';
+import 'package:eduma_app/data/Model/wishlistResModel.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'api.state.g.dart';
@@ -46,4 +48,7 @@ abstract class APIStateNetwork {
   // courses
   @GET("/custom/v1/courses")
   Future<AllCoursesModel> allCourses();
+
+  @POST("/custom/v1/wishlist")
+  Future<WishlistResModel> wishlist(@Body() WishlistBodyModel body);
 }

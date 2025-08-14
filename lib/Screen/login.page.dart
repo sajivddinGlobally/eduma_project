@@ -201,6 +201,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           await box.put("storeName", response.storeName);
                           await box.put("token", response.token);
                           await box.put("userEmail", response.userEmail);
+                          await box.put("storeId", response.storeId);
 
                           if (response != null) {
                             Navigator.pushAndRemoveUntil(

@@ -1,12 +1,16 @@
 import 'dart:developer';
 
-import 'package:eduma_app/Screen/payCourseDetails.page.dart';
+import 'package:eduma_app/config/core/showFlushbar.dart';
+import 'package:eduma_app/config/network/api.state.dart';
+import 'package:eduma_app/config/utils/pretty.dio.dart';
 import 'package:eduma_app/data/Controller/popularCourseController.dart';
+import 'package:eduma_app/data/Model/wishlistBodyModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class CourseDetailsPage extends ConsumerStatefulWidget {
   final String id;
@@ -17,8 +21,10 @@ class CourseDetailsPage extends ConsumerStatefulWidget {
 }
 
 class _CourseDetailsPageState extends ConsumerState<CourseDetailsPage> {
+  bool isWishlisted = false;
   @override
   Widget build(BuildContext context) {
+    var box = Hive.box("userBox");
     final courseDetailsProvider = ref.watch(
       popularCourseDetailsController(widget.id),
     );
@@ -120,10 +126,38 @@ class _CourseDetailsPageState extends ConsumerState<CourseDetailsPage> {
                                 Align(
                                   alignment: Alignment.topRight,
                                   child: IconButton(
-                                    onPressed: () {},
+                                    onPressed: () async {
+                                      final body = WishlistBodyModel(
+                                        courseId: courseDetails.id,
+                                        userId: box.get("storeId"),
+                                      );
+                                      try {
+                                        final service = APIStateNetwork(
+                                          createDio(),
+                                        );
+                                        final response = await service.wishlist(
+                                          body,
+                                        );
+                                        if (response != null) {
+                                          showSuccessMessage(
+                                            context,
+                                            response.message,
+                                          );
+                                        }
+                                        setState(() {
+                                          isWishlisted = !isWishlisted;
+                                        });
+                                      } catch (e) {
+                                        log(e.toString());
+                                      }
+                                    },
                                     icon: Icon(
-                                      Icons.favorite_border,
-                                      color: Colors.white,
+                                      isWishlisted
+                                          ? Icons.favorite
+                                          : Icons.favorite_border,
+                                      color: isWishlisted
+                                          ? Colors.red
+                                          : Colors.white,
                                       size: 25.sp,
                                     ),
                                   ),
