@@ -1,5 +1,5 @@
 import 'package:eduma_app/Screen/chat.inbox.page.dart';
-import 'package:eduma_app/Screen/chating.page.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

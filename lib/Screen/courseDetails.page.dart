@@ -1,11 +1,9 @@
 import 'dart:developer';
 
-import 'package:eduma_app/config/core/showFlushbar.dart';
-import 'package:eduma_app/config/network/api.state.dart';
-import 'package:eduma_app/config/utils/pretty.dio.dart';
+
 import 'package:eduma_app/data/Controller/popularCourseController.dart';
 import 'package:eduma_app/data/Controller/wishlistControllerClass.dart';
-import 'package:eduma_app/data/Model/wishlistBodyModel.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

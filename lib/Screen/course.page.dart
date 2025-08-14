@@ -1,13 +1,9 @@
-import 'dart:developer';
-
 import 'package:eduma_app/Screen/courseDetails.page.dart';
-import 'package:eduma_app/config/core/showFlushbar.dart';
-import 'package:eduma_app/config/network/api.state.dart';
-import 'package:eduma_app/config/utils/pretty.dio.dart';
+
 import 'package:eduma_app/data/Controller/allCoursesController.dart';
 import 'package:eduma_app/data/Controller/wishlistControllerClass.dart';
 import 'package:eduma_app/data/Model/allCoursesModel.dart';
-import 'package:eduma_app/data/Model/wishlistBodyModel.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -54,11 +50,8 @@ class _CoursePageState extends ConsumerState<CoursePage> {
     },
   ];
 
-  bool isLoading = false;
-  bool isWishlisted = false;
   @override
   Widget build(BuildContext context) {
-    var box = Hive.box("userBox");
     final allCourseProvider = ref.watch(allCoursesController);
     return Scaffold(
       backgroundColor: Color(0xFFFFFFFF),
