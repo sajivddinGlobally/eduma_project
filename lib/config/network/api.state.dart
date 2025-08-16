@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:eduma_app/data/Model/allCategoryModel.dart';
 import 'package:eduma_app/data/Model/allCoursesModel.dart';
 import 'package:eduma_app/data/Model/deleteWishlistResModel.dart';
 import 'package:eduma_app/data/Model/getWishlistModel.dart';
