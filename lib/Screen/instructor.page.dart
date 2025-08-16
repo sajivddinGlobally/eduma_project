@@ -224,38 +224,38 @@ class _InstructorPageState extends ConsumerState<InstructorPage> {
                                         ),
                                       ),
                                     ),
-                                    Positioned(
-                                      left: 25.w,
-                                      bottom: 25.h,
-                                      child: Container(
-                                        padding: EdgeInsets.only(
-                                          left: 16.w,
-                                          right: 16.w,
-                                          top: 6.h,
-                                          bottom: 6.h,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(
-                                            7.r,
-                                          ),
-                                          color: Color(0xFF001E6C),
-                                        ),
-                                        child: Text(
-                                          //courseList[index]['paid'].toString(),
-                                          instructor[index]
-                                              .courses[index]
-                                              .priceLabel
-                                              .index
-                                              .toString(),
-                                          style: GoogleFonts.roboto(
-                                            fontSize: 18.sp,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.white,
-                                            letterSpacing: -0.4,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
+                                    // Positioned(
+                                    //   left: 25.w,
+                                    //   bottom: 25.h,
+                                    //   child: Container(
+                                    //     padding: EdgeInsets.only(
+                                    //       left: 16.w,
+                                    //       right: 16.w,
+                                    //       top: 6.h,
+                                    //       bottom: 6.h,
+                                    //     ),
+                                    //     decoration: BoxDecoration(
+                                    //       borderRadius: BorderRadius.circular(
+                                    //         7.r,
+                                    //       ),
+                                    //       color: Color(0xFF001E6C),
+                                    //     ),
+                                    //     child: Text(
+                                    //       //courseList[index]['paid'].toString(),
+                                    //       instructor[index]
+                                    //           .courses[index]
+                                    //           .price
+                                    //           .displayPrice
+                                    //           .toString(),
+                                    //       style: GoogleFonts.roboto(
+                                    //         fontSize: 18.sp,
+                                    //         fontWeight: FontWeight.w500,
+                                    //         color: Colors.white,
+                                    //         letterSpacing: -0.4,
+                                    //       ),
+                                    //     ),
+                                    //   ),
+                                    // ),
                                   ],
                                 ),
                                 SizedBox(height: 15.h),
