@@ -1,10 +1,10 @@
 import 'package:eduma_app/Screen/home.page.dart';
 import 'package:eduma_app/Screen/login.page.dart';
+import 'package:eduma_app/Screen/register.page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 
 class OnbordingPage extends StatefulWidget {
   const OnbordingPage({super.key});
@@ -77,7 +77,7 @@ class _OnbordingPageState extends State<OnbordingPage> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  CupertinoPageRoute(builder: (context) => HomePage()),
+                  CupertinoPageRoute(builder: (context) => RegisterPage()),
                 );
               },
               style: ElevatedButton.styleFrom(

@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:eduma_app/data/Controller/instructorController.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

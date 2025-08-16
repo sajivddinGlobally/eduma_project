@@ -36,18 +36,23 @@ class _HomePageState extends ConsumerState<HomePage> {
     final popularCourseProvider = ref.watch(popularCourseController);
     final allCoursesProvider = ref.watch(allCoursesController);
 
+    // ✅ Agar loading hai to pura Scaffold loading show kare
     if (popularCourseProvider.isLoading || allCoursesProvider.isLoading) {
       return Scaffold(
+        backgroundColor: Colors.white,
         body: Center(
           child: CircularProgressIndicator(color: Color(0xFF001E6C)),
         ),
       );
     }
+
+    // ✅ Agar error hai to pura Scaffold error show kare
     if (popularCourseProvider.hasError || allCoursesProvider.hasError) {
       return Scaffold(
+        backgroundColor: Colors.white,
         body: Center(
           child: Text(
-            popularCourseProvider.error.toString(),
+            popularCourseProvider.error?.toString() ?? "Something went wrong",
             style: GoogleFonts.inter(fontSize: 20.sp, color: Colors.red),
           ),
         ),
