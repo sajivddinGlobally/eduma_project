@@ -95,16 +95,25 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(10.r),
                         child: Image.asset(
+                          //orderDetaisl.lineItems[0].image.src.toString(),
                           "assets/shop1.png",
                           width: MediaQuery.of(context).size.width,
                           height: 198.h,
                           fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Image.network(
+                              "https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg",
+                              width: MediaQuery.of(context).size.width,
+                              height: 69.h,
+                              fit: BoxFit.cover,
+                            );
+                          },
                         ),
                       ),
                       SizedBox(height: 10.h),
                       Text(
-                       // "Create an LMS Website With LearnPress",
-                       orderDetaisl.
+                        // "Create an LMS Website With LearnPress",
+                        orderDetaisl.lineItems[0].name.toString(),
                         style: GoogleFonts.roboto(
                           fontSize: 16.sp,
                           fontWeight: FontWeight.w500,
@@ -115,6 +124,7 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                       SizedBox(height: 10.h),
                       Text(
                         "The 25th Workshop based on Treasure of Treatise -18 is a deep dive into the ancient scriptures and texts, uncovering hidden gems of knowledge and wisdom. Participants will explore the rich heritage of ancient treatises and unlock valuable insights for personal growth and development.",
+
                         style: GoogleFonts.roboto(
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w400,
@@ -126,7 +136,8 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                       Row(
                         children: [
                           Text(
-                            "₹ 45k",
+                            // "₹ 45k",
+                            orderDetaisl.lineItems[0].total.toString(),
                             style: GoogleFonts.roboto(
                               fontSize: 15.sp,
                               fontWeight: FontWeight.w400,

@@ -127,9 +127,22 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
                                     borderRadius: BorderRadius.circular(10.r),
                                     child: Image.asset(
                                       "assets/shop1.png",
+                                      // orderList[index]
+                                      //     .lineItems[index]
+                                      //     .image
+                                      //     .src
+                                      //     .toString(),
                                       width: 84.w,
                                       height: 69.h,
                                       fit: BoxFit.cover,
+                                      errorBuilder: (context, error, stackTrace) {
+                                        return Image.network(
+                                          "https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg",
+                                          width: 84.w,
+                                          height: 69.h,
+                                          fit: BoxFit.cover,
+                                        );
+                                      },
                                     ),
                                   ),
 
