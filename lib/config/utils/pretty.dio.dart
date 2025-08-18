@@ -25,13 +25,6 @@ createDio() {
   var box = Hive.box("userBox");
   var token = box.get("token");
 
-  // dio.interceptors.add(
-  //   OAuth1Interceptor(
-  //     consumerKey: 'ck_302d4d88f01cfc6f65bf5cc105d20fe7b3a6d3cb',
-  //     consumerSecret: 'ck_302d4d88f01cfc6f65bf5cc105d20fe7b3a6d3cb',
-  //   ),
-  // );
-
   dio.interceptors.add(
     InterceptorsWrapper(
       onRequest: (options, handler) {
@@ -105,5 +98,3 @@ createWooCommerceDio() {
   );
   return dio;
 }
-
-
