@@ -4,6 +4,6 @@ import 'package:eduma_app/data/Model/profileModel.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final profileController = FutureProvider<ProfileModel>((ref) async {
-  final profileService = APIStateNetwork(createDio());
+  final profileService = APIStateNetwork(createWooCommerceDio());
   return await profileService.profile();
 });

@@ -74,7 +74,6 @@ abstract class APIStateNetwork {
   @GET("/wc/v3/orders/{id}")
   Future<OrderDetailsModel> orderDetails(@Path() String id);
 
-  /// student profile
-  @GET("/custom/v1/profile")
+  @GET("/tutor/v1/profile/84")
   Future<ProfileModel> profile();
 }
