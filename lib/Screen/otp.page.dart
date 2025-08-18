@@ -86,7 +86,7 @@ class _OtpPageState extends ConsumerState<OtpPage> {
                   try {
                     final serivce = APIStateNetwork(createDio());
                     final response = await serivce.verifyOTP(body);
-                    if (response.success == true) {
+                    if (response != null) {
                       Navigator.push(
                         context,
                         CupertinoPageRoute(

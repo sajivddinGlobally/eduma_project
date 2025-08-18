@@ -64,4 +64,6 @@ abstract class APIStateNetwork {
 
   @GET("/wc/v3/products")
   Future<List<ProductListModel>> productList();
+
+  
 }

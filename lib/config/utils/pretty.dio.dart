@@ -1,11 +1,9 @@
-import 'dart:convert';
 import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:eduma_app/Screen/login.page.dart';
 import 'package:eduma_app/config/core/showFlushbar.dart';
 import 'package:eduma_app/config/utils/basiAuth.dart';
 import 'package:eduma_app/config/utils/navigatorKey.dart';
-import 'package:eduma_app/data/Model/productListModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';

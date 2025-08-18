@@ -104,7 +104,7 @@ class _ForgorPasswordPageState extends ConsumerState<ForgorPasswordPage> {
                   try {
                     final service = APIStateNetwork(createDio());
                     final response = await service.sendOTP(body);
-                    if (response.success == true) {
+                    if (response != null) {
                       Navigator.pushReplacement(
                         context,
                         CupertinoPageRoute(builder: (context) => OtpPage()),
