@@ -5,6 +5,8 @@ import 'package:eduma_app/data/Model/getWishlistModel.dart';
 import 'package:eduma_app/data/Model/instructorModel.dart';
 import 'package:eduma_app/data/Model/loginBodyModel.dart';
 import 'package:eduma_app/data/Model/loginResModel.dart';
+import 'package:eduma_app/data/Model/orderDetailsModel.dart';
+import 'package:eduma_app/data/Model/orderListModel.dart';
 import 'package:eduma_app/data/Model/popularCourseDetailsModel.dart';
 import 'package:eduma_app/data/Model/popularCourseModel.dart';
 import 'package:eduma_app/data/Model/productListModel.dart';
@@ -65,5 +67,9 @@ abstract class APIStateNetwork {
   @GET("/wc/v3/products")
   Future<List<ProductListModel>> productList();
 
-  
+  @GET("/wc/v3/orders")
+  Future<List<OrderListModel>> order();
+
+  @GET("/wc/v3/orders/{id}")
+  Future<OrderDetailsModel> orderDetails(@Path() String id);
 }

@@ -1,14 +1,14 @@
 // To parse this JSON data, do
 //
-//     final orderListModel = orderListModelFromJson(jsonString);
+//     final orderDetailsModel = orderDetailsModelFromJson(jsonString);
 
 import 'dart:convert';
 
-List<OrderListModel> orderListModelFromJson(String str) => List<OrderListModel>.from(json.decode(str).map((x) => OrderListModel.fromJson(x)));
+OrderDetailsModel orderDetailsModelFromJson(String str) => OrderDetailsModel.fromJson(json.decode(str));
 
-String orderListModelToJson(List<OrderListModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String orderDetailsModelToJson(OrderDetailsModel data) => json.encode(data.toJson());
 
-class OrderListModel {
+class OrderDetailsModel {
     int id;
     int parentId;
     String status;
@@ -39,7 +39,7 @@ class OrderListModel {
     DateTime datePaid;
     String cartHash;
     String number;
-    List<OrderListModelMetaDatum> metaData;
+    List<OrderDetailsModelMetaDatum> metaData;
     List<LineItem> lineItems;
     List<dynamic> taxLines;
     List<ShippingLine> shippingLines;
@@ -61,7 +61,7 @@ class OrderListModel {
     String currencySymbol;
     Links links;
 
-    OrderListModel({
+    OrderDetailsModel({
         required this.id,
         required this.parentId,
         required this.status,
@@ -115,7 +115,7 @@ class OrderListModel {
         required this.links,
     });
 
-    factory OrderListModel.fromJson(Map<String, dynamic> json) => OrderListModel(
+    factory OrderDetailsModel.fromJson(Map<String, dynamic> json) => OrderDetailsModel(
         id: json["id"],
         parentId: json["parent_id"],
         status: json["status"],
@@ -146,7 +146,7 @@ class OrderListModel {
         datePaid: DateTime.parse(json["date_paid"]),
         cartHash: json["cart_hash"],
         number: json["number"],
-        metaData: List<OrderListModelMetaDatum>.from(json["meta_data"].map((x) => OrderListModelMetaDatum.fromJson(x))),
+        metaData: List<OrderDetailsModelMetaDatum>.from(json["meta_data"].map((x) => OrderDetailsModelMetaDatum.fromJson(x))),
         lineItems: List<LineItem>.from(json["line_items"].map((x) => LineItem.fromJson(x))),
         taxLines: List<dynamic>.from(json["tax_lines"].map((x) => x)),
         shippingLines: List<ShippingLine>.from(json["shipping_lines"].map((x) => ShippingLine.fromJson(x))),
@@ -516,18 +516,18 @@ class TargetHints {
     };
 }
 
-class OrderListModelMetaDatum {
+class OrderDetailsModelMetaDatum {
     int id;
     String key;
     String value;
 
-    OrderListModelMetaDatum({
+    OrderDetailsModelMetaDatum({
         required this.id,
         required this.key,
         required this.value,
     });
 
-    factory OrderListModelMetaDatum.fromJson(Map<String, dynamic> json) => OrderListModelMetaDatum(
+    factory OrderDetailsModelMetaDatum.fromJson(Map<String, dynamic> json) => OrderDetailsModelMetaDatum(
         id: json["id"],
         key: json["key"],
         value: json["value"],
