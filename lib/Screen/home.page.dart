@@ -14,6 +14,7 @@ import 'package:eduma_app/data/Controller/popularCourseController.dart';
 import 'package:eduma_app/data/Controller/productListController.dart';
 import 'package:eduma_app/data/Controller/wishlistControllerClass.dart';
 import 'package:eduma_app/data/Model/popularCourseModel.dart';
+import 'package:eduma_app/data/Model/productListModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -32,6 +33,7 @@ class HomePage extends ConsumerStatefulWidget {
 class _HomePageState extends ConsumerState<HomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int selectIndex = 0;
+  bool isWishlisted = false;
   @override
   Widget build(BuildContext context) {
     var box = Hive.box("userBox");
@@ -537,102 +539,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                           itemBuilder: (context, index) {
                             return Padding(
                               padding: EdgeInsets.only(left: 20.w),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Stack(
-                                    children: [
-                                      ClipRRect(
-                                        borderRadius: BorderRadius.circular(
-                                          10.r,
-                                        ),
-                                        // child: Image.network(
-                                        //   // "assets/learning1.png",
-                                        //   productList[index].images[0].medium,
-                                        //   width: 190.w,
-                                        //   height: 125.h,
-                                        //   fit: BoxFit.cover,
-                                        // ),
-                                        child: Image.network(
-                                          (productList[index].images != null &&
-                                                  productList[index]
-                                                      .images!
-                                                      .isNotEmpty)
-                                              ? productList[index]
-                                                        .images![0]
-                                                        .medium ??
-                                                    ""
-                                              : "https://via.placeholder.com/190x125.png?text=No+Image", // fallback image
-                                          width: 190.w,
-                                          height: 125.h,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                      Positioned(
-                                        right: 8.w,
-                                        top: 10.h,
-                                        child: IconButton(
-                                          style: IconButton.styleFrom(
-                                            minimumSize: Size(0, 0),
-                                            padding: EdgeInsets.zero,
-                                            tapTargetSize: MaterialTapTargetSize
-                                                .shrinkWrap,
-                                          ),
-                                          onPressed: () {},
-                                          icon: Icon(
-                                            Icons.favorite_outline,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ),
-                                      Positioned(
-                                        left: 13.w,
-                                        bottom: 8.h,
-                                        child: Container(
-                                          padding: EdgeInsets.only(
-                                            left: 10.w,
-                                            right: 10.w,
-                                            top: 6.h,
-                                            bottom: 6.h,
-                                          ),
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(
-                                              4.r,
-                                            ),
-                                            color: Color(0xFF001E6C),
-                                          ),
-                                          child: Text(
-                                            //"₹ 45.00",
-                                            productList[index].price
-                                                    .toString() ??
-                                                "",
-                                            style: GoogleFonts.roboto(
-                                              fontSize: 12.sp,
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 10.h),
-                                  SizedBox(
-                                    width: 190.w,
-                                    child: Text(
-                                      // "Introduction learn Press - LMS Plugin",
-                                      productList[index].name ?? "",
-                                      style: GoogleFonts.roboto(
-                                        fontSize: 16.sp,
-                                        fontWeight: FontWeight.w500,
-                                        color: Color(0xFF000000),
-                                        letterSpacing: -0.4,
-                                        height: 1.1,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
+                              child: allProduct(data: productList[index]),
                             );
                           },
                         ),
@@ -1284,4 +1191,136 @@ class PopularBody extends StatelessWidget {
 String truncateString(String input, int maxLength) {
   if (input.length <= maxLength) return input;
   return input.substring(0, maxLength) + "...";
+}
+
+class allProduct extends StatefulWidget {
+  final ProductListModel data;
+  const allProduct({super.key, required this.data});
+
+  @override
+  State<allProduct> createState() => _allProductState();
+}
+
+class _allProductState extends State<allProduct> {
+  var box = Hive.box("userBox");
+  bool isWishlisted = false;
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Stack(
+          children: [
+            InkWell(
+              onTap: () {},
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10.r),
+                // child: Image.network(
+                //   // "assets/learning1.png",
+                //   productList[index].images[0].medium,
+                //   width: 190.w,
+                //   height: 125.h,
+                //   fit: BoxFit.cover,
+                // ),
+                child: Image.network(
+                  (widget.data.images != null && widget.data.images!.isNotEmpty)
+                      ? widget.data.images![0].medium ?? ""
+                      : "https://via.placeholder.com/190x125.png?text=No+Image", // fallback image
+                  width: 190.w,
+                  height: 125.h,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            Positioned(
+              right: 8.w,
+              top: 10.h,
+              child: IconButton(
+                style: IconButton.styleFrom(
+                  minimumSize: Size(0, 0),
+                  padding: EdgeInsets.zero,
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                ),
+                onPressed: () async {
+                  log(widget.data.id!);
+                  // 👇 API call se direct result lo
+                  final result = await WishlistControllerClass.toggle(
+                    context: context,
+                    courseId: widget.data.id!,
+                    userId: box.get("storeId"),
+                    currentStatus: isWishlisted,
+                  );
+
+                  // 👇 bas yehi update karna hai
+                  setState(() {
+                    isWishlisted = result;
+                  });
+                },
+                icon: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 500),
+                  transitionBuilder: (child, animation) {
+                    return ScaleTransition(
+                      scale: CurvedAnimation(
+                        parent: animation,
+                        curve: Curves.easeInOutBack,
+                      ),
+                      child: child,
+                    );
+                  },
+                  child: Icon(
+                    isWishlisted ? Icons.favorite : Icons.favorite_border,
+                    key: ValueKey<bool>(
+                      isWishlisted,
+                    ), // 👈 ye key change hone se hi animation hoga
+                    color: isWishlisted ? Colors.red : Colors.white,
+                    size: 25.sp,
+                  ),
+                ),
+              ),
+            ),
+            Positioned(
+              left: 13.w,
+              bottom: 8.h,
+              child: Container(
+                padding: EdgeInsets.only(
+                  left: 10.w,
+                  right: 10.w,
+                  top: 6.h,
+                  bottom: 6.h,
+                ),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(4.r),
+                  color: Color(0xFF001E6C),
+                ),
+                child: Text(
+                  //"₹ 45.00",
+                  widget.data.price.toString() ?? "",
+                  style: GoogleFonts.roboto(
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 10.h),
+        SizedBox(
+          width: 190.w,
+          child: Text(
+            // "Introduction learn Press - LMS Plugin",
+            widget.data.name ?? "",
+            style: GoogleFonts.roboto(
+              fontSize: 16.sp,
+              fontWeight: FontWeight.w500,
+              color: Color(0xFF000000),
+              letterSpacing: -0.4,
+              height: 1.1,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 }
