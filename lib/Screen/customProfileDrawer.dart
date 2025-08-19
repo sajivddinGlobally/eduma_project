@@ -22,6 +22,7 @@ class CustomProfileDrawer extends ConsumerStatefulWidget {
 
 class _CustomProfileDrawerState extends ConsumerState<CustomProfileDrawer> {
   bool isCheck = false;
+
   @override
   Widget build(BuildContext context) {
     var box = Hive.box("userBox");
