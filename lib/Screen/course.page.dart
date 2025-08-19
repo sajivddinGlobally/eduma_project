@@ -118,6 +118,21 @@ class _CoursePageState extends ConsumerState<CoursePage> {
           ),
           enrolleCourseProvider.when(
             data: (enrolled) {
+              if (enrolled.data.courses.isEmpty) {
+                return SizedBox(
+                  height: MediaQuery.of(context).size.height / 2,
+                  child: Center(
+                    child: Text(
+                      "No Data",
+                      style: GoogleFonts.inter(
+                        fontSize: 25.sp,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                );
+              }
               return Expanded(
                 child: Container(
                   height: MediaQuery.of(context).size.height,
@@ -150,18 +165,6 @@ class _CoursePageState extends ConsumerState<CoursePage> {
                           padding: EdgeInsets.zero,
                           itemCount: enrolled.data.courses.length,
                           itemBuilder: (context, index) {
-                            if (enrolled.data.courses.isEmpty) {
-                              return Center(
-                                child: Text(
-                                  "No Data",
-                                  style: GoogleFonts.inter(
-                                    fontSize: 25.sp,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              );
-                            }
                             return Container(
                               margin: EdgeInsets.only(
                                 left: 20.w,
