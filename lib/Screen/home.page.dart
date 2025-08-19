@@ -952,38 +952,79 @@ class _PopularCourState extends State<PopularCour> {
             Positioned(
               right: 8.w,
               top: 10.h,
+              // child: IconButton(
+              //   style: IconButton.styleFrom(
+              //     minimumSize: Size(0, 0),
+              //     padding: EdgeInsets.zero,
+              //     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              //   ),
+              //   onPressed: loading
+              //       ? null
+              //       : () async {
+              //           setState(() => loading = true);
+              //           isWishlisted = await WishlistControllerClass.toggle(
+              //             context: context,
+              //             courseId: widget.data.id,
+              //             userId: box.get("storeId"),
+              //             currentStatus: isWishlisted,
+              //           );
+              //           setState(() => loading = false);
+              //         },
+              //   icon: loading
+              //       ? SizedBox(
+              //           height: 20,
+              //           width: 20,
+              //           child: CircularProgressIndicator(
+              //             strokeWidth: 2,
+              //             color: Color(0xFF001E6C),
+              //           ),
+              //         )
+              //       : Icon(
+              //           isWishlisted ? Icons.favorite : Icons.favorite_border,
+              //           color: isWishlisted ? Colors.red : Colors.white,
+              //           size: 25.sp,
+              //         ),
+              // ),
               child: IconButton(
                 style: IconButton.styleFrom(
                   minimumSize: Size(0, 0),
                   padding: EdgeInsets.zero,
                   tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 ),
-                onPressed: loading
-                    ? null
-                    : () async {
-                        setState(() => loading = true);
-                        isWishlisted = await WishlistControllerClass.toggle(
-                          context: context,
-                          courseId: widget.data.id,
-                          userId: box.get("storeId"),
-                          currentStatus: isWishlisted,
-                        );
-                        setState(() => loading = false);
-                      },
-                icon: loading
-                    ? SizedBox(
-                        height: 20,
-                        width: 20,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          color: Color(0xFF001E6C),
-                        ),
-                      )
-                    : Icon(
-                        isWishlisted ? Icons.favorite : Icons.favorite_border,
-                        color: isWishlisted ? Colors.red : Colors.white,
-                        size: 25.sp,
+                onPressed: () async {
+                  // 👇 API call se direct result lo
+                  final result = await WishlistControllerClass.toggle(
+                    context: context,
+                    courseId: widget.data.id,
+                    userId: box.get("storeId"),
+                    currentStatus: isWishlisted,
+                  );
+
+                  // 👇 bas yehi update karna hai
+                  setState(() {
+                    isWishlisted = result;
+                  });
+                },
+                icon: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 400),
+                  transitionBuilder: (child, animation) {
+                    return ScaleTransition(
+                      scale: CurvedAnimation(
+                        parent: animation,
+                        curve: Curves.easeInOutBack,
                       ),
+                      child: child,
+                    );
+                  },
+                  child: Icon(
+                    isWishlisted ? Icons.favorite : Icons.favorite_border,
+                    key: ValueKey<bool>(
+                      isWishlisted,
+                    ), // 👈 ye key change hone se hi animation hoga
+                    color: isWishlisted ? Colors.red : Colors.white,
+                    size: 25.sp,
+                  ),
+                ),
               ),
             ),
             Positioned(
