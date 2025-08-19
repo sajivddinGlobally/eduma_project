@@ -10,6 +10,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 class CourseDetailsPage extends ConsumerStatefulWidget {
   final String id;
+
   const CourseDetailsPage({super.key, required this.id});
 
   @override

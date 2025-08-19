@@ -257,146 +257,156 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                         ],
                       ),
                       SizedBox(height: 30.h),
-                      ExpansionTile(
-                        tilePadding: EdgeInsets.zero,
-                        title: Text(
-                          "Information",
-                          style: GoogleFonts.roboto(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xFF000000),
-                          ),
+                      Theme(
+                        data: Theme.of(context).copyWith(
+                          dividerColor:
+                              Colors.transparent, // Divider line hatane ke liye
+                          splashColor: Colors
+                              .transparent, // Ripple effect hatane ke liye
+                          highlightColor: Colors
+                              .transparent, // Highlight color hatane ke liye
                         ),
-                        children: [
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Customer Care Details:-",
-                                style: GoogleFonts.roboto(
-                                  fontSize: 15.sp,
-                                  fontWeight: FontWeight.w400,
-                                  color: Color(0xFF747474),
-                                ),
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(left: 10.w),
-                                child: Text(
-                                  "In case of any issue,\ncontact us\nE-mail address:\nsupport@zeptonow.com",
+                        child: ExpansionTile(
+                          tilePadding: EdgeInsets.zero,
+                          title: Text(
+                            "Information",
+                            style: GoogleFonts.roboto(
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xFF000000),
+                            ),
+                          ),
+                          children: [
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Customer Care Details:-",
                                   style: GoogleFonts.roboto(
                                     fontSize: 15.sp,
                                     fontWeight: FontWeight.w400,
                                     color: Color(0xFF747474),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 10.h),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Disclaimer:-",
-                                style: GoogleFonts.roboto(
-                                  fontSize: 15.sp,
-                                  fontWeight: FontWeight.w400,
-                                  color: Color(0xFF747474),
-                                ),
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(left: 10.w),
-                                width: 300.w,
-                                child: Text(
-                                  "All images are for representational purposes only. It is advised that you read the batch and manufacturing details, directions for use, allergen information, health and nutritional claims (wherever applicable), and other details mentioned on the label before consuming the product. For combo items, individual prices can be viewed on the page.",
-                                  style: GoogleFonts.roboto(
-                                    fontSize: 15.sp,
-                                    fontWeight: FontWeight.w400,
-                                    color: Color(0xFF747474),
-                                    letterSpacing: -0.4,
+                                Container(
+                                  margin: EdgeInsets.only(left: 10.w),
+                                  child: Text(
+                                    "In case of any issue,\ncontact us\nE-mail address:\nsupport@zeptonow.com",
+                                    style: GoogleFonts.roboto(
+                                      fontSize: 15.sp,
+                                      fontWeight: FontWeight.w400,
+                                      color: Color(0xFF747474),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 10.h),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Seller Name:-",
-                                style: GoogleFonts.roboto(
-                                  fontSize: 15.sp,
-                                  fontWeight: FontWeight.w400,
-                                  color: Color(0xFF747474),
-                                ),
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(left: 10.w),
-                                child: Text(
-                                  "Commodum Groceries Private Limited",
+                              ],
+                            ),
+                            SizedBox(height: 10.h),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Disclaimer:-",
                                   style: GoogleFonts.roboto(
                                     fontSize: 15.sp,
                                     fontWeight: FontWeight.w400,
                                     color: Color(0xFF747474),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 10.h),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Seller Address:-",
-                                style: GoogleFonts.roboto(
-                                  fontSize: 15.sp,
-                                  fontWeight: FontWeight.w400,
-                                  color: Color(0xFF747474),
+                                Container(
+                                  margin: EdgeInsets.only(left: 10.w),
+                                  width: 300.w,
+                                  child: Text(
+                                    "All images are for representational purposes only. It is advised that you read the batch and manufacturing details, directions for use, allergen information, health and nutritional claims (wherever applicable), and other details mentioned on the label before consuming the product. For combo items, individual prices can be viewed on the page.",
+                                    style: GoogleFonts.roboto(
+                                      fontSize: 15.sp,
+                                      fontWeight: FontWeight.w400,
+                                      color: Color(0xFF747474),
+                                      letterSpacing: -0.4,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(left: 10.w),
-                                width: 280.w,
-                                child: Text(
-                                  "COMMODUM GROCERIES PRIVATE LIMITED, Regd.Office: 44,Saket Building, Mullick Bazaar, Park Street,Kolkata, West Bengal, India, 700016.For Support ReachOut: supp ort+commodum@zeptonow .com",
+                              ],
+                            ),
+                            SizedBox(height: 10.h),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Seller Name:-",
                                   style: GoogleFonts.roboto(
                                     fontSize: 15.sp,
                                     fontWeight: FontWeight.w400,
                                     color: Color(0xFF747474),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 10.h),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Seller License No.:-",
-                                style: GoogleFonts.roboto(
-                                  fontSize: 15.sp,
-                                  fontWeight: FontWeight.w400,
-                                  color: Color(0xFF747474),
+                                Container(
+                                  margin: EdgeInsets.only(left: 10.w),
+                                  child: Text(
+                                    "Commodum Groceries Private Limited",
+                                    style: GoogleFonts.roboto(
+                                      fontSize: 15.sp,
+                                      fontWeight: FontWeight.w400,
+                                      color: Color(0xFF747474),
+                                    ),
+                                  ),
                                 ),
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(left: 10.w),
-                                child: Text(
-                                  "12822999000310",
+                              ],
+                            ),
+                            SizedBox(height: 10.h),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Seller Address:-",
                                   style: GoogleFonts.roboto(
                                     fontSize: 15.sp,
                                     fontWeight: FontWeight.w400,
                                     color: Color(0xFF747474),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 20.h),
-                        ],
+                                Container(
+                                  margin: EdgeInsets.only(left: 10.w),
+                                  width: 280.w,
+                                  child: Text(
+                                    "COMMODUM GROCERIES PRIVATE LIMITED, Regd.Office: 44,Saket Building, Mullick Bazaar, Park Street,Kolkata, West Bengal, India, 700016.For Support ReachOut: supp ort+commodum@zeptonow .com",
+                                    style: GoogleFonts.roboto(
+                                      fontSize: 15.sp,
+                                      fontWeight: FontWeight.w400,
+                                      color: Color(0xFF747474),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 10.h),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Seller License No.:-",
+                                  style: GoogleFonts.roboto(
+                                    fontSize: 15.sp,
+                                    fontWeight: FontWeight.w400,
+                                    color: Color(0xFF747474),
+                                  ),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(left: 10.w),
+                                  child: Text(
+                                    "12822999000310",
+                                    style: GoogleFonts.roboto(
+                                      fontSize: 15.sp,
+                                      fontWeight: FontWeight.w400,
+                                      color: Color(0xFF747474),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 20.h),
+                          ],
+                        ),
                       ),
                       SizedBox(height: 20.h),
                       ElevatedButton(

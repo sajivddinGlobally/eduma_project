@@ -1212,7 +1212,15 @@ class _allProductState extends State<allProduct> {
         Stack(
           children: [
             InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                    builder: (context) =>
+                        CourseDetailsPage(id: widget.data.id!.toString()),
+                  ),
+                );
+              },
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10.r),
                 // child: Image.network(
