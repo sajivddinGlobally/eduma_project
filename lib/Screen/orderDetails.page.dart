@@ -424,7 +424,11 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
               },
               error: (error, stackTrace) =>
                   Center(child: Text(error.toString())),
-              loading: () => Center(child: CircularProgressIndicator()),
+              loading: () => SizedBox(
+                height: MediaQuery.of(context).size.height / 2,
+                width: MediaQuery.of(context).size.width,
+                child: Center(child: CircularProgressIndicator()),
+              ),
             ),
           ],
         ),
