@@ -1006,7 +1006,7 @@ class _PopularCourState extends State<PopularCour> {
                   });
                 },
                 icon: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 400),
+                  duration: const Duration(milliseconds: 500),
                   transitionBuilder: (child, animation) {
                     return ScaleTransition(
                       scale: CurvedAnimation(
