@@ -66,6 +66,13 @@ abstract class APIStateNetwork {
   @GET("/custom/v1/instructors")
   Future<List<InstructorModel>> instructor();
 
+  @GET("/student/v1/profile")
+  Future<ProfileModel> profile();
+
+  /// student course purchese vo data show
+  @GET("/custom/v1/student/enrolled-courses")
+  Future<EnrolleCourseStudentModel> enrolledCourse();
+
   @GET("/wc/v3/products")
   Future<List<ProductListModel>> productList();
 
@@ -74,11 +81,4 @@ abstract class APIStateNetwork {
 
   @GET("/wc/v3/orders/{id}")
   Future<OrderDetailsModel> orderDetails(@Path() String id);
-
-  @GET("/student/v1/profile")
-  Future<ProfileModel> profile();
-
-  /// student course purchese vo data show
-  @GET("/custom/v1/student/enrolled-courses")
-  Future<EnrolleCourseStudentModel> enrolledCourse();
 }

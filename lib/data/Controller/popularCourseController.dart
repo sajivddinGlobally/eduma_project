@@ -1,5 +1,7 @@
 import 'package:eduma_app/config/network/api.state.dart';
 import 'package:eduma_app/config/utils/pretty.dio.dart';
+import 'package:eduma_app/data/Controller/allCoursesController.dart';
+import 'package:eduma_app/data/Controller/productListController.dart';
 import 'package:eduma_app/data/Model/popularCourseDetailsModel.dart';
 import 'package:eduma_app/data/Model/popularCourseModel.dart';
 import 'package:riverpod/riverpod.dart';
@@ -12,10 +14,8 @@ final popularCourseController = FutureProvider<List<PopularCourseModel>>((
 });
 
 final popularCourseDetailsController =
-    FutureProvider.family<PopularCourseDetailsModel,String>((
-      ref,
-      id,
-    ) async {
+    FutureProvider.family<PopularCourseDetailsModel, String>((ref, id) async {
       final courseDetailService = APIStateNetwork(createDio());
       return await courseDetailService.popularCourseDetails(id);
     });
+

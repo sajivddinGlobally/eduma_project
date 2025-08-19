@@ -489,20 +489,15 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   modules(
-                                    "PDF for 25th Workshop - Tongu Diagram Treatise 18",
+                                    "PDF for 25th Workshop - TonguDiagram Treatise 18",
                                   ),
-                                  SizedBox(height: 6.h),
-                                  Divider(color: Color(0xFFBFBFBF)),
-                                  SizedBox(height: 6.h),
+                                  Divider(),
                                   modules("Day-1"),
-                                  Divider(color: Color(0xFFBFBFBF)),
-                                  SizedBox(height: 6.h),
+                                  Divider(),
                                   modules("Day-2"),
-                                  Divider(color: Color(0xFFBFBFBF)),
-                                  SizedBox(height: 6.h),
+                                  Divider(),
                                   modules("Day-3"),
-                                  Divider(color: Color(0xFFBFBFBF)),
-                                  SizedBox(height: 6.h),
+                                  Divider(),
                                   modules("Day-4"),
                                 ],
                               ),
@@ -673,44 +668,45 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
     );
   }
 
-  Widget modules(String name) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SizedBox(
-              width: 275.w,
-              child: Text(
-                name,
-                style: GoogleFonts.roboto(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w500,
-                  color: Color(0xFF000000),
-                  letterSpacing: -0.4,
-                  height: 1.1,
-                ),
-              ),
+  Widget modules(String txt) {
+    return Theme(
+      data: Theme.of(context).copyWith(
+        dividerColor: Colors.transparent, // Divider line hatane ke liye
+        splashColor: Colors.transparent, // Ripple effect hatane ke liye
+        highlightColor: Colors.transparent, // Highlight color hatane ke liye
+      ),
+      child: ExpansionTile(
+        tilePadding: EdgeInsets.zero,
+        title: SizedBox(
+          // width: 275.w,
+          child: Text(
+            txt,
+            style: GoogleFonts.roboto(
+              fontSize: 16.sp,
+              fontWeight: FontWeight.w500,
+              color: Color(0xFF000000),
+              letterSpacing: -0.4,
+              height: 1.1,
             ),
-            Icon(
-              Icons.keyboard_arrow_down_outlined,
-              color: Color(0xFF001E6C),
-              size: 30.sp,
-            ),
-          ],
-        ),
-        SizedBox(height: 10.h),
-        Text(
-          "1 Attachment(s)",
-          style: GoogleFonts.roboto(
-            fontSize: 14.sp,
-            fontWeight: FontWeight.w400,
-            color: Color(0xFF000000),
-            letterSpacing: -0.3,
           ),
         ),
-      ],
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "1 Attachment(s)",
+                style: GoogleFonts.roboto(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xFF000000),
+                  letterSpacing: -0.3,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 

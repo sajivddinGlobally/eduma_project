@@ -1,9 +1,6 @@
 import 'dart:developer';
-
-
 import 'package:eduma_app/data/Controller/popularCourseController.dart';
 import 'package:eduma_app/data/Controller/wishlistControllerClass.dart';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -284,11 +281,11 @@ class _CourseDetailsPageState extends ConsumerState<CourseDetailsPage> {
                                   icon: Icons.arrow_drop_up,
                                 ),
                                 SizedBox(height: 20.h),
-                                learnbuild(),
+                                learnbuild("LMS Website and learn Press"),
                                 SizedBox(height: 10.h),
-                                learnbuild(),
+                                learnbuild("LMS Website and learn Press"),
                                 SizedBox(height: 10.h),
-                                learnbuild(),
+                                learnbuild("LMS Website and learn Press"),
                                 SizedBox(height: 10.h),
                                 Curriculum(
                                   number: 2,
@@ -412,7 +409,7 @@ class _CourseDetailsPageState extends ConsumerState<CourseDetailsPage> {
     );
   }
 
-  Widget learnbuild() {
+  Widget learnbuild(String txt) {
     return Row(
       children: [
         SizedBox(width: 10.w),
@@ -425,7 +422,7 @@ class _CourseDetailsPageState extends ConsumerState<CourseDetailsPage> {
         ),
         SizedBox(width: 10.w),
         Text(
-          "LMS Website and learn Press",
+          txt,
           style: GoogleFonts.roboto(
             fontSize: 16.sp,
             fontWeight: FontWeight.w400,

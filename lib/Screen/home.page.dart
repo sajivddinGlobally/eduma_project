@@ -1294,7 +1294,7 @@ class _allProductState extends State<allProduct> {
                 ),
                 child: Text(
                   //"₹ 45.00",
-                  widget.data.price.toString() ?? "",
+                  widget.data.price.toString(),
                   style: GoogleFonts.roboto(
                     fontSize: 12.sp,
                     fontWeight: FontWeight.w500,
