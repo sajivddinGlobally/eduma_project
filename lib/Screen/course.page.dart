@@ -1,8 +1,10 @@
 import 'package:eduma_app/Screen/courseDetails.page.dart';
 
 import 'package:eduma_app/data/Controller/allCoursesController.dart';
+import 'package:eduma_app/data/Controller/enrolleCourseController.dart';
 import 'package:eduma_app/data/Controller/wishlistControllerClass.dart';
 import 'package:eduma_app/data/Model/allCoursesModel.dart';
+import 'package:eduma_app/data/Model/enrollCourseStudentModel.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -49,10 +51,13 @@ class _CoursePageState extends ConsumerState<CoursePage> {
       "time": "10 week",
     },
   ];
+  bool isLoading = false;
+  bool isWishlisted = false;
 
   @override
   Widget build(BuildContext context) {
-    final allCourseProvider = ref.watch(allCoursesController);
+    var box = Hive.box("userBox");
+    final enrolleCourseProvider = ref.watch(enrollCourseController);
     return Scaffold(
       backgroundColor: Color(0xFFFFFFFF),
       body: Column(
@@ -111,8 +116,8 @@ class _CoursePageState extends ConsumerState<CoursePage> {
               ],
             ),
           ),
-          allCourseProvider.when(
-            data: (allCourse) {
+          enrolleCourseProvider.when(
+            data: (enrolled) {
               return Expanded(
                 child: Container(
                   height: MediaQuery.of(context).size.height,
@@ -143,9 +148,217 @@ class _CoursePageState extends ConsumerState<CoursePage> {
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
                           padding: EdgeInsets.zero,
-                          itemCount: allCourse.data.length,
+                          itemCount: enrolled.data.courses.length,
                           itemBuilder: (context, index) {
-                            return AllCourse(data: allCourse.data[index]);
+                            if (enrolled.data.courses.isEmpty) {
+                              return Center(
+                                child: Text(
+                                  "No Data",
+                                  style: GoogleFonts.inter(
+                                    fontSize: 25.sp,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              );
+                            }
+                            return Container(
+                              margin: EdgeInsets.only(
+                                left: 20.w,
+                                right: 20.w,
+                                top: 20.h,
+                              ),
+                              width: 400.w,
+                              //  height: 361.h,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Stack(
+                                    children: [
+                                      InkWell(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            CupertinoPageRoute(
+                                              builder: (context) =>
+                                                  CourseDetailsPage(
+                                                    id: enrolled.data.studentId
+                                                        .toString(),
+                                                  ),
+                                            ),
+                                          );
+                                        },
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(
+                                            20.r,
+                                          ),
+                                          child: Image.network(
+                                            // courseList[index]['image']
+                                            //     .toString(),
+                                            enrolled
+                                                .data
+                                                .courses[index]
+                                                .thumbnail
+                                                .toString(),
+                                            width: 400.w,
+                                            height: 263.h,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
+                                      Align(
+                                        alignment: Alignment.topRight,
+                                        child: IconButton(
+                                          onPressed: isLoading
+                                              ? null
+                                              : () async {
+                                                  setState(
+                                                    () => isLoading = true,
+                                                  );
+                                                  isWishlisted =
+                                                      await WishlistControllerClass.toggle(
+                                                        context: context,
+                                                        courseId: enrolled
+                                                            .data
+                                                            .studentId,
+                                                        userId: box.get(
+                                                          "storeId",
+                                                        ),
+                                                        currentStatus:
+                                                            isWishlisted,
+                                                      );
+                                                  setState(
+                                                    () => isLoading = false,
+                                                  );
+                                                },
+
+                                          icon: isLoading
+                                              ? SizedBox(
+                                                  height: 20,
+                                                  width: 20,
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                        strokeWidth: 2,
+                                                        color: Color(
+                                                          0xFF001E6C,
+                                                        ),
+                                                      ),
+                                                )
+                                              : Icon(
+                                                  isWishlisted
+                                                      ? Icons.favorite
+                                                      : Icons.favorite_border,
+                                                  color: isWishlisted
+                                                      ? Colors.red
+                                                      : Colors.white,
+                                                  size: 25.sp,
+                                                ),
+                                        ),
+                                      ),
+
+                                      Positioned(
+                                        left: 25.w,
+                                        bottom: 25.h,
+                                        child: Container(
+                                          padding: EdgeInsets.only(
+                                            left: 16.w,
+                                            right: 16.w,
+                                            top: 6.h,
+                                            bottom: 6.h,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(
+                                              7.r,
+                                            ),
+                                            color: Color(0xFF001E6C),
+                                          ),
+                                          child: Text(
+                                            // courseList[index]['paid']
+                                            //     .toString(),
+                                            enrolled
+                                                .data
+                                                .courses[index]
+                                                .pricing
+                                                .isFree
+                                                .toString(),
+                                            style: GoogleFonts.roboto(
+                                              fontSize: 18.sp,
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.white,
+                                              letterSpacing: -0.4,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 15.h),
+                                  Text(
+                                    //courseList[index]['course'].toString(),
+                                    enrolled.data.courses[index].description,
+                                    style: GoogleFonts.roboto(
+                                      fontSize: 18.sp,
+                                      fontWeight: FontWeight.w500,
+                                      color: Color.fromARGB(140, 0, 0, 0),
+                                      letterSpacing: -0.4,
+                                    ),
+                                  ),
+                                  SizedBox(height: 8.h),
+                                  Text(
+                                    // courseList[index]['courseName'].toString(),
+                                    enrolled.data.courses[index].title,
+                                    style: GoogleFonts.roboto(
+                                      fontSize: 24.sp,
+                                      fontWeight: FontWeight.w500,
+                                      color: Color(0xFF001E6C),
+                                      letterSpacing: -0.4,
+                                      height: 1,
+                                    ),
+                                  ),
+                                  SizedBox(height: 8.h),
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.access_time,
+                                        color: Color(0xFFFE4A55),
+                                      ),
+                                      SizedBox(width: 8.w),
+                                      Text(
+                                        "Durations : ",
+                                        style: GoogleFonts.roboto(
+                                          fontSize: 18.sp,
+                                          fontWeight: FontWeight.w500,
+                                          color: Color(0xFF000000),
+                                          letterSpacing: -0.4,
+                                        ),
+                                      ),
+                                      Text(
+                                        //courseList[index]['time'].toString(),
+                                        enrolled
+                                                .data
+                                                .courses[index]
+                                                .enrollmentInfo
+                                                .enrollmentDate
+                                                .timeZoneName +
+                                            enrolled
+                                                .data
+                                                .courses[index]
+                                                .enrollmentInfo
+                                                .enrollmentDate
+                                                .hour
+                                                .toString(),
+                                        style: GoogleFonts.roboto(
+                                          fontSize: 16.sp,
+                                          fontWeight: FontWeight.w500,
+                                          color: Color(0xFF747272),
+                                          letterSpacing: -0.4,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            );
                           },
                         ),
                       ],
@@ -183,165 +396,164 @@ class _CoursePageState extends ConsumerState<CoursePage> {
   }
 }
 
-class AllCourse extends StatefulWidget {
-  final Datum data;
-  const AllCourse({super.key, required this.data});
+// class AllCourse extends StatefulWidget {
+//   final Course data;
+//   const AllCourse({super.key, required this.data});
 
-  @override
-  State<AllCourse> createState() => _AllCourseState();
-}
+//   @override
+//   State<AllCourse> createState() => _AllCourseState();
+// }
 
-class _AllCourseState extends State<AllCourse> {
-  bool isLoading = false;
-  bool isWishlisted = false;
-  @override
-  Widget build(BuildContext context) {
-    var box = Hive.box("userBox");
-    return Container(
-      margin: EdgeInsets.only(left: 20.w, right: 20.w, top: 20.h),
-      width: 400.w,
-      //  height: 361.h,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Stack(
-            children: [
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    CupertinoPageRoute(
-                      builder: (context) =>
-                          CourseDetailsPage(id: widget.data.id.toString()),
-                    ),
-                  );
-                },
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20.r),
-                  child: Image.network(
-                    // courseList[index]['image']
-                    //     .toString(),
-                    widget.data.thumbnail.medium.toString(),
-                    width: 400.w,
-                    height: 263.h,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-              Align(
-                alignment: Alignment.topRight,
-                child: IconButton(
-                  onPressed: isLoading
-                      ? null
-                      : () async {
-                          setState(() => isLoading = true);
-                          isWishlisted = await WishlistControllerClass.toggle(
-                            context: context,
-                            courseId: widget.data.id,
-                            userId: box.get("storeId"),
-                            currentStatus: isWishlisted,
-                          );
-                          setState(() => isLoading = false);
-                        },
+// class _AllCourseState extends State<AllCourse> {
+//   bool isLoading = false;
+//   bool isWishlisted = false;
+//   @override
+//   Widget build(BuildContext context) {
+//     var box = Hive.box("userBox");
+//     return Container(
+//       margin: EdgeInsets.only(left: 20.w, right: 20.w, top: 20.h),
+//       width: 400.w,
+//       //  height: 361.h,
+//       child: Column(
+//         crossAxisAlignment: CrossAxisAlignment.start,
+//         children: [
+//           Stack(
+//             children: [
+//               InkWell(
+//                 onTap: () {
+//                   Navigator.push(
+//                     context,
+//                     CupertinoPageRoute(
+//                       builder: (context) =>
+//                           CourseDetailsPage(id: widget.data.enrollmentId.toString()),
+//                     ),
+//                   );
+//                 },
+//                 child: ClipRRect(
+//                   borderRadius: BorderRadius.circular(20.r),
+//                   child: Image.network(
+//                     // courseList[index]['image']
+//                     //     .toString(),
+//                     widget.data.thumbnail.toString(),
+//                     width: 400.w,
+//                     height: 263.h,
+//                     fit: BoxFit.cover,
+//                   ),
+//                 ),
+//               ),
+//               Align(
+//                 alignment: Alignment.topRight,
+//                 child: IconButton(
+//                   onPressed: isLoading
+//                       ? null
+//                       : () async {
+//                           setState(() => isLoading = true);
+//                           isWishlisted = await WishlistControllerClass.toggle(
+//                             context: context,
+//                             courseId: widget.data.,
+//                             userId: box.get("storeId"),
+//                             currentStatus: isWishlisted,
+//                           );
+//                           setState(() => isLoading = false);
+//                         },
 
-                  icon: isLoading
-                      ? SizedBox(
-                          height: 20,
-                          width: 20,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: Color(0xFF001E6C),
-                          ),
-                        )
-                      : Icon(
-                          isWishlisted ? Icons.favorite : Icons.favorite_border,
-                          color: isWishlisted ? Colors.red : Colors.white,
-                          size: 25.sp,
-                        ),
-                ),
-              ),
+//                   icon: isLoading
+//                       ? SizedBox(
+//                           height: 20,
+//                           width: 20,
+//                           child: CircularProgressIndicator(
+//                             strokeWidth: 2,
+//                             color: Color(0xFF001E6C),
+//                           ),
+//                         )
+//                       : Icon(
+//                           isWishlisted ? Icons.favorite : Icons.favorite_border,
+//                           color: isWishlisted ? Colors.red : Colors.white,
+//                           size: 25.sp,
+//                         ),
+//                 ),
+//               ),
 
-              Positioned(
-                left: 25.w,
-                bottom: 25.h,
-                child: Container(
-                  padding: EdgeInsets.only(
-                    left: 16.w,
-                    right: 16.w,
-                    top: 6.h,
-                    bottom: 6.h,
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(7.r),
-                    color: Color(0xFF001E6C),
-                  ),
-                  child: Text(
-                    // courseList[index]['paid']
-                    //     .toString(),
-                    widget.data.pricing.priceLabel.name,
-                    style: GoogleFonts.roboto(
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.white,
-                      letterSpacing: -0.4,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 15.h),
-          Text(
-            //courseList[index]['course'].toString(),
-            widget.data.shortDescription,
-            style: GoogleFonts.roboto(
-              fontSize: 18.sp,
-              fontWeight: FontWeight.w500,
-              color: Color.fromARGB(140, 0, 0, 0),
-              letterSpacing: -0.4,
-            ),
-          ),
-          SizedBox(height: 8.h),
-          Text(
-            // courseList[index]['courseName'].toString(),
-            widget.data.title,
-            style: GoogleFonts.roboto(
-              fontSize: 24.sp,
-              fontWeight: FontWeight.w500,
-              color: Color(0xFF001E6C),
-              letterSpacing: -0.4,
-              height: 1,
-            ),
-          ),
-          SizedBox(height: 8.h),
-          Row(
-            children: [
-              Icon(Icons.access_time, color: Color(0xFFFE4A55)),
-              SizedBox(width: 8.w),
-              Text(
-                "Durations : ",
-                style: GoogleFonts.roboto(
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.w500,
-                  color: Color(0xFF000000),
-                  letterSpacing: -0.4,
-                ),
-              ),
-              Text(
-                //courseList[index]['time'].toString(),
-                widget.data.courseInfo.duration.hours +
-                    widget.data.courseInfo.duration.minutes,
-                style: GoogleFonts.roboto(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w500,
-                  color: Color(0xFF747272),
-                  letterSpacing: -0.4,
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
+//               Positioned(
+//                 left: 25.w,
+//                 bottom: 25.h,
+//                 child: Container(
+//                   padding: EdgeInsets.only(
+//                     left: 16.w,
+//                     right: 16.w,
+//                     top: 6.h,
+//                     bottom: 6.h,
+//                   ),
+//                   decoration: BoxDecoration(
+//                     borderRadius: BorderRadius.circular(7.r),
+//                     color: Color(0xFF001E6C),
+//                   ),
+//                   child: Text(
+//                     // courseList[index]['paid']
+//                     //     .toString(),
+//                     widget.data.pricing.isFree.toString(),
+//                     style: GoogleFonts.roboto(
+//                       fontSize: 18.sp,
+//                       fontWeight: FontWeight.w500,
+//                       color: Colors.white,
+//                       letterSpacing: -0.4,
+//                     ),
+//                   ),
+//                 ),
+//               ),
+//             ],
+//           ),
+//           SizedBox(height: 15.h),
+//           Text(
+//             //courseList[index]['course'].toString(),
+//             widget.data.description,
+//             style: GoogleFonts.roboto(
+//               fontSize: 18.sp,
+//               fontWeight: FontWeight.w500,
+//               color: Color.fromARGB(140, 0, 0, 0),
+//               letterSpacing: -0.4,
+//             ),
+//           ),
+//           SizedBox(height: 8.h),
+//           Text(
+//             // courseList[index]['courseName'].toString(),
+//             widget.data.title,
+//             style: GoogleFonts.roboto(
+//               fontSize: 24.sp,
+//               fontWeight: FontWeight.w500,
+//               color: Color(0xFF001E6C),
+//               letterSpacing: -0.4,
+//               height: 1,
+//             ),
+//           ),
+//           SizedBox(height: 8.h),
+//           Row(
+//             children: [
+//               Icon(Icons.access_time, color: Color(0xFFFE4A55)),
+//               SizedBox(width: 8.w),
+//               Text(
+//                 "Durations : ",
+//                 style: GoogleFonts.roboto(
+//                   fontSize: 18.sp,
+//                   fontWeight: FontWeight.w500,
+//                   color: Color(0xFF000000),
+//                   letterSpacing: -0.4,
+//                 ),
+//               ),
+//               Text(
+//                 //courseList[index]['time'].toString(),
+//                 widget.data.enrollmentInfo.enrollmentDate.timeZoneName+widget.data.enrollmentInfo.enrollmentDate.hour.toString(),
+//                 style: GoogleFonts.roboto(
+//                   fontSize: 16.sp,
+//                   fontWeight: FontWeight.w500,
+//                   color: Color(0xFF747272),
+//                   letterSpacing: -0.4,
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
