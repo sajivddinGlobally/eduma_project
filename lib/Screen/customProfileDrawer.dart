@@ -36,7 +36,7 @@ class _CustomProfileDrawerState extends ConsumerState<CustomProfileDrawer> {
           color: Colors.white,
         ),
         child: profileProvider.when(
-          data: (data) {
+          data: (profile) {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -98,7 +98,10 @@ class _CustomProfileDrawerState extends ConsumerState<CustomProfileDrawer> {
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               image: DecorationImage(
-                                image: AssetImage("assets/annu.png"),
+                                image: NetworkImage(
+                                  //"assets/annu.png",
+                                  profile.data.avatarUrl,
+                                ),
                               ),
                             ),
                           ),
@@ -139,8 +142,8 @@ class _CustomProfileDrawerState extends ConsumerState<CustomProfileDrawer> {
                         padding: EdgeInsets.only(left: 12.w),
                         child: Text(
                           // "Annu Agarwal",
-                          box.get("storeName").toString(),
-
+                          // box.get("storeName").toString(),
+                          profile.data.displayName,
                           style: GoogleFonts.roboto(
                             fontSize: 16.sp,
                             fontWeight: FontWeight.w400,
@@ -152,8 +155,8 @@ class _CustomProfileDrawerState extends ConsumerState<CustomProfileDrawer> {
                         padding: EdgeInsets.only(left: 12.w),
                         child: Text(
                           // "AnnuAgarwal.gmail.com",
-                          box.get("userEmail").toString(),
-
+                          // box.get("userEmail").toString(),
+                          profile.data.email,
                           style: GoogleFonts.roboto(
                             fontSize: 14.sp,
                             fontWeight: FontWeight.w400,
@@ -368,7 +371,8 @@ class _CustomProfileDrawerState extends ConsumerState<CustomProfileDrawer> {
           error: (error, stackTrace) {
             return Center(child: Text(error.toString()));
           },
-          loading: () => Center(child: CircularProgressIndicator(),),       ),
+          loading: () => Center(child: CircularProgressIndicator()),
+        ),
       ),
     );
   }
