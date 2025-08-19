@@ -1,8 +1,5 @@
-
-
 import 'package:eduma_app/Screen/apiCall/api.register.dart';
 import 'package:eduma_app/Screen/login.page.dart';
-
 import 'package:eduma_app/config/utils/navigatorKey.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -173,88 +170,88 @@ class _RegisterPageState extends ConsumerState<RegisterPage>
                     return null;
                   },
                 ),
-                SizedBox(height: 20.h),
-                Text(
-                  "Select Role",
-                  style: GoogleFonts.roboto(
-                    fontSize: 13.sp,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xff4D4D4D),
-                  ),
-                ),
-                SizedBox(height: 12.h),
-                DropdownButtonFormField<String>(
-                  decoration: InputDecoration(
-                    contentPadding: EdgeInsets.only(
-                      // left: 19.w,
-                      // right: 10.w,
-                      top: 15.h,
-                      bottom: 15.h,
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(40.r),
-                      borderSide: BorderSide(
-                        color: Color.fromARGB(25, 0, 0, 0),
-                        width: 1.w,
-                      ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(40.r),
-                      borderSide: BorderSide(
-                        color: Color.fromARGB(25, 0, 0, 0),
-                        width: 1.w,
-                      ),
-                    ),
-                    errorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(40.r),
-                      borderSide: BorderSide(
-                        color: Color.fromARGB(25, 0, 0, 0),
-                        width: 1.w,
-                      ),
-                    ),
-                    focusedErrorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(40.r),
-                      borderSide: BorderSide(
-                        color: Color.fromARGB(25, 0, 0, 0),
-                        width: 1.w,
-                      ),
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Please Select Role";
-                    }
-                    return null;
-                  },
-                  icon: Icon(Icons.arrow_drop_down, color: Colors.grey),
-                  padding: EdgeInsets.only(left: 20.w, right: 20.w),
-                  value: selectedRole,
-                  hint: Text(
-                    "Select Role",
-                    style: GoogleFonts.roboto(
-                      fontSize: 13.sp,
-                      fontWeight: FontWeight.w400,
-                      color: Color(0xff4D4D4D),
-                    ),
-                  ),
-                  items: roles.map((role) {
-                    return DropdownMenuItem(
-                      value: role,
-                      child: Text(
-                        role,
-                        style: GoogleFonts.roboto(
-                          fontSize: 15.sp,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      selectedRole = value;
-                    });
-                  },
-                ),
+                // SizedBox(height: 20.h),
+                // Text(
+                //   "Select Role",
+                //   style: GoogleFonts.roboto(
+                //     fontSize: 13.sp,
+                //     fontWeight: FontWeight.w400,
+                //     color: Color(0xff4D4D4D),
+                //   ),
+                // ),
+                // SizedBox(height: 12.h),
+                // DropdownButtonFormField<String>(
+                //   decoration: InputDecoration(
+                //     contentPadding: EdgeInsets.only(
+                //       // left: 19.w,
+                //       // right: 10.w,
+                //       top: 15.h,
+                //       bottom: 15.h,
+                //     ),
+                //     enabledBorder: OutlineInputBorder(
+                //       borderRadius: BorderRadius.circular(40.r),
+                //       borderSide: BorderSide(
+                //         color: Color.fromARGB(25, 0, 0, 0),
+                //         width: 1.w,
+                //       ),
+                //     ),
+                //     focusedBorder: OutlineInputBorder(
+                //       borderRadius: BorderRadius.circular(40.r),
+                //       borderSide: BorderSide(
+                //         color: Color.fromARGB(25, 0, 0, 0),
+                //         width: 1.w,
+                //       ),
+                //     ),
+                //     errorBorder: OutlineInputBorder(
+                //       borderRadius: BorderRadius.circular(40.r),
+                //       borderSide: BorderSide(
+                //         color: Color.fromARGB(25, 0, 0, 0),
+                //         width: 1.w,
+                //       ),
+                //     ),
+                //     focusedErrorBorder: OutlineInputBorder(
+                //       borderRadius: BorderRadius.circular(40.r),
+                //       borderSide: BorderSide(
+                //         color: Color.fromARGB(25, 0, 0, 0),
+                //         width: 1.w,
+                //       ),
+                //     ),
+                //   ),
+                //   validator: (value) {
+                //     if (value == null || value.isEmpty) {
+                //       return "Please Select Role";
+                //     }
+                //     return null;
+                //   },
+                //   icon: Icon(Icons.arrow_drop_down, color: Colors.grey),
+                //   padding: EdgeInsets.only(left: 20.w, right: 20.w),
+                //   value: selectedRole,
+                //   hint: Text(
+                //     "Select Role",
+                //     style: GoogleFonts.roboto(
+                //       fontSize: 13.sp,
+                //       fontWeight: FontWeight.w400,
+                //       color: Color(0xff4D4D4D),
+                //     ),
+                //   ),
+                //   items: roles.map((role) {
+                //     return DropdownMenuItem(
+                //       value: role,
+                //       child: Text(
+                //         role,
+                //         style: GoogleFonts.roboto(
+                //           fontSize: 15.sp,
+                //           fontWeight: FontWeight.w500,
+                //         ),
+                //       ),
+                //     );
+                //   }).toList(),
+                //   onChanged: (value) {
+                //     setState(() {
+                //       selectedRole = value;
+                //     });
+                //   },
+                // ),
                 SizedBox(height: 20.h),
                 Text(
                   "Password",

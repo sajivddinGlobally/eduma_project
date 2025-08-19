@@ -13,14 +13,12 @@ class RegisterBodyModel {
     String email;
     String password;
     String confirmPassword;
-    String roleType;
 
     RegisterBodyModel({
         required this.username,
         required this.email,
         required this.password,
         required this.confirmPassword,
-        required this.roleType,
     });
 
     factory RegisterBodyModel.fromJson(Map<String, dynamic> json) => RegisterBodyModel(
@@ -28,7 +26,6 @@ class RegisterBodyModel {
         email: json["email"],
         password: json["password"],
         confirmPassword: json["confirm_password"],
-        roleType: json["role_type"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -36,6 +33,5 @@ class RegisterBodyModel {
         "email": email,
         "password": password,
         "confirm_password": confirmPassword,
-        "role_type": roleType,
     };
 }

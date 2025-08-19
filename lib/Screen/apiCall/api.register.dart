@@ -55,7 +55,6 @@ mixin RegisterApi<T extends ConsumerStatefulWidget> on ConsumerState<T> {
         email: emailController.text,
         password: passwordController.text,
         confirmPassword: confirmPassController.text,
-        roleType: selectedRole.toString(),
       );
 
       setState(() {
