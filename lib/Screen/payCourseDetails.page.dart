@@ -489,32 +489,47 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                               ),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children:
-                                    // courseDetails.topics
-                                    //     .map(
-                                    //       (e) => modules(e.topicTitle.toString()),
-                                    //     )
-                                    //     .toList(),
-                                    [
-                                      ...courseDetails.topics
-                                          .map(
-                                            (e) => modules(
-                                              e.topicTitle.toString(),
-                                            ),
-                                          )
-                                          .toList(),
-                                      // modules(
-                                      //   "PDF for 25th Workshop - TonguDiagram Treatise 18",
-                                      // ),
-                                      // Divider(),
-                                      // modules("Day-1"),
-                                      // Divider(),
-                                      // modules("Day-2"),
-                                      // Divider(),
-                                      // modules("Day-3"),
-                                      // Divider(),
-                                      // modules("Day-4"),
-                                    ],
+                                children: courseDetails.topics
+                                    .map(
+                                      (e) => modules(
+                                        e.topicTitle.toString(),
+                                        e.lessons
+                                            .map(
+                                              (lesson) => lesson
+                                                  .lessonMeta
+                                                  .video
+                                                  .toString(),
+                                            )
+                                            .join(', '),
+                                      ),
+                                    )
+                                    .toList(),
+                                // [
+                                //   ...courseDetails.topics
+                                //       .map(
+                                //         (e) => modules(
+                                //           e.topicTitle.toString(),
+                                //           e.lessons
+                                //               .map(
+                                //                 (e) => e.lessonMeta.video
+                                //                     .toString(),
+                                //               )
+                                //               .join(', '),
+                                //         ),
+                                //       )
+                                //       .toList(),
+                                // modules(
+                                //   "PDF for 25th Workshop - TonguDiagram Treatise 18",
+                                // ),
+                                // Divider(),
+                                // modules("Day-1"),
+                                // Divider(),
+                                // modules("Day-2"),
+                                // Divider(),
+                                // modules("Day-3"),
+                                // Divider(),
+                                // modules("Day-4"),
+                                //],
                               ),
                             ),
                             SizedBox(height: 20.h),
@@ -683,7 +698,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
     );
   }
 
-  Widget modules(String txt) {
+  Widget modules(String txt, String video) {
     return Theme(
       data: Theme.of(context).copyWith(
         dividerColor: Colors.transparent, // Divider line hatane ke liye
@@ -723,13 +738,20 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                "1 Attachment(s)",
-                style: GoogleFonts.roboto(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w400,
-                  color: Color(0xFF000000),
-                  letterSpacing: -0.3,
+              Container(
+                width: 260.w,
+                //color: Colors.amber,
+                child: Text(
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  //"1 Attachment(s)",
+                  video,
+                  style: GoogleFonts.roboto(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xFF000000),
+                    letterSpacing: -0.3,
+                  ),
                 ),
               ),
             ],
