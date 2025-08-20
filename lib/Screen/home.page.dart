@@ -6,6 +6,7 @@ import 'package:eduma_app/Screen/customProfileDrawer.dart';
 import 'package:eduma_app/Screen/instructor.page.dart';
 import 'package:eduma_app/Screen/login.page.dart';
 import 'package:eduma_app/Screen/payCourseDetails.page.dart';
+import 'package:eduma_app/Screen/productDetails.page.dart';
 import 'package:eduma_app/Screen/register.page.dart';
 import 'package:eduma_app/Screen/shop.page.dart';
 import 'package:eduma_app/Screen/youtube.page.dart';
@@ -1216,8 +1217,7 @@ class _allProductState extends State<allProduct> {
                 Navigator.push(
                   context,
                   CupertinoPageRoute(
-                    builder: (context) =>
-                        CourseDetailsPage(id: widget.data.id!.toString()),
+                    builder: (context) => ProductDetailsPage(),
                   ),
                 );
               },
