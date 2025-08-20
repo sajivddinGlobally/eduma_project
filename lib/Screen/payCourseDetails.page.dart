@@ -196,7 +196,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                 Spacer(),
                                 Text(
                                   //  "₹ 45k",
-                                  "₹ ${courseDetails.price.toString()}",
+                                  "₹ ${courseDetails.price}",
                                   style: GoogleFonts.roboto(
                                     fontSize: 18.sp,
                                     fontWeight: FontWeight.w400,
@@ -533,7 +533,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                 //],
                               ),
                             ),
-
+                            SizedBox(height: 15.h),
                             Text(
                               "FAQs ",
                               style: GoogleFonts.roboto(
