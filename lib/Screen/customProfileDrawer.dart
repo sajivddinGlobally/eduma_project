@@ -1,5 +1,6 @@
 import 'package:eduma_app/Screen/course.page.dart';
 import 'package:eduma_app/Screen/editProfile.page.dart';
+import 'package:eduma_app/Screen/library.page.dart';
 import 'package:eduma_app/Screen/onbording.page.dart';
 import 'package:eduma_app/Screen/orderList.page.dart';
 import 'package:eduma_app/Screen/paymentOverfiew.page.dart';
@@ -193,12 +194,12 @@ class _CustomProfileDrawerState extends ConsumerState<CustomProfileDrawer> {
                       SizedBox(height: 20.h),
                       InkWell(
                         onTap: () {
-                          // Navigator.push(
-                          //   context,
-                          //   CupertinoPageRoute(
-                          //     builder: (context) => CoursePage(),
-                          //   ),
-                          // );
+                          Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                              builder: (context) => LibraryPage(),
+                            ),
+                          );
                         },
                         child: tileBuild("assets/lib.png", "Library"),
                       ),

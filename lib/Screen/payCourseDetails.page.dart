@@ -195,7 +195,8 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                 ),
                                 Spacer(),
                                 Text(
-                                  "₹ 45k",
+                                  //  "₹ 45k",
+                                  "₹ ${courseDetails.price.toString()}",
                                   style: GoogleFonts.roboto(
                                     fontSize: 18.sp,
                                     fontWeight: FontWeight.w400,
@@ -217,7 +218,8 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                             ),
                             SizedBox(height: 14.h),
                             Text(
-                              "Unlock ancient wisdom for personal growth",
+                              // "Unlock ancient wisdom for personal growth",
+                              courseDetails.excerpt,
                               style: GoogleFonts.roboto(
                                 fontSize: 16.sp,
                                 fontWeight: FontWeight.w400,
@@ -487,19 +489,32 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                               ),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  modules(
-                                    "PDF for 25th Workshop - TonguDiagram Treatise 18",
-                                  ),
-                                  Divider(),
-                                  modules("Day-1"),
-                                  Divider(),
-                                  modules("Day-2"),
-                                  Divider(),
-                                  modules("Day-3"),
-                                  Divider(),
-                                  modules("Day-4"),
-                                ],
+                                children:
+                                    // courseDetails.topics
+                                    //     .map(
+                                    //       (e) => modules(e.topicTitle.toString()),
+                                    //     )
+                                    //     .toList(),
+                                    [
+                                      ...courseDetails.topics
+                                          .map(
+                                            (e) => modules(
+                                              e.topicTitle.toString(),
+                                            ),
+                                          )
+                                          .toList(),
+                                      // modules(
+                                      //   "PDF for 25th Workshop - TonguDiagram Treatise 18",
+                                      // ),
+                                      // Divider(),
+                                      // modules("Day-1"),
+                                      // Divider(),
+                                      // modules("Day-2"),
+                                      // Divider(),
+                                      // modules("Day-3"),
+                                      // Divider(),
+                                      // modules("Day-4"),
+                                    ],
                               ),
                             ),
                             SizedBox(height: 20.h),
@@ -677,18 +692,32 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
       ),
       child: ExpansionTile(
         tilePadding: EdgeInsets.zero,
-        title: SizedBox(
-          // width: 275.w,
-          child: Text(
-            txt,
-            style: GoogleFonts.roboto(
-              fontSize: 16.sp,
-              fontWeight: FontWeight.w500,
-              color: Color(0xFF000000),
-              letterSpacing: -0.4,
-              height: 1.1,
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              // width: 275.w,
+              child: Text(
+                txt,
+                style: GoogleFonts.roboto(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w500,
+                  color: Color(0xFF000000),
+                  letterSpacing: -0.4,
+                  height: 1.1,
+                ),
+              ),
             ),
-          ),
+            Text(
+              "1 Attachment(s)",
+              style: GoogleFonts.roboto(
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w400,
+                color: Color(0xFF000000),
+                letterSpacing: -0.3,
+              ),
+            ),
+          ],
         ),
         children: [
           Row(
