@@ -1217,7 +1217,8 @@ class _allProductState extends State<allProduct> {
                 Navigator.push(
                   context,
                   CupertinoPageRoute(
-                    builder: (context) => ProductDetailsPage(),
+                    builder: (context) =>
+                        ProductDetailsPage(id: widget.data.id.toString()),
                   ),
                 );
               },
