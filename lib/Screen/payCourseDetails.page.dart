@@ -504,6 +504,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                       ),
                                     )
                                     .toList(),
+
                                 // [
                                 //   ...courseDetails.topics
                                 //       .map(
@@ -532,7 +533,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                 //],
                               ),
                             ),
-                            SizedBox(height: 20.h),
+
                             Text(
                               "FAQs ",
                               style: GoogleFonts.roboto(
@@ -585,15 +586,27 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
+                                SizedBox(height: 20.h),
+                                Text(
+                                  "About the Creator",
+                                  style: GoogleFonts.roboto(
+                                    fontSize: 20.sp,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black,
+                                  ),
+                                ),
                                 Container(
                                   margin: EdgeInsets.only(top: 20.h),
-                                  width: 45.w,
-                                  height: 45.h,
+                                  width: 50.w,
+                                  height: 50.h,
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     color: Colors.grey,
                                     image: DecorationImage(
-                                      image: AssetImage("assets/tesla.png"),
+                                      image: NetworkImage(
+                                        //"assets/tesla.png",
+                                        courseDetails.author.avatarUrl,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -625,7 +638,8 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                 ),
                                 SizedBox(height: 20.h),
                                 Text(
-                                  "With over 5 years of experience, I've guided 300+ students to land jobs in top companies like Google, TCS, and Deloitte. My sessions focus on mock interviews, resume building, and effective communication",
+                                  //"With over 5 years of experience, I've guided 300+ students to land jobs in top companies like Google, TCS, and Deloitte. My sessions focus on mock interviews, resume building, and effective communication",
+                                  courseDetails.author.name,
                                   style: GoogleFonts.roboto(
                                     fontSize: 16.sp,
                                     fontWeight: FontWeight.w400,

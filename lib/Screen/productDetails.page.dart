@@ -92,8 +92,8 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(10.r),
                       child: Image.network(
-                     data.images[0].medium.toString(),
-                       // "assets/shop1.png",
+                        data.images[0].thumbnail.toString(),
+                        // "assets/shop1.png",
                         width: MediaQuery.of(context).size.width,
                         height: 198.h,
                         fit: BoxFit.cover,
@@ -111,8 +111,8 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                     Row(
                       children: [
                         Text(
-                        //  "Create an LMS Website With LearnPress",
-                         data.name.toString(),
+                          //  "Create an LMS Website With LearnPress",
+                          data.name.toString(),
                           style: GoogleFonts.roboto(
                             fontSize: 16.sp,
                             fontWeight: FontWeight.w500,
@@ -162,7 +162,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                     ),
                     SizedBox(height: 10.h),
                     Text(
-                     // "The 25th Workshop based on Treasure of Treatise -18 is a deep dive into the ancient scriptures and texts, uncovering hidden gems of knowledge and wisdom. Participants will explore the rich heritage of ancient treatises and unlock valuable insights for personal growth and development.",
+                      // "The 25th Workshop based on Treasure of Treatise -18 is a deep dive into the ancient scriptures and texts, uncovering hidden gems of knowledge and wisdom. Participants will explore the rich heritage of ancient treatises and unlock valuable insights for personal growth and development.",
                       data.description.toString(),
                       style: GoogleFonts.roboto(
                         fontSize: 14.sp,
@@ -239,8 +239,8 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                     ),
                     SizedBox(height: 10.h),
                     Text(
-                     // "shipping_policy",
-                     data.wcfmProductPolicyData.shippingPolicy.toString(),
+                      // "shipping_policy",
+                      data.wcfmProductPolicyData.shippingPolicy.toString(),
                       style: GoogleFonts.roboto(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w400,
@@ -251,8 +251,8 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                 ),
               );
             },
-            error: (error, stackTrace) => Center(child: Text(error.toString()),),
-            loading: () => Center(child: CircularProgressIndicator(),),
+            error: (error, stackTrace) => Center(child: Text(error.toString())),
+            loading: () => Center(child: CircularProgressIndicator()),
           ),
         ],
       ),
