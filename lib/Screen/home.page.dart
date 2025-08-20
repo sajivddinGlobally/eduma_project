@@ -10,6 +10,7 @@ import 'package:eduma_app/Screen/productDetails.page.dart';
 import 'package:eduma_app/Screen/register.page.dart';
 import 'package:eduma_app/Screen/shop.page.dart';
 import 'package:eduma_app/Screen/youtube.page.dart';
+import 'package:eduma_app/data/Controller/allCategoryController.dart';
 import 'package:eduma_app/data/Controller/allCoursesController.dart';
 import 'package:eduma_app/data/Controller/popularCourseController.dart';
 import 'package:eduma_app/data/Controller/productListController.dart';
@@ -39,11 +40,12 @@ class _HomePageState extends ConsumerState<HomePage> {
   Widget build(BuildContext context) {
     var box = Hive.box("userBox");
     final popularCourseProvider = ref.watch(popularCourseController);
-    final allCoursesProvider = ref.watch(allCoursesController);
+    //final allCoursesProvider = ref.watch(allCoursesController);
     final productListProvider = ref.watch(productListController);
+    final allCategoryProvider = ref.watch(allCategoryController);
 
     // ✅ Agar loading hai to pura Scaffold loading show kare
-    if (popularCourseProvider.isLoading || allCoursesProvider.isLoading) {
+    if (popularCourseProvider.isLoading || productListProvider.isLoading) {
       return Scaffold(
         backgroundColor: Colors.white,
         body: Center(
@@ -53,7 +55,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     }
 
     // ✅ Agar error hai to pura Scaffold error show kare
-    if (popularCourseProvider.hasError || allCoursesProvider.hasError) {
+    if (popularCourseProvider.hasError || productListProvider.hasError) {
       return Scaffold(
         backgroundColor: Colors.white,
         body: Center(
@@ -187,77 +189,78 @@ class _HomePageState extends ConsumerState<HomePage> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 18.h),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(left: 20.w),
-                          padding: EdgeInsets.only(
-                            top: 10.h,
-                            bottom: 10.h,
-                            left: 20.w,
-                            right: 20.w,
-                          ),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(40.r),
-                            color: Color(0xFF001E6C),
-                          ),
-                          child: Text(
-                            "Backend",
-                            style: GoogleFonts.roboto(
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w400,
-                              color: Color(0xFFFFFFFF),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(left: 10.w),
-                          padding: EdgeInsets.only(
-                            top: 10.h,
-                            bottom: 10.h,
-                            left: 20.w,
-                            right: 20.w,
-                          ),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(40.r),
-                            color: Color(0xFFDCF881),
-                          ),
-                          child: Text(
-                            "Programing Language",
-                            style: GoogleFonts.roboto(
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(left: 10.w, right: 10.w),
-                          padding: EdgeInsets.only(
-                            top: 10.h,
-                            bottom: 10.h,
-                            left: 20.w,
-                            right: 20.w,
-                          ),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(40.r),
-                            color: Color(0xFFEB9481),
-                          ),
-                          child: Text(
-                            "Technology",
-                            style: GoogleFonts.roboto(
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+
+                  //SizedBox(height: 18.h),
+                  // SingleChildScrollView(
+                  //   scrollDirection: Axis.horizontal,
+                  //   child: Row(
+                  //     children: [
+                  //       Container(
+                  //         margin: EdgeInsets.only(left: 20.w),
+                  //         padding: EdgeInsets.only(
+                  //           top: 10.h,
+                  //           bottom: 10.h,
+                  //           left: 20.w,
+                  //           right: 20.w,
+                  //         ),
+                  //         decoration: BoxDecoration(
+                  //           borderRadius: BorderRadius.circular(40.r),
+                  //           color: Color(0xFF001E6C),
+                  //         ),
+                  //         child: Text(
+                  //           "Backend",
+                  //           style: GoogleFonts.roboto(
+                  //             fontSize: 16.sp,
+                  //             fontWeight: FontWeight.w400,
+                  //             color: Color(0xFFFFFFFF),
+                  //           ),
+                  //         ),
+                  //       ),
+                  //       Container(
+                  //         margin: EdgeInsets.only(left: 10.w),
+                  //         padding: EdgeInsets.only(
+                  //           top: 10.h,
+                  //           bottom: 10.h,
+                  //           left: 20.w,
+                  //           right: 20.w,
+                  //         ),
+                  //         decoration: BoxDecoration(
+                  //           borderRadius: BorderRadius.circular(40.r),
+                  //           color: Color(0xFFDCF881),
+                  //         ),
+                  //         child: Text(
+                  //           "Programing Language",
+                  //           style: GoogleFonts.roboto(
+                  //             fontSize: 16.sp,
+                  //             fontWeight: FontWeight.w400,
+                  //             color: Colors.black,
+                  //           ),
+                  //         ),
+                  //       ),
+                  //       Container(
+                  //         margin: EdgeInsets.only(left: 10.w, right: 10.w),
+                  //         padding: EdgeInsets.only(
+                  //           top: 10.h,
+                  //           bottom: 10.h,
+                  //           left: 20.w,
+                  //           right: 20.w,
+                  //         ),
+                  //         decoration: BoxDecoration(
+                  //           borderRadius: BorderRadius.circular(40.r),
+                  //           color: Color(0xFFEB9481),
+                  //         ),
+                  //         child: Text(
+                  //           "Technology",
+                  //           style: GoogleFonts.roboto(
+                  //             fontSize: 16.sp,
+                  //             fontWeight: FontWeight.w400,
+                  //             color: Colors.white,
+                  //           ),
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
                   SizedBox(height: 30.h),
                   Row(
                     children: [
@@ -300,7 +303,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                     },
                     child: LearningBody(),
                   ),
-                  // SizedBox(height: 10.h),
+                  SizedBox(height: 10.h),
                   Row(
                     children: [
                       SizedBox(width: 20.w),
@@ -330,13 +333,13 @@ class _HomePageState extends ConsumerState<HomePage> {
                     ],
                   ),
                   SizedBox(height: 20.h),
-                  allCoursesProvider.when(
-                    data: (allCourses) {
+                  allCategoryProvider.when(
+                    data: (allCategory) {
                       return Container(
-                        height: 150.h,
+                        height: 155.h,
                         //color: Colors.amber,
                         child: ListView.builder(
-                          itemCount: allCourses.data.length,
+                          itemCount: allCategory.data.length,
                           scrollDirection: Axis.horizontal,
                           padding: EdgeInsets.zero,
                           itemBuilder: (context, index) {
@@ -353,7 +356,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                                         CupertinoPageRoute(
                                           builder: (context) =>
                                               CourseDetailsPage(
-                                                id: allCourses.data[index].id
+                                                id: allCategory.data[index].id
                                                     .toString(),
                                               ),
                                         ),
@@ -363,8 +366,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                                       borderRadius: BorderRadius.circular(10.r),
                                       child: Image.network(
                                         // "assets/course.png",
-                                        allCourses.data[index].thumbnail.large
-                                            .toString(),
+                                        allCategory.data[index].thumbnail,
                                         width: 200.w,
                                         height: 130.h,
                                         fit: BoxFit.fill,
@@ -431,11 +433,11 @@ class _HomePageState extends ConsumerState<HomePage> {
                       SizedBox(width: 20.w),
                     ],
                   ),
-                  SizedBox(height: 16.h),
+                  SizedBox(height: 20.h),
                   popularCourseProvider.when(
                     data: (course) {
                       return Container(
-                        height: 190.h,
+                        height: 200.h,
                         //color: Colors.amber,
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
@@ -483,7 +485,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                       SizedBox(width: 20.w),
                     ],
                   ),
-                  SizedBox(height: 16.h),
+                  SizedBox(height: 20.h),
                   PopularBody(
                     popularList: [
                       {
@@ -527,11 +529,11 @@ class _HomePageState extends ConsumerState<HomePage> {
                       SizedBox(width: 20.w),
                     ],
                   ),
-                  SizedBox(height: 16.h),
+                  SizedBox(height: 20.h),
                   productListProvider.when(
                     data: (productList) {
                       return Container(
-                        height: 190.h,
+                        height: 200.h,
                         // color: Colors.amber,
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
@@ -551,183 +553,184 @@ class _HomePageState extends ConsumerState<HomePage> {
                     loading: () => Center(child: CircularProgressIndicator()),
                   ),
                   SizedBox(height: 15.h),
-                  Container(
-                    margin: EdgeInsets.only(left: 20.w),
-                    child: Text(
-                      "instructor",
-                      style: GoogleFonts.roboto(
-                        fontSize: 26.sp,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xFF1B1B1B),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 16.h),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SizedBox(width: 20.w),
-                      Container(
-                        padding: EdgeInsets.only(
-                          left: 10.w,
-                          right: 10.w,
-                          bottom: 13.h,
-                          top: 13.h,
-                        ),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5.r),
-                          color: Color(0xFFFFFFFF),
-                          boxShadow: [
-                            BoxShadow(
-                              offset: Offset(0, 1),
-                              spreadRadius: 0,
-                              blurRadius: 4,
-                              color: Color.fromARGB(63, 0, 0, 0),
-                            ),
-                          ],
-                        ),
-                        child: Row(
-                          children: [
-                            Container(
-                              width: 45.w,
-                              height: 45.h,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.blue,
-                              ),
-                              child: ClipOval(
-                                child: Image.asset(
-                                  "assets/mahesh.png",
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: 7.w),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Mahesh Yogi",
-                                  style: GoogleFonts.roboto(
-                                    fontSize: 20.sp,
-                                    fontWeight: FontWeight.w500,
-                                    color: Color(0xFF001E6C),
-                                    letterSpacing: -0.4,
-                                  ),
-                                ),
-                                Text(
-                                  "3 Courses    257 Student",
-                                  style: GoogleFonts.roboto(
-                                    fontSize: 12.sp,
-                                    fontWeight: FontWeight.w500,
-                                    color: Color(0xFF000000),
-                                    letterSpacing: -0.4,
-                                  ),
-                                ),
-                                SizedBox(height: 4.h),
-                                Row(
-                                  children: [
-                                    Image.asset("assets/birds.png"),
-                                    SizedBox(width: 10.w),
-                                    Image.asset("assets/call.png"),
-                                    SizedBox(width: 10.w),
-                                    Image.asset("assets/insta.png"),
-                                    SizedBox(width: 10.w),
-                                    Image.asset("assets/a.png"),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                              builder: (context) => InstructorPage(),
-                            ),
-                          );
-                        },
-                        child: Container(
-                          padding: EdgeInsets.only(
-                            left: 10.w,
-                            right: 10.w,
-                            bottom: 13.h,
-                            top: 13.h,
-                          ),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5.r),
-                            color: Color(0xFFFFFFFF),
-                            boxShadow: [
-                              BoxShadow(
-                                offset: Offset(0, 1),
-                                spreadRadius: 0,
-                                blurRadius: 4,
-                                color: Color.fromARGB(63, 0, 0, 0),
-                              ),
-                            ],
-                          ),
-                          child: Row(
-                            children: [
-                              Container(
-                                width: 45.w,
-                                height: 45.h,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Colors.blue,
-                                ),
-                                child: ClipOval(
-                                  child: Image.asset(
-                                    "assets/annu.png",
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(width: 7.w),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Annu Agarwal",
-                                    style: GoogleFonts.roboto(
-                                      fontSize: 20.sp,
-                                      fontWeight: FontWeight.w500,
-                                      color: Color(0xFF001E6C),
-                                      letterSpacing: -0.4,
-                                    ),
-                                  ),
-                                  Text(
-                                    "3 Courses    257 Student",
-                                    style: GoogleFonts.roboto(
-                                      fontSize: 12.sp,
-                                      fontWeight: FontWeight.w500,
-                                      color: Color(0xFF000000),
-                                      letterSpacing: -0.4,
-                                    ),
-                                  ),
-                                  SizedBox(height: 4.h),
-                                  Row(
-                                    children: [
-                                      Image.asset("assets/birds.png"),
-                                      SizedBox(width: 10.w),
-                                      Image.asset("assets/call.png"),
-                                      SizedBox(width: 10.w),
-                                      Image.asset("assets/insta.png"),
-                                      SizedBox(width: 10.w),
-                                      Image.asset("assets/a.png"),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 20.w),
-                    ],
-                  ),
+
+                  // Container(
+                  //   margin: EdgeInsets.only(left: 20.w),
+                  //   child: Text(
+                  //     "instructor",
+                  //     style: GoogleFonts.roboto(
+                  //       fontSize: 26.sp,
+                  //       fontWeight: FontWeight.w600,
+                  //       color: Color(0xFF1B1B1B),
+                  //     ),
+                  //   ),
+                  // ),
+                  // SizedBox(height: 16.h),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //   children: [
+                  //     SizedBox(width: 20.w),
+                  //     Container(
+                  //       padding: EdgeInsets.only(
+                  //         left: 10.w,
+                  //         right: 10.w,
+                  //         bottom: 13.h,
+                  //         top: 13.h,
+                  //       ),
+                  //       decoration: BoxDecoration(
+                  //         borderRadius: BorderRadius.circular(5.r),
+                  //         color: Color(0xFFFFFFFF),
+                  //         boxShadow: [
+                  //           BoxShadow(
+                  //             offset: Offset(0, 1),
+                  //             spreadRadius: 0,
+                  //             blurRadius: 4,
+                  //             color: Color.fromARGB(63, 0, 0, 0),
+                  //           ),
+                  //         ],
+                  //       ),
+                  //       child: Row(
+                  //         children: [
+                  //           Container(
+                  //             width: 45.w,
+                  //             height: 45.h,
+                  //             decoration: BoxDecoration(
+                  //               shape: BoxShape.circle,
+                  //               color: Colors.blue,
+                  //             ),
+                  //             child: ClipOval(
+                  //               child: Image.asset(
+                  //                 "assets/mahesh.png",
+                  //                 fit: BoxFit.cover,
+                  //               ),
+                  //             ),
+                  //           ),
+                  //           SizedBox(width: 7.w),
+                  //           Column(
+                  //             crossAxisAlignment: CrossAxisAlignment.start,
+                  //             children: [
+                  //               Text(
+                  //                 "Mahesh Yogi",
+                  //                 style: GoogleFonts.roboto(
+                  //                   fontSize: 20.sp,
+                  //                   fontWeight: FontWeight.w500,
+                  //                   color: Color(0xFF001E6C),
+                  //                   letterSpacing: -0.4,
+                  //                 ),
+                  //               ),
+                  //               Text(
+                  //                 "3 Courses    257 Student",
+                  //                 style: GoogleFonts.roboto(
+                  //                   fontSize: 12.sp,
+                  //                   fontWeight: FontWeight.w500,
+                  //                   color: Color(0xFF000000),
+                  //                   letterSpacing: -0.4,
+                  //                 ),
+                  //               ),
+                  //               SizedBox(height: 4.h),
+                  //               Row(
+                  //                 children: [
+                  //                   Image.asset("assets/birds.png"),
+                  //                   SizedBox(width: 10.w),
+                  //                   Image.asset("assets/call.png"),
+                  //                   SizedBox(width: 10.w),
+                  //                   Image.asset("assets/insta.png"),
+                  //                   SizedBox(width: 10.w),
+                  //                   Image.asset("assets/a.png"),
+                  //                 ],
+                  //               ),
+                  //             ],
+                  //           ),
+                  //         ],
+                  //       ),
+                  //     ),
+                  //     InkWell(
+                  //       onTap: () {
+                  //         Navigator.push(
+                  //           context,
+                  //           CupertinoPageRoute(
+                  //             builder: (context) => InstructorPage(),
+                  //           ),
+                  //         );
+                  //       },
+                  //       child: Container(
+                  //         padding: EdgeInsets.only(
+                  //           left: 10.w,
+                  //           right: 10.w,
+                  //           bottom: 13.h,
+                  //           top: 13.h,
+                  //         ),
+                  //         decoration: BoxDecoration(
+                  //           borderRadius: BorderRadius.circular(5.r),
+                  //           color: Color(0xFFFFFFFF),
+                  //           boxShadow: [
+                  //             BoxShadow(
+                  //               offset: Offset(0, 1),
+                  //               spreadRadius: 0,
+                  //               blurRadius: 4,
+                  //               color: Color.fromARGB(63, 0, 0, 0),
+                  //             ),
+                  //           ],
+                  //         ),
+                  //         child: Row(
+                  //           children: [
+                  //             Container(
+                  //               width: 45.w,
+                  //               height: 45.h,
+                  //               decoration: BoxDecoration(
+                  //                 shape: BoxShape.circle,
+                  //                 color: Colors.blue,
+                  //               ),
+                  //               child: ClipOval(
+                  //                 child: Image.asset(
+                  //                   "assets/annu.png",
+                  //                   fit: BoxFit.cover,
+                  //                 ),
+                  //               ),
+                  //             ),
+                  //             SizedBox(width: 7.w),
+                  //             Column(
+                  //               crossAxisAlignment: CrossAxisAlignment.start,
+                  //               children: [
+                  //                 Text(
+                  //                   "Annu Agarwal",
+                  //                   style: GoogleFonts.roboto(
+                  //                     fontSize: 20.sp,
+                  //                     fontWeight: FontWeight.w500,
+                  //                     color: Color(0xFF001E6C),
+                  //                     letterSpacing: -0.4,
+                  //                   ),
+                  //                 ),
+                  //                 Text(
+                  //                   "3 Courses    257 Student",
+                  //                   style: GoogleFonts.roboto(
+                  //                     fontSize: 12.sp,
+                  //                     fontWeight: FontWeight.w500,
+                  //                     color: Color(0xFF000000),
+                  //                     letterSpacing: -0.4,
+                  //                   ),
+                  //                 ),
+                  //                 SizedBox(height: 4.h),
+                  //                 Row(
+                  //                   children: [
+                  //                     Image.asset("assets/birds.png"),
+                  //                     SizedBox(width: 10.w),
+                  //                     Image.asset("assets/call.png"),
+                  //                     SizedBox(width: 10.w),
+                  //                     Image.asset("assets/insta.png"),
+                  //                     SizedBox(width: 10.w),
+                  //                     Image.asset("assets/a.png"),
+                  //                   ],
+                  //                 ),
+                  //               ],
+                  //             ),
+                  //           ],
+                  //         ),
+                  //       ),
+                  //     ),
+                  //     SizedBox(width: 20.w),
+                  //   ],
+                  // ),
                   SizedBox(height: 20.h),
                 ],
               ),
@@ -1101,7 +1104,7 @@ class PopularBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 190.h,
+      height: 200.h,
       // color: Colors.amber,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
