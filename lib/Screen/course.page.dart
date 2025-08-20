@@ -57,7 +57,7 @@ class _CoursePageState extends ConsumerState<CoursePage> {
   @override
   Widget build(BuildContext context) {
     var box = Hive.box("userBox");
-    final enrolleCourseProvider = ref.watch(enrollCourseController);
+    // final enrolleCourseProvider = ref.watch(enrollCourseController);
     return Scaffold(
       backgroundColor: Color(0xFFFFFFFF),
       body: Column(
@@ -116,265 +116,191 @@ class _CoursePageState extends ConsumerState<CoursePage> {
               ],
             ),
           ),
-          enrolleCourseProvider.when(
-            data: (enrolled) {
-              if (enrolled.data.courses.isEmpty) {
-                return SizedBox(
-                  height: MediaQuery.of(context).size.height / 2,
-                  child: Center(
-                    child: Text(
-                      "No Data",
-                      style: GoogleFonts.inter(
-                        fontSize: 25.sp,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.black,
+          Expanded(
+            child: Container(
+              height: MediaQuery.of(context).size.height,
+              child: SingleChildScrollView(
+                child: Stack(
+                  children: [
+                    Positioned(
+                      left: -120,
+                      top: 115.h,
+                      child: Image.asset(
+                        "assets/vect.png",
+                        width: 363.w,
+                        height: 270.h,
                       ),
                     ),
-                  ),
-                );
-              }
-              return Expanded(
-                child: Container(
-                  height: MediaQuery.of(context).size.height,
-                  child: SingleChildScrollView(
-                    child: Stack(
-                      children: [
-                        Positioned(
-                          left: -120,
-                          top: 115.h,
-                          child: Image.asset(
-                            "assets/vect.png",
-                            width: 363.w,
-                            height: 270.h,
+                    Positioned(
+                      left: 0,
+                      right: 0,
+                      bottom: 100.h,
+                      child: Image.asset(
+                        "assets/vec.png",
+                        width: 466.w,
+                        height: 440.h,
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      padding: EdgeInsets.zero,
+                      itemCount: courseList.length,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          margin: EdgeInsets.only(
+                            left: 20.w,
+                            right: 20.w,
+                            top: 20.h,
                           ),
-                        ),
-                        Positioned(
-                          left: 0,
-                          right: 0,
-                          bottom: 100.h,
-                          child: Image.asset(
-                            "assets/vec.png",
-                            width: 466.w,
-                            height: 440.h,
-                            fit: BoxFit.fill,
-                          ),
-                        ),
-                        ListView.builder(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          padding: EdgeInsets.zero,
-                          itemCount: enrolled.data.courses.length,
-                          itemBuilder: (context, index) {
-                            return Container(
-                              margin: EdgeInsets.only(
-                                left: 20.w,
-                                right: 20.w,
-                                top: 20.h,
-                              ),
-                              width: 400.w,
-                              //  height: 361.h,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                          width: 400.w,
+                          //  height: 361.h,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Stack(
                                 children: [
-                                  Stack(
-                                    children: [
-                                      InkWell(
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            CupertinoPageRoute(
-                                              builder: (context) =>
-                                                  CourseDetailsPage(
-                                                    id: enrolled.data.studentId
-                                                        .toString(),
-                                                  ),
-                                            ),
-                                          );
-                                        },
-                                        child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(
-                                            20.r,
-                                          ),
-                                          child: Image.network(
-                                            // courseList[index]['image']
-                                            //     .toString(),
-                                            enrolled
-                                                .data
-                                                .courses[index]
-                                                .thumbnail
-                                                .toString(),
-                                            width: 400.w,
-                                            height: 263.h,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                      ),
-                                      Align(
-                                        alignment: Alignment.topRight,
-                                        child: IconButton(
-                                          onPressed: isLoading
-                                              ? null
-                                              : () async {
-                                                  setState(
-                                                    () => isLoading = true,
-                                                  );
-                                                  isWishlisted =
-                                                      await WishlistControllerClass.toggle(
-                                                        context: context,
-                                                        courseId: enrolled
-                                                            .data
-                                                            .studentId,
-                                                        userId: box.get(
-                                                          "storeId",
-                                                        ),
-                                                        currentStatus:
-                                                            isWishlisted,
-                                                      );
-                                                  setState(
-                                                    () => isLoading = false,
-                                                  );
-                                                },
+                                  InkWell(
+                                    onTap: () {
+                                      // Navigator.push(
+                                      //   context,
+                                      //   CupertinoPageRoute(
+                                      //     builder: (context) =>
+                                      //         CourseDetailsPage(
+                                      //           id: enrolled.data.studentId
+                                      //               .toString(),
+                                      //         ),
+                                      //   ),
+                                      // );
+                                    },
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(20.r),
+                                      child: Image.asset(
+                                        courseList[index]['image'].toString(),
 
-                                          icon: isLoading
-                                              ? SizedBox(
-                                                  height: 20,
-                                                  width: 20,
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                        strokeWidth: 2,
-                                                        color: Color(
-                                                          0xFF001E6C,
-                                                        ),
-                                                      ),
-                                                )
-                                              : Icon(
-                                                  isWishlisted
-                                                      ? Icons.favorite
-                                                      : Icons.favorite_border,
-                                                  color: isWishlisted
-                                                      ? Colors.red
-                                                      : Colors.white,
-                                                  size: 25.sp,
-                                                ),
-                                        ),
+                                        width: 400.w,
+                                        height: 263.h,
+                                        fit: BoxFit.cover,
                                       ),
-
-                                      Positioned(
-                                        left: 25.w,
-                                        bottom: 25.h,
-                                        child: Container(
-                                          padding: EdgeInsets.only(
-                                            left: 16.w,
-                                            right: 16.w,
-                                            top: 6.h,
-                                            bottom: 6.h,
-                                          ),
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(
-                                              7.r,
-                                            ),
-                                            color: Color(0xFF001E6C),
-                                          ),
-                                          child: Text(
-                                            // courseList[index]['paid']
-                                            //     .toString(),
-                                            enrolled
-                                                .data
-                                                .courses[index]
-                                                .pricing
-                                                .isFree
-                                                .toString(),
-                                            style: GoogleFonts.roboto(
-                                              fontSize: 18.sp,
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.white,
-                                              letterSpacing: -0.4,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 15.h),
-                                  Text(
-                                    //courseList[index]['course'].toString(),
-                                    enrolled.data.courses[index].description,
-                                    style: GoogleFonts.roboto(
-                                      fontSize: 18.sp,
-                                      fontWeight: FontWeight.w500,
-                                      color: Color.fromARGB(140, 0, 0, 0),
-                                      letterSpacing: -0.4,
                                     ),
                                   ),
-                                  SizedBox(height: 8.h),
-                                  Text(
-                                    // courseList[index]['courseName'].toString(),
-                                    enrolled.data.courses[index].title,
-                                    style: GoogleFonts.roboto(
-                                      fontSize: 24.sp,
-                                      fontWeight: FontWeight.w500,
-                                      color: Color(0xFF001E6C),
-                                      letterSpacing: -0.4,
-                                      height: 1,
+                                  Align(
+                                    alignment: Alignment.topRight,
+                                    child: IconButton(
+                                      onPressed: isLoading ? null : () async {},
+
+                                      icon: isLoading
+                                          ? SizedBox(
+                                              height: 20,
+                                              width: 20,
+                                              child: CircularProgressIndicator(
+                                                strokeWidth: 2,
+                                                color: Color(0xFF001E6C),
+                                              ),
+                                            )
+                                          : Icon(
+                                              isWishlisted
+                                                  ? Icons.favorite
+                                                  : Icons.favorite_border,
+                                              color: isWishlisted
+                                                  ? Colors.red
+                                                  : Colors.white,
+                                              size: 25.sp,
+                                            ),
                                     ),
                                   ),
-                                  SizedBox(height: 8.h),
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        Icons.access_time,
-                                        color: Color(0xFFFE4A55),
+
+                                  Positioned(
+                                    left: 25.w,
+                                    bottom: 25.h,
+                                    child: Container(
+                                      padding: EdgeInsets.only(
+                                        left: 16.w,
+                                        right: 16.w,
+                                        top: 6.h,
+                                        bottom: 6.h,
                                       ),
-                                      SizedBox(width: 8.w),
-                                      Text(
-                                        "Durations : ",
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(
+                                          7.r,
+                                        ),
+                                        color: Color(0xFF001E6C),
+                                      ),
+                                      child: Text(
+                                        courseList[index]['paid'].toString(),
+
                                         style: GoogleFonts.roboto(
                                           fontSize: 18.sp,
                                           fontWeight: FontWeight.w500,
-                                          color: Color(0xFF000000),
+                                          color: Colors.white,
                                           letterSpacing: -0.4,
                                         ),
                                       ),
-                                      Text(
-                                        //courseList[index]['time'].toString(),
-                                        enrolled
-                                                .data
-                                                .courses[index]
-                                                .enrollmentInfo
-                                                .enrollmentDate
-                                                .timeZoneName +
-                                            enrolled
-                                                .data
-                                                .courses[index]
-                                                .enrollmentInfo
-                                                .enrollmentDate
-                                                .hour
-                                                .toString(),
-                                        style: GoogleFonts.roboto(
-                                          fontSize: 16.sp,
-                                          fontWeight: FontWeight.w500,
-                                          color: Color(0xFF747272),
-                                          letterSpacing: -0.4,
-                                        ),
-                                      ),
-                                    ],
+                                    ),
                                   ),
                                 ],
                               ),
-                            );
-                          },
-                        ),
-                      ],
+                              SizedBox(height: 15.h),
+                              Text(
+                                courseList[index]['course'].toString(),
+
+                                style: GoogleFonts.roboto(
+                                  fontSize: 18.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Color.fromARGB(140, 0, 0, 0),
+                                  letterSpacing: -0.4,
+                                ),
+                              ),
+                              SizedBox(height: 8.h),
+                              Text(
+                                courseList[index]['courseName'].toString(),
+
+                                style: GoogleFonts.roboto(
+                                  fontSize: 24.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Color(0xFF001E6C),
+                                  letterSpacing: -0.4,
+                                  height: 1,
+                                ),
+                              ),
+                              SizedBox(height: 8.h),
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.access_time,
+                                    color: Color(0xFFFE4A55),
+                                  ),
+                                  SizedBox(width: 8.w),
+                                  Text(
+                                    "Durations : ",
+                                    style: GoogleFonts.roboto(
+                                      fontSize: 18.sp,
+                                      fontWeight: FontWeight.w500,
+                                      color: Color(0xFF000000),
+                                      letterSpacing: -0.4,
+                                    ),
+                                  ),
+                                  Text(
+                                    courseList[index]['time'].toString(),
+
+                                    style: GoogleFonts.roboto(
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w500,
+                                      color: Color(0xFF747272),
+                                      letterSpacing: -0.4,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        );
+                      },
                     ),
-                  ),
+                  ],
                 ),
-              );
-            },
-            error: (error, stackTrace) => Center(child: Text(error.toString())),
-            loading: () => SizedBox(
-              height: MediaQuery.of(context).size.height / 2,
-              width: MediaQuery.of(context).size.width,
-              child: Center(child: CircularProgressIndicator()),
+              ),
             ),
           ),
           SizedBox(height: 30.h),

@@ -4,6 +4,7 @@ import 'package:eduma_app/Screen/course.page.dart';
 import 'package:eduma_app/Screen/courseDetails.page.dart';
 import 'package:eduma_app/Screen/customProfileDrawer.dart';
 import 'package:eduma_app/Screen/instructor.page.dart';
+import 'package:eduma_app/Screen/library.page.dart';
 import 'package:eduma_app/Screen/login.page.dart';
 import 'package:eduma_app/Screen/payCourseDetails.page.dart';
 import 'package:eduma_app/Screen/productDetails.page.dart';
@@ -354,11 +355,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                                       Navigator.push(
                                         context,
                                         CupertinoPageRoute(
-                                          builder: (context) =>
-                                              CourseDetailsPage(
-                                                id: allCategory.data[index].id
-                                                    .toString(),
-                                              ),
+                                          builder: (context) => CoursePage(),
                                         ),
                                       );
                                     },
@@ -736,7 +733,7 @@ class _HomePageState extends ConsumerState<HomePage> {
               ),
             )
           : selectIndex == 1
-          ? CoursePage()
+          ? LibraryPage()
           : selectIndex == 2
           ? YoutubePage()
           : ShopPage(),
