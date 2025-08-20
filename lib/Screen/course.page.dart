@@ -1,3 +1,4 @@
+import 'package:eduma_app/Screen/payCourseDetails.page.dart';
 import 'package:eduma_app/data/Controller/categoryByCourseContorller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -162,16 +163,16 @@ class _CoursePageState extends ConsumerState<CoursePage> {
                                     children: [
                                       InkWell(
                                         onTap: () {
-                                          // Navigator.push(
-                                          //   context,
-                                          //   CupertinoPageRoute(
-                                          //     builder: (context) =>
-                                          //         CourseDetailsPage(
-                                          //           id: enrolled.data.studentId
-                                          //               .toString(),
-                                          //         ),
-                                          //   ),
-                                          // );
+                                          Navigator.push(
+                                            context,
+                                            CupertinoPageRoute(
+                                              builder: (context) =>
+                                                  PayCourseDetailsPage(
+                                                    id: snap.courses[index].id
+                                                        .toString(),
+                                                  ),
+                                            ),
+                                          );
                                         },
                                         child: ClipRRect(
                                           borderRadius: BorderRadius.circular(
