@@ -355,7 +355,12 @@ class _HomePageState extends ConsumerState<HomePage> {
                                       Navigator.push(
                                         context,
                                         CupertinoPageRoute(
-                                          builder: (context) => CoursePage(),
+                                          builder: (context) => CoursePage(
+                                            categoryId: allCategory
+                                                .data[index]
+                                                .id
+                                                .toString(),
+                                          ),
                                         ),
                                       );
                                     },

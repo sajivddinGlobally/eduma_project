@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:eduma_app/data/Model/allCategoryModel.dart';
 import 'package:eduma_app/data/Model/allCoursesModel.dart';
+import 'package:eduma_app/data/Model/categoryByCourseIdModel.dart';
 import 'package:eduma_app/data/Model/deleteWishlistResModel.dart';
 import 'package:eduma_app/data/Model/enrollCourseStudentModel.dart';
 import 'package:eduma_app/data/Model/getWishlistModel.dart';
@@ -70,6 +71,9 @@ abstract class APIStateNetwork {
 
   @GET("/custom/v1/categories")
   Future<AllCategoryModel> allCategory();
+
+  @GET("/custom/v1/courses-category?category=160")
+  Future<CorurseByCategoryIdModel> categoryByCourseId(@Path() String id);
 
   @GET("/student/v1/profile")
   Future<ProfileModel> profile();
