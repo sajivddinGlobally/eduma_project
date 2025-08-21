@@ -102,7 +102,7 @@ class _CustomProfileDrawerState extends ConsumerState<CustomProfileDrawer> {
                               image: DecorationImage(
                                 image: NetworkImage(
                                   //"assets/annu.png",
-                                  profile.data.avatarUrl,
+                                  profile.avatarUrl,
                                 ),
                               ),
                             ),
@@ -145,7 +145,7 @@ class _CustomProfileDrawerState extends ConsumerState<CustomProfileDrawer> {
                         child: Text(
                           // "Annu Agarwal",
                           // box.get("storeName").toString(),
-                          profile.data.displayName,
+                          profile.displayName,
                           style: GoogleFonts.roboto(
                             fontSize: 16.sp,
                             fontWeight: FontWeight.w400,
@@ -158,7 +158,7 @@ class _CustomProfileDrawerState extends ConsumerState<CustomProfileDrawer> {
                         child: Text(
                           // "AnnuAgarwal.gmail.com",
                           // box.get("userEmail").toString(),
-                          profile.data.email,
+                          profile.email,
                           style: GoogleFonts.roboto(
                             fontSize: 14.sp,
                             fontWeight: FontWeight.w400,

@@ -21,6 +21,8 @@ import 'package:eduma_app/data/Model/resetPassBodyModel.dart';
 import 'package:eduma_app/data/Model/resetPassResModel.dart';
 import 'package:eduma_app/data/Model/sendOTPBodyModel.dart';
 import 'package:eduma_app/data/Model/sendOTPResModel.dart';
+import 'package:eduma_app/data/Model/updateProfileBodyModel.dart';
+import 'package:eduma_app/data/Model/updateProfileResModel.dart';
 import 'package:eduma_app/data/Model/verifyOTPBodyModel.dart';
 import 'package:eduma_app/data/Model/verifyOTPResModel.dart';
 import 'package:eduma_app/data/Model/wishlistBodyModel.dart';
@@ -75,8 +77,13 @@ abstract class APIStateNetwork {
   @GET("/custom/v1/courses-category?category=160")
   Future<CorurseByCategoryIdModel> categoryByCourseId(@Path() String id);
 
-  @GET("/student/v1/profile")
+  @GET("/wp-json/custom/v1/profile")
   Future<ProfileModel> profile();
+
+  @POST("/custom/v1/update-profile")
+  Future<UpdateProfileResModel> updateProfile(
+    @Body() UpdateProfileBodyModel body,
+  );
 
   /// student course purchese vo data show
   @GET("/custom/v1/student/enrolled-courses")

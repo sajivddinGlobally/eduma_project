@@ -27,7 +27,7 @@ createDio() {
     InterceptorsWrapper(
       onRequest: (options, handler) {
         options.headers.addAll({
-          // 'Content-Type': 'application/json',
+          'Content-Type': 'application/json',
           //'Accept': 'application/json',
           //'Authorization': 'Bearer $token',
           if (token != null) 'Authorization': 'Bearer $token',
