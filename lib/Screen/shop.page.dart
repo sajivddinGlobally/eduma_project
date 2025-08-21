@@ -163,28 +163,28 @@ class _ShopPageState extends ConsumerState<ShopPage> {
                                         ),
                                       ),
                                     ),
-                                    Align(
-                                      alignment: Alignment.topRight,
-                                      child: Container(
-                                        margin: EdgeInsets.only(
-                                          top: 8.h,
-                                          right: 13.w,
-                                        ),
-                                        child: IconButton(
-                                          style: IconButton.styleFrom(
-                                            minimumSize: Size(0, 0),
-                                            padding: EdgeInsets.zero,
-                                            tapTargetSize: MaterialTapTargetSize
-                                                .shrinkWrap,
-                                          ),
-                                          onPressed: () {},
-                                          icon: Icon(
-                                            Icons.favorite_border,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
+                                    // Align(
+                                    //   alignment: Alignment.topRight,
+                                    //   child: Container(
+                                    //     margin: EdgeInsets.only(
+                                    //       top: 8.h,
+                                    //       right: 13.w,
+                                    //     ),
+                                    //     child: IconButton(
+                                    //       style: IconButton.styleFrom(
+                                    //         minimumSize: Size(0, 0),
+                                    //         padding: EdgeInsets.zero,
+                                    //         tapTargetSize: MaterialTapTargetSize
+                                    //             .shrinkWrap,
+                                    //       ),
+                                    //       onPressed: () {},
+                                    //       icon: Icon(
+                                    //         Icons.favorite_border,
+                                    //         color: Colors.white,
+                                    //       ),
+                                    //     ),
+                                    //   ),
+                                    // ),
                                     // Positioned(
                                     //   bottom: 8.h,
                                     //   left: 13.w,

@@ -81,13 +81,13 @@ abstract class APIStateNetwork {
   @GET("/custom/v1/courses-category?category=160")
   Future<CorurseByCategoryIdModel> categoryByCourseId(@Path() String id);
 
-  @GET("/wp-json/custom/v1/profile")
+  @GET("/custom/v1/profile")
   Future<ProfileModel> profile();
 
-  @POST("/custom/v1/update-profile")
-  Future<UpdateProfileResModel> updateProfile(
-    @Body() UpdateProfileBodyModel body,
-  );
+  // @POST("/custom/v1/update-profile")
+  // Future<UpdateProfileResModel> updateProfile(
+  //   @Body() UpdateProfileBodyModel body,
+  // );
 
   @POST("/custom/v1/enroll-free-course")
   Future<EnrollResModel> enroll(@Body() EnrollBodyModel body);

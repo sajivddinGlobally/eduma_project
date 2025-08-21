@@ -5,14 +5,14 @@ import 'package:eduma_app/data/Model/updateProfileResModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final updateProfileController =
-    FutureProvider.family<UpdateProfileResModel, UpdateProfileBodyModel>((
-      ref,
-      body,
-    ) async {
-      final serivce = APIStateNetwork(createDio());
-      return await serivce.updateProfile(body);
-    });
+// final updateProfileController =
+//     FutureProvider.family<UpdateProfileResModel, UpdateProfileBodyModel>((
+//       ref,
+//       body,
+//     ) async {
+//       final serivce = APIStateNetwork(createDio());
+//       return await serivce.updateProfile(body);
+//     });
 
 mixin UpdateProfile<T extends ConsumerStatefulWidget> on ConsumerState<T> {
   final nameController = TextEditingController();

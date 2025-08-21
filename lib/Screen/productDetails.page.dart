@@ -99,7 +99,9 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(10.r),
                       child: Image.network(
-                        data.images[0].thumbnail.toString(),
+                        data.images.isNotEmpty
+                            ? data.images[0].thumbnail.toString()
+                            : "https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg",
                         // "assets/shop1.png",
                         width: MediaQuery.of(context).size.width,
                         height: 198.h,

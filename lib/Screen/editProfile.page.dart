@@ -314,14 +314,14 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage>
                               avatarUrl: pickedFile!.path.toString(),
                             );
                             try {
-                              final service = APIStateNetwork(createDio());
-                              final response = await service.updateProfile(
-                                body,
-                              );
-                              if (response.success == true) {
-                                Navigator.pop(context);
-                                showSuccessMessage(context, response.message);
-                              }
+                              // final service = APIStateNetwork(createDio());
+                              // final response = await service.updateProfile(
+                              //   body,
+                              // );
+                              // if (response.success == true) {
+                              //   Navigator.pop(context);
+                              //   showSuccessMessage(context, response.message);
+                              // }
                             } catch (e) {
                               log(e.toString());
                             }
