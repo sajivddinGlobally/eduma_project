@@ -91,7 +91,7 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
                     Expanded(
                       child: ListView.builder(
                         padding: EdgeInsets.zero,
-                        itemCount: 2,
+                        itemCount: data.courses.length,
                         itemBuilder: (context, index) {
                           return Padding(
                             padding: EdgeInsets.only(top: 25.h),
