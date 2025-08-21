@@ -100,9 +100,10 @@ class _CustomProfileDrawerState extends ConsumerState<CustomProfileDrawer> {
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               image: DecorationImage(
-                                image: NetworkImage(
-                                  //"assets/annu.png",
-                                  profile.avatarUrl,
+                                image: AssetImage(
+                                  "assets/annu.png",
+
+                                  //profile.avatar.toString(),
                                 ),
                               ),
                             ),
@@ -145,7 +146,7 @@ class _CustomProfileDrawerState extends ConsumerState<CustomProfileDrawer> {
                         child: Text(
                           // "Annu Agarwal",
                           // box.get("storeName").toString(),
-                          profile.displayName,
+                          profile.username,
                           style: GoogleFonts.roboto(
                             fontSize: 16.sp,
                             fontWeight: FontWeight.w400,
