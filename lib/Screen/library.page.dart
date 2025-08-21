@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:eduma_app/data/Controller/enrolleCourseController.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -45,7 +44,16 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
           enrolleCourseProvider.when(
             data: (data) {
               if (data.courses.isEmpty) {
-                return Center(child: Text("No Enrolled Data"));
+                return Center(
+                  child: Text(
+                    "No Enrolled Data",
+                    style: GoogleFonts.roboto(
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.grey,
+                    ),
+                  ),
+                );
               }
               return Padding(
                 padding: EdgeInsets.only(left: 20.w, right: 20.w),

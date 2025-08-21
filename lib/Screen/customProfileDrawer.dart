@@ -102,7 +102,6 @@ class _CustomProfileDrawerState extends ConsumerState<CustomProfileDrawer> {
                               image: DecorationImage(
                                 image: AssetImage(
                                   "assets/annu.png",
-
                                   //profile.avatar.toString(),
                                 ),
                               ),
