@@ -44,6 +44,9 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
           ),
           enrolleCourseProvider.when(
             data: (data) {
+              if (data.courses.isEmpty) {
+                return Center(child: Text("No Enrolled Data"));
+              }
               return Padding(
                 padding: EdgeInsets.only(left: 20.w, right: 20.w),
                 child: Column(

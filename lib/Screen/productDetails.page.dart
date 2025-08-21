@@ -1,4 +1,10 @@
+import 'dart:developer';
+
+import 'package:eduma_app/config/core/showFlushbar.dart';
+import 'package:eduma_app/config/network/api.state.dart';
+import 'package:eduma_app/config/utils/pretty.dio.dart';
 import 'package:eduma_app/data/Controller/productDetailsController.dart';
+import 'package:eduma_app/data/Model/addCartBodyModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,6 +19,7 @@ class ProductDetailsPage extends ConsumerStatefulWidget {
 }
 
 class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     final productDetaisProvider = ref.watch(
@@ -122,12 +129,14 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                         ),
                         Spacer(),
                         Container(
-                          padding: EdgeInsets.only(
-                            left: 8.w,
-                            right: 8.w,
-                            top: 6.h,
-                            bottom: 6.h,
-                          ),
+                          // padding: EdgeInsets.only(
+                          //   left: 8.w,
+                          //   right: 8.w,
+                          //   top: 6.h,
+                          //   bottom: 6.h,
+                          // ),
+                          width: 80.w,
+                          height: 36.h,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10.r),
                             color: Color(0xFF001E6C),
@@ -138,15 +147,48 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                               padding: EdgeInsets.zero,
                               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                             ),
-                            onPressed: () {},
-                            child: Text(
-                              "Add to Cart",
-                              style: GoogleFonts.roboto(
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white,
-                              ),
-                            ),
+                            onPressed: () async {
+                              final body = ProductAddCartBodyModel(
+                                productId: data.id,
+                                quantity: 1,
+                              );
+                              setState(() {
+                                isLoading = true;
+                              });
+                              try {
+                                final service = APIStateNetwork(createDio());
+                                final response = await service.addToCart(body);
+                                if (response.success == true) {
+                                  showSuccessMessage(context, response.message);
+                                }
+                                setState(() {
+                                  isLoading = false;
+                                });
+                              } catch (e) {
+                                setState(() {
+                                  isLoading = false;
+                                });
+                                log(e.toString());
+                              }
+                            },
+                            child: isLoading
+                                ? SizedBox(
+                                    width: 20.w,
+                                    height: 20.h,
+                                    child: Center(
+                                      child: CircularProgressIndicator(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  )
+                                : Text(
+                                    "Add to Cart",
+                                    style: GoogleFonts.roboto(
+                                      fontSize: 12.sp,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.white,
+                                    ),
+                                  ),
                           ),
                         ),
                       ],

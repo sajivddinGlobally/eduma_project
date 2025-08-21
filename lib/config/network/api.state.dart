@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:eduma_app/data/Model/addCartBodyModel.dart';
+import 'package:eduma_app/data/Model/addCartResModel.dart';
 import 'package:eduma_app/data/Model/allCategoryModel.dart';
 import 'package:eduma_app/data/Model/allCoursesModel.dart';
 import 'package:eduma_app/data/Model/categoryByCourseIdModel.dart';
@@ -99,6 +101,9 @@ abstract class APIStateNetwork {
 
   @GET("/wc/v3/products/{id}")
   Future<ProductDetailsModel> productDetails(@Path() String id);
+
+  @POST("/custom/v1/cart/add")
+  Future<ProductAddCartResModel> addToCart(@Body() ProductAddCartBodyModel body);
 
   @GET("/wc/v3/orders")
   Future<List<OrderListModel>> order();
