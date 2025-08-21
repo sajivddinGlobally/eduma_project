@@ -99,11 +99,23 @@ class _CustomProfileDrawerState extends ConsumerState<CustomProfileDrawer> {
                             height: 45.h,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              image: DecorationImage(
-                                image: AssetImage(
-                                  "assets/annu.png",
-                                  //profile.avatar.toString(),
-                                ),
+                              // image: DecorationImage(
+                              //   image: NetworkImage(
+                              //     //"assets/annu.png",
+                              //     profile.avatar.toString()
+                              //   ),
+                              // ),
+                            ),
+                            child: ClipOval(
+                              child: Image.network(
+                                profile.avatar,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return ClipOval(
+                                    child: Image.network(
+                                      "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png",
+                                    ),
+                                  );
+                                },
                               ),
                             ),
                           ),

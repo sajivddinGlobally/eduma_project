@@ -13,7 +13,7 @@ class ProfileModel {
     String username;
     String name;
     String email;
-    bool avatar;
+    String avatar;
     String bio;
     String phone;
 
