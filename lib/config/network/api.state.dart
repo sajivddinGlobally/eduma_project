@@ -3,7 +3,9 @@ import 'package:eduma_app/data/Model/allCategoryModel.dart';
 import 'package:eduma_app/data/Model/allCoursesModel.dart';
 import 'package:eduma_app/data/Model/categoryByCourseIdModel.dart';
 import 'package:eduma_app/data/Model/deleteWishlistResModel.dart';
+import 'package:eduma_app/data/Model/enrollBodyModel.dart';
 import 'package:eduma_app/data/Model/enrollCourseStudentModel.dart';
+import 'package:eduma_app/data/Model/enrollResModel.dart';
 import 'package:eduma_app/data/Model/getWishlistModel.dart';
 import 'package:eduma_app/data/Model/instructorModel.dart';
 import 'package:eduma_app/data/Model/loginBodyModel.dart';
@@ -85,8 +87,11 @@ abstract class APIStateNetwork {
     @Body() UpdateProfileBodyModel body,
   );
 
+  @POST("/custom/v1/enroll-free-course")
+  Future<EnrollBodyResModel> enroll(@Body() EnrollBodyModel body);
+
   /// student course purchese vo data show
-  @GET("/custom/v1/student/enrolled-courses")
+  @GET("/custom/v1/enrolled-courses")
   Future<EnrolleCourseStudentModel> enrolledCourse();
 
   @GET("/wc/v3/products")

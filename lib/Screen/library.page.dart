@@ -1,17 +1,22 @@
+import 'dart:math';
+
+import 'package:eduma_app/data/Controller/enrolleCourseController.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class LibraryPage extends StatefulWidget {
+class LibraryPage extends ConsumerStatefulWidget {
   const LibraryPage({super.key});
 
   @override
-  State<LibraryPage> createState() => _LibraryPageState();
+  ConsumerState<LibraryPage> createState() => _LibraryPageState();
 }
 
-class _LibraryPageState extends State<LibraryPage> {
+class _LibraryPageState extends ConsumerState<LibraryPage> {
   @override
   Widget build(BuildContext context) {
+    final enrolleCourseProvider = ref.watch(enrollCourseController);
     return Scaffold(
       backgroundColor: Color(0xFFFFFFFF),
       body: Stack(
@@ -37,113 +42,123 @@ class _LibraryPageState extends State<LibraryPage> {
               fit: BoxFit.fill,
             ),
           ),
-          Padding(
-            padding: EdgeInsets.only(left: 20.w, right: 20.w),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 33.h),
-                Row(
+          enrolleCourseProvider.when(
+            data: (data) {
+              return Padding(
+                padding: EdgeInsets.only(left: 20.w, right: 20.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Container(
-                    //   width: 37.w,
-                    //   height: 37.h,
-                    //   decoration: BoxDecoration(
-                    //     shape: BoxShape.circle,
-                    //     color: Color.fromARGB(25, 0, 0, 0),
-                    //   ),
-                    //   child: IconButton(
-                    //     style: IconButton.styleFrom(
-                    //       minimumSize: Size(0, 0),
-                    //       padding: EdgeInsets.zero,
-                    //       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    //     ),
-                    //     onPressed: () {
-                    //       Navigator.pop(context);
-                    //     },
-                    //     icon: Icon(
-                    //       Icons.arrow_back,
-                    //       color: Color(0xFF001E6C),
-                    //       size: 20.sp,
-                    //     ),
-                    //   ),
-                    // ),
-                    //SizedBox(width: 50.w),
-                    Text(
-                      "Library",
-                      style: GoogleFonts.roboto(
-                        fontSize: 26.sp,
-                        fontWeight: FontWeight.w700,
-                        color: Color(0xFF1B1B1B),
-                        letterSpacing: -0.4,
-                      ),
+                    SizedBox(height: 33.h),
+                    Row(
+                      children: [
+                        // Container(
+                        //   width: 37.w,
+                        //   height: 37.h,
+                        //   decoration: BoxDecoration(
+                        //     shape: BoxShape.circle,
+                        //     color: Color.fromARGB(25, 0, 0, 0),
+                        //   ),
+                        //   child: IconButton(
+                        //     style: IconButton.styleFrom(
+                        //       minimumSize: Size(0, 0),
+                        //       padding: EdgeInsets.zero,
+                        //       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        //     ),
+                        //     onPressed: () {
+                        //       Navigator.pop(context);
+                        //     },
+                        //     icon: Icon(
+                        //       Icons.arrow_back,
+                        //       color: Color(0xFF001E6C),
+                        //       size: 20.sp,
+                        //     ),
+                        //   ),
+                        // ),
+                        //SizedBox(width: 50.w),
+                        Text(
+                          "Library",
+                          style: GoogleFonts.roboto(
+                            fontSize: 26.sp,
+                            fontWeight: FontWeight.w700,
+                            color: Color(0xFF1B1B1B),
+                            letterSpacing: -0.4,
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                SizedBox(height: 15.h),
-                Expanded(
-                  child: ListView.builder(
-                    padding: EdgeInsets.zero,
-                    itemCount: 2,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: EdgeInsets.only(top: 25.h),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
+                    SizedBox(height: 15.h),
+                    Expanded(
+                      child: ListView.builder(
+                        padding: EdgeInsets.zero,
+                        itemCount: 2,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: EdgeInsets.only(top: 25.h),
+                            child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(10.r),
-                                  child: Image.asset(
-                                    "assets/shop1.png",
-                                    width: 170.w,
-                                    height: 100.h,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                                SizedBox(width: 10.w),
-                                Column(
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    SizedBox(
-                                      width: 210.w,
-                                      // color: Colors.amber,
-                                      child: Text(
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                        "Sajivddin Ansari hellow hot are you sajiv",
-                                        style: GoogleFonts.roboto(
-                                          fontSize: 20.sp,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.blue,
-                                          height: 1.5.h,
-                                        ),
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(10.r),
+                                      child: Image.network(
+                                        // "assets/shop1.png",
+                                        data.courses[index].thumbnail,
+                                        width: 170.w,
+                                        height: 100.h,
+                                        fit: BoxFit.cover,
                                       ),
                                     ),
-                                    SizedBox(height: 10.h),
-                                    Text(
-                                      "data",
-                                      style: GoogleFonts.roboto(
-                                        fontSize: 16.sp,
-                                        fontWeight: FontWeight.w400,
-                                        color: Colors.blue,
-                                      ),
+                                    SizedBox(width: 10.w),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        SizedBox(
+                                          width: 210.w,
+                                          // color: Colors.amber,
+                                          child: Text(
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                            // "Sajivddin Ansari hellow hot are you sajiv",
+                                            data.courses[index].title,
+                                            style: GoogleFonts.roboto(
+                                              fontSize: 20.sp,
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.blue,
+                                              height: 1.5.h,
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(height: 10.h),
+                                        Text(
+                                          //"data",
+                                          data.courses[index].status,
+                                          style: GoogleFonts.roboto(
+                                            fontSize: 16.sp,
+                                            fontWeight: FontWeight.w400,
+                                            color: Colors.blue,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
                               ],
                             ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              );
+            },
+            error: (error, stackTrace) => Center(child: Text(e.toString())),
+            loading: () => Center(child: CircularProgressIndicator()),
           ),
         ],
       ),
