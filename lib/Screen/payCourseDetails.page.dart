@@ -681,6 +681,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                       letterSpacing: -0.4,
                                     ),
                                   ),
+                                  SizedBox(height: 30.h),
                                   // Row(
                                   //   mainAxisAlignment: MainAxisAlignment.center,
                                   //   children: [
