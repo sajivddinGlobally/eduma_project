@@ -109,7 +109,22 @@ class _WishlistPageState extends ConsumerState<WishlistPage> {
               fetchWishlistProvider.when(
                 data: (wishlist) {
                   if (wishlist.items.isEmpty) {
-                    return Center(child: Text("No Wishlist Data"));
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(height: 80.h),
+                        Center(
+                          child: Text(
+                            "No Wishlist Data",
+                            style: GoogleFonts.roboto(
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
                   }
                   return Expanded(
                     child: ListView.builder(
