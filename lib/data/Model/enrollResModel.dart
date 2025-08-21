@@ -1,38 +1,42 @@
 // To parse this JSON data, do
 //
-//     final enrollBodyResModel = enrollBodyResModelFromJson(jsonString);
+//     final enrollResModel = enrollResModelFromJson(jsonString);
 
 import 'dart:convert';
 
-EnrollBodyResModel enrollBodyResModelFromJson(String str) => EnrollBodyResModel.fromJson(json.decode(str));
+EnrollResModel enrollResModelFromJson(String str) => EnrollResModel.fromJson(json.decode(str));
 
-String enrollBodyResModelToJson(EnrollBodyResModel data) => json.encode(data.toJson());
+String enrollResModelToJson(EnrollResModel data) => json.encode(data.toJson());
 
-class EnrollBodyResModel {
+class EnrollResModel {
     bool success;
     String message;
-    bool alreadyEnrolled;
+    int enrollmentId;
     Course course;
+    DateTime enrollmentDate;
 
-    EnrollBodyResModel({
+    EnrollResModel({
         required this.success,
         required this.message,
-        required this.alreadyEnrolled,
+        required this.enrollmentId,
         required this.course,
+        required this.enrollmentDate,
     });
 
-    factory EnrollBodyResModel.fromJson(Map<String, dynamic> json) => EnrollBodyResModel(
+    factory EnrollResModel.fromJson(Map<String, dynamic> json) => EnrollResModel(
         success: json["success"],
         message: json["message"],
-        alreadyEnrolled: json["already_enrolled"],
+        enrollmentId: json["enrollment_id"],
         course: Course.fromJson(json["course"]),
+        enrollmentDate: DateTime.parse(json["enrollment_date"]),
     );
 
     Map<String, dynamic> toJson() => {
         "success": success,
         "message": message,
-        "already_enrolled": alreadyEnrolled,
+        "enrollment_id": enrollmentId,
         "course": course.toJson(),
+        "enrollment_date": enrollmentDate.toIso8601String(),
     };
 }
 

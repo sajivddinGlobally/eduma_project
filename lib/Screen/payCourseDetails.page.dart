@@ -26,6 +26,7 @@ class PayCourseDetailsPage extends ConsumerStatefulWidget {
 class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
   bool isLoading = false;
   bool isWishlisted = false;
+  bool enrolled = false;
   @override
   Widget build(BuildContext context) {
     var box = Hive.box("userBox");
@@ -496,21 +497,21 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                 ),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  // children: courseDetails.topics
-                                  //     .map(
-                                  //       (e) => modules(
-                                  //         e.topicTitle.toString(),
-                                  //         e.lessons
-                                  //             .map(
-                                  //               (lesson) => lesson
-                                  //                   .lessonMeta
-                                  //                   .video
-                                  //                   .toString(),
-                                  //             )
-                                  //             .join(', '),
-                                  //       ),
-                                  //     )
-                                  //     .toList(),
+                                  children: courseDetails.topics
+                                      .map(
+                                        (e) => modules(
+                                          e.topicTitle.toString(),
+                                          e.lessons
+                                              .map(
+                                                (lesson) => lesson
+                                                    .lessonMeta
+                                                    .video
+                                                    .toString(),
+                                              )
+                                              .join(', '),
+                                        ),
+                                      )
+                                      .toList(),
 
                                   // [
                                   //   ...courseDetails.topics
@@ -739,40 +740,38 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                 ),
               ],
             ),
-            floatingActionButton: TextButton(
-              style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.only(
-                  left: 14.w,
-                  right: 14.w,
-                  top: 8.h,
-                  bottom: 8.h,
-                ),
+            floatingActionButton: Container(
+              width: 100.w,
+              height: 50.h,
+
+              child: FloatingActionButton(
                 backgroundColor: Color(0xFF001E6C),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.r),
-                ),
-              ),
-              onPressed: () async {
-                final body = EnrollBodyModel(courseId: courseDetails.id);
-                try {
-                  final service = APIStateNetwork(createDio());
-                  final response = await service.enroll(body);
-                  if (response.success == true) {
-                    showSuccessMessage(
-                      context,
-                      "Successfully enrolled in the course.",
-                    );
+                onPressed: () async {
+                  final body = EnrollBodyModel(courseId: courseDetails.id);
+                  try {
+                    final service = APIStateNetwork(createDio());
+                    final response = await service.enroll(body);
+                    if (response.success == true) {
+                      setState(() {
+                        enrolled = true;
+                      });
+                      showSuccessMessage(
+                        context,
+                        // "Successfully enrolled in the course.",
+                        response.message,
+                      );
+                    }
+                  } catch (e) {
+                    log(e.toString());
                   }
-                } catch (e) {
-                  log(e.toString());
-                }
-              },
-              child: Text(
-                "Free to get",
-                style: GoogleFonts.roboto(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.white,
+                },
+                child: Text(
+                  enrolled ? "Continue" : "Get",
+                  style: GoogleFonts.roboto(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),

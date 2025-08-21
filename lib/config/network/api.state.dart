@@ -88,7 +88,7 @@ abstract class APIStateNetwork {
   );
 
   @POST("/custom/v1/enroll-free-course")
-  Future<EnrollBodyResModel> enroll(@Body() EnrollBodyModel body);
+  Future<EnrollResModel> enroll(@Body() EnrollBodyModel body);
 
   /// student course purchese vo data show
   @GET("/custom/v1/enrolled-courses")
@@ -97,7 +97,7 @@ abstract class APIStateNetwork {
   @GET("/wc/v3/products")
   Future<List<ProductListModel>> productList();
 
-  @GET("/wc/v3/products/6869")
+  @GET("/wc/v3/products/{id}")
   Future<ProductDetailsModel> productDetails(@Path() String id);
 
   @GET("/wc/v3/orders")

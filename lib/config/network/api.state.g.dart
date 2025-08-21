@@ -471,13 +471,13 @@ class _APIStateNetwork implements APIStateNetwork {
   }
 
   @override
-  Future<EnrollBodyResModel> enroll(EnrollBodyModel body) async {
+  Future<EnrollResModel> enroll(EnrollBodyModel body) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(body.toJson());
-    final _options = _setStreamType<EnrollBodyResModel>(
+    final _options = _setStreamType<EnrollResModel>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -488,9 +488,9 @@ class _APIStateNetwork implements APIStateNetwork {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late EnrollBodyResModel _value;
+    late EnrollResModel _value;
     try {
-      _value = EnrollBodyResModel.fromJson(_result.data!);
+      _value = EnrollResModel.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -566,7 +566,7 @@ class _APIStateNetwork implements APIStateNetwork {
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/wc/v3/products/6869',
+            '/wc/v3/products/${id}',
             queryParameters: queryParameters,
             data: _data,
           )

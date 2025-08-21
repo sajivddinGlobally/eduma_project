@@ -1,5 +1,6 @@
 import 'package:eduma_app/Screen/payCourseDetails.page.dart';
 import 'package:eduma_app/data/Controller/categoryByCourseContorller.dart';
+import 'package:eduma_app/data/Controller/wishlistControllerClass.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -189,37 +190,6 @@ class _CoursePageState extends ConsumerState<CoursePage> {
                                           ),
                                         ),
                                       ),
-                                      Align(
-                                        alignment: Alignment.topRight,
-                                        child: IconButton(
-                                          onPressed: isLoading
-                                              ? null
-                                              : () async {},
-
-                                          icon: isLoading
-                                              ? SizedBox(
-                                                  height: 20,
-                                                  width: 20,
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                        strokeWidth: 2,
-                                                        color: Color(
-                                                          0xFF001E6C,
-                                                        ),
-                                                      ),
-                                                )
-                                              : Icon(
-                                                  isWishlisted
-                                                      ? Icons.favorite
-                                                      : Icons.favorite_border,
-                                                  color: isWishlisted
-                                                      ? Colors.red
-                                                      : Colors.white,
-                                                  size: 25.sp,
-                                                ),
-                                        ),
-                                      ),
-
                                       Positioned(
                                         left: 25.w,
                                         bottom: 25.h,

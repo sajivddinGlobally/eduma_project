@@ -12,7 +12,6 @@ import 'package:eduma_app/Screen/register.page.dart';
 import 'package:eduma_app/Screen/shop.page.dart';
 import 'package:eduma_app/Screen/youtube.page.dart';
 import 'package:eduma_app/data/Controller/allCategoryController.dart';
-import 'package:eduma_app/data/Controller/allCoursesController.dart';
 import 'package:eduma_app/data/Controller/popularCourseController.dart';
 import 'package:eduma_app/data/Controller/productListController.dart';
 import 'package:eduma_app/data/Controller/wishlistControllerClass.dart';
@@ -1255,41 +1254,8 @@ class _allProductState extends State<allProduct> {
                   padding: EdgeInsets.zero,
                   tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 ),
-                onPressed: () async {
-                  log(widget.data.id!);
-                  // 👇 API call se direct result lo
-                  final result = await WishlistControllerClass.toggle(
-                    context: context,
-                    courseId: widget.data.id!,
-                    userId: box.get("storeId"),
-                    currentStatus: isWishlisted,
-                  );
-
-                  // 👇 bas yehi update karna hai
-                  setState(() {
-                    isWishlisted = result;
-                  });
-                },
-                icon: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 500),
-                  transitionBuilder: (child, animation) {
-                    return ScaleTransition(
-                      scale: CurvedAnimation(
-                        parent: animation,
-                        curve: Curves.easeInOutBack,
-                      ),
-                      child: child,
-                    );
-                  },
-                  child: Icon(
-                    isWishlisted ? Icons.favorite : Icons.favorite_border,
-                    key: ValueKey<bool>(
-                      isWishlisted,
-                    ), // 👈 ye key change hone se hi animation hoga
-                    color: isWishlisted ? Colors.red : Colors.white,
-                    size: 25.sp,
-                  ),
-                ),
+                onPressed: () async {},
+                icon: Icon(Icons.add),
               ),
             ),
             Positioned(
