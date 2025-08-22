@@ -26,7 +26,6 @@ import 'package:eduma_app/data/Model/resetPassBodyModel.dart';
 import 'package:eduma_app/data/Model/resetPassResModel.dart';
 import 'package:eduma_app/data/Model/sendOTPBodyModel.dart';
 import 'package:eduma_app/data/Model/sendOTPResModel.dart';
-import 'package:eduma_app/data/Model/updateProfileBodyModel.dart';
 import 'package:eduma_app/data/Model/updateProfileResModel.dart';
 import 'package:eduma_app/data/Model/verifyOTPBodyModel.dart';
 import 'package:eduma_app/data/Model/verifyOTPResModel.dart';

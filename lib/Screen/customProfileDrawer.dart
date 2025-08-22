@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:eduma_app/Screen/cart.page.dart';
-import 'package:eduma_app/Screen/course.page.dart';
 import 'package:eduma_app/Screen/editProfile.page.dart';
 import 'package:eduma_app/Screen/library.page.dart';
 import 'package:eduma_app/Screen/onbording.page.dart';

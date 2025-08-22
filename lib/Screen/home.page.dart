@@ -1,10 +1,7 @@
-import 'dart:math';
 import 'package:eduma_app/Screen/apiCall/api.register.dart';
 import 'package:eduma_app/Screen/continueMyCourse.page.dart';
 import 'package:eduma_app/Screen/course.page.dart';
-import 'package:eduma_app/Screen/courseDetails.page.dart';
 import 'package:eduma_app/Screen/customProfileDrawer.dart';
-import 'package:eduma_app/Screen/instructor.page.dart';
 import 'package:eduma_app/Screen/library.page.dart';
 import 'package:eduma_app/Screen/login.page.dart';
 import 'package:eduma_app/Screen/payCourseDetails.page.dart';
