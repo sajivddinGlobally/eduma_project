@@ -98,6 +98,8 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage>
     }
   }
 
+  bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -242,6 +244,11 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage>
                       ProfileBody(name: "State", controller: stateController),
                       SizedBox(height: 20.h),
                       ProfileBody(
+                        name: "Country",
+                        controller: countryController,
+                      ),
+                      SizedBox(height: 20.h),
+                      ProfileBody(
                         name: "Address",
                         controller: addressController,
                       ),
@@ -305,36 +312,55 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage>
                           if (formKey.currentState!.validate()) {
                             final body = UpdateProfileBodyModel(
                               firstName: nameController.text,
+                              lastName: "lastName",
+                              displayName: "displayName",
                               email: emailController.text,
                               phone: phoneController.text,
                               bio: bioController.text,
+                              address: addressController.text,
                               city: cityController.text,
                               state: stateController.text,
-                              address: addressController.text,
+                              country: countryController.text,
+                              postalCode: "395006",
                               avatarUrl: pickedFile!.path.toString(),
                             );
+                            setState(() {
+                              isLoading = true;
+                            });
                             try {
-                              // final service = APIStateNetwork(createDio());
-                              // final response = await service.updateProfile(
-                              //   body,
-                              // );
-                              // if (response.success == true) {
-                              //   Navigator.pop(context);
-                              //   showSuccessMessage(context, response.message);
-                              // }
+                              final service = APIStateNetwork(createDio());
+                              final response = await service.updateProfile(
+                                body,
+                              );
+                              if (response.success == true) {
+                                Navigator.pop(context);
+                                showSuccessMessage(context, response.message);
+                              }
+                              setState(() {
+                                isLoading = false;
+                              });
                             } catch (e) {
+                              setState(() {
+                                isLoading = false;
+                              });
                               log(e.toString());
                             }
                           }
                         },
-                        child: Text(
-                          "Save Profile",
-                          style: GoogleFonts.roboto(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white,
-                          ),
-                        ),
+                        child: isLoading
+                            ? Center(
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                ),
+                              )
+                            : Text(
+                                "Save Profile",
+                                style: GoogleFonts.roboto(
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.white,
+                                ),
+                              ),
                       ),
                     ],
                   ),

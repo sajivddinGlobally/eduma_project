@@ -117,7 +117,8 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                     borderRadius: BorderRadius.circular(10.r),
                                     child: Image.network(
                                       //  "assets/reading.png",
-                                      courseDetails.thumbnail ?? 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fcommons.wikimedia.org%2Fwiki%2FFile%3ANo-Image-Placeholder.svg&psig=AOvVaw1MZ0Y-EQnAjmnyZjr5zMZ3&ust=1755926612664000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCPiV9cHWnY8DFQAAAAAdAAAAABAE',
+                                      courseDetails.thumbnail ??
+                                          'https://www.google.com/url?sa=i&url=https%3A%2F%2Fcommons.wikimedia.org%2Fwiki%2FFile%3ANo-Image-Placeholder.svg&psig=AOvVaw1MZ0Y-EQnAjmnyZjr5zMZ3&ust=1755926612664000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCPiV9cHWnY8DFQAAAAAdAAAAABAE',
                                       width: 400.w,
                                       height: 254.h,
                                       fit: BoxFit.cover,
@@ -654,7 +655,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                   SizedBox(height: 20.h),
                                   Text(
                                     //"With over 5 years of experience, I've guided 300+ students to land jobs in top companies like Google, TCS, and Deloitte. My sessions focus on mock interviews, resume building, and effective communication",
-                                    courseDetails.author!.name?? "",
+                                    courseDetails.author!.name ?? "",
                                     style: GoogleFonts.roboto(
                                       fontSize: 16.sp,
                                       fontWeight: FontWeight.w400,

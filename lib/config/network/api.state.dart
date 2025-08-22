@@ -84,10 +84,10 @@ abstract class APIStateNetwork {
   @GET("/custom/v1/profile")
   Future<ProfileModel> profile();
 
-  // @POST("/custom/v1/update-profile")
-  // Future<UpdateProfileResModel> updateProfile(
-  //   @Body() UpdateProfileBodyModel body,
-  // );
+  @POST("/custom/v1/updateprofile")
+  Future<UpdateProfileResModel> updateProfile(
+    @Body() UpdateProfileBodyModel body,
+  );
 
   @POST("/custom/v1/enroll-free-course")
   Future<EnrollResModel> enroll(@Body() EnrollBodyModel body);

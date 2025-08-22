@@ -21,6 +21,7 @@ mixin UpdateProfile<T extends ConsumerStatefulWidget> on ConsumerState<T> {
   final bioController = TextEditingController();
   final cityController = TextEditingController();
   final stateController = TextEditingController();
+   final countryController = TextEditingController();
   final addressController = TextEditingController();
   
 

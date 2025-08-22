@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:eduma_app/Screen/course.page.dart';
 import 'package:eduma_app/Screen/editProfile.page.dart';
 import 'package:eduma_app/Screen/library.page.dart';
@@ -107,16 +109,33 @@ class _CustomProfileDrawerState extends ConsumerState<CustomProfileDrawer> {
                               // ),
                             ),
                             child: ClipOval(
-                              child: Image.network(
-                                profile.avatar,
-                                errorBuilder: (context, error, stackTrace) {
-                                  return ClipOval(
-                                    child: Image.network(
+                              child:
+                                  profile.avatar != null &&
+                                      profile.avatar.toString().isNotEmpty
+                                  ? (profile.avatar.toString().startsWith(
+                                          "/data",
+                                        )
+                                        // Agar local path hai (device ka path)
+                                        ? Image.file(
+                                            File(profile.avatar.toString()),
+                                            fit: BoxFit.cover,
+                                          )
+                                        // Agar server se relative path mila hai
+                                        : Image.network(
+                                            "https://yourdomain.com${profile.avatar.toString()}",
+                                            fit: BoxFit.cover,
+                                            errorBuilder:
+                                                (context, error, stackTrace) {
+                                                  return Image.network(
+                                                    "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png",
+                                                    fit: BoxFit.cover,
+                                                  );
+                                                },
+                                          ))
+                                  : Image.network(
                                       "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png",
+                                      fit: BoxFit.cover,
                                     ),
-                                  );
-                                },
-                              ),
                             ),
                           ),
                           Spacer(),
@@ -127,7 +146,10 @@ class _CustomProfileDrawerState extends ConsumerState<CustomProfileDrawer> {
                                 CupertinoPageRoute(
                                   builder: (context) => EditProfilePage(),
                                 ),
-                              );
+                              ).then((_) {
+                                // ✅ Back aane ke baad refresh
+                                ref.refresh(profileController);
+                              });
                             },
                             child: Container(
                               width: 88.w,
@@ -157,7 +179,7 @@ class _CustomProfileDrawerState extends ConsumerState<CustomProfileDrawer> {
                         child: Text(
                           // "Annu Agarwal",
                           // box.get("storeName").toString(),
-                          profile.username,
+                          profile.username.toString(),
                           style: GoogleFonts.roboto(
                             fontSize: 16.sp,
                             fontWeight: FontWeight.w400,
@@ -170,7 +192,7 @@ class _CustomProfileDrawerState extends ConsumerState<CustomProfileDrawer> {
                         child: Text(
                           // "AnnuAgarwal.gmail.com",
                           // box.get("userEmail").toString(),
-                          profile.email,
+                          profile.email.toString(),
                           style: GoogleFonts.roboto(
                             fontSize: 14.sp,
                             fontWeight: FontWeight.w400,
