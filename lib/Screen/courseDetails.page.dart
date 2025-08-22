@@ -132,7 +132,8 @@ class _CourseDetailsPageState extends ConsumerState<CourseDetailsPage> {
                                             isWishlisted =
                                                 await WishlistControllerClass.toggle(
                                                   context: context,
-                                                  courseId: courseDetails.id,
+                                                  courseId:
+                                                      courseDetails.id ?? 0,
                                                   userId: box.get("storeId"),
                                                   currentStatus: isWishlisted,
                                                 );

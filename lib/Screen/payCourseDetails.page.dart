@@ -117,7 +117,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                     borderRadius: BorderRadius.circular(10.r),
                                     child: Image.network(
                                       //  "assets/reading.png",
-                                      courseDetails.thumbnail,
+                                      courseDetails.thumbnail ?? 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fcommons.wikimedia.org%2Fwiki%2FFile%3ANo-Image-Placeholder.svg&psig=AOvVaw1MZ0Y-EQnAjmnyZjr5zMZ3&ust=1755926612664000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCPiV9cHWnY8DFQAAAAAdAAAAABAE',
                                       width: 400.w,
                                       height: 254.h,
                                       fit: BoxFit.cover,
@@ -139,7 +139,8 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                               isWishlisted =
                                                   await WishlistControllerClass.toggle(
                                                     context: context,
-                                                    courseId: courseDetails.id,
+                                                    courseId:
+                                                        courseDetails.id ?? 0,
                                                     userId: box.get("storeId"),
                                                     currentStatus: isWishlisted,
                                                   );
@@ -216,7 +217,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                               SizedBox(height: 19.h),
                               Text(
                                 //"25th Workshop based on Treasure of Treatise -18",
-                                courseDetails.title,
+                                courseDetails.title ?? "",
                                 style: GoogleFonts.roboto(
                                   fontSize: 20.sp,
                                   fontWeight: FontWeight.w600,
@@ -227,7 +228,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                               SizedBox(height: 14.h),
                               Text(
                                 // "Unlock ancient wisdom for personal growth",
-                                courseDetails.excerpt,
+                                courseDetails.excerpt ?? "",
                                 style: GoogleFonts.roboto(
                                   fontSize: 16.sp,
                                   fontWeight: FontWeight.w400,
@@ -278,7 +279,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                               SizedBox(height: 12.h),
                               Text(
                                 // "The 25th Workshop based on Treasure of Treatise -18 is a deep dive into the ancient scriptures and texts, uncovering hidden gems of knowledge and wisdom. Participants will explore the rich heritage of ancient treatises and unlock valuable insights for personal growth and development.",
-                                courseDetails.description,
+                                courseDetails.description ?? "",
                                 style: GoogleFonts.roboto(
                                   fontSize: 16.sp,
                                   fontWeight: FontWeight.w400,
@@ -497,14 +498,14 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                 ),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: courseDetails.topics
+                                  children: courseDetails.topics!
                                       .map(
                                         (e) => modules(
                                           e.topicTitle.toString(),
-                                          e.lessons
+                                          e.lessons!
                                               .map(
                                                 (lesson) => lesson
-                                                    .lessonMeta
+                                                    .lessonMeta!
                                                     .video
                                                     .toString(),
                                               )
@@ -617,7 +618,8 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                       image: DecorationImage(
                                         image: NetworkImage(
                                           //"assets/tesla.png",
-                                          courseDetails.author.avatarUrl,
+                                          courseDetails.author!.avatarUrl ??
+                                              "https://www.google.com/url?sa=i&url=https%3A%2F%2Fcommons.wikimedia.org%2Fwiki%2FFile%3ANo-Image-Placeholder.svg&psig=AOvVaw1MZ0Y-EQnAjmnyZjr5zMZ3&ust=1755926612664000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCPiV9cHWnY8DFQAAAAAdAAAAABAE",
                                         ),
                                       ),
                                     ),
@@ -652,7 +654,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                   SizedBox(height: 20.h),
                                   Text(
                                     //"With over 5 years of experience, I've guided 300+ students to land jobs in top companies like Google, TCS, and Deloitte. My sessions focus on mock interviews, resume building, and effective communication",
-                                    courseDetails.author.name,
+                                    courseDetails.author!.name?? "",
                                     style: GoogleFonts.roboto(
                                       fontSize: 16.sp,
                                       fontWeight: FontWeight.w400,
@@ -663,7 +665,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                   SizedBox(height: 20.h),
                                   Text(
                                     //"25th Workshop based on Treasure of Treatise -18",
-                                    courseDetails.title,
+                                    courseDetails.title ?? "",
                                     style: GoogleFonts.roboto(
                                       fontSize: 20.sp,
                                       fontWeight: FontWeight.w600,
@@ -674,7 +676,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                   SizedBox(height: 14.h),
                                   Text(
                                     // "Unlock ancient wisdom for personal growth",
-                                    courseDetails.excerpt,
+                                    courseDetails.excerpt ?? "",
                                     style: GoogleFonts.roboto(
                                       fontSize: 16.sp,
                                       fontWeight: FontWeight.w400,
@@ -747,7 +749,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
               child: FloatingActionButton(
                 backgroundColor: Color(0xFF001E6C),
                 onPressed: () async {
-                  final body = EnrollBodyModel(courseId: courseDetails.id);
+                  final body = EnrollBodyModel(courseId: courseDetails.id ?? 0);
                   try {
                     final service = APIStateNetwork(createDio());
                     final response = await service.enroll(body);
