@@ -94,7 +94,6 @@ mixin RegisterApi<T extends ConsumerStatefulWidget> on ConsumerState<T> {
   }
 }
 
-
 class ShimmerHomePage extends StatelessWidget {
   const ShimmerHomePage({super.key});
 
