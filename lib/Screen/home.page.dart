@@ -46,8 +46,7 @@ class _HomePageState extends ConsumerState<HomePage> {
 
     final isLoading =
         // popularCourseProvider.isLoading ||
-        allCategoryProvider.isLoading;
-    //|| productListProvider.isLoading;
+        allCategoryProvider.isLoading || productListProvider.isLoading;
 
     if (isLoading) {
       return const ShimmerHomePage();

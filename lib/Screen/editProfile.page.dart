@@ -1,9 +1,11 @@
 import 'dart:developer';
 import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:eduma_app/config/core/showFlushbar.dart';
 import 'package:eduma_app/config/network/api.state.dart';
 import 'package:eduma_app/config/utils/navigatorKey.dart';
 import 'package:eduma_app/config/utils/pretty.dio.dart';
+import 'package:eduma_app/data/Controller/editProfileController.dart';
 import 'package:eduma_app/data/Controller/updateProfileController.dart';
 import 'package:eduma_app/data/Model/updateProfileBodyModel.dart';
 import 'package:file_picker/file_picker.dart';
@@ -26,7 +28,7 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage>
 
   Future<void> pickAnyFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.any,
+      type: FileType.image,
     );
 
     if (result != null) {
@@ -104,6 +106,44 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage>
                         controller: nameController,
                         type: TextInputType.name,
                       ),
+
+                      SizedBox(height: 20.h),
+                      ProfileBody(
+                        name: "Email",
+                        controller: emailController,
+                        type: TextInputType.emailAddress,
+                      ),
+                      SizedBox(height: 20.h),
+                      ProfileBody(
+                        name: "Phone",
+                        controller: phoneController,
+                        type: TextInputType.phone,
+                        maxLength: 10,
+                      ),
+                      SizedBox(height: 20.h),
+                      ProfileBody(
+                        name: "City",
+                        controller: cityController,
+                        type: TextInputType.text,
+                      ),
+                      SizedBox(height: 20.h),
+                      ProfileBody(
+                        name: "State",
+                        controller: stateController,
+                        type: TextInputType.text,
+                      ),
+                      SizedBox(height: 20.h),
+                      ProfileBody(
+                        name: "Country",
+                        controller: countryController,
+                        type: TextInputType.text,
+                      ),
+                      SizedBox(height: 20.h),
+                      ProfileBody(
+                        name: "Address",
+                        controller: addressController,
+                        type: TextInputType.streetAddress,
+                      ),
                       SizedBox(height: 20.h),
                       Text(
                         "Upload Profile",
@@ -160,43 +200,6 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage>
                             ],
                           ),
                         ),
-                      ),
-                      SizedBox(height: 20.h),
-                      ProfileBody(
-                        name: "Email",
-                        controller: emailController,
-                        type: TextInputType.emailAddress,
-                      ),
-                      SizedBox(height: 20.h),
-                      ProfileBody(
-                        name: "Phone",
-                        controller: phoneController,
-                        type: TextInputType.phone,
-                        maxLength: 10,
-                      ),
-                      SizedBox(height: 20.h),
-                      ProfileBody(
-                        name: "City",
-                        controller: cityController,
-                        type: TextInputType.text,
-                      ),
-                      SizedBox(height: 20.h),
-                      ProfileBody(
-                        name: "State",
-                        controller: stateController,
-                        type: TextInputType.text,
-                      ),
-                      SizedBox(height: 20.h),
-                      ProfileBody(
-                        name: "Country",
-                        controller: countryController,
-                        type: TextInputType.text,
-                      ),
-                      SizedBox(height: 20.h),
-                      ProfileBody(
-                        name: "Address",
-                        controller: addressController,
-                        type: TextInputType.streetAddress,
                       ),
                       SizedBox(height: 20.h),
                       Text(
@@ -269,7 +272,7 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage>
                               state: stateController.text,
                               country: countryController.text,
                               postalCode: "395006",
-                              avatarUrl: pickedFile!.path.toString(),
+                              avatarUrl: pickedFile!.path,
                             );
                             setState(() {
                               isLoading = true;
@@ -293,6 +296,44 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage>
                               log(e.toString());
                             }
                           }
+
+                          // final body = UpdateProfileBodyModel(
+                          //   firstName: nameController.text,
+                          //   lastName: "lastName",
+                          //   displayName: "displayName",
+                          //   email: emailController.text,
+                          //   phone: phoneController.text,
+                          //   bio: bioController.text,
+                          //   address: addressController.text,
+                          //   city: cityController.text,
+                          //   state: stateController.text,
+                          //   country: countryController.text,
+                          //   postalCode: "395006",
+                          //   avatarUrl: pickedFile!.path,
+                          // );
+                          // setState(() {
+                          //   isLoading = true;
+                          // });
+                          // try {
+                          //   final response = ref.watch(
+                          //     updateProfleControllr(body),
+                          //   );
+                          //   if (response.value!.success == true) {
+                          //     Navigator.pop(context);
+                          //     showSuccessMessage(
+                          //       context,
+                          //       response.value!.message,
+                          //     );
+                          //     setState(() {
+                          //       isLoading = false;
+                          //     });
+                          //   }
+                          // } catch (e) {
+                          //   setState(() {
+                          //     isLoading = false;
+                          //   });
+                          //   log(e.toString());
+                          // }
                         },
                         child: isLoading
                             ? Center(
