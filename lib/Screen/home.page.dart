@@ -46,8 +46,8 @@ class _HomePageState extends ConsumerState<HomePage> {
 
     final isLoading =
         // popularCourseProvider.isLoading ||
-        allCategoryProvider.isLoading; 
-        //|| productListProvider.isLoading;
+        allCategoryProvider.isLoading;
+    //|| productListProvider.isLoading;
 
     if (isLoading) {
       return const ShimmerHomePage();
@@ -67,754 +67,770 @@ class _HomePageState extends ConsumerState<HomePage> {
       );
     }
 
-    return Scaffold(
-      key: _scaffoldKey,
-      drawer: CustomProfileDrawer(),
-      backgroundColor: Color(0xFFFFFFFF),
-      appBar: selectIndex == 0
-          ? AppBar(
-              backgroundColor: Color(0xFFFFFFFF),
-              leading: Padding(
-                padding: EdgeInsets.only(left: 20.w),
-                child: Image.asset("assets/logo.png"),
-              ),
-              actions: [
-                Row(
-                  children: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          CupertinoPageRoute(builder: (context) => LoginPage()),
-                        );
-                      },
-                      child: Text(
-                        "Login",
-                        style: GoogleFonts.roboto(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xFF000000),
-                          letterSpacing: -0.4,
-                        ),
-                      ),
-                    ),
-                    Text(
-                      "|",
-                      style: GoogleFonts.roboto(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xFF000000),
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                            builder: (context) => RegisterPage(),
-                          ),
-                        );
-                      },
-                      child: Text(
-                        "Register",
-                        style: GoogleFonts.roboto(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xFF000000),
-                          letterSpacing: -0.4,
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 10.w),
-                  ],
+    return WillPopScope(
+      onWillPop: () async {
+        if (selectIndex != 0) {
+          setState(() {
+            selectIndex = 0;
+          });
+          return false;
+        }
+        return true;
+      },
+      child: Scaffold(
+        key: _scaffoldKey,
+        drawer: CustomProfileDrawer(),
+        backgroundColor: Color(0xFFFFFFFF),
+        appBar: selectIndex == 0
+            ? AppBar(
+                backgroundColor: Color(0xFFFFFFFF),
+                leading: Padding(
+                  padding: EdgeInsets.only(left: 20.w),
+                  child: Image.asset("assets/logo.png"),
                 ),
-              ],
-            )
-          : null,
-      body: selectIndex == 0
-          ? SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 18.h),
-                  Padding(
-                    padding: EdgeInsets.only(left: 20.w, right: 20.w),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Welcome Back, ${box.get("storeName")}",
+                actions: [
+                  Row(
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                              builder: (context) => LoginPage(),
+                            ),
+                          );
+                        },
+                        child: Text(
+                          "Login",
                           style: GoogleFonts.roboto(
                             fontSize: 16.sp,
                             fontWeight: FontWeight.w600,
-                            color: Color(0xff000000),
+                            color: Color(0xFF000000),
                             letterSpacing: -0.4,
                           ),
                         ),
-                        Icon(Icons.search, color: Color(0xFF0F0F0F)),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 12.h),
-                  Container(
-                    margin: EdgeInsets.only(left: 20.w, right: 20.w),
-                    child: TextField(
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.only(
-                          left: 20.w,
-                          right: 20.w,
+                      ),
+                      Text(
+                        "|",
+                        style: GoogleFonts.roboto(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xFF000000),
                         ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30.r),
-                          borderSide: BorderSide(
-                            color: Color.fromARGB(153, 0, 0, 0),
-                            width: 2.w,
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30.r),
-                          borderSide: BorderSide(
-                            color: Color.fromARGB(153, 0, 0, 0),
-                            width: 2.w,
-                          ),
-                        ),
-                        hint: Text(
-                          "Searching Courses...",
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                              builder: (context) => RegisterPage(),
+                            ),
+                          );
+                        },
+                        child: Text(
+                          "Register",
                           style: GoogleFonts.roboto(
                             fontSize: 16.sp,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xFF777474),
-                            letterSpacing: -0.2,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xFF000000),
+                            letterSpacing: -0.4,
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 10.w),
+                    ],
+                  ),
+                ],
+              )
+            : null,
+        body: selectIndex == 0
+            ? SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 18.h),
+                    Padding(
+                      padding: EdgeInsets.only(left: 20.w, right: 20.w),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Welcome Back, ${box.get("storeName")}",
+                            style: GoogleFonts.roboto(
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xff000000),
+                              letterSpacing: -0.4,
+                            ),
+                          ),
+                          Icon(Icons.search, color: Color(0xFF0F0F0F)),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 12.h),
+                    Container(
+                      margin: EdgeInsets.only(left: 20.w, right: 20.w),
+                      child: TextField(
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.only(
+                            left: 20.w,
+                            right: 20.w,
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30.r),
+                            borderSide: BorderSide(
+                              color: Color.fromARGB(153, 0, 0, 0),
+                              width: 2.w,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30.r),
+                            borderSide: BorderSide(
+                              color: Color.fromARGB(153, 0, 0, 0),
+                              width: 2.w,
+                            ),
+                          ),
+                          hint: Text(
+                            "Searching Courses...",
+                            style: GoogleFonts.roboto(
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xFF777474),
+                              letterSpacing: -0.2,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
 
-                  //SizedBox(height: 18.h),
-                  // SingleChildScrollView(
-                  //   scrollDirection: Axis.horizontal,
-                  //   child: Row(
-                  //     children: [
-                  //       Container(
-                  //         margin: EdgeInsets.only(left: 20.w),
-                  //         padding: EdgeInsets.only(
-                  //           top: 10.h,
-                  //           bottom: 10.h,
-                  //           left: 20.w,
-                  //           right: 20.w,
-                  //         ),
-                  //         decoration: BoxDecoration(
-                  //           borderRadius: BorderRadius.circular(40.r),
-                  //           color: Color(0xFF001E6C),
-                  //         ),
-                  //         child: Text(
-                  //           "Backend",
-                  //           style: GoogleFonts.roboto(
-                  //             fontSize: 16.sp,
-                  //             fontWeight: FontWeight.w400,
-                  //             color: Color(0xFFFFFFFF),
-                  //           ),
-                  //         ),
-                  //       ),
-                  //       Container(
-                  //         margin: EdgeInsets.only(left: 10.w),
-                  //         padding: EdgeInsets.only(
-                  //           top: 10.h,
-                  //           bottom: 10.h,
-                  //           left: 20.w,
-                  //           right: 20.w,
-                  //         ),
-                  //         decoration: BoxDecoration(
-                  //           borderRadius: BorderRadius.circular(40.r),
-                  //           color: Color(0xFFDCF881),
-                  //         ),
-                  //         child: Text(
-                  //           "Programing Language",
-                  //           style: GoogleFonts.roboto(
-                  //             fontSize: 16.sp,
-                  //             fontWeight: FontWeight.w400,
-                  //             color: Colors.black,
-                  //           ),
-                  //         ),
-                  //       ),
-                  //       Container(
-                  //         margin: EdgeInsets.only(left: 10.w, right: 10.w),
-                  //         padding: EdgeInsets.only(
-                  //           top: 10.h,
-                  //           bottom: 10.h,
-                  //           left: 20.w,
-                  //           right: 20.w,
-                  //         ),
-                  //         decoration: BoxDecoration(
-                  //           borderRadius: BorderRadius.circular(40.r),
-                  //           color: Color(0xFFEB9481),
-                  //         ),
-                  //         child: Text(
-                  //           "Technology",
-                  //           style: GoogleFonts.roboto(
-                  //             fontSize: 16.sp,
-                  //             fontWeight: FontWeight.w400,
-                  //             color: Colors.white,
-                  //           ),
-                  //         ),
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
-                  SizedBox(height: 30.h),
-                  Row(
-                    children: [
-                      SizedBox(width: 20.w),
-                      Image.asset(
-                        "assets/book.png",
-                        width: 31.w,
-                        height: 25.h,
-                        fit: BoxFit.cover,
-                      ),
-                      SizedBox(width: 10.w),
-                      Text(
-                        "Continue Learning",
-                        style: GoogleFonts.roboto(
-                          fontSize: 23.sp,
-                          fontWeight: FontWeight.w600,
+                    //SizedBox(height: 18.h),
+                    // SingleChildScrollView(
+                    //   scrollDirection: Axis.horizontal,
+                    //   child: Row(
+                    //     children: [
+                    //       Container(
+                    //         margin: EdgeInsets.only(left: 20.w),
+                    //         padding: EdgeInsets.only(
+                    //           top: 10.h,
+                    //           bottom: 10.h,
+                    //           left: 20.w,
+                    //           right: 20.w,
+                    //         ),
+                    //         decoration: BoxDecoration(
+                    //           borderRadius: BorderRadius.circular(40.r),
+                    //           color: Color(0xFF001E6C),
+                    //         ),
+                    //         child: Text(
+                    //           "Backend",
+                    //           style: GoogleFonts.roboto(
+                    //             fontSize: 16.sp,
+                    //             fontWeight: FontWeight.w400,
+                    //             color: Color(0xFFFFFFFF),
+                    //           ),
+                    //         ),
+                    //       ),
+                    //       Container(
+                    //         margin: EdgeInsets.only(left: 10.w),
+                    //         padding: EdgeInsets.only(
+                    //           top: 10.h,
+                    //           bottom: 10.h,
+                    //           left: 20.w,
+                    //           right: 20.w,
+                    //         ),
+                    //         decoration: BoxDecoration(
+                    //           borderRadius: BorderRadius.circular(40.r),
+                    //           color: Color(0xFFDCF881),
+                    //         ),
+                    //         child: Text(
+                    //           "Programing Language",
+                    //           style: GoogleFonts.roboto(
+                    //             fontSize: 16.sp,
+                    //             fontWeight: FontWeight.w400,
+                    //             color: Colors.black,
+                    //           ),
+                    //         ),
+                    //       ),
+                    //       Container(
+                    //         margin: EdgeInsets.only(left: 10.w, right: 10.w),
+                    //         padding: EdgeInsets.only(
+                    //           top: 10.h,
+                    //           bottom: 10.h,
+                    //           left: 20.w,
+                    //           right: 20.w,
+                    //         ),
+                    //         decoration: BoxDecoration(
+                    //           borderRadius: BorderRadius.circular(40.r),
+                    //           color: Color(0xFFEB9481),
+                    //         ),
+                    //         child: Text(
+                    //           "Technology",
+                    //           style: GoogleFonts.roboto(
+                    //             fontSize: 16.sp,
+                    //             fontWeight: FontWeight.w400,
+                    //             color: Colors.white,
+                    //           ),
+                    //         ),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
+                    SizedBox(height: 30.h),
+                    Row(
+                      children: [
+                        SizedBox(width: 20.w),
+                        Image.asset(
+                          "assets/book.png",
+                          width: 31.w,
+                          height: 25.h,
+                          fit: BoxFit.cover,
+                        ),
+                        SizedBox(width: 10.w),
+                        Text(
+                          "Continue Learning",
+                          style: GoogleFonts.roboto(
+                            fontSize: 23.sp,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xFF000000),
+                            letterSpacing: -0.4,
+                          ),
+                        ),
+                        Spacer(),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          color: Color(0xFF001E6C),
+                          weight: 3,
+                          size: 23.sp,
+                        ),
+                        SizedBox(width: 20.w),
+                      ],
+                    ),
+                    SizedBox(height: 20.h),
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                            builder: (context) => ContinueMyCoursePage(),
+                          ),
+                        );
+                      },
+                      child: LearningBody(),
+                    ),
+                    SizedBox(height: 10.h),
+                    Row(
+                      children: [
+                        SizedBox(width: 20.w),
+                        Icon(
+                          Icons.grid_view_rounded,
                           color: Color(0xFF000000),
-                          letterSpacing: -0.4,
+                          size: 28.sp,
                         ),
-                      ),
-                      Spacer(),
-                      Icon(
-                        Icons.arrow_forward_ios,
-                        color: Color(0xFF001E6C),
-                        weight: 3,
-                        size: 23.sp,
-                      ),
-                      SizedBox(width: 20.w),
-                    ],
-                  ),
-                  SizedBox(height: 20.h),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                          builder: (context) => ContinueMyCoursePage(),
+                        SizedBox(width: 10.w),
+                        Text(
+                          "All Category",
+                          style: GoogleFonts.roboto(
+                            fontSize: 23.sp,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xFF000000),
+                            letterSpacing: -0.4,
+                          ),
                         ),
-                      );
-                    },
-                    child: LearningBody(),
-                  ),
-                  SizedBox(height: 10.h),
-                  Row(
-                    children: [
-                      SizedBox(width: 20.w),
-                      Icon(
-                        Icons.grid_view_rounded,
-                        color: Color(0xFF000000),
-                        size: 28.sp,
-                      ),
-                      SizedBox(width: 10.w),
-                      Text(
-                        "All Category",
-                        style: GoogleFonts.roboto(
-                          fontSize: 23.sp,
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xFF000000),
-                          letterSpacing: -0.4,
+                        Spacer(),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          color: Color(0xFF001E6C),
+                          weight: 3,
+                          size: 23.sp,
                         ),
-                      ),
-                      Spacer(),
-                      Icon(
-                        Icons.arrow_forward_ios,
-                        color: Color(0xFF001E6C),
-                        weight: 3,
-                        size: 23.sp,
-                      ),
-                      SizedBox(width: 20.w),
-                    ],
-                  ),
-                  SizedBox(height: 20.h),
-                  allCategoryProvider.when(
-                    data: (allCategory) {
-                      return Container(
-                        height: 155.h,
-                        //color: Colors.amber,
-                        child: ListView.builder(
-                          itemCount: allCategory.data.length,
-                          scrollDirection: Axis.horizontal,
-                          padding: EdgeInsets.zero,
-                          itemBuilder: (context, index) {
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(width: 20.w),
-                                Container(
-                                  margin: EdgeInsets.only(left: 20.w),
-                                  child: InkWell(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        CupertinoPageRoute(
-                                          builder: (context) => CoursePage(
-                                            categoryId: allCategory
-                                                .data[index]
-                                                .id
-                                                .toString(),
+                        SizedBox(width: 20.w),
+                      ],
+                    ),
+                    SizedBox(height: 20.h),
+                    allCategoryProvider.when(
+                      data: (allCategory) {
+                        return Container(
+                          height: 155.h,
+                          //color: Colors.amber,
+                          child: ListView.builder(
+                            itemCount: allCategory.data.length,
+                            scrollDirection: Axis.horizontal,
+                            padding: EdgeInsets.zero,
+                            itemBuilder: (context, index) {
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(width: 20.w),
+                                  Container(
+                                    margin: EdgeInsets.only(left: 20.w),
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          CupertinoPageRoute(
+                                            builder: (context) => CoursePage(
+                                              categoryId: allCategory
+                                                  .data[index]
+                                                  .id
+                                                  .toString(),
+                                            ),
                                           ),
+                                        );
+                                      },
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(
+                                          10.r,
                                         ),
-                                      );
-                                    },
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(10.r),
-                                      child: Image.network(
-                                        // "assets/course.png",
-                                        allCategory.data[index].thumbnail,
-                                        width: 200.w,
-                                        height: 130.h,
-                                        fit: BoxFit.fill,
-                                        errorBuilder: (context, error, stackTrace) {
-                                          return Image.network(
-                                            "https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg",
-                                            width: 200.w,
-                                            height: 130.h,
-                                            fit: BoxFit.fill,
-                                          );
-                                        },
+                                        child: Image.network(
+                                          // "assets/course.png",
+                                          allCategory.data[index].thumbnail,
+                                          width: 200.w,
+                                          height: 130.h,
+                                          fit: BoxFit.fill,
+                                          errorBuilder:
+                                              (context, error, stackTrace) {
+                                                return Image.network(
+                                                  "https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg",
+                                                  width: 200.w,
+                                                  height: 130.h,
+                                                  fit: BoxFit.fill,
+                                                );
+                                              },
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                                // SizedBox(width: 20.w),
-                                // ClipRRect(
-                                //   borderRadius: BorderRadius.circular(10.r),
-                                //   child: Image.asset(
-                                //     "assets/course.png",
-                                //     width: 200.w,
-                                //     height: 130.h,
-                                //     fit: BoxFit.fill,
-                                //   ),
-                                // ),
-                                // SizedBox(width: 20.w),
-                              ],
-                            );
-                          },
+                                  // SizedBox(width: 20.w),
+                                  // ClipRRect(
+                                  //   borderRadius: BorderRadius.circular(10.r),
+                                  //   child: Image.asset(
+                                  //     "assets/course.png",
+                                  //     width: 200.w,
+                                  //     height: 130.h,
+                                  //     fit: BoxFit.fill,
+                                  //   ),
+                                  // ),
+                                  // SizedBox(width: 20.w),
+                                ],
+                              );
+                            },
+                          ),
+                        );
+                      },
+                      error: (error, stackTrace) =>
+                          Center(child: Text(error.toString())),
+                      loading: () => Center(child: CircularProgressIndicator()),
+                    ),
+                    SizedBox(height: 20.h),
+                    Row(
+                      children: [
+                        SizedBox(width: 20.w),
+                        Image.asset(
+                          "assets/notebook.png",
+                          width: 31.w,
+                          height: 31.h,
+                          fit: BoxFit.contain,
                         ),
-                      );
-                    },
-                    error: (error, stackTrace) =>
-                        Center(child: Text(error.toString())),
-                    loading: () => Center(child: CircularProgressIndicator()),
-                  ),
-                  SizedBox(height: 20.h),
-                  Row(
-                    children: [
-                      SizedBox(width: 20.w),
-                      Image.asset(
-                        "assets/notebook.png",
-                        width: 31.w,
-                        height: 31.h,
-                        fit: BoxFit.contain,
-                      ),
-                      SizedBox(width: 10.w),
-                      Text(
-                        "Popular Courses",
-                        style: GoogleFonts.roboto(
-                          fontSize: 23.sp,
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xFF000000),
-                          letterSpacing: -0.4,
+                        SizedBox(width: 10.w),
+                        Text(
+                          "Popular Courses",
+                          style: GoogleFonts.roboto(
+                            fontSize: 23.sp,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xFF000000),
+                            letterSpacing: -0.4,
+                          ),
                         ),
-                      ),
-                      Spacer(),
-                      Icon(
-                        Icons.arrow_forward_ios,
-                        color: Color(0xFF001E6C),
-                        weight: 3,
-                        size: 23.sp,
-                      ),
-                      SizedBox(width: 20.w),
-                    ],
-                  ),
-                  SizedBox(height: 20.h),
-                  popularCourseProvider.when(
-                    data: (course) {
-                      return Container(
-                        height: 200.h,
-                        //color: Colors.amber,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          padding: EdgeInsets.zero,
-                          itemCount: course.length,
-                          itemBuilder: (context, index) {
-                            return Container(
-                              margin: EdgeInsets.only(left: 20.w),
-                              child: PopularCour(data: course[index]),
-                            );
-                          },
+                        Spacer(),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          color: Color(0xFF001E6C),
+                          weight: 3,
+                          size: 23.sp,
                         ),
-                      );
-                    },
-                    error: (error, stackTrace) =>
-                        Center(child: Text(error.toString())),
-                    loading: () => Center(
-                      child: CircularProgressIndicator(
-                        color: Color(0xFF001E6C),
+                        SizedBox(width: 20.w),
+                      ],
+                    ),
+                    SizedBox(height: 20.h),
+                    popularCourseProvider.when(
+                      data: (course) {
+                        return Container(
+                          height: 200.h,
+                          //color: Colors.amber,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            padding: EdgeInsets.zero,
+                            itemCount: course.length,
+                            itemBuilder: (context, index) {
+                              return Container(
+                                margin: EdgeInsets.only(left: 20.w),
+                                child: PopularCour(data: course[index]),
+                              );
+                            },
+                          ),
+                        );
+                      },
+                      error: (error, stackTrace) =>
+                          Center(child: Text(error.toString())),
+                      loading: () => Center(
+                        child: CircularProgressIndicator(
+                          color: Color(0xFF001E6C),
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(height: 10.h),
-                  Row(
-                    children: [
-                      SizedBox(width: 16.w),
-                      Icon(Icons.star, color: Color(0xFF000000), size: 28.sp),
-                      SizedBox(width: 10.w),
-                      Text(
-                        "Newly Added",
-                        style: GoogleFonts.roboto(
-                          fontSize: 23.sp,
-                          fontWeight: FontWeight.w600,
+                    SizedBox(height: 10.h),
+                    Row(
+                      children: [
+                        SizedBox(width: 16.w),
+                        Icon(Icons.star, color: Color(0xFF000000), size: 28.sp),
+                        SizedBox(width: 10.w),
+                        Text(
+                          "Newly Added",
+                          style: GoogleFonts.roboto(
+                            fontSize: 23.sp,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xFF000000),
+                            letterSpacing: -0.4,
+                          ),
+                        ),
+                        Spacer(),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          color: Color(0xFF001E6C),
+                          weight: 3,
+                          size: 23.sp,
+                        ),
+                        SizedBox(width: 20.w),
+                      ],
+                    ),
+                    SizedBox(height: 20.h),
+                    PopularBody(
+                      popularList: [
+                        {
+                          "image": "assets/new1.png",
+                          "paid": "₹ 45.00",
+                          "title": "Introduction learn Press - LMS Plugin",
+                        },
+                        {
+                          "image": "assets/new2.png",
+                          "paid": "Free",
+                          "title": "Create an LMS Website With LearnPress",
+                        },
+                      ],
+                    ),
+                    SizedBox(height: 10.h),
+                    Row(
+                      children: [
+                        SizedBox(width: 16.w),
+                        Icon(
+                          Icons.grid_view_rounded,
                           color: Color(0xFF000000),
-                          letterSpacing: -0.4,
+                          size: 28.sp,
                         ),
-                      ),
-                      Spacer(),
-                      Icon(
-                        Icons.arrow_forward_ios,
-                        color: Color(0xFF001E6C),
-                        weight: 3,
-                        size: 23.sp,
-                      ),
-                      SizedBox(width: 20.w),
-                    ],
-                  ),
-                  SizedBox(height: 20.h),
-                  PopularBody(
-                    popularList: [
-                      {
-                        "image": "assets/new1.png",
-                        "paid": "₹ 45.00",
-                        "title": "Introduction learn Press - LMS Plugin",
+                        SizedBox(width: 10.w),
+                        Text(
+                          "All Product",
+                          style: GoogleFonts.roboto(
+                            fontSize: 23.sp,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xFF000000),
+                            letterSpacing: -0.4,
+                          ),
+                        ),
+                        Spacer(),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          color: Color(0xFF001E6C),
+                          weight: 3,
+                          size: 23.sp,
+                        ),
+                        SizedBox(width: 20.w),
+                      ],
+                    ),
+                    SizedBox(height: 20.h),
+                    productListProvider.when(
+                      data: (productList) {
+                        return Container(
+                          height: 200.h,
+                          // color: Colors.amber,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            padding: EdgeInsets.zero,
+                            itemCount: productList.length,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: EdgeInsets.only(left: 20.w),
+                                child: allProduct(data: productList[index]),
+                              );
+                            },
+                          ),
+                        );
                       },
-                      {
-                        "image": "assets/new2.png",
-                        "paid": "Free",
-                        "title": "Create an LMS Website With LearnPress",
-                      },
-                    ],
-                  ),
-                  SizedBox(height: 10.h),
-                  Row(
-                    children: [
-                      SizedBox(width: 16.w),
-                      Icon(
-                        Icons.grid_view_rounded,
-                        color: Color(0xFF000000),
-                        size: 28.sp,
-                      ),
-                      SizedBox(width: 10.w),
-                      Text(
-                        "All Product",
-                        style: GoogleFonts.roboto(
-                          fontSize: 23.sp,
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xFF000000),
-                          letterSpacing: -0.4,
-                        ),
-                      ),
-                      Spacer(),
-                      Icon(
-                        Icons.arrow_forward_ios,
-                        color: Color(0xFF001E6C),
-                        weight: 3,
-                        size: 23.sp,
-                      ),
-                      SizedBox(width: 20.w),
-                    ],
-                  ),
-                  SizedBox(height: 20.h),
-                  productListProvider.when(
-                    data: (productList) {
-                      return Container(
-                        height: 200.h,
-                        // color: Colors.amber,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          padding: EdgeInsets.zero,
-                          itemCount: productList.length,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding: EdgeInsets.only(left: 20.w),
-                              child: allProduct(data: productList[index]),
-                            );
-                          },
-                        ),
-                      );
-                    },
-                    error: (error, stackTrace) =>
-                        Center(child: Text(error.toString())),
-                    loading: () => Center(child: CircularProgressIndicator()),
-                  ),
-                  SizedBox(height: 15.h),
+                      error: (error, stackTrace) =>
+                          Center(child: Text(error.toString())),
+                      loading: () => Center(child: CircularProgressIndicator()),
+                    ),
+                    SizedBox(height: 15.h),
 
-                  // Container(
-                  //   margin: EdgeInsets.only(left: 20.w),
-                  //   child: Text(
-                  //     "instructor",
-                  //     style: GoogleFonts.roboto(
-                  //       fontSize: 26.sp,
-                  //       fontWeight: FontWeight.w600,
-                  //       color: Color(0xFF1B1B1B),
-                  //     ),
-                  //   ),
-                  // ),
-                  // SizedBox(height: 16.h),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //   children: [
-                  //     SizedBox(width: 20.w),
-                  //     Container(
-                  //       padding: EdgeInsets.only(
-                  //         left: 10.w,
-                  //         right: 10.w,
-                  //         bottom: 13.h,
-                  //         top: 13.h,
-                  //       ),
-                  //       decoration: BoxDecoration(
-                  //         borderRadius: BorderRadius.circular(5.r),
-                  //         color: Color(0xFFFFFFFF),
-                  //         boxShadow: [
-                  //           BoxShadow(
-                  //             offset: Offset(0, 1),
-                  //             spreadRadius: 0,
-                  //             blurRadius: 4,
-                  //             color: Color.fromARGB(63, 0, 0, 0),
-                  //           ),
-                  //         ],
-                  //       ),
-                  //       child: Row(
-                  //         children: [
-                  //           Container(
-                  //             width: 45.w,
-                  //             height: 45.h,
-                  //             decoration: BoxDecoration(
-                  //               shape: BoxShape.circle,
-                  //               color: Colors.blue,
-                  //             ),
-                  //             child: ClipOval(
-                  //               child: Image.asset(
-                  //                 "assets/mahesh.png",
-                  //                 fit: BoxFit.cover,
-                  //               ),
-                  //             ),
-                  //           ),
-                  //           SizedBox(width: 7.w),
-                  //           Column(
-                  //             crossAxisAlignment: CrossAxisAlignment.start,
-                  //             children: [
-                  //               Text(
-                  //                 "Mahesh Yogi",
-                  //                 style: GoogleFonts.roboto(
-                  //                   fontSize: 20.sp,
-                  //                   fontWeight: FontWeight.w500,
-                  //                   color: Color(0xFF001E6C),
-                  //                   letterSpacing: -0.4,
-                  //                 ),
-                  //               ),
-                  //               Text(
-                  //                 "3 Courses    257 Student",
-                  //                 style: GoogleFonts.roboto(
-                  //                   fontSize: 12.sp,
-                  //                   fontWeight: FontWeight.w500,
-                  //                   color: Color(0xFF000000),
-                  //                   letterSpacing: -0.4,
-                  //                 ),
-                  //               ),
-                  //               SizedBox(height: 4.h),
-                  //               Row(
-                  //                 children: [
-                  //                   Image.asset("assets/birds.png"),
-                  //                   SizedBox(width: 10.w),
-                  //                   Image.asset("assets/call.png"),
-                  //                   SizedBox(width: 10.w),
-                  //                   Image.asset("assets/insta.png"),
-                  //                   SizedBox(width: 10.w),
-                  //                   Image.asset("assets/a.png"),
-                  //                 ],
-                  //               ),
-                  //             ],
-                  //           ),
-                  //         ],
-                  //       ),
-                  //     ),
-                  //     InkWell(
-                  //       onTap: () {
-                  //         Navigator.push(
-                  //           context,
-                  //           CupertinoPageRoute(
-                  //             builder: (context) => InstructorPage(),
-                  //           ),
-                  //         );
-                  //       },
-                  //       child: Container(
-                  //         padding: EdgeInsets.only(
-                  //           left: 10.w,
-                  //           right: 10.w,
-                  //           bottom: 13.h,
-                  //           top: 13.h,
-                  //         ),
-                  //         decoration: BoxDecoration(
-                  //           borderRadius: BorderRadius.circular(5.r),
-                  //           color: Color(0xFFFFFFFF),
-                  //           boxShadow: [
-                  //             BoxShadow(
-                  //               offset: Offset(0, 1),
-                  //               spreadRadius: 0,
-                  //               blurRadius: 4,
-                  //               color: Color.fromARGB(63, 0, 0, 0),
-                  //             ),
-                  //           ],
-                  //         ),
-                  //         child: Row(
-                  //           children: [
-                  //             Container(
-                  //               width: 45.w,
-                  //               height: 45.h,
-                  //               decoration: BoxDecoration(
-                  //                 shape: BoxShape.circle,
-                  //                 color: Colors.blue,
-                  //               ),
-                  //               child: ClipOval(
-                  //                 child: Image.asset(
-                  //                   "assets/annu.png",
-                  //                   fit: BoxFit.cover,
-                  //                 ),
-                  //               ),
-                  //             ),
-                  //             SizedBox(width: 7.w),
-                  //             Column(
-                  //               crossAxisAlignment: CrossAxisAlignment.start,
-                  //               children: [
-                  //                 Text(
-                  //                   "Annu Agarwal",
-                  //                   style: GoogleFonts.roboto(
-                  //                     fontSize: 20.sp,
-                  //                     fontWeight: FontWeight.w500,
-                  //                     color: Color(0xFF001E6C),
-                  //                     letterSpacing: -0.4,
-                  //                   ),
-                  //                 ),
-                  //                 Text(
-                  //                   "3 Courses    257 Student",
-                  //                   style: GoogleFonts.roboto(
-                  //                     fontSize: 12.sp,
-                  //                     fontWeight: FontWeight.w500,
-                  //                     color: Color(0xFF000000),
-                  //                     letterSpacing: -0.4,
-                  //                   ),
-                  //                 ),
-                  //                 SizedBox(height: 4.h),
-                  //                 Row(
-                  //                   children: [
-                  //                     Image.asset("assets/birds.png"),
-                  //                     SizedBox(width: 10.w),
-                  //                     Image.asset("assets/call.png"),
-                  //                     SizedBox(width: 10.w),
-                  //                     Image.asset("assets/insta.png"),
-                  //                     SizedBox(width: 10.w),
-                  //                     Image.asset("assets/a.png"),
-                  //                   ],
-                  //                 ),
-                  //               ],
-                  //             ),
-                  //           ],
-                  //         ),
-                  //       ),
-                  //     ),
-                  //     SizedBox(width: 20.w),
-                  //   ],
-                  // ),
-                  SizedBox(height: 20.h),
-                ],
-              ),
-            )
-          : selectIndex == 1
-          ? LibraryPage()
-          : selectIndex == 2
-          ? YoutubePage()
-          : ShopPage(),
+                    // Container(
+                    //   margin: EdgeInsets.only(left: 20.w),
+                    //   child: Text(
+                    //     "instructor",
+                    //     style: GoogleFonts.roboto(
+                    //       fontSize: 26.sp,
+                    //       fontWeight: FontWeight.w600,
+                    //       color: Color(0xFF1B1B1B),
+                    //     ),
+                    //   ),
+                    // ),
+                    // SizedBox(height: 16.h),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //   children: [
+                    //     SizedBox(width: 20.w),
+                    //     Container(
+                    //       padding: EdgeInsets.only(
+                    //         left: 10.w,
+                    //         right: 10.w,
+                    //         bottom: 13.h,
+                    //         top: 13.h,
+                    //       ),
+                    //       decoration: BoxDecoration(
+                    //         borderRadius: BorderRadius.circular(5.r),
+                    //         color: Color(0xFFFFFFFF),
+                    //         boxShadow: [
+                    //           BoxShadow(
+                    //             offset: Offset(0, 1),
+                    //             spreadRadius: 0,
+                    //             blurRadius: 4,
+                    //             color: Color.fromARGB(63, 0, 0, 0),
+                    //           ),
+                    //         ],
+                    //       ),
+                    //       child: Row(
+                    //         children: [
+                    //           Container(
+                    //             width: 45.w,
+                    //             height: 45.h,
+                    //             decoration: BoxDecoration(
+                    //               shape: BoxShape.circle,
+                    //               color: Colors.blue,
+                    //             ),
+                    //             child: ClipOval(
+                    //               child: Image.asset(
+                    //                 "assets/mahesh.png",
+                    //                 fit: BoxFit.cover,
+                    //               ),
+                    //             ),
+                    //           ),
+                    //           SizedBox(width: 7.w),
+                    //           Column(
+                    //             crossAxisAlignment: CrossAxisAlignment.start,
+                    //             children: [
+                    //               Text(
+                    //                 "Mahesh Yogi",
+                    //                 style: GoogleFonts.roboto(
+                    //                   fontSize: 20.sp,
+                    //                   fontWeight: FontWeight.w500,
+                    //                   color: Color(0xFF001E6C),
+                    //                   letterSpacing: -0.4,
+                    //                 ),
+                    //               ),
+                    //               Text(
+                    //                 "3 Courses    257 Student",
+                    //                 style: GoogleFonts.roboto(
+                    //                   fontSize: 12.sp,
+                    //                   fontWeight: FontWeight.w500,
+                    //                   color: Color(0xFF000000),
+                    //                   letterSpacing: -0.4,
+                    //                 ),
+                    //               ),
+                    //               SizedBox(height: 4.h),
+                    //               Row(
+                    //                 children: [
+                    //                   Image.asset("assets/birds.png"),
+                    //                   SizedBox(width: 10.w),
+                    //                   Image.asset("assets/call.png"),
+                    //                   SizedBox(width: 10.w),
+                    //                   Image.asset("assets/insta.png"),
+                    //                   SizedBox(width: 10.w),
+                    //                   Image.asset("assets/a.png"),
+                    //                 ],
+                    //               ),
+                    //             ],
+                    //           ),
+                    //         ],
+                    //       ),
+                    //     ),
+                    //     InkWell(
+                    //       onTap: () {
+                    //         Navigator.push(
+                    //           context,
+                    //           CupertinoPageRoute(
+                    //             builder: (context) => InstructorPage(),
+                    //           ),
+                    //         );
+                    //       },
+                    //       child: Container(
+                    //         padding: EdgeInsets.only(
+                    //           left: 10.w,
+                    //           right: 10.w,
+                    //           bottom: 13.h,
+                    //           top: 13.h,
+                    //         ),
+                    //         decoration: BoxDecoration(
+                    //           borderRadius: BorderRadius.circular(5.r),
+                    //           color: Color(0xFFFFFFFF),
+                    //           boxShadow: [
+                    //             BoxShadow(
+                    //               offset: Offset(0, 1),
+                    //               spreadRadius: 0,
+                    //               blurRadius: 4,
+                    //               color: Color.fromARGB(63, 0, 0, 0),
+                    //             ),
+                    //           ],
+                    //         ),
+                    //         child: Row(
+                    //           children: [
+                    //             Container(
+                    //               width: 45.w,
+                    //               height: 45.h,
+                    //               decoration: BoxDecoration(
+                    //                 shape: BoxShape.circle,
+                    //                 color: Colors.blue,
+                    //               ),
+                    //               child: ClipOval(
+                    //                 child: Image.asset(
+                    //                   "assets/annu.png",
+                    //                   fit: BoxFit.cover,
+                    //                 ),
+                    //               ),
+                    //             ),
+                    //             SizedBox(width: 7.w),
+                    //             Column(
+                    //               crossAxisAlignment: CrossAxisAlignment.start,
+                    //               children: [
+                    //                 Text(
+                    //                   "Annu Agarwal",
+                    //                   style: GoogleFonts.roboto(
+                    //                     fontSize: 20.sp,
+                    //                     fontWeight: FontWeight.w500,
+                    //                     color: Color(0xFF001E6C),
+                    //                     letterSpacing: -0.4,
+                    //                   ),
+                    //                 ),
+                    //                 Text(
+                    //                   "3 Courses    257 Student",
+                    //                   style: GoogleFonts.roboto(
+                    //                     fontSize: 12.sp,
+                    //                     fontWeight: FontWeight.w500,
+                    //                     color: Color(0xFF000000),
+                    //                     letterSpacing: -0.4,
+                    //                   ),
+                    //                 ),
+                    //                 SizedBox(height: 4.h),
+                    //                 Row(
+                    //                   children: [
+                    //                     Image.asset("assets/birds.png"),
+                    //                     SizedBox(width: 10.w),
+                    //                     Image.asset("assets/call.png"),
+                    //                     SizedBox(width: 10.w),
+                    //                     Image.asset("assets/insta.png"),
+                    //                     SizedBox(width: 10.w),
+                    //                     Image.asset("assets/a.png"),
+                    //                   ],
+                    //                 ),
+                    //               ],
+                    //             ),
+                    //           ],
+                    //         ),
+                    //       ),
+                    //     ),
+                    //     SizedBox(width: 20.w),
+                    //   ],
+                    // ),
+                    SizedBox(height: 20.h),
+                  ],
+                ),
+              )
+            : selectIndex == 1
+            ? LibraryPage()
+            : selectIndex == 2
+            ? YoutubePage()
+            : ShopPage(),
 
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(10.r),
-            topRight: Radius.circular(10.r),
-          ),
-          color: Color(0xFFFFFFFF),
-          boxShadow: [
-            BoxShadow(
-              offset: Offset(0, 1),
-              spreadRadius: 0,
-              blurRadius: 6,
-              color: Color.fromARGB(63, 0, 0, 0),
+        bottomNavigationBar: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(10.r),
+              topRight: Radius.circular(10.r),
             ),
-          ],
-        ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(10.r),
-            topRight: Radius.circular(10.r),
-          ),
-          child: BottomNavigationBar(
-            onTap: (value) {
-              if (value == 4) {
-                _scaffoldKey.currentState?.openDrawer();
-              } else {
-                setState(() {
-                  selectIndex = value;
-                });
-              }
-            },
-            currentIndex: selectIndex,
-            type: BottomNavigationBarType.fixed,
-            backgroundColor: Colors.transparent, // 🔥 important
-            elevation: 0, // 🔥 important
-
-            showSelectedLabels: true,
-            showUnselectedLabels: true,
-
-            selectedLabelStyle: GoogleFonts.inter(
-              fontSize: 12.sp,
-              fontWeight: FontWeight.w500,
-              color: Color(0xFFFE4A55),
-            ),
-            unselectedLabelStyle: GoogleFonts.inter(
-              fontSize: 12.sp,
-              fontWeight: FontWeight.w500,
-              color: Color(0xFF001E6C),
-            ),
-
-            selectedItemColor: Color(0xFFFE4A55),
-            unselectedItemColor: Color(0xFF001E6C),
-
-            items: [
-              BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.menu_book_rounded),
-                label: "Library",
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.video_library_outlined),
-                label: "Youtube",
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.shopping_bag_outlined),
-                label: "Shop",
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.person_outline_outlined),
-                label: "Account",
+            color: Color(0xFFFFFFFF),
+            boxShadow: [
+              BoxShadow(
+                offset: Offset(0, 1),
+                spreadRadius: 0,
+                blurRadius: 6,
+                color: Color.fromARGB(63, 0, 0, 0),
               ),
             ],
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(10.r),
+              topRight: Radius.circular(10.r),
+            ),
+            child: BottomNavigationBar(
+              onTap: (value) {
+                if (value == 4) {
+                  _scaffoldKey.currentState?.openDrawer();
+                } else {
+                  setState(() {
+                    selectIndex = value;
+                  });
+                }
+              },
+              currentIndex: selectIndex,
+              type: BottomNavigationBarType.fixed,
+              backgroundColor: Colors.transparent, // 🔥 important
+              elevation: 0, // 🔥 important
+
+              showSelectedLabels: true,
+              showUnselectedLabels: true,
+
+              selectedLabelStyle: GoogleFonts.inter(
+                fontSize: 12.sp,
+                fontWeight: FontWeight.w500,
+                color: Color(0xFFFE4A55),
+              ),
+              unselectedLabelStyle: GoogleFonts.inter(
+                fontSize: 12.sp,
+                fontWeight: FontWeight.w500,
+                color: Color(0xFF001E6C),
+              ),
+
+              selectedItemColor: Color(0xFFFE4A55),
+              unselectedItemColor: Color(0xFF001E6C),
+
+              items: [
+                BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.menu_book_rounded),
+                  label: "Library",
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.video_library_outlined),
+                  label: "Youtube",
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.shopping_bag_outlined),
+                  label: "Shop",
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.person_outline_outlined),
+                  label: "Account",
+                ),
+              ],
+            ),
           ),
         ),
       ),
