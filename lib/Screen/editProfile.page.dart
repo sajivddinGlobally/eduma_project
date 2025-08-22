@@ -345,7 +345,7 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage>
                               "state": stateController.text,
                               "country": countryController.text,
                               "postal_code": "395006",
-                              "avatar_url": avatarFile,
+                              "avatur_url": avatarFile,
                             });
 
                             // API call using PrettyDio
