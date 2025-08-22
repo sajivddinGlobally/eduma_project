@@ -336,7 +336,7 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage>
                             FormData formData = FormData.fromMap({
                               "first_name": nameController.text,
                               "last_name": "Ansari",
-                              "display_name": "${nameController.text} Ansari",
+                              "display_name":nameController.text,
                               "email": emailController.text,
                               "phone": phoneController.text,
                               "bio": bioController.text,
