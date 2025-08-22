@@ -45,15 +45,16 @@ class _HomePageState extends ConsumerState<HomePage> {
     final allCategoryProvider = ref.watch(allCategoryController);
 
     final isLoading =
-        popularCourseProvider.isLoading ||
-        allCategoryProvider.isLoading ||
-        productListProvider.isLoading;
+        // popularCourseProvider.isLoading ||
+        allCategoryProvider.isLoading || productListProvider.isLoading;
 
     if (isLoading) {
       return const ShimmerHomePage();
     }
 
-    if (popularCourseProvider.hasError || productListProvider.hasError) {
+    if (popularCourseProvider.hasError ||
+        productListProvider.hasError ||
+        allCategoryProvider.hasError) {
       return Scaffold(
         backgroundColor: Colors.white,
         body: Center(
