@@ -96,26 +96,46 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                       ],
                     ),
                     SizedBox(height: 30.h),
+                    // ClipRRect(
+                    //   borderRadius: BorderRadius.circular(10.r),
+                    //   child: Image.network(
+                    //     data.images.isNotEmpty
+                    //         ? data.images[0].thumbnail.toString()
+                    //         : "https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg",
+                    //     // "assets/shop1.png",
+                    //     width: MediaQuery.of(context).size.width,
+                    //     height: 198.h,
+                    //     fit: BoxFit.cover,
+                    //     errorBuilder: (context, error, stackTrace) {
+                    //       return Image.network(
+                    //         "https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg",
+                    //         width: MediaQuery.of(context).size.width,
+                    //         height: 69.h,
+                    //         fit: BoxFit.cover,
+                    //       );
+                    //     },
+                    //   ),
+                    // ),
                     ClipRRect(
                       borderRadius: BorderRadius.circular(10.r),
                       child: Image.network(
                         data.images.isNotEmpty
                             ? data.images[0].thumbnail.toString()
-                            : "https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg",
-                        // "assets/shop1.png",
+                            : "https://via.placeholder.com/300x200.png?text=No+Image",
                         width: MediaQuery.of(context).size.width,
                         height: 198.h,
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) {
                           return Image.network(
-                            "https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg",
+                            "https://via.placeholder.com/300x200.png?text=No+Image",
                             width: MediaQuery.of(context).size.width,
-                            height: 69.h,
+                            height: 198.h,
                             fit: BoxFit.cover,
                           );
                         },
                       ),
                     ),
+
                     SizedBox(height: 10.h),
                     Row(
                       children: [

@@ -42,7 +42,6 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
               fit: BoxFit.fill,
             ),
           ),
-
           orderListProvider.when(
             data: (orderList) {
               return Padding(
