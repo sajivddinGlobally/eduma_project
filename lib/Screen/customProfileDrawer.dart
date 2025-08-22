@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:eduma_app/Screen/cart.page.dart';
 import 'package:eduma_app/Screen/course.page.dart';
 import 'package:eduma_app/Screen/editProfile.page.dart';
 import 'package:eduma_app/Screen/library.page.dart';
@@ -248,6 +249,18 @@ class _CustomProfileDrawerState extends ConsumerState<CustomProfileDrawer> {
                           );
                         },
                         child: tileBuild("assets/or.png", "Order List"),
+                      ),
+                      SizedBox(height: 20.h),
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                              builder: (context) => CartPage(),
+                            ),
+                          );
+                        },
+                        child: tileBuild("assets/ca.png", "Cart"),
                       ),
                       SizedBox(height: 20.h),
                       InkWell(
