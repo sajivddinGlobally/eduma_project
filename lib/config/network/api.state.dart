@@ -86,27 +86,14 @@ abstract class APIStateNetwork {
   Future<ProfileModel> profile();
 
   @POST("/custom/v1/updateprofile")
-  Future<UpdateProfileResModel> updateProfile(
-    @Body() UpdateProfileBodyModel body,
-  );
-
-  // Multipart profile update
-  // @MultiPart()
-  // @POST("/custom/v1/updateprofile")
   // Future<UpdateProfileResModel> updateProfile(
-  //   @Part(name: "first_name") String firstName,
-  //   @Part(name: "last_name") String lastName,
-  //   @Part(name: "display_name") String displayName,
-  //   @Part(name: "email") String email,
-  //   @Part(name: "phone") String phone,
-  //   @Part(name: "bio") String bio,
-  //   @Part(name: "address") String address,
-  //   @Part(name: "city") String city,
-  //   @Part(name: "state") String state,
-  //   @Part(name: "country") String country,
-  //   @Part(name: "postal_code") String postalCode,
-  //   @Part(name: "avatar") MultipartFile? avatar, // optional
+  //   @Body() UpdateProfileBodyModel body,
   // );
+  // Multipart profile update
+  @MultiPart()
+  Future<UpdateProfileResModel> updateProfileFormData(
+    @Body() FormData formData,
+  );
 
   @POST("/custom/v1/enroll-free-course")
   Future<EnrollResModel> enroll(@Body() EnrollBodyModel body);

@@ -441,16 +441,18 @@ class _APIStateNetwork implements APIStateNetwork {
   }
 
   @override
-  Future<UpdateProfileResModel> updateProfile(
-    UpdateProfileBodyModel body,
-  ) async {
+  Future<UpdateProfileResModel> updateProfileFormData(FormData formData) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(body.toJson());
+    final _data = formData;
     final _options = _setStreamType<UpdateProfileResModel>(
-      Options(method: 'POST', headers: _headers, extra: _extra)
+      Options(
+            method: 'POST',
+            headers: _headers,
+            extra: _extra,
+            contentType: 'multipart/form-data',
+          )
           .compose(
             _dio.options,
             '/custom/v1/updateprofile',

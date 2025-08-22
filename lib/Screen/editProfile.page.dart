@@ -197,6 +197,22 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage>
                                         "Picked File: ${pickedFile!.path.split('/').last}",
                                       ),
                                     ),
+                              // : Padding(
+                              //     padding: EdgeInsets.only(left: 16.w),
+                              //     child: Text(
+                              //       "Picked File: ${pickedFile!.path.split('/').last}",
+                              //       style: GoogleFonts.roboto(
+                              //         fontSize: 12.sp,
+                              //         fontWeight: FontWeight.w500,
+                              //       ),
+                              //     ),
+                              //   ),
+                              // : Padding(
+                              //     padding: EdgeInsetsGeometry.only(
+                              //       left: 10.w,
+                              //     ),
+                              //     child: Image.file(pickedFile!),
+                              //   ),
                             ],
                           ),
                         ),
@@ -259,42 +275,95 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage>
                           ),
                         ),
                         onPressed: () async {
-                          if (formKey.currentState!.validate()) {
-                            final body = UpdateProfileBodyModel(
-                              firstName: nameController.text,
-                              lastName: "lastName",
-                              displayName: "displayName",
-                              email: emailController.text,
-                              phone: phoneController.text,
-                              bio: bioController.text,
-                              address: addressController.text,
-                              city: cityController.text,
-                              state: stateController.text,
-                              country: countryController.text,
-                              postalCode: "395006",
-                              avatarUrl: pickedFile!.path,
-                            );
-                            setState(() {
-                              isLoading = true;
-                            });
-                            try {
-                              final service = APIStateNetwork(createDio());
-                              final response = await service.updateProfile(
-                                body,
+                          // if (formKey.currentState!.validate()) {
+                          //   MultipartFile? avatarFile;
+                          //   if (pickedFile != null) {
+                          //     avatarFile = await MultipartFile.fromFile(
+                          //       pickedFile!.path,
+                          //       filename: pickedFile!.path.split('/').last,
+                          //     );
+                          //   }
+                          //   final body = UpdateProfileBodyModel(
+                          //     firstName: nameController.text,
+                          //     lastName: "lastName",
+                          //     displayName: "displayName",
+                          //     email: emailController.text,
+                          //     phone: phoneController.text,
+                          //     bio: bioController.text,
+                          //     address: addressController.text,
+                          //     city: cityController.text,
+                          //     state: stateController.text,
+                          //     country: countryController.text,
+                          //     postalCode: "395006",
+                          //     avatarUrl: avatarFile.toString(),
+                          //   );
+                          //   setState(() {
+                          //     isLoading = true;
+                          //   });
+                          //   try {
+                          //     final service = APIStateNetwork(createDio());
+                          //     final response = await service.updateProfile(body);
+                          //     if (response.success == true) {
+                          //       Navigator.pop(context);
+                          //       showSuccessMessage(context, response.message);
+                          //     }
+                          //     setState(() {
+                          //       isLoading = false;
+                          //     });
+                          //   } catch (e) {
+                          //     setState(() {
+                          //       isLoading = false;
+                          //     });
+                          //     log(e.toString());
+                          //   }
+                          // }
+
+                          if (!formKey.currentState!.validate()) return;
+
+                          setState(() => isLoading = true);
+
+                          try {
+                            // MultipartFile बनाएँ अगर image select हुई हो
+                            MultipartFile? avatarFile;
+                            if (pickedFile != null) {
+                              avatarFile = await MultipartFile.fromFile(
+                                pickedFile!.path,
+                                filename: pickedFile!.path.split('/').last,
                               );
-                              if (response.success == true) {
-                                Navigator.pop(context);
-                                showSuccessMessage(context, response.message);
-                              }
-                              setState(() {
-                                isLoading = false;
-                              });
-                            } catch (e) {
-                              setState(() {
-                                isLoading = false;
-                              });
-                              log(e.toString());
                             }
+
+                            // FormData तैयार करें
+                            FormData formData = FormData.fromMap({
+                              "first_name": nameController.text,
+                              "last_name": "Ansari",
+                              "display_name": "${nameController.text} Ansari",
+                              "email": emailController.text,
+                              "phone": phoneController.text,
+                              "bio": bioController.text,
+                              "address": addressController.text,
+                              "city": cityController.text,
+                              "state": stateController.text,
+                              "country": countryController.text,
+                              "postal_code": "395006",
+                              "avatar_url": avatarFile,
+                            });
+
+                            // API call using PrettyDio
+                            final service = APIStateNetwork(createDio());
+                            final response = await service
+                                .updateProfileFormData(formData);
+
+                            if (response.success == true) {
+                              Navigator.pop(context);
+                              showSuccessMessage(context, response.message);
+                            }
+                          } catch (e) {
+                            log(e.toString());
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text("Error: $e")),
+                            );
+                          } finally {
+                            setState(() => isLoading = false);
                           }
 
                           // final body = UpdateProfileBodyModel(
