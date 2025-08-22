@@ -8,6 +8,7 @@ import 'package:eduma_app/data/Model/registerBodyCustomeModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shimmer/shimmer.dart';
 
 mixin RegisterApi<T extends ConsumerStatefulWidget> on ConsumerState<T> {
   final userNameController = TextEditingController();
@@ -90,5 +91,71 @@ mixin RegisterApi<T extends ConsumerStatefulWidget> on ConsumerState<T> {
         log(e.toString());
       }
     }
+  }
+}
+
+
+class ShimmerHomePage extends StatelessWidget {
+  const ShimmerHomePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Shimmer.fromColors(
+        baseColor: Colors.grey[300]!,
+        highlightColor: Colors.grey[100]!,
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            children: [
+              // Banner shimmer
+              Container(
+                height: 180,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+              ),
+              const SizedBox(height: 20),
+
+              // Categories shimmer
+              Row(
+                children: List.generate(
+                  3,
+                  (index) => Expanded(
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 6),
+                      height: 100,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 20),
+
+              // Courses shimmer
+              Column(
+                children: List.generate(
+                  4,
+                  (index) => Container(
+                    margin: const EdgeInsets.symmetric(vertical: 8),
+                    height: 120,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

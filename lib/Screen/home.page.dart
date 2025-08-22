@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:eduma_app/Screen/apiCall/api.register.dart';
 import 'package:eduma_app/Screen/continueMyCourse.page.dart';
 import 'package:eduma_app/Screen/course.page.dart';
 import 'package:eduma_app/Screen/courseDetails.page.dart';
@@ -40,21 +41,18 @@ class _HomePageState extends ConsumerState<HomePage> {
   Widget build(BuildContext context) {
     var box = Hive.box("userBox");
     final popularCourseProvider = ref.watch(popularCourseController);
-    //final allCoursesProvider = ref.watch(allCoursesController);
     final productListProvider = ref.watch(productListController);
     final allCategoryProvider = ref.watch(allCategoryController);
 
-    // ✅ Agar loading hai to pura Scaffold loading show kare
-    if (popularCourseProvider.isLoading || productListProvider.isLoading) {
-      return Scaffold(
-        backgroundColor: Colors.white,
-        body: Center(
-          child: CircularProgressIndicator(color: Color(0xFF001E6C)),
-        ),
-      );
+    final isLoading =
+        popularCourseProvider.isLoading ||
+        allCategoryProvider.isLoading ||
+        productListProvider.isLoading;
+
+    if (isLoading) {
+      return const ShimmerHomePage();
     }
 
-    // ✅ Agar error hai to pura Scaffold error show kare
     if (popularCourseProvider.hasError || productListProvider.hasError) {
       return Scaffold(
         backgroundColor: Colors.white,
@@ -66,6 +64,7 @@ class _HomePageState extends ConsumerState<HomePage> {
         ),
       );
     }
+
     return Scaffold(
       key: _scaffoldKey,
       drawer: CustomProfileDrawer(),

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shimmer/shimmer.dart';
 
 class CartPage extends ConsumerStatefulWidget {
   const CartPage({super.key});
@@ -193,7 +194,57 @@ class _CartPageState extends ConsumerState<CartPage> {
               );
             },
             error: (error, stackTrace) => Center(child: Text(e.toString())),
-            loading: () => Center(child: CircularProgressIndicator()),
+            //loading: () => Center(child: CircularProgressIndicator()),
+            loading: () => ListView.builder(
+              padding: EdgeInsets.all(20.w),
+              itemCount: 4,
+              itemBuilder: (context, index) {
+                return Shimmer.fromColors(
+                  baseColor: Colors.grey[300]!,
+                  highlightColor: Colors.grey[100]!,
+                  child: Container(
+                    margin: EdgeInsets.only(bottom: 15.h),
+                    padding: EdgeInsets.all(10.w),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20.r),
+                      color: Colors.white,
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 100.w,
+                          height: 100.h,
+                          color: Colors.grey[400],
+                        ),
+                        SizedBox(width: 10.w),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: 200.w,
+                              height: 16.h,
+                              color: Colors.grey[400],
+                            ),
+                            SizedBox(height: 10.h),
+                            Container(
+                              width: 120.w,
+                              height: 14.h,
+                              color: Colors.grey[400],
+                            ),
+                            SizedBox(height: 10.h),
+                            Container(
+                              width: 80.w,
+                              height: 14.h,
+                              color: Colors.grey[400],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
           ),
         ],
       ),
