@@ -1,6 +1,5 @@
 import 'dart:developer';
 import 'dart:io';
-
 import 'package:eduma_app/config/core/showFlushbar.dart';
 import 'package:eduma_app/config/network/api.state.dart';
 import 'package:eduma_app/config/utils/navigatorKey.dart';
@@ -13,8 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class EditProfilePage extends ConsumerStatefulWidget {
   const EditProfilePage({super.key});
@@ -25,67 +22,11 @@ class EditProfilePage extends ConsumerStatefulWidget {
 
 class _EditProfilePageState extends ConsumerState<EditProfilePage>
     with UpdateProfile<EditProfilePage> {
-  File? image;
-  final picker = ImagePicker();
-
-  Future pickImageFromGallery() async {
-    var status = await Permission.camera.request();
-    if (status.isGranted) {
-      final PickedFile = await picker.pickImage(source: ImageSource.gallery);
-      if (PickedFile != null) {
-        setState(() {
-          image = File(PickedFile.path);
-        });
-      }
-    } else {
-      print("Gallery Permission isdenied");
-    }
-  }
-
-  Future pickImageFromCamera() async {
-    var status = await Permission.camera.request();
-    if (status.isGranted) {
-      final PickedFile = await picker.pickImage(source: ImageSource.camera);
-      if (PickedFile != null) {
-        setState(() {
-          image = File(PickedFile.path);
-        });
-      }
-    } else {
-      print("Camera Permission isdenied");
-    }
-  }
-
-  Future showImage() async {
-    showCupertinoModalPopup(
-      context: context,
-      builder: (context) => CupertinoActionSheet(
-        actions: [
-          CupertinoActionSheetAction(
-            onPressed: () {
-              Navigator.pop(context);
-              pickImageFromGallery();
-            },
-            child: Text("Gallery"),
-          ),
-          CupertinoActionSheetAction(
-            onPressed: () {
-              Navigator.pop(context);
-              pickImageFromCamera();
-            },
-            child: Text("Camera"),
-          ),
-        ],
-      ),
-    );
-  }
-
   File? pickedFile;
 
-  /// Pick any file (pdf, doc, image, zip, etc.)
   Future<void> pickAnyFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.any, // Change to FileType.custom for specific extensions
+      type: FileType.any,
     );
 
     if (result != null) {
@@ -93,7 +34,6 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage>
         pickedFile = File(result.files.single.path!);
       });
     } else {
-      // User cancelled file picking
       debugPrint("File picking cancelled");
     }
   }
@@ -145,7 +85,7 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage>
               ),
               SizedBox(height: 30.h),
               Container(
-                height: MediaQuery.of(context).size.height * 2,
+                height: MediaQuery.of(context).size.height * 2 / 1.3,
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
@@ -162,6 +102,7 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage>
                       ProfileBody(
                         name: "You are a",
                         controller: nameController,
+                        type: TextInputType.name,
                       ),
                       SizedBox(height: 20.h),
                       Text(
@@ -173,84 +114,89 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage>
                         ),
                       ),
                       SizedBox(height: 10.h),
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: 60.h,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(40.r),
-                          border: Border.all(
-                            color: Color.fromARGB(25, 0, 0, 0),
-                          ),
-                        ),
-                        child: Row(
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                pickAnyFile();
-                              },
-                              child: Container(
-                                margin: EdgeInsets.only(left: 16.w),
-                                width: 91.w,
-                                height: 35.h,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(30.r),
-                                  color: Color(0xFF001E6C),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    "Choose File",
-                                    style: GoogleFonts.roboto(
-                                      fontSize: 12.sp,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                              ),
+                      InkWell(
+                        onTap: () {
+                          pickAnyFile();
+                        },
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: 60.h,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(40.r),
+                            border: Border.all(
+                              color: Color.fromARGB(25, 0, 0, 0),
                             ),
-                            pickedFile == null
-                                ? Container(
-                                    margin: EdgeInsets.only(left: 16.w),
-                                    width: 91.w,
-                                    height: 35.h,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(30.r),
-                                      // color: Color(0xFF001E6C),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        "Choose File",
-                                        style: GoogleFonts.roboto(
-                                          fontSize: 12.sp,
-                                          fontWeight: FontWeight.w400,
-                                          color: Color(0xFF37474F),
+                          ),
+                          child: Row(
+                            children: [
+                              pickedFile == null
+                                  ? Container(
+                                      margin: EdgeInsets.only(left: 16.w),
+                                      width: 91.w,
+                                      height: 35.h,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(
+                                          30.r,
+                                        ),
+                                        color: Color(0xFF001E6C),
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          "Choose File",
+                                          style: GoogleFonts.roboto(
+                                            fontSize: 12.sp,
+                                            fontWeight: FontWeight.w400,
+                                            color: Color(0xFFFFFFFF),
+                                          ),
                                         ),
                                       ),
+                                    )
+                                  : Padding(
+                                      padding: EdgeInsets.only(left: 10.w),
+                                      child: Text(
+                                        "Picked File: ${pickedFile!.path.split('/').last}",
+                                      ),
                                     ),
-                                  )
-                                : Text(
-                                    "Picked File: ${pickedFile!.path.split('/').last}",
-                                  ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                       SizedBox(height: 20.h),
-                      ProfileBody(name: "Email", controller: emailController),
+                      ProfileBody(
+                        name: "Email",
+                        controller: emailController,
+                        type: TextInputType.emailAddress,
+                      ),
                       SizedBox(height: 20.h),
-                      ProfileBody(name: "Phone", controller: phoneController),
+                      ProfileBody(
+                        name: "Phone",
+                        controller: phoneController,
+                        type: TextInputType.phone,
+                        maxLength: 10,
+                      ),
                       SizedBox(height: 20.h),
-                      ProfileBody(name: "City", controller: cityController),
+                      ProfileBody(
+                        name: "City",
+                        controller: cityController,
+                        type: TextInputType.text,
+                      ),
                       SizedBox(height: 20.h),
-                      ProfileBody(name: "State", controller: stateController),
+                      ProfileBody(
+                        name: "State",
+                        controller: stateController,
+                        type: TextInputType.text,
+                      ),
                       SizedBox(height: 20.h),
                       ProfileBody(
                         name: "Country",
                         controller: countryController,
+                        type: TextInputType.text,
                       ),
                       SizedBox(height: 20.h),
                       ProfileBody(
                         name: "Address",
                         controller: addressController,
+                        type: TextInputType.streetAddress,
                       ),
                       SizedBox(height: 20.h),
                       Text(
@@ -263,6 +209,7 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage>
                       ),
                       SizedBox(height: 10.h),
                       TextFormField(
+                        keyboardType: TextInputType.text,
                         controller: bioController,
                         maxLines: 3,
                         decoration: InputDecoration(
@@ -377,7 +324,15 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage>
 class ProfileBody extends StatelessWidget {
   final String name;
   final TextEditingController controller;
-  const ProfileBody({super.key, required this.name, required this.controller});
+  final TextInputType type;
+  final int? maxLength;
+  const ProfileBody({
+    super.key,
+    required this.name,
+    required this.controller,
+    required this.type,
+    this.maxLength,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -394,8 +349,11 @@ class ProfileBody extends StatelessWidget {
         ),
         SizedBox(height: 10.h),
         TextFormField(
+          maxLength: maxLength,
+          keyboardType: type,
           controller: controller,
           decoration: InputDecoration(
+            counterText: "",
             contentPadding: EdgeInsets.only(
               left: 20.w,
               right: 10.w,

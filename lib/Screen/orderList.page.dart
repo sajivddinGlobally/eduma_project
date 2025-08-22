@@ -1,3 +1,4 @@
+import 'package:eduma_app/Screen/apiCall/api.register.dart';
 import 'package:eduma_app/Screen/orderDetails.page.dart';
 import 'package:eduma_app/data/Controller/orderListController.dart';
 import 'package:flutter/cupertino.dart';
@@ -218,7 +219,7 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
             error: (error, stackTrace) {
               return Center(child: Text(error.toString()));
             },
-            loading: () => Center(child: CircularProgressIndicator()),
+            loading: () => Center(child: ShimmerHomePage()),
           ),
         ],
       ),
