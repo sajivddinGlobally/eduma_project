@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 class YoutubePlayerScreen extends StatefulWidget {
@@ -30,14 +31,40 @@ class _YoutubePlayerScreenState extends State<YoutubePlayerScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFFFFFFFF),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      body: Stack(
         children: [
-          YoutubePlayerScaffold(
-            controller: _controller,
-            builder: (context, player) {
-              return Center(child: player);
-            },
+          Positioned(
+            left: -120,
+            top: -100.h,
+            child: Image.asset(
+              "assets/vect.png",
+              width: 363.w,
+              height: 270.h,
+              fit: BoxFit.fitHeight,
+            ),
+          ),
+          Positioned(
+            bottom: -40.h,
+            left: 0,
+            right: 0,
+            child: Image.asset(
+              "assets/vec.png",
+              width: 470.w,
+              height: 450.h,
+              fit: BoxFit.fill,
+            ),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              IconButton(onPressed: () {}, icon: Icon(Icons.arrow_back_ios)),
+              YoutubePlayerScaffold(
+                controller: _controller,
+                builder: (context, player) {
+                  return Center(child: player);
+                },
+              ),
+            ],
           ),
         ],
       ),
