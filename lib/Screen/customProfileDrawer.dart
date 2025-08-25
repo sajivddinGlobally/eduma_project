@@ -253,18 +253,6 @@ class _CustomProfileDrawerState extends ConsumerState<CustomProfileDrawer> {
                           Navigator.push(
                             context,
                             CupertinoPageRoute(
-                              builder: (context) => LibraryPage(),
-                            ),
-                          );
-                        },
-                        child: tileBuild("assets/lib.png", "Library"),
-                      ),
-                      SizedBox(height: 20.h),
-                      InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute(
                               builder: (context) => OrderListPage(),
                             ),
                           );

@@ -109,54 +109,59 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(10.r),
-                                      child: Image.network(
-                                        // "assets/shop1.png",
-                                        data.courses[index].thumbnail,
-                                        width: 170.w,
-                                        height: 100.h,
-                                        fit: BoxFit.cover,
+                                InkWell(
+                                  onTap: () {
+                                    
+                                  },
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(10.r),
+                                        child: Image.network(
+                                          // "assets/shop1.png",
+                                          data.courses[index].thumbnail,
+                                          width: 170.w,
+                                          height: 100.h,
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
-                                    ),
-                                    SizedBox(width: 10.w),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        SizedBox(
-                                          width: 210.w,
-                                          // color: Colors.amber,
-                                          child: Text(
-                                            maxLines: 2,
-                                            overflow: TextOverflow.ellipsis,
-                                            // "Sajivddin Ansari hellow hot are you sajiv",
-                                            data.courses[index].title,
-                                            style: GoogleFonts.roboto(
-                                              fontSize: 20.sp,
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.blue,
-                                              height: 1.5.h,
+                                      SizedBox(width: 10.w),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                            width: 210.w,
+                                            // color: Colors.amber,
+                                            child: Text(
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                              // "Sajivddin Ansari hellow hot are you sajiv",
+                                              data.courses[index].title,
+                                              style: GoogleFonts.roboto(
+                                                fontSize: 20.sp,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.blue,
+                                                height: 1.5.h,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        SizedBox(height: 10.h),
-                                        Text(
-                                          //"data",
-                                          data.courses[index].status,
-                                          style: GoogleFonts.roboto(
-                                            fontSize: 16.sp,
-                                            fontWeight: FontWeight.w400,
-                                            color: Colors.blue,
+                                          SizedBox(height: 10.h),
+                                          Text(
+                                            //"data",
+                                            data.courses[index].status,
+                                            style: GoogleFonts.roboto(
+                                              fontSize: 16.sp,
+                                              fontWeight: FontWeight.w400,
+                                              color: Colors.blue,
+                                            ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),
