@@ -1046,6 +1046,8 @@ class _PopularCourState extends State<PopularCour> {
   }
 }
 
+
+
 class LearningBody extends StatefulWidget {
   const LearningBody({super.key});
 
@@ -1156,6 +1158,8 @@ class _LearningBodyState extends State<LearningBody> {
     );
   }
 }
+
+
 
 class PopularBody extends StatelessWidget {
   final List<Map<String, dynamic>> popularList;
