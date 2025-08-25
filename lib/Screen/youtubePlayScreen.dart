@@ -57,7 +57,7 @@ class _YoutubePlayerScreenState extends State<YoutubePlayerScreen> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              IconButton(onPressed: () {}, icon: Icon(Icons.arrow_back_ios)),
+              SizedBox(height: 0.h),
               YoutubePlayerScaffold(
                 controller: _controller,
                 builder: (context, player) {
