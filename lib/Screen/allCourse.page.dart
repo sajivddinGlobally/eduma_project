@@ -28,7 +28,7 @@ class _AllCoursePageState extends ConsumerState<AllCoursePage> {
             child: Image.asset("assets/shopimage.png"),
           ),
           Positioned(
-            top: 30.h,
+            top: 15.h,
             child: Row(
               children: [
                 SizedBox(width: 20.w),
