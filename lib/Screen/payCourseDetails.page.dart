@@ -876,8 +876,8 @@
 //   }
 // }
 
-
 import 'dart:developer';
+import 'package:eduma_app/Screen/youtubePlayScreen.dart';
 import 'package:eduma_app/config/core/showFlushbar.dart';
 import 'package:eduma_app/config/network/api.state.dart';
 import 'package:eduma_app/config/utils/pretty.dio.dart';
@@ -1571,6 +1571,105 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
     );
   }
 
+  // Widget modules(String txt, List<String> videos) {
+  //   return Theme(
+  //     data: Theme.of(context).copyWith(
+  //       dividerColor: Colors.transparent,
+  //       splashColor: Colors.transparent,
+  //       highlightColor: Colors.transparent,
+  //     ),
+  //     child: ExpansionTile(
+  //       tilePadding: EdgeInsets.zero,
+  //       title: Column(
+  //         crossAxisAlignment: CrossAxisAlignment.start,
+  //         children: [
+  //           SizedBox(
+  //             child: Text(
+  //               txt,
+  //               style: GoogleFonts.roboto(
+  //                 fontSize: 16.sp,
+  //                 fontWeight: FontWeight.w500,
+  //                 color: Color(0xFF000000),
+  //                 letterSpacing: -0.4,
+  //                 height: 1.1,
+  //               ),
+  //             ),
+  //           ),
+  //           Text(
+  //             "${videos.length} Video(s)",
+  //             style: GoogleFonts.roboto(
+  //               fontSize: 14.sp,
+  //               fontWeight: FontWeight.w400,
+  //               color: Color(0xFF000000),
+  //               letterSpacing: -0.3,
+  //             ),
+  //           ),
+  //         ],
+  //       ),
+  //       children: videos
+  //           .map(
+  //             (video) => GestureDetector(
+  //               onTap: () async {
+  //                 final Uri url = Uri.parse(video);
+  //                 if (await canLaunchUrl(url)) {
+  //                   await launchUrl(url, mode: LaunchMode.externalApplication);
+  //                 } else {
+  //                   showSuccessMessage(context, "Could not open video.");
+  //                 }
+  //               },
+  //               child: Container(
+  //                 margin: EdgeInsets.symmetric(vertical: 5.h),
+  //                 child: Row(
+  //                   crossAxisAlignment: CrossAxisAlignment.start,
+  //                   children: [
+  //                     ClipRRect(
+  //                       borderRadius: BorderRadius.circular(8.r),
+  //                       child: Image.network(
+  //                         // Assuming the video URL can be used to derive a thumbnail; otherwise, use a placeholder or API-provided thumbnail
+  //                         video.contains('youtube.com') ||
+  //                                 video.contains('youtu.be')
+  //                             ? 'https://img.youtube.com/vi/${_extractYouTubeId(video)}/0.jpg'
+  //                             : 'https://via.placeholder.com/100x60.png?text=Video',
+  //                         width: 100.w,
+  //                         height: 60.h,
+  //                         fit: BoxFit.cover,
+  //                         errorBuilder: (context, error, stackTrace) =>
+  //                             Container(
+  //                               width: 100.w,
+  //                               height: 60.h,
+  //                               color: Colors.grey,
+  //                               child: Icon(
+  //                                 Icons.videocam,
+  //                                 color: Colors.white,
+  //                                 size: 30.sp,
+  //                               ),
+  //                             ),
+  //                       ),
+  //                     ),
+  //                     SizedBox(width: 10.w),
+  //                     Expanded(
+  //                       child: Text(
+  //                         video,
+  //                         maxLines: 2,
+  //                         overflow: TextOverflow.ellipsis,
+  //                         style: GoogleFonts.roboto(
+  //                           fontSize: 14.sp,
+  //                           fontWeight: FontWeight.w400,
+  //                           color: Color(0xFF000000),
+  //                           letterSpacing: -0.3,
+  //                         ),
+  //                       ),
+  //                     ),
+  //                   ],
+  //                 ),
+  //               ),
+  //             ),
+  //           )
+  //           .toList(),
+  //     ),
+  //   );
+  // }
+
   Widget modules(String txt, List<String> videos) {
     return Theme(
       data: Theme.of(context).copyWith(
@@ -1583,16 +1682,14 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
-              child: Text(
-                txt,
-                style: GoogleFonts.roboto(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w500,
-                  color: Color(0xFF000000),
-                  letterSpacing: -0.4,
-                  height: 1.1,
-                ),
+            Text(
+              txt,
+              style: GoogleFonts.roboto(
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w500,
+                color: const Color(0xFF000000),
+                letterSpacing: -0.4,
+                height: 1.1,
               ),
             ),
             Text(
@@ -1600,7 +1697,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
               style: GoogleFonts.roboto(
                 fontSize: 14.sp,
                 fontWeight: FontWeight.w400,
-                color: Color(0xFF000000),
+                color: const Color(0xFF000000),
                 letterSpacing: -0.3,
               ),
             ),
@@ -1609,12 +1706,19 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
         children: videos
             .map(
               (video) => GestureDetector(
-                onTap: () async {
-                  final Uri url = Uri.parse(video);
-                  if (await canLaunchUrl(url)) {
-                    await launchUrl(url, mode: LaunchMode.externalApplication);
+                onTap: () {
+                  final id = _extractYouTubeId(video);
+                  if (id.isNotEmpty) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => YoutubePlayerScreen(videoId: id),
+                      ),
+                    );
                   } else {
-                    showSuccessMessage(context, "Could not open video.");
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Invalid YouTube link")),
+                    );
                   }
                 },
                 child: Container(
@@ -1625,7 +1729,6 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(8.r),
                         child: Image.network(
-                          // Assuming the video URL can be used to derive a thumbnail; otherwise, use a placeholder or API-provided thumbnail
                           video.contains('youtube.com') ||
                                   video.contains('youtu.be')
                               ? 'https://img.youtube.com/vi/${_extractYouTubeId(video)}/0.jpg'
@@ -1655,7 +1758,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                           style: GoogleFonts.roboto(
                             fontSize: 14.sp,
                             fontWeight: FontWeight.w400,
-                            color: Color(0xFF000000),
+                            color: const Color(0xFF000000),
                             letterSpacing: -0.3,
                           ),
                         ),
