@@ -923,39 +923,7 @@ class _PopularCourState extends State<PopularCour> {
             Positioned(
               right: 8.w,
               top: 10.h,
-              // child: IconButton(
-              //   style: IconButton.styleFrom(
-              //     minimumSize: Size(0, 0),
-              //     padding: EdgeInsets.zero,
-              //     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              //   ),
-              //   onPressed: loading
-              //       ? null
-              //       : () async {
-              //           setState(() => loading = true);
-              //           isWishlisted = await WishlistControllerClass.toggle(
-              //             context: context,
-              //             courseId: widget.data.id,
-              //             userId: box.get("storeId"),
-              //             currentStatus: isWishlisted,
-              //           );
-              //           setState(() => loading = false);
-              //         },
-              //   icon: loading
-              //       ? SizedBox(
-              //           height: 20,
-              //           width: 20,
-              //           child: CircularProgressIndicator(
-              //             strokeWidth: 2,
-              //             color: Color(0xFF001E6C),
-              //           ),
-              //         )
-              //       : Icon(
-              //           isWishlisted ? Icons.favorite : Icons.favorite_border,
-              //           color: isWishlisted ? Colors.red : Colors.white,
-              //           size: 25.sp,
-              //         ),
-              // ),
+
               child: IconButton(
                 style: IconButton.styleFrom(
                   minimumSize: Size(0, 0),
@@ -1013,8 +981,8 @@ class _PopularCourState extends State<PopularCour> {
                   color: Color(0xFF001E6C),
                 ),
                 child: Text(
-                  "₹ 45.00",
-                  //course[index].p
+                  //"₹ 45.00",
+                  widget.data.price,
                   style: GoogleFonts.roboto(
                     fontSize: 12.sp,
                     fontWeight: FontWeight.w500,
@@ -1045,9 +1013,6 @@ class _PopularCourState extends State<PopularCour> {
     );
   }
 }
-
-
-
 
 class LearningBody extends StatefulWidget {
   const LearningBody({super.key});
@@ -1159,8 +1124,6 @@ class _LearningBodyState extends State<LearningBody> {
     );
   }
 }
-
-
 
 class PopularBody extends StatelessWidget {
   final List<Map<String, dynamic>> popularList;

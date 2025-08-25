@@ -98,25 +98,26 @@ class _AllCoursePageState extends ConsumerState<AllCoursePage> {
                 Expanded(
                   child: popularCourseProvider.when(
                     data: (data) {
-                      return GridView.builder(
-                        itemCount: data.length,
-                        padding: EdgeInsets.zero,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          // crossAxisSpacing: 20.w,
-                          // mainAxisSpacing: 15.h,
-                          childAspectRatio: 190 / 180,
+                      return Padding(
+                        padding: EdgeInsets.only(
+                          left: 20.w,
+                          right: 20.w,
+                          top: 20.h,
                         ),
-                        itemBuilder: (context, index) {
-                          return Container(
-                            margin: EdgeInsets.only(
-                              left: 20.w,
-                              right: 20.w,
-                              top: 20.h,
-                            ),
-                            child: PopularCour(data: data[index]),
-                          );
-                        },
+                        child: GridView.builder(
+                          itemCount: data.length,
+                          padding: EdgeInsets.zero,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                crossAxisSpacing: 20.w,
+                                mainAxisSpacing: 15.h,
+                                childAspectRatio: 180 / 160,
+                              ),
+                          itemBuilder: (context, index) {
+                            return PopularCour(data: data[index]);
+                          },
+                        ),
                       );
                     },
                     error: (error, stackTrace) =>
