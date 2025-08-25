@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:eduma_app/data/Model/addCartBodyModel.dart';
 import 'package:eduma_app/data/Model/addCartResModel.dart';
 import 'package:eduma_app/data/Model/allCategoryModel.dart';
 import 'package:eduma_app/data/Model/allCoursesModel.dart';
+import 'package:eduma_app/data/Model/avtarResModel.dart';
 import 'package:eduma_app/data/Model/cartModel.dart';
 import 'package:eduma_app/data/Model/categoryByCourseIdModel.dart';
 import 'package:eduma_app/data/Model/deleteWishlistResModel.dart';
@@ -85,13 +88,15 @@ abstract class APIStateNetwork {
   Future<ProfileModel> profile();
 
   @POST("/custom/v1/updateprofile")
-  // Future<UpdateProfileResModel> updateProfile(
-  //   @Body() UpdateProfileBodyModel body,
-  // );
-  // Multipart profile update
   @MultiPart()
   Future<UpdateProfileResModel> updateProfileFormData(
     @Body() FormData formData,
+  );
+
+  @POST("/custom/v1/upload-avatar")
+  @MultiPart()
+  Future<AvatarResModel> updateAvater(
+    @Part(name: "image") MultipartFile imageFile,
   );
 
   @POST("/custom/v1/enroll-free-course")

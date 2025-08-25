@@ -24,17 +24,107 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage>
     with UpdateProfile<EditProfilePage> {
   File? pickedFile;
 
+  // Future<void> pickAnyFile() async {
+  //   FilePickerResult? result = await FilePicker.platform.pickFiles(
+  //     type: FileType.image,
+  //   );
+
+  //   if (result != null) {
+  //     setState(() {
+  //       pickedFile = File(result.files.single.path!);
+  //     });
+  //   } else {
+  //     debugPrint("File picking cancelled");
+  //   }
+  // }
   Future<void> pickAnyFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.image,
     );
-
     if (result != null) {
       setState(() {
         pickedFile = File(result.files.single.path!);
       });
-    } else {
-      debugPrint("File picking cancelled");
+    }
+  }
+
+  Future<void> uploadAvatarOnly() async {
+    if (pickedFile == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.red,
+          content: Text("Please select an image first"),
+        ),
+      );
+      return;
+    }
+    try {
+      setState(() => isLoading = true);
+
+      final avatarFile = await MultipartFile.fromFile(
+        pickedFile!.path,
+        filename: pickedFile!.path.split('/').last,
+      );
+
+      final service = APIStateNetwork(createDio());
+      final response = await service.updateAvater(avatarFile);
+
+      if (response.success == true) {
+        showSuccessMessage(context, response.message ?? "Avatar updated");
+      } else {
+        //showErrorMessage(context, "Avatar upload failed");
+      }
+    } catch (e) {
+      log("Upload Error: $e");
+      // showErrorMessage(context, "Something went wrong");
+    } finally {
+      setState(() => isLoading = false);
+    }
+  }
+
+  Future<void> saveFullProfile() async {
+    if (!formKey.currentState!.validate()) return;
+
+    try {
+      setState(() => isLoading = true);
+
+      MultipartFile? avatarFile;
+      if (pickedFile != null) {
+        avatarFile = await MultipartFile.fromFile(
+          pickedFile!.path,
+          filename: pickedFile!.path.split('/').last,
+        );
+      }
+
+      FormData formData = FormData.fromMap({
+        "first_name": nameController.text,
+        "last_name": "Ansari",
+        "display_name": nameController.text,
+        "email": emailController.text,
+        "phone": phoneController.text,
+        "bio": bioController.text,
+        "address": addressController.text,
+        "city": cityController.text,
+        "state": stateController.text,
+        "country": countryController.text,
+        "postal_code": "395006",
+        if (avatarFile != null) "avatar_url": avatarFile,
+      });
+
+      final service = APIStateNetwork(createDio());
+      final response = await service.updateProfileFormData(formData);
+
+      if (response.success == true) {
+        Navigator.pop(context);
+        showSuccessMessage(context, response.message);
+      } else {
+        //showErrorMessage(context, "Profile update failed");
+      }
+    } catch (e) {
+      log(e.toString());
+      //showErrorMessage(context, "Error: $e");
+    } finally {
+      setState(() => isLoading = false);
     }
   }
 
@@ -153,65 +243,120 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage>
                       ),
                       SizedBox(height: 10.h),
                       InkWell(
-                        onTap: () {
-                          pickAnyFile();
+                        onTap: () async {
+                          // if (pickedFile == null) {
+                          //   ScaffoldMessenger.of(context).showSnackBar(
+                          //     SnackBar(
+                          //       backgroundColor: Colors.red,
+                          //       content: Text("Please select an image first"),
+                          //     ),
+                          //   );
+                          //   return;
+                          // }
+
+                          // try {
+                          //   // File ko MultipartFile me convert karein
+                          //   final avatarFile = await MultipartFile.fromFile(
+                          //     pickedFile!.path,
+                          //     filename: pickedFile!.path.split('/').last,
+                          //   );
+
+                          //   // Service initialize karo
+                          //   final service = APIStateNetwork(createDio());
+
+                          //   // API call
+                          //   final response = await service.updateAvater(
+                          //     avatarile!,
+                          //   );
+
+                          //   if (response.success == true) {
+                          //     log(response.message ?? "Upload success");
+                          //     showSuccessMessage(
+                          //       context,
+                          //       response.message ?? "Profile updated",
+                          //     );
+                          //   } else {
+                          //     ScaffoldMessenger.of(context).showSnackBar(
+                          //       SnackBar(
+                          //         backgroundColor: Colors.red,
+                          //         content: Text("Update failed"),
+                          //       ),
+                          //     );
+                          //   }
+                          // } catch (e) {
+                          //   log("Upload Error: $e");
+                          //   ScaffoldMessenger.of(context).showSnackBar(
+                          //     SnackBar(
+                          //       backgroundColor: Colors.red,
+                          //       content: Text("Something went wrong"),
+                          //     ),
+                          //   );
+                          // }
                         },
-                        child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          height: 60.h,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(40.r),
-                            border: Border.all(
-                              color: Color.fromARGB(25, 0, 0, 0),
+                        child: InkWell(
+                          onTap: pickAnyFile,
+                          child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: 60.h,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(40.r),
+                              border: Border.all(
+                                color: Color.fromARGB(25, 0, 0, 0),
+                              ),
                             ),
-                          ),
-                          child: Row(
-                            children: [
-                              pickedFile == null
-                                  ? Container(
-                                      margin: EdgeInsets.only(left: 16.w),
-                                      width: 91.w,
-                                      height: 35.h,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(
-                                          30.r,
+                            child: Row(
+                              children: [
+                                pickedFile == null
+                                    ? Container(
+                                        margin: EdgeInsets.only(left: 16.w),
+                                        width: 91.w,
+                                        height: 35.h,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(
+                                            30.r,
+                                          ),
+                                          color: Color(0xFF001E6C),
                                         ),
-                                        color: Color(0xFF001E6C),
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          "Choose File",
-                                          style: GoogleFonts.roboto(
-                                            fontSize: 12.sp,
-                                            fontWeight: FontWeight.w400,
-                                            color: Color(0xFFFFFFFF),
+                                        child: Center(
+                                          child: Text(
+                                            "Choose File",
+                                            style: GoogleFonts.roboto(
+                                              fontSize: 12.sp,
+                                              fontWeight: FontWeight.w400,
+                                              color: Color(0xFFFFFFFF),
+                                            ),
                                           ),
                                         ),
+                                      )
+                                    : Padding(
+                                        padding: EdgeInsets.only(left: 10.w),
+                                        child: Text(
+                                          "Picked File: ${pickedFile!.path.split('/').last}",
+                                        ),
                                       ),
-                                    )
-                                  : Padding(
-                                      padding: EdgeInsets.only(left: 10.w),
-                                      child: Text(
-                                        "Picked File: ${pickedFile!.path.split('/').last}",
-                                      ),
-                                    ),
-                              // : Padding(
-                              //     padding: EdgeInsets.only(left: 16.w),
-                              //     child: Text(
-                              //       "Picked File: ${pickedFile!.path.split('/').last}",
-                              //       style: GoogleFonts.roboto(
-                              //         fontSize: 12.sp,
-                              //         fontWeight: FontWeight.w500,
-                              //       ),
-                              //     ),
-                              //   ),
-                              // : Padding(
-                              //     padding: EdgeInsetsGeometry.only(
-                              //       left: 10.w,
-                              //     ),
-                              //     child: Image.file(pickedFile!),
-                              //   ),
-                            ],
+                                // const Spacer(),
+                                // ElevatedButton(
+                                //   onPressed: uploadAvatarOnly,
+                                //   child: const Text("Upload Avatar"),
+                                // ),
+                                // : Padding(
+                                //     padding: EdgeInsets.only(left: 16.w),
+                                //     child: Text(
+                                //       "Picked File: ${pickedFile!.path.split('/').last}",
+                                //       style: GoogleFonts.roboto(
+                                //         fontSize: 12.sp,
+                                //         fontWeight: FontWeight.w500,
+                                //       ),
+                                //     ),
+                                //   ),
+                                // : Padding(
+                                //     padding: EdgeInsetsGeometry.only(
+                                //       left: 10.w,
+                                //     ),
+                                //     child: Image.file(pickedFile!),
+                                //   ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -273,7 +418,15 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage>
                           ),
                         ),
                         onPressed: () async {
-                          // if (formKey.currentState!.validate()) {
+                          saveFullProfile();
+                          uploadAvatarOnly();
+
+                          // if (!formKey.currentState!.validate()) return;
+
+                          // setState(() => isLoading = true);
+
+                          // try {
+                          //   // MultipartFile बनाएँ अगर image select हुई हो
                           //   MultipartFile? avatarFile;
                           //   if (pickedFile != null) {
                           //     avatarFile = await MultipartFile.fromFile(
@@ -281,125 +434,39 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage>
                           //       filename: pickedFile!.path.split('/').last,
                           //     );
                           //   }
-                          //   final body = UpdateProfileBodyModel(
-                          //     firstName: nameController.text,
-                          //     lastName: "lastName",
-                          //     displayName: "displayName",
-                          //     email: emailController.text,
-                          //     phone: phoneController.text,
-                          //     bio: bioController.text,
-                          //     address: addressController.text,
-                          //     city: cityController.text,
-                          //     state: stateController.text,
-                          //     country: countryController.text,
-                          //     postalCode: "395006",
-                          //     avatarUrl: avatarFile.toString(),
-                          //   );
-                          //   setState(() {
-                          //     isLoading = true;
+
+                          //   // FormData तैयार करें
+                          //   FormData formData = FormData.fromMap({
+                          //     "first_name": nameController.text,
+                          //     "last_name": "Ansari",
+                          //     "display_name": nameController.text,
+                          //     "email": emailController.text,
+                          //     "phone": phoneController.text,
+                          //     "bio": bioController.text,
+                          //     "address": addressController.text,
+                          //     "city": cityController.text,
+                          //     "state": stateController.text,
+                          //     "country": countryController.text,
+                          //     "postal_code": "395006",
+                          //     "avatur_url": avatarFile,
                           //   });
-                          //   try {
-                          //     final service = APIStateNetwork(createDio());
-                          //     final response = await service.updateProfile(body);
-                          //     if (response.success == true) {
-                          //       Navigator.pop(context);
-                          //       showSuccessMessage(context, response.message);
-                          //     }
-                          //     setState(() {
-                          //       isLoading = false;
-                          //     });
-                          //   } catch (e) {
-                          //     setState(() {
-                          //       isLoading = false;
-                          //     });
-                          //     log(e.toString());
-                          //   }
-                          // }
 
-                          if (!formKey.currentState!.validate()) return;
+                          //   // API call using PrettyDio
+                          //   final service = APIStateNetwork(createDio());
+                          //   final response = await service
+                          //       .updateProfileFormData(formData);
 
-                          setState(() => isLoading = true);
-
-                          try {
-                            // MultipartFile बनाएँ अगर image select हुई हो
-                            MultipartFile? avatarFile;
-                            if (pickedFile != null) {
-                              avatarFile = await MultipartFile.fromFile(
-                                pickedFile!.path,
-                                filename: pickedFile!.path.split('/').last,
-                              );
-                            }
-
-                            // FormData तैयार करें
-                            FormData formData = FormData.fromMap({
-                              "first_name": nameController.text,
-                              "last_name": "Ansari",
-                              "display_name":nameController.text,
-                              "email": emailController.text,
-                              "phone": phoneController.text,
-                              "bio": bioController.text,
-                              "address": addressController.text,
-                              "city": cityController.text,
-                              "state": stateController.text,
-                              "country": countryController.text,
-                              "postal_code": "395006",
-                              "avatur_url": avatarFile,
-                            });
-
-                            // API call using PrettyDio
-                            final service = APIStateNetwork(createDio());
-                            final response = await service
-                                .updateProfileFormData(formData);
-
-                            if (response.success == true) {
-                              Navigator.pop(context);
-                              showSuccessMessage(context, response.message);
-                            }
-                          } catch (e) {
-                            log(e.toString());
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text("Error: $e")),
-                            );
-                          } finally {
-                            setState(() => isLoading = false);
-                          }
-
-                          // final body = UpdateProfileBodyModel(
-                          //   firstName: nameController.text,
-                          //   lastName: "lastName",
-                          //   displayName: "displayName",
-                          //   email: emailController.text,
-                          //   phone: phoneController.text,
-                          //   bio: bioController.text,
-                          //   address: addressController.text,
-                          //   city: cityController.text,
-                          //   state: stateController.text,
-                          //   country: countryController.text,
-                          //   postalCode: "395006",
-                          //   avatarUrl: pickedFile!.path,
-                          // );
-                          // setState(() {
-                          //   isLoading = true;
-                          // });
-                          // try {
-                          //   final response = ref.watch(
-                          //     updateProfleControllr(body),
-                          //   );
-                          //   if (response.value!.success == true) {
+                          //   if (response.success == true) {
                           //     Navigator.pop(context);
-                          //     showSuccessMessage(
-                          //       context,
-                          //       response.value!.message,
-                          //     );
-                          //     setState(() {
-                          //       isLoading = false;
-                          //     });
+                          //     showSuccessMessage(context, response.message);
                           //   }
                           // } catch (e) {
-                          //   setState(() {
-                          //     isLoading = false;
-                          //   });
                           //   log(e.toString());
+                          //   ScaffoldMessenger.of(context).showSnackBar(
+                          //     SnackBar(content: Text("Error: $e")),
+                          //   );
+                          // } finally {
+                          //   setState(() => isLoading = false);
                           // }
                         },
                         child: isLoading

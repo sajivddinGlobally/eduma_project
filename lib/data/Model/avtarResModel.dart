@@ -1,21 +1,21 @@
 // To parse this JSON data, do
 //
-//     final messageListResponse = messageListResponseFromJson(jsonString);
+//     final avatarResModel = avatarResModelFromJson(jsonString);
 
 import 'dart:convert';
 
-MessageListResponse messageListResponseFromJson(String str) => MessageListResponse.fromJson(json.decode(str));
+AvatarResModel avatarResModelFromJson(String str) => AvatarResModel.fromJson(json.decode(str));
 
-String messageListResponseToJson(MessageListResponse data) => json.encode(data.toJson());
+String avatarResModelToJson(AvatarResModel data) => json.encode(data.toJson());
 
-class MessageListResponse {
+class AvatarResModel {
     bool success;
     String message;
     int attachmentId;
     String avatarUrl;
     FileInfo fileInfo;
 
-    MessageListResponse({
+    AvatarResModel({
         required this.success,
         required this.message,
         required this.attachmentId,
@@ -23,7 +23,7 @@ class MessageListResponse {
         required this.fileInfo,
     });
 
-    factory MessageListResponse.fromJson(Map<String, dynamic> json) => MessageListResponse(
+    factory AvatarResModel.fromJson(Map<String, dynamic> json) => AvatarResModel(
         success: json["success"],
         message: json["message"],
         attachmentId: json["attachment_id"],
