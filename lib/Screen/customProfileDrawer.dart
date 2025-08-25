@@ -101,8 +101,10 @@ class _CustomProfileDrawerState extends ConsumerState<CustomProfileDrawer> {
                             height: 45.h,
                             decoration: BoxDecoration(shape: BoxShape.circle),
                             child: ClipOval(
-                              child: Image.network(profile.avatar!),
-                                  
+                              child: Image.network(
+                                profile.avatar!,
+                                fit: BoxFit.cover,
+                              ),
                             ),
 
                             // child: ClipOval(
