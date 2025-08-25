@@ -473,12 +473,20 @@ class _APIStateNetwork implements APIStateNetwork {
   }
 
   @override
-  Future<AvatarResModel> updateAvater(MultipartFile imageFile) async {
+  Future<AvatarResModel> updateAvater(File imageFile) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = FormData();
-    _data.files.add(MapEntry('image', image));
+    _data.files.add(
+      MapEntry(
+        'image',
+        MultipartFile.fromFileSync(
+          imageFile.path,
+          filename: imageFile.path.split(Platform.pathSeparator).last,
+        ),
+      ),
+    );
     final _options = _setStreamType<AvatarResModel>(
       Options(
             method: 'POST',

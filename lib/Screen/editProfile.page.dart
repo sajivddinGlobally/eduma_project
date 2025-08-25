@@ -61,10 +61,11 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage>
     try {
       setState(() => isLoading = true);
 
-      final avatarFile = await MultipartFile.fromFile(
-        pickedFile!.path,
-        filename: pickedFile!.path.split('/').last,
-      );
+      // final avatarFile = await MultipartFile.fromFile(
+      //   pickedFile!.path,
+      //   filename: pickedFile!.path.split('/').last,
+      // );
+      final avatarFile = File(pickedFile!.path);
 
       final service = APIStateNetwork(createDio());
       final response = await service.updateAvater(avatarFile);
