@@ -1,8 +1,8 @@
 import 'dart:io';
-
 import 'package:eduma_app/Screen/cart.page.dart';
 import 'package:eduma_app/Screen/editProfile.page.dart';
 import 'package:eduma_app/Screen/library.page.dart';
+import 'package:eduma_app/Screen/login.page.dart';
 import 'package:eduma_app/Screen/onbording.page.dart';
 import 'package:eduma_app/Screen/orderList.page.dart';
 import 'package:eduma_app/Screen/paymentOverfiew.page.dart';
@@ -408,7 +408,7 @@ class _CustomProfileDrawerState extends ConsumerState<CustomProfileDrawer> {
                     );
                     Navigator.pushAndRemoveUntil(
                       context,
-                      CupertinoPageRoute(builder: (context) => OnbordingPage()),
+                      CupertinoPageRoute(builder: (context) => LoginPage()),
                       (route) => false,
                     );
                   },

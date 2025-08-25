@@ -78,7 +78,7 @@ abstract class APIStateNetwork {
   @GET("/custom/v1/categories")
   Future<AllCategoryModel> allCategory();
 
-  @GET("/custom/v1/courses-category?category=160")
+  @GET("/custom/v1/courses-category?category={id}")
   Future<CorurseByCategoryIdModel> categoryByCourseId(@Path() String id);
 
   @GET("/custom/v1/profile")

@@ -87,51 +87,55 @@ class _HomePageState extends ConsumerState<HomePage> {
                 actions: [
                   Row(
                     children: [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                              builder: (context) => LoginPage(),
-                            ),
-                          );
-                        },
-                        child: Text(
-                          "Login",
-                          style: GoogleFonts.roboto(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w600,
-                            color: Color(0xFF000000),
-                            letterSpacing: -0.4,
-                          ),
-                        ),
-                      ),
-                      Text(
-                        "|",
-                        style: GoogleFonts.roboto(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xFF000000),
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                              builder: (context) => RegisterPage(),
-                            ),
-                          );
-                        },
-                        child: Text(
-                          "Register",
-                          style: GoogleFonts.roboto(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w600,
-                            color: Color(0xFF000000),
-                            letterSpacing: -0.4,
-                          ),
-                        ),
+                      // TextButton(
+                      //   onPressed: () {
+                      //     Navigator.push(
+                      //       context,
+                      //       CupertinoPageRoute(
+                      //         builder: (context) => LoginPage(),
+                      //       ),
+                      //     );
+                      //   },
+                      //   child: Text(
+                      //     "Login",
+                      //     style: GoogleFonts.roboto(
+                      //       fontSize: 16.sp,
+                      //       fontWeight: FontWeight.w600,
+                      //       color: Color(0xFF000000),
+                      //       letterSpacing: -0.4,
+                      //     ),
+                      //   ),
+                      // ),
+                      // Text(
+                      //   "|",
+                      //   style: GoogleFonts.roboto(
+                      //     fontSize: 16.sp,
+                      //     fontWeight: FontWeight.w600,
+                      //     color: Color(0xFF000000),
+                      //   ),
+                      // ),
+                      // TextButton(
+                      //   onPressed: () {
+                      //     Navigator.push(
+                      //       context,
+                      //       CupertinoPageRoute(
+                      //         builder: (context) => RegisterPage(),
+                      //       ),
+                      //     );
+                      //   },
+                      //   child: Text(
+                      //     "Register",
+                      //     style: GoogleFonts.roboto(
+                      //       fontSize: 16.sp,
+                      //       fontWeight: FontWeight.w600,
+                      //       color: Color(0xFF000000),
+                      //       letterSpacing: -0.4,
+                      //     ),
+                      //   ),
+                      // ),
+                      IconButton(
+                        onPressed: () {},
+                        icon: Icon(Icons.notifications_none_outlined),
                       ),
                       SizedBox(width: 10.w),
                     ],
@@ -345,7 +349,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                     allCategoryProvider.when(
                       data: (allCategory) {
                         return Container(
-                          height: 155.h,
+                          height: 190.h,
                           //color: Colors.amber,
                           child: ListView.builder(
                             itemCount: allCategory.data.length,
@@ -372,26 +376,48 @@ class _HomePageState extends ConsumerState<HomePage> {
                                           ),
                                         );
                                       },
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(
-                                          10.r,
-                                        ),
-                                        child: Image.network(
-                                          // "assets/course.png",
-                                          allCategory.data[index].thumbnail,
-                                          width: 200.w,
-                                          height: 130.h,
-                                          fit: BoxFit.fill,
-                                          errorBuilder:
-                                              (context, error, stackTrace) {
-                                                return Image.network(
-                                                  "https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg",
-                                                  width: 200.w,
-                                                  height: 130.h,
-                                                  fit: BoxFit.fill,
-                                                );
-                                              },
-                                        ),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          ClipRRect(
+                                            borderRadius: BorderRadius.circular(
+                                              10.r,
+                                            ),
+                                            child: Image.network(
+                                              // "assets/course.png",
+                                              allCategory.data[index].thumbnail,
+                                              width: 200.w,
+                                              height: 130.h,
+                                              fit: BoxFit.fill,
+                                              errorBuilder:
+                                                  (context, error, stackTrace) {
+                                                    return Image.network(
+                                                      "https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg",
+                                                      width: 200.w,
+                                                      height: 130.h,
+                                                      fit: BoxFit.fill,
+                                                    );
+                                                  },
+                                            ),
+                                          ),
+                                          Container(
+                                            margin: EdgeInsets.only(top: 10.h),
+                                            width: 200.w,
+                                            child: Text(
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 2,
+                                              allCategory.data[index].name,
+                                              style: GoogleFonts.roboto(
+                                                fontSize: 16.sp,
+                                                fontWeight: FontWeight.w500,
+                                                color: Color(0xFF000000),
+                                                letterSpacing: -0.4,
+                                                height: 1.2,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ),

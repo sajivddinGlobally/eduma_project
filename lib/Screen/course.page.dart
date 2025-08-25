@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:eduma_app/Screen/payCourseDetails.page.dart';
 import 'package:eduma_app/data/Controller/categoryByCourseContorller.dart';
 import 'package:flutter/cupertino.dart';
@@ -101,19 +103,19 @@ class _CoursePageState extends ConsumerState<CoursePage> {
             ],
           ),
           SizedBox(height: 20.h),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: [
-                SizedBox(width: 20.w),
-                language("Angular"),
-                language("Css"),
-                language("Java"),
-                language("Html"),
-                language("Java Script"),
-              ],
-            ),
-          ),
+          // SingleChildScrollView(
+          //   scrollDirection: Axis.horizontal,
+          //   child: Row(
+          //     children: [
+          //       SizedBox(width: 20.w),
+          //       language("Angular"),
+          //       language("Css"),
+          //       language("Java"),
+          //       language("Html"),
+          //       language("Java Script"),
+          //     ],
+          //   ),
+          // ),
           categoryByIDProvider.when(
             data: (snap) {
               return Expanded(
