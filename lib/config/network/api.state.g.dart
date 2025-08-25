@@ -480,7 +480,7 @@ class _APIStateNetwork implements APIStateNetwork {
     final _data = FormData();
     _data.files.add(
       MapEntry(
-        'image',
+        'avatar',
         MultipartFile.fromFileSync(
           imageFile.path,
           filename: imageFile.path.split(Platform.pathSeparator).last,

@@ -100,21 +100,28 @@ class _CustomProfileDrawerState extends ConsumerState<CustomProfileDrawer> {
                             width: 45.h,
                             height: 45.h,
                             decoration: BoxDecoration(shape: BoxShape.circle),
+                            child: ClipOval(
+                              child: Image.network(profile.avatar!),
+                                  
+                            ),
+
                             // child: ClipOval(
                             //   child:
-                            //       profile.avatar != null &&
-                            //           profile.avatar.toString().isNotEmpty
+                            //       (profile.avatar != null &&
+                            //           profile.avatar is String &&
+                            //           profile.avatar.toString().isNotEmpty &&
+                            //           profile.avatar.toString() != "false")
                             //       ? (profile.avatar.toString().startsWith(
                             //               "/data",
                             //             )
-                            //             // Agar local path hai (device ka path)
+                            //             // Local path (device ke andar)
                             //             ? Image.file(
                             //                 File(profile.avatar.toString()),
                             //                 fit: BoxFit.cover,
                             //               )
-                            //             // Agar server se relative path mila hai
+                            //             // Server path
                             //             : Image.network(
-                            //                 "https://yourdomain.com${profile.avatar.toString()}",
+                            //                 "https://yourdomain.com/${profile.avatar.toString()}",
                             //                 fit: BoxFit.cover,
                             //                 errorBuilder:
                             //                     (context, error, stackTrace) {
@@ -129,37 +136,6 @@ class _CustomProfileDrawerState extends ConsumerState<CustomProfileDrawer> {
                             //           fit: BoxFit.cover,
                             //         ),
                             // ),
-                            child: ClipOval(
-                              child:
-                                  (profile.avatar != null &&
-                                      profile.avatar is String &&
-                                      profile.avatar.toString().isNotEmpty &&
-                                      profile.avatar.toString() != "false")
-                                  ? (profile.avatar.toString().startsWith(
-                                          "/data",
-                                        )
-                                        // Local path (device ke andar)
-                                        ? Image.file(
-                                            File(profile.avatar.toString()),
-                                            fit: BoxFit.cover,
-                                          )
-                                        // Server path
-                                        : Image.network(
-                                            "https://yourdomain.com/${profile.avatar.toString()}",
-                                            fit: BoxFit.cover,
-                                            errorBuilder:
-                                                (context, error, stackTrace) {
-                                                  return Image.network(
-                                                    "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png",
-                                                    fit: BoxFit.cover,
-                                                  );
-                                                },
-                                          ))
-                                  : Image.network(
-                                      "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png",
-                                      fit: BoxFit.cover,
-                                    ),
-                            ),
                           ),
                           Spacer(),
                           InkWell(

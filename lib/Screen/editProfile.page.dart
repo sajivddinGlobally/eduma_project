@@ -24,79 +24,140 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage>
     with UpdateProfile<EditProfilePage> {
   File? pickedFile;
 
-  // Future<void> pickAnyFile() async {
-  //   FilePickerResult? result = await FilePicker.platform.pickFiles(
-  //     type: FileType.image,
-  //   );
-
-  //   if (result != null) {
-  //     setState(() {
-  //       pickedFile = File(result.files.single.path!);
-  //     });
-  //   } else {
-  //     debugPrint("File picking cancelled");
-  //   }
-  // }
   Future<void> pickAnyFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.image,
     );
+
     if (result != null) {
       setState(() {
         pickedFile = File(result.files.single.path!);
       });
+    } else {
+      debugPrint("File picking cancelled");
     }
   }
 
-  Future<void> uploadAvatarOnly() async {
-    if (pickedFile == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: Colors.red,
-          content: Text("Please select an image first"),
-        ),
-      );
-      return;
-    }
-    try {
-      setState(() => isLoading = true);
+  // Future<void> pickAnyFile() async {
+  //   FilePickerResult? result = await FilePicker.platform.pickFiles(
+  //     type: FileType.image,
+  //   );
+  //   if (result != null) {
+  //     setState(() {
+  //       pickedFile = File(result.files.single.path!);
+  //     });
+  //   }
+  // }
 
-      // final avatarFile = await MultipartFile.fromFile(
-      //   pickedFile!.path,
-      //   filename: pickedFile!.path.split('/').last,
-      // );
-      final avatarFile = File(pickedFile!.path);
+  // Future<void> uploadAvatarOnly() async {
+  //   if (pickedFile == null) {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(
+  //         backgroundColor: Colors.red,
+  //         content: Text("Please select an image first"),
+  //       ),
+  //     );
+  //     return;
+  //   }
+  //   try {
+  //     setState(() => isLoading = true);
 
-      final service = APIStateNetwork(createDio());
-      final response = await service.updateAvater(avatarFile);
+  //     // final avatarFile = await MultipartFile.fromFile(
+  //     //   pickedFile!.path,
+  //     //   filename: pickedFile!.path.split('/').last,
+  //     // );
+  //     final avatarFile = File(pickedFile!.path);
 
-      if (response.success == true) {
-        showSuccessMessage(context, response.message ?? "Avatar updated");
-      } else {
-        //showErrorMessage(context, "Avatar upload failed");
-      }
-    } catch (e) {
-      log("Upload Error: $e");
-      // showErrorMessage(context, "Something went wrong");
-    } finally {
-      setState(() => isLoading = false);
-    }
-  }
+  //     final service = APIStateNetwork(createDio());
+  //     final response = await service.updateAvater(avatarFile);
 
-  Future<void> saveFullProfile() async {
+  //     if (response.success == true) {
+  //       showSuccessMessage(context, response.message ?? "Avatar updated");
+  //     } else {
+  //       //showErrorMessage(context, "Avatar upload failed");
+  //     }
+  //   } catch (e) {
+  //     log("Upload Error: $e");
+  //     // showErrorMessage(context, "Something went wrong");
+  //   } finally {
+  //     setState(() => isLoading = false);
+  //   }
+  // }
+
+  // Future<void> saveFullProfile() async {
+  //   if (!formKey.currentState!.validate()) return;
+
+  //   try {
+  //     setState(() => isLoading = true);
+
+  //     MultipartFile? avatarFile;
+  //     if (pickedFile != null) {
+  //       avatarFile = await MultipartFile.fromFile(
+  //         pickedFile!.path,
+  //         filename: pickedFile!.path.split('/').last,
+  //       );
+  //     }
+
+  //     FormData formData = FormData.fromMap({
+  //       "first_name": nameController.text,
+  //       "last_name": "Ansari",
+  //       "display_name": nameController.text,
+  //       "email": emailController.text,
+  //       "phone": phoneController.text,
+  //       "bio": bioController.text,
+  //       "address": addressController.text,
+  //       "city": cityController.text,
+  //       "state": stateController.text,
+  //       "country": countryController.text,
+  //       "postal_code": "395006",
+  //       if (avatarFile != null) "avatar_url": avatarFile,
+  //     });
+
+  //     final service = APIStateNetwork(createDio());
+  //     final response = await service.updateProfileFormData(formData);
+
+  //     if (response.success == true) {
+  //       Navigator.pop(context);
+  //       showSuccessMessage(context, response.message);
+  //     } else {
+  //       //showErrorMessage(context, "Profile update failed");
+  //     }
+  //   } catch (e) {
+  //     log(e.toString());
+  //     //showErrorMessage(context, "Error: $e");
+  //   } finally {
+  //     setState(() => isLoading = false);
+  //   }
+  // }
+
+  bool isLoading = false;
+
+  Future<void> saveProfileAndAvatar() async {
     if (!formKey.currentState!.validate()) return;
 
-    try {
-      setState(() => isLoading = true);
+    setState(() => isLoading = true);
 
-      MultipartFile? avatarFile;
+    try {
+      final service = APIStateNetwork(createDio());
+
+      // 1. Avatar upload agar image select kiya hai
+      bool avatarSuccess = true;
       if (pickedFile != null) {
-        avatarFile = await MultipartFile.fromFile(
-          pickedFile!.path,
-          filename: pickedFile!.path.split('/').last,
-        );
+        final avatarFile = File(pickedFile!.path);
+        final avatarResponse = await service.updateAvater(avatarFile);
+
+        avatarSuccess = avatarResponse.success == true;
+        if (!avatarSuccess) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: Colors.red,
+              content: Text("Avater Update Failed"),
+            ),
+          );
+        }
       }
 
+      // 2. Profile save API
       FormData formData = FormData.fromMap({
         "first_name": nameController.text,
         "last_name": "Ansari",
@@ -109,27 +170,35 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage>
         "state": stateController.text,
         "country": countryController.text,
         "postal_code": "395006",
-        if (avatarFile != null) "avatar_url": avatarFile,
+        if (pickedFile != null)
+          "image": await MultipartFile.fromFile(
+            pickedFile!.path,
+            filename: pickedFile!.path.split('/').last,
+          ),
       });
 
-      final service = APIStateNetwork(createDio());
-      final response = await service.updateProfileFormData(formData);
+      final profileResponse = await service.updateProfileFormData(formData);
+      bool profileSuccess = profileResponse.success == true;
 
-      if (response.success == true) {
-        Navigator.pop(context);
-        showSuccessMessage(context, response.message);
+      if (avatarSuccess && profileSuccess) {
+        if (mounted) {
+          showSuccessMessage(context, "Profile updated successfully ✅");
+          Navigator.pop(context, true); // <-- direct navigate back
+        }
       } else {
-        //showErrorMessage(context, "Profile update failed");
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.red,
+            content: Text("Something went wrong"),
+          ),
+        );
       }
     } catch (e) {
-      log(e.toString());
-      //showErrorMessage(context, "Error: $e");
+      log("Save Profile Error: $e");
     } finally {
       setState(() => isLoading = false);
     }
   }
-
-  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -146,7 +215,7 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage>
                   SizedBox(width: 20.w),
                   InkWell(
                     onTap: () {
-                      Navigator.pop(context);
+                      //Navigator.pop(context);
                     },
                     child: Container(
                       width: 37.w,
@@ -419,8 +488,9 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage>
                           ),
                         ),
                         onPressed: () async {
-                          saveFullProfile();
-                          uploadAvatarOnly();
+                          // saveFullProfile();
+                          // uploadAvatarOnly();
+                          saveProfileAndAvatar();
 
                           // if (!formKey.currentState!.validate()) return;
 

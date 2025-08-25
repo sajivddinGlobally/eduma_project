@@ -96,7 +96,7 @@ abstract class APIStateNetwork {
   @POST("/custom/v1/upload-avatar")
   @MultiPart()
   Future<AvatarResModel> updateAvater(
-    @Part(name: "image") File imageFile,
+    @Part(name: "avatar") File imageFile,
   );
 
   @POST("/custom/v1/enroll-free-course")
