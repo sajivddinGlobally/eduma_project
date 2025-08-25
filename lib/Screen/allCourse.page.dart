@@ -14,6 +14,8 @@ class AllCoursePage extends ConsumerStatefulWidget {
 }
 
 class _AllCoursePageState extends ConsumerState<AllCoursePage> {
+  final TextEditingController _searchController = TextEditingController();
+  String searchQuery = "";
   @override
   Widget build(BuildContext context) {
     final popularCourseProvider = ref.watch(popularCourseController);
@@ -59,13 +61,11 @@ class _AllCoursePageState extends ConsumerState<AllCoursePage> {
                 Container(
                   margin: EdgeInsets.only(left: 20.w, right: 20.w),
                   child: TextField(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                          builder: (context) => AllCoursePage(),
-                        ),
-                      );
+                    controller: _searchController,
+                    onChanged: (value) {
+                      setState(() {
+                        searchQuery = value.toLowerCase();
+                      });
                     },
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.only(left: 20.w, right: 20.w),
@@ -98,6 +98,15 @@ class _AllCoursePageState extends ConsumerState<AllCoursePage> {
                 Expanded(
                   child: popularCourseProvider.when(
                     data: (data) {
+                      final filterData = data.where((cours) {
+                        final title = cours.title.toLowerCase();
+                        return title.contains(searchQuery);
+                      }).toList();
+
+                      if (filterData.isEmpty) {
+                        return Center(child: Text("No Course Available"));
+                      }
+
                       return Padding(
                         padding: EdgeInsets.only(
                           left: 20.w,
@@ -105,17 +114,17 @@ class _AllCoursePageState extends ConsumerState<AllCoursePage> {
                           top: 20.h,
                         ),
                         child: GridView.builder(
-                          itemCount: data.length,
+                          itemCount: filterData.length,
                           padding: EdgeInsets.zero,
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2,
                                 crossAxisSpacing: 20.w,
                                 mainAxisSpacing: 15.h,
-                                childAspectRatio: 180 / 160,
+                                childAspectRatio: 180 / 170,
                               ),
                           itemBuilder: (context, index) {
-                            return PopularCour(data: data[index]);
+                            return PopularCour(data: filterData[index]);
                           },
                         ),
                       );
