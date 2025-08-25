@@ -29,7 +29,7 @@ class _YoutubePlayerScreenState extends State<YoutubePlayerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Playing Video")),
+      backgroundColor: Color(0xFFFFFFFF),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
