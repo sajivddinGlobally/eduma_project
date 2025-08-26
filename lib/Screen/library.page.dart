@@ -110,15 +110,16 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 InkWell(
-                                  onTap: () {
-                                    
-                                  },
+                                  onTap: () {},
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       ClipRRect(
-                                        borderRadius: BorderRadius.circular(10.r),
+                                        borderRadius: BorderRadius.circular(
+                                          10.r,
+                                        ),
                                         child: Image.network(
                                           // "assets/shop1.png",
                                           data.courses[index].thumbnail,
@@ -151,7 +152,11 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
                                           SizedBox(height: 10.h),
                                           Text(
                                             //"data",
-                                            data.courses[index].status,
+                                            data
+                                                .courses[index]
+                                                .stats
+                                                .totalLessons
+                                                .toString(),
                                             style: GoogleFonts.roboto(
                                               fontSize: 16.sp,
                                               fontWeight: FontWeight.w400,
