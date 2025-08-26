@@ -890,7 +890,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class PayCourseDetailsPage extends ConsumerStatefulWidget {
   final String id;
