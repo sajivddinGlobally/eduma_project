@@ -170,12 +170,47 @@ class _CartPageState extends ConsumerState<CartPage> {
                                           ),
                                         ),
                                         SizedBox(height: 5.w),
-                                        Text(
-                                          "Quantity ${data.items[index].quantity.toString()}",
-                                          style: GoogleFonts.roboto(
-                                            fontSize: 14.sp,
-                                            fontWeight: FontWeight.w500,
-                                            color: Color(0xFF747474),
+                                        Container(
+                                          width: 270.w,
+                                          // color: Colors.amber,
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                "Quantity ${data.items[index].quantity.toString()}",
+                                                style: GoogleFonts.roboto(
+                                                  fontSize: 14.sp,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Color(0xFF747474),
+                                                ),
+                                              ),
+                                              Spacer(),
+                                              Container(
+                                                width: 160.w,
+                                                height: 50.h,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                        10.r,
+                                                      ),
+                                                  border: Border.all(
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                                child: Row(
+                                                  children: [
+                                                    Text(
+                                                      "-",
+                                                      style: GoogleFonts.roboto(
+                                                        fontSize: 30.sp,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        color: Colors.black,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ],
