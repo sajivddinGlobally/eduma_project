@@ -942,7 +942,6 @@ class _PopularCourState extends State<PopularCour> {
             Positioned(
               right: 8.w,
               top: 10.h,
-
               child: IconButton(
                 style: IconButton.styleFrom(
                   minimumSize: Size(0, 0),
@@ -1153,8 +1152,10 @@ class PopularBody extends StatefulWidget {
 }
 
 class _PopularBodyState extends State<PopularBody> {
+  bool isWishlisted = false;
   @override
   Widget build(BuildContext context) {
+    var box = Hive.box("userBox");
     return Container(
       height: 200.h,
       // color: Colors.amber,
@@ -1165,14 +1166,25 @@ class _PopularBodyState extends State<PopularBody> {
           children: [
             Stack(
               children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(10.r),
-                  child: Image.asset(
-                    // "assets/learning1.png",
-                    widget.data.featuredImage,
-                    width: 190.w,
-                    height: 125.h,
-                    fit: BoxFit.cover,
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                        builder: (context) =>
+                            PayCourseDetailsPage(id: widget.data.id.toString()),
+                      ),
+                    );
+                  },
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10.r),
+                    child: Image.network(
+                      // "assets/learning1.png",
+                      widget.data.featuredImage,
+                      width: 190.w,
+                      height: 125.h,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
                 Positioned(
@@ -1184,8 +1196,40 @@ class _PopularBodyState extends State<PopularBody> {
                       padding: EdgeInsets.zero,
                       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     ),
-                    onPressed: () {},
-                    icon: Icon(Icons.favorite_outline, color: Colors.white),
+                    onPressed: () async {
+                      // 👇 API call se direct result lo
+                      final result = await WishlistControllerClass.toggle(
+                        context: context,
+                        courseId: widget.data.id,
+                        userId: box.get("storeId"),
+                        currentStatus: isWishlisted,
+                      );
+
+                      // 👇 bas yehi update karna hai
+                      setState(() {
+                        isWishlisted = result;
+                      });
+                    },
+                    icon: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 500),
+                      transitionBuilder: (child, animation) {
+                        return ScaleTransition(
+                          scale: CurvedAnimation(
+                            parent: animation,
+                            curve: Curves.easeInOutBack,
+                          ),
+                          child: child,
+                        );
+                      },
+                      child: Icon(
+                        isWishlisted ? Icons.favorite : Icons.favorite_border,
+                        key: ValueKey<bool>(
+                          isWishlisted,
+                        ), // 👈 ye key change hone se hi animation hoga
+                        color: isWishlisted ? Colors.red : Colors.white,
+                        size: 25.sp,
+                      ),
+                    ),
                   ),
                 ),
                 Positioned(
