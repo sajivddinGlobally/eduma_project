@@ -1,10 +1,12 @@
 import 'dart:developer';
 
+import 'package:eduma_app/Screen/cart.page.dart';
 import 'package:eduma_app/config/core/showFlushbar.dart';
 import 'package:eduma_app/config/network/api.state.dart';
 import 'package:eduma_app/config/utils/pretty.dio.dart';
 import 'package:eduma_app/data/Controller/productDetailsController.dart';
 import 'package:eduma_app/data/Model/addCartBodyModel.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -174,18 +176,120 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                 productId: data.id,
                                 quantity: 1,
                               );
+
                               setState(() {
                                 isLoading = true;
                               });
+
                               try {
                                 final service = APIStateNetwork(createDio());
                                 final response = await service.addToCart(body);
+
                                 if (response.success == true) {
-                                  showSuccessMessage(context, response.message);
+                                  setState(() {
+                                    isLoading = false;
+                                  });
+
+                                  await showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            16,
+                                          ),
+                                        ),
+                                        title: Row(
+                                          children: [
+                                            Icon(
+                                              Icons.check_circle,
+                                              color: Colors.green,
+                                              size: 28,
+                                            ),
+                                            SizedBox(width: 8),
+                                            Text(
+                                              "Success",
+                                              style: GoogleFonts.roboto(
+                                                fontSize: 18.sp,
+                                                fontWeight: FontWeight.w600,
+                                                color: Colors.black87,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        content: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Text(
+                                              response.message,
+                                              textAlign: TextAlign.center,
+                                              style: GoogleFonts.roboto(
+                                                fontSize: 14.sp,
+                                                fontWeight: FontWeight.w400,
+                                                color: Colors.black54,
+                                              ),
+                                            ),
+                                            SizedBox(height: 12),
+                                            Icon(
+                                              Icons.shopping_cart,
+                                              color: Color(0xFF001E6C),
+                                              size: 40,
+                                            ),
+                                          ],
+                                        ),
+                                        actionsAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            style: TextButton.styleFrom(
+                                              foregroundColor: Colors.redAccent,
+                                            ),
+                                            child: Text(
+                                              "Close",
+                                              style: GoogleFonts.roboto(
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          ),
+                                          ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: Color(
+                                                0xFF001E6C,
+                                              ),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                              ),
+                                            ),
+                                            onPressed: () {
+                                              Navigator.push(
+                                                context,
+                                                CupertinoPageRoute(
+                                                  builder: (context) =>
+                                                      CartPage(),
+                                                ),
+                                              );
+                                            },
+                                            child: Text(
+                                              "Go to Cart",
+                                              style: GoogleFonts.roboto(
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                } else {
+                                  setState(() {
+                                    isLoading = false;
+                                  });
                                 }
-                                setState(() {
-                                  isLoading = false;
-                                });
                               } catch (e) {
                                 setState(() {
                                   isLoading = false;

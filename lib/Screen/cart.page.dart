@@ -672,23 +672,10 @@ class _CartPageState extends ConsumerState<CartPage> {
                                                                     ),
                                                                   ),
                                                                   onPressed: () {
-                                                                    // if (item
-                                                                    //         .quantity >
-                                                                    //     1) {
-                                                                    //   ref
-                                                                    //       .read(
-                                                                    //           cartController.notifier)
-                                                                    //       .updateQuantity(
-                                                                    //           item.id,
-                                                                    //           item.quantity -
-                                                                    //               1);
-                                                                    // } else {
-                                                                    //   ref
-                                                                    //       .read(
-                                                                    //           cartController.notifier)
-                                                                    //       .removeItem(
-                                                                    //           item.id);
-                                                                    // }
+                                                                    if (item.quantity >
+                                                                        0) {
+                                                                      item.quantity--;
+                                                                    }
                                                                   },
                                                                 ),
                                                                 Text(
@@ -730,14 +717,10 @@ class _CartPageState extends ConsumerState<CartPage> {
                                                                     ),
                                                                   ),
                                                                   onPressed: () {
-                                                                    // ref
-                                                                    //     .read(
-                                                                    //         cartController
-                                                                    //             .notifier)
-                                                                    //     .updateQuantity(
-                                                                    //         item.id,
-                                                                    //         item.quantity +
-                                                                    //             1);
+                                                                    if (item.quantity >
+                                                                        0) {
+                                                                      item.quantity++;
+                                                                    }
                                                                   },
                                                                 ),
                                                               ],
