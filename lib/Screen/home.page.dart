@@ -930,11 +930,19 @@ class _PopularCourState extends State<PopularCour> {
           children: [
             InkWell(
               onTap: () {
+                // Navigator.push(
+                //   context,
+                //   CupertinoPageRoute(
+                //     builder: (context) =>
+                //         PayCourseDetailsPage(id: widget.data.id.toString()),
+                //   ),
+                // );
                 Navigator.push(
                   context,
                   CupertinoPageRoute(
                     builder: (context) =>
                         PayCourseDetailsPage(id: widget.data.id.toString()),
+                    settings: const RouteSettings(name: "payCourseDetailsPage"),
                   ),
                 );
               },
@@ -1316,11 +1324,19 @@ class _allProductState extends State<allProduct> {
           children: [
             InkWell(
               onTap: () {
+                // Navigator.push(
+                //   context,
+                //   CupertinoPageRoute(
+                //     builder: (context) =>
+                //         ProductDetailsPage(id: widget.data.id.toString()),
+                //   ),
+                // );
                 Navigator.push(
                   context,
                   CupertinoPageRoute(
-                    builder: (context) =>
+                    builder: (_) =>
                         ProductDetailsPage(id: widget.data.id.toString()),
+                    settings: const RouteSettings(name: "ProductDetailsPage"),
                   ),
                 );
               },

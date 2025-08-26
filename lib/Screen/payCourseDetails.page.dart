@@ -1617,15 +1617,12 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                   //     builder: (context) => LibraryPage(),
                                   //   ),
                                   // );.
-                                  Navigator.pop(
-                                    context,
-                                  ); // pehle dialog band karo
                                   Navigator.pushAndRemoveUntil(
                                     context,
                                     CupertinoPageRoute(
-                                      builder: (context) => LibraryPage(),
-                                      settings: RouteSettings(
-                                        name: "/LibraryPage",
+                                      builder: (context) => const LibraryPage(),
+                                      settings: const RouteSettings(
+                                        name: "LibraryPage",
                                       ),
                                     ),
                                     (route) =>

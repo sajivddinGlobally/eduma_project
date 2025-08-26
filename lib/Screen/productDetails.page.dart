@@ -265,12 +265,16 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                               ),
                                             ),
                                             onPressed: () {
-                                              Navigator.push(
+                                              Navigator.pushAndRemoveUntil(
                                                 context,
                                                 CupertinoPageRoute(
-                                                  builder: (context) =>
-                                                      CartPage(),
+                                                  builder: (_) =>
+                                                      const CartPage(),
+                                                  settings: const RouteSettings(
+                                                    name: "CartPage",
+                                                  ),
                                                 ),
+                                                (route) => route.isFirst,
                                               );
                                             },
                                             child: Text(
