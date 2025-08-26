@@ -1547,7 +1547,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                       setState(() {
                         enrolled = true;
                       });
-                      showSuccessMessage(context, response.message);
+                      showSuccessMessage(context, response.message.toString());
                     }
                   } catch (e) {
                     log(e.toString());
