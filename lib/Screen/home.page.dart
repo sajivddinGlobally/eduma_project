@@ -11,6 +11,7 @@ import 'package:eduma_app/Screen/register.page.dart';
 import 'package:eduma_app/Screen/shop.page.dart';
 import 'package:eduma_app/Screen/youtube.page.dart';
 import 'package:eduma_app/data/Controller/allCategoryController.dart';
+import 'package:eduma_app/data/Controller/latestCourseController.dart';
 import 'package:eduma_app/data/Controller/popularCourseController.dart';
 import 'package:eduma_app/data/Controller/productListController.dart';
 import 'package:eduma_app/data/Controller/wishlistControllerClass.dart';
@@ -23,6 +24,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
+
+import '../data/Model/latestCourseModel.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -41,6 +44,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     final popularCourseProvider = ref.watch(popularCourseController);
     final productListProvider = ref.watch(productListController);
     final allCategoryProvider = ref.watch(allCategoryController);
+    final latestCourseProvider = ref.watch(latestCourseController);
 
     final isLoading =
         // popularCourseProvider.isLoading ||
@@ -545,19 +549,24 @@ class _HomePageState extends ConsumerState<HomePage> {
                       ],
                     ),
                     SizedBox(height: 20.h),
-                    PopularBody(
-                      popularList: [
-                        {
-                          "image": "assets/new1.png",
-                          "paid": "₹ 45.00",
-                          "title": "Introduction learn Press - LMS Plugin",
-                        },
-                        {
-                          "image": "assets/new2.png",
-                          "paid": "Free",
-                          "title": "Create an LMS Website With LearnPress",
-                        },
-                      ],
+                    latestCourseProvider.when(
+                      data: (data) {
+                        return Container(
+                          height: 200.h,
+                          // color: Colors.amber,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            padding: EdgeInsets.zero,
+                            itemCount: data.courses.length,
+                            itemBuilder: (context, index) {
+                              return PopularBody(data: data.courses[index]);
+                            },
+                          ),
+                        );
+                      },
+                      error: (error, stackTrace) =>
+                          Center(child: Text(error.toString())),
+                      loading: () => Center(child: CircularProgressIndicator()),
                     ),
                     SizedBox(height: 10.h),
                     Row(
@@ -1135,96 +1144,94 @@ class _LearningBodyState extends State<LearningBody> {
   }
 }
 
-class PopularBody extends StatelessWidget {
-  final List<Map<String, dynamic>> popularList;
-  const PopularBody({super.key, required this.popularList});
+class PopularBody extends StatefulWidget {
+  final Course data;
+  const PopularBody({super.key, required this.data});
 
+  @override
+  State<PopularBody> createState() => _PopularBodyState();
+}
+
+class _PopularBodyState extends State<PopularBody> {
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 200.h,
       // color: Colors.amber,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        padding: EdgeInsets.zero,
-        itemCount: popularList.length,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: EdgeInsets.only(left: 20.w),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+      child: Padding(
+        padding: EdgeInsets.only(left: 20.w),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Stack(
               children: [
-                Stack(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(10.r),
-                      child: Image.asset(
-                        // "assets/learning1.png",
-                        popularList[index]['image'],
-                        width: 190.w,
-                        height: 125.h,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    Positioned(
-                      right: 8.w,
-                      top: 10.h,
-                      child: IconButton(
-                        style: IconButton.styleFrom(
-                          minimumSize: Size(0, 0),
-                          padding: EdgeInsets.zero,
-                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        ),
-                        onPressed: () {},
-                        icon: Icon(Icons.favorite_outline, color: Colors.white),
-                      ),
-                    ),
-                    Positioned(
-                      left: 13.w,
-                      bottom: 8.h,
-                      child: Container(
-                        padding: EdgeInsets.only(
-                          left: 10.w,
-                          right: 10.w,
-                          top: 6.h,
-                          bottom: 6.h,
-                        ),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(4.r),
-                          color: Color(0xFF001E6C),
-                        ),
-                        child: Text(
-                          // "₹ 45.00",
-                          popularList[index]['paid'],
-                          style: GoogleFonts.roboto(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(10.r),
+                  child: Image.asset(
+                    // "assets/learning1.png",
+                    widget.data.featuredImage,
+                    width: 190.w,
+                    height: 125.h,
+                    fit: BoxFit.cover,
+                  ),
                 ),
-                SizedBox(height: 10.h),
-                SizedBox(
-                  width: 190.w,
-                  child: Text(
-                    //  "Introduction learn Press - LMS Plugin",
-                    popularList[index]['title'],
-                    style: GoogleFonts.roboto(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w500,
-                      color: Color(0xFF000000),
-                      letterSpacing: -0.4,
-                      height: 1.1,
+                Positioned(
+                  right: 8.w,
+                  top: 10.h,
+                  child: IconButton(
+                    style: IconButton.styleFrom(
+                      minimumSize: Size(0, 0),
+                      padding: EdgeInsets.zero,
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    ),
+                    onPressed: () {},
+                    icon: Icon(Icons.favorite_outline, color: Colors.white),
+                  ),
+                ),
+                Positioned(
+                  left: 13.w,
+                  bottom: 8.h,
+                  child: Container(
+                    padding: EdgeInsets.only(
+                      left: 10.w,
+                      right: 10.w,
+                      top: 6.h,
+                      bottom: 6.h,
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4.r),
+                      color: Color(0xFF001E6C),
+                    ),
+                    child: Text(
+                      // "₹ 45.00",
+                      widget.data.price.priceType.name,
+                      style: GoogleFonts.roboto(
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
               ],
             ),
-          );
-        },
+            SizedBox(height: 10.h),
+            SizedBox(
+              width: 190.w,
+              child: Text(
+                //  "Introduction learn Press - LMS Plugin",
+                widget.data.title,
+                style: GoogleFonts.roboto(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w500,
+                  color: Color(0xFF000000),
+                  letterSpacing: -0.4,
+                  height: 1.1,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

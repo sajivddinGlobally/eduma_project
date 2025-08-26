@@ -14,6 +14,7 @@ import 'package:eduma_app/data/Model/enrollCourseStudentModel.dart';
 import 'package:eduma_app/data/Model/enrollResModel.dart';
 import 'package:eduma_app/data/Model/getWishlistModel.dart';
 import 'package:eduma_app/data/Model/instructorModel.dart';
+import 'package:eduma_app/data/Model/latestCourseModel.dart';
 import 'package:eduma_app/data/Model/loginBodyModel.dart';
 import 'package:eduma_app/data/Model/loginResModel.dart';
 import 'package:eduma_app/data/Model/orderDetailsModel.dart';
@@ -95,9 +96,7 @@ abstract class APIStateNetwork {
 
   @POST("/custom/v1/upload-avatar")
   @MultiPart()
-  Future<AvatarResModel> updateAvater(
-    @Part(name: "avatar") File imageFile,
-  );
+  Future<AvatarResModel> updateAvater(@Part(name: "avatar") File imageFile);
 
   @POST("/custom/v1/enroll-free-course")
   Future<EnrollResModel> enroll(@Body() EnrollBodyModel body);
@@ -125,4 +124,7 @@ abstract class APIStateNetwork {
 
   @GET("/wc/v3/orders/{id}")
   Future<OrderDetailsModel> orderDetails(@Path() String id);
+
+  @GET("/custom/v1/latest-courses")
+  Future<LatestCourseModel> latestCourse();
 }
