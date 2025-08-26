@@ -20,7 +20,7 @@ Future<void> showSuccessMessage(BuildContext context, String message) async {
   await Flushbar(
     message: message,
     duration: const Duration(seconds: 3),
-    backgroundColor: Colors.green,
+    backgroundColor: Color(0xFF001E6C),
     flushbarPosition: FlushbarPosition.TOP,
     margin: EdgeInsets.all(8.w),
     borderRadius: BorderRadius.circular(8.r),
