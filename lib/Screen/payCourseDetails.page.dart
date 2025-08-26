@@ -877,6 +877,7 @@
 // }
 
 import 'dart:developer';
+import 'package:eduma_app/Screen/library.page.dart';
 import 'package:eduma_app/Screen/youtubePlayScreen.dart';
 import 'package:eduma_app/config/core/showFlushbar.dart';
 import 'package:eduma_app/config/network/api.state.dart';
@@ -1546,7 +1547,89 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                       setState(() {
                         enrolled = true;
                       });
-                      showSuccessMessage(context, response.message.toString());
+                      await showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            title: Row(
+                              children: [
+                                Icon(
+                                  Icons.check_circle,
+                                  color: Colors.green,
+                                  size: 28,
+                                ),
+                                SizedBox(width: 8),
+                                Text(
+                                  "Success",
+                                  style: GoogleFonts.roboto(
+                                    fontSize: 18.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.black87,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            content: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  response.message.toString(),
+                                  textAlign: TextAlign.center,
+                                  style: GoogleFonts.roboto(
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.black54,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            actionsAlignment: MainAxisAlignment.spaceBetween,
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                style: TextButton.styleFrom(
+                                  foregroundColor: Colors.redAccent,
+                                ),
+                                child: Text(
+                                  "Close",
+                                  style: GoogleFonts.roboto(
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Color(0xFF001E6C),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    CupertinoPageRoute(
+                                      builder: (context) =>
+                                          LibraryPage(),
+                                    ),
+                                  );
+                                },
+                                child: Text(
+                                  "Go to Library",
+                                  style: GoogleFonts.roboto(
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      );
                     }
                   } catch (e) {
                     log(e.toString());
