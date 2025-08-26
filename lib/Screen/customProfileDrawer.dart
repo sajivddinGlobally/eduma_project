@@ -1,9 +1,6 @@
-import 'dart:io';
 import 'package:eduma_app/Screen/cart.page.dart';
 import 'package:eduma_app/Screen/editProfile.page.dart';
-import 'package:eduma_app/Screen/library.page.dart';
 import 'package:eduma_app/Screen/login.page.dart';
-import 'package:eduma_app/Screen/onbording.page.dart';
 import 'package:eduma_app/Screen/orderList.page.dart';
 import 'package:eduma_app/Screen/paymentOverfiew.page.dart';
 import 'package:eduma_app/Screen/wishlist.page.dart';
@@ -102,7 +99,7 @@ class _CustomProfileDrawerState extends ConsumerState<CustomProfileDrawer> {
                             decoration: BoxDecoration(shape: BoxShape.circle),
                             child: ClipOval(
                               child: Image.network(
-                                profile.avatar!,
+                                profile.avatarUrl!,
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -179,7 +176,7 @@ class _CustomProfileDrawerState extends ConsumerState<CustomProfileDrawer> {
                         child: Text(
                           // "Annu Agarwal",
                           // box.get("storeName").toString(),
-                          profile.username.toString(),
+                          profile.displayName.toString(),
                           style: GoogleFonts.roboto(
                             fontSize: 16.sp,
                             fontWeight: FontWeight.w400,
