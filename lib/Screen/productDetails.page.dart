@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:eduma_app/Screen/cart.page.dart';
-import 'package:eduma_app/config/core/showFlushbar.dart';
 import 'package:eduma_app/config/network/api.state.dart';
 import 'package:eduma_app/config/utils/pretty.dio.dart';
 import 'package:eduma_app/data/Controller/productDetailsController.dart';
@@ -45,7 +44,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
             bottom: -40.h,
             left: 0,
             right: 0,
-            child: Image.asset(
+            child: Image.asset(   
               "assets/vec.png",
               width: 470.w,
               height: 450.h,
