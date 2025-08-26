@@ -1610,12 +1610,27 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                   ),
                                 ),
                                 onPressed: () {
-                                  Navigator.push(
+                                  // Navigator.pop(context);
+                                  // Navigator.push(
+                                  //   context,
+                                  //   CupertinoPageRoute(
+                                  //     builder: (context) => LibraryPage(),
+                                  //   ),
+                                  // );.
+                                  Navigator.pop(
+                                    context,
+                                  ); // pehle dialog band karo
+                                  Navigator.pushAndRemoveUntil(
                                     context,
                                     CupertinoPageRoute(
-                                      builder: (context) =>
-                                          LibraryPage(),
+                                      builder: (context) => LibraryPage(),
+                                      settings: RouteSettings(
+                                        name: "/LibraryPage",
+                                      ),
                                     ),
+                                    (route) =>
+                                        route.settings.name !=
+                                        "payCourseDetailsPage",
                                   );
                                 },
                                 child: Text(
