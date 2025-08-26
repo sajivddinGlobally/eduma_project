@@ -1,3 +1,4 @@
+import 'package:eduma_app/Screen/allCategory.page.dart';
 import 'package:eduma_app/Screen/allCourse.page.dart';
 import 'package:eduma_app/Screen/apiCall/api.register.dart';
 import 'package:eduma_app/Screen/continueMyCourse.page.dart';
@@ -349,11 +350,21 @@ class _HomePageState extends ConsumerState<HomePage> {
                           ),
                         ),
                         Spacer(),
-                        Icon(
-                          Icons.arrow_forward_ios,
-                          color: Color(0xFF001E6C),
-                          weight: 3,
-                          size: 23.sp,
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                builder: (context) => AllCategoryPage(),
+                              ),
+                            );
+                          },
+                          child: Icon(
+                            Icons.arrow_forward_ios,
+                            color: Color(0xFF001E6C),
+                            weight: 3,
+                            size: 23.sp,
+                          ),
                         ),
                         SizedBox(width: 20.w),
                       ],
