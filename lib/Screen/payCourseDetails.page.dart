@@ -1610,13 +1610,6 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                   ),
                                 ),
                                 onPressed: () {
-                                  // Navigator.pop(context);
-                                  // Navigator.push(
-                                  //   context,
-                                  //   CupertinoPageRoute(
-                                  //     builder: (context) => LibraryPage(),
-                                  //   ),
-                                  // );.
                                   Navigator.pushAndRemoveUntil(
                                     context,
                                     CupertinoPageRoute(
@@ -1625,9 +1618,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                         name: "LibraryPage",
                                       ),
                                     ),
-                                    (route) =>
-                                        route.settings.name !=
-                                        "payCourseDetailsPage",
+                                    (route) => route.isFirst,
                                   );
                                 },
                                 child: Text(
