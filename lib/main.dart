@@ -22,7 +22,7 @@ class MyApp extends ConsumerWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final themeMode = ref.watch(themeModeController);
+    final themeMode = ref.watch(themeNotifierProvider);
 
     var box = Hive.box("userBox");
     var token = box.get("token");
@@ -39,23 +39,12 @@ class MyApp extends ConsumerWidget {
             navigatorKey: navigatorKey,
             title: 'Flutter Demo',
 
-            theme: ThemeData(
-              colorScheme: ColorScheme.fromSeed(
-                seedColor: Colors.deepPurple,
-                brightness: Brightness.light,
-              ),
-              useMaterial3: true,
-            ),
+            theme: lightTheme,
 
-            darkTheme: ThemeData(
-              colorScheme: ColorScheme.fromSeed(
-                seedColor: Colors.deepPurple,
-                brightness: Brightness.dark,
-              ),
-              useMaterial3: true,
-            ),
-            // themeMode: themeMode,
+            darkTheme: darkTheme,
 
+            themeMode: themeMode,
+            
             home: token == null ? OnbordingPage() : HomePage(),
           );
         },
@@ -63,3 +52,20 @@ class MyApp extends ConsumerWidget {
     );
   }
 }
+
+
+  // theme: ThemeData(
+            //   brightness: Brightness.light,
+            //   colorScheme: ColorScheme.fromSeed(
+            //     seedColor: Colors.blue,
+            //     brightness: Brightness.light,
+            //   ),
+            // ),
+
+            // darkTheme: ThemeData(
+            //   brightness: Brightness.dark,
+            //   colorScheme: ColorScheme.fromSeed(
+            //     seedColor: Colors.deepPurple,
+            //     brightness: Brightness.dark,
+            //   ),
+            // ),

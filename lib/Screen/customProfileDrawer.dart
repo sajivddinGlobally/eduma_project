@@ -28,6 +28,7 @@ class _CustomProfileDrawerState extends ConsumerState<CustomProfileDrawer> {
   Widget build(BuildContext context) {
     var box = Hive.box("userBox");
     final profileProvider = ref.watch(profileController);
+    final themeMode = ref.watch(themeNotifierProvider);
     return Padding(
       padding: EdgeInsets.all(15),
       child: Container(
@@ -35,7 +36,8 @@ class _CustomProfileDrawerState extends ConsumerState<CustomProfileDrawer> {
         height: MediaQuery.of(context).size.height,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15.r),
-          color: Colors.white,
+          //color: Colors.white,
+          color: Theme.of(context).scaffoldBackgroundColor,
         ),
         child: profileProvider.when(
           data: (profile) {
@@ -52,6 +54,7 @@ class _CustomProfileDrawerState extends ConsumerState<CustomProfileDrawer> {
                       topRight: Radius.circular(15.r),
                     ),
                     color: Color(0xFF001E6C),
+                    //color:Theme.of(context).primaryColor
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,6 +74,7 @@ class _CustomProfileDrawerState extends ConsumerState<CustomProfileDrawer> {
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: Color(0xFF19347A),
+                                //color: colors.secondary,
                               ),
                               child: Icon(
                                 Icons.arrow_back,
@@ -86,6 +90,7 @@ class _CustomProfileDrawerState extends ConsumerState<CustomProfileDrawer> {
                               fontSize: 26.sp,
                               fontWeight: FontWeight.w600,
                               color: Colors.white,
+                              //color: colors.onPrimary,
                             ),
                           ),
                         ],
@@ -324,30 +329,13 @@ class _CustomProfileDrawerState extends ConsumerState<CustomProfileDrawer> {
                             height: 28.h,
                             child: Transform.scale(
                               scale: 0.7,
-                              child: Consumer(
-                                builder: (context, ref, child) {
-                                  final themeMode = ref.watch(
-                                    themeModeController,
-                                  );
-                                  return Switch(
-                                    value: themeMode == ThemeMode.dark,
-                                    onChanged: (value) {
-                                      ref
-                                          .read(themeModeController.notifier)
-                                          .state = value
-                                          ? ThemeMode.dark
-                                          : ThemeMode.light;
-                                    },
-                                  );
+                              child: Switch(
+                                value: themeMode == ThemeMode.dark,
+                                onChanged: (value) {
+                                  ref
+                                      .read(themeNotifierProvider.notifier)
+                                      .toggleTheme();
                                 },
-                                // child: Switch(
-                                //   value: isCheck,
-                                //   onChanged: (value) {
-                                //     setState(() {
-                                //       isCheck = value;
-                                //     });
-                                //   },
-                                // ),
                               ),
                             ),
                           ),
