@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:eduma_app/Screen/editProfile.page.dart';
 import 'package:eduma_app/config/network/api.state.dart';
 import 'package:eduma_app/config/utils/pretty.dio.dart';
@@ -239,9 +238,7 @@ class _CartPageState extends ConsumerState<CartPage> {
                                                                 ),
                                                               ),
                                                               onPressed: () async {
-                                                                // Assuming cartController has a method to remove item
-                                                                // ref.read(cartController.notifier).removeItem(item.productId);
-                                                                // setState(() {});
+                                                                
                                                                 final body =
                                                                     CarRemoveBodyModel(
                                                                       productId:
