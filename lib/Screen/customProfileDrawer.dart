@@ -5,6 +5,7 @@ import 'package:eduma_app/Screen/orderList.page.dart';
 import 'package:eduma_app/Screen/paymentOverfiew.page.dart';
 import 'package:eduma_app/Screen/wishlist.page.dart';
 import 'package:eduma_app/data/Controller/profileController.dart';
+import 'package:eduma_app/data/Controller/themeModeController.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -323,13 +324,30 @@ class _CustomProfileDrawerState extends ConsumerState<CustomProfileDrawer> {
                             height: 28.h,
                             child: Transform.scale(
                               scale: 0.7,
-                              child: Switch(
-                                value: isCheck,
-                                onChanged: (value) {
-                                  setState(() {
-                                    isCheck = value;
-                                  });
+                              child: Consumer(
+                                builder: (context, ref, child) {
+                                  final themeMode = ref.watch(
+                                    themeModeController,
+                                  );
+                                  return Switch(
+                                    value: themeMode == ThemeMode.dark,
+                                    onChanged: (value) {
+                                      ref
+                                          .read(themeModeController.notifier)
+                                          .state = value
+                                          ? ThemeMode.dark
+                                          : ThemeMode.light;
+                                    },
+                                  );
                                 },
+                                // child: Switch(
+                                //   value: isCheck,
+                                //   onChanged: (value) {
+                                //     setState(() {
+                                //       isCheck = value;
+                                //     });
+                                //   },
+                                // ),
                               ),
                             ),
                           ),

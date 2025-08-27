@@ -129,7 +129,7 @@ class _YoutubePageState extends State<YoutubePage> {
     if (await canLaunchUrl(url)) {
       await launchUrl(
         url,
-        mode: LaunchMode.externalApplication, // 👈 direct YouTube app/browser
+        mode: LaunchMode.externalApplication, 
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
