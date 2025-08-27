@@ -22,7 +22,7 @@ class MyApp extends ConsumerWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final themeMode = ref.watch(themeModeController);
+    // final themeMode = ref.watch(themeModeController);
 
     var box = Hive.box("userBox");
     var token = box.get("token");
@@ -54,7 +54,7 @@ class MyApp extends ConsumerWidget {
               ),
               useMaterial3: true,
             ),
-            themeMode: themeMode,
+            // themeMode: themeMode,
 
             home: token == null ? OnbordingPage() : HomePage(),
           );
