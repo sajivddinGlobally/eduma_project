@@ -1364,8 +1364,38 @@ class _allProductState extends State<allProduct> {
                   padding: EdgeInsets.zero,
                   tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 ),
-                onPressed: () async {},
-                icon: Icon(Icons.add),
+                onPressed: () async {
+                  // 👇 API call se direct result lo
+                  final result =
+                      await ProductWishlistController.productWishlist(
+                        context: context,
+                        productId: widget.data.id!,
+                        currentStatus: isWishlisted,
+                      );
+
+                  // 👇 bas yehi update karna hai
+                  setState(() {
+                    isWishlisted = result;
+                  });
+                },
+                icon: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 500),
+                  transitionBuilder: (child, animation) {
+                    return ScaleTransition(
+                      scale: CurvedAnimation(
+                        parent: animation,
+                        curve: Curves.easeInOutBack,
+                      ),
+                      child: child,
+                    );
+                  },
+                  child: Icon(
+                    isWishlisted ? Icons.favorite : Icons.favorite_border,
+                    key: ValueKey<bool>(isWishlisted),
+                    color: isWishlisted ? Colors.red : Colors.white,
+                    size: 25.sp,
+                  ),
+                ),
               ),
             ),
             Positioned(

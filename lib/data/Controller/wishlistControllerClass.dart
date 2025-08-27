@@ -1,7 +1,9 @@
 import 'dart:developer';
+import 'package:dio/dio.dart';
 import 'package:eduma_app/config/core/showFlushbar.dart';
 import 'package:eduma_app/config/network/api.state.dart';
 import 'package:eduma_app/config/utils/pretty.dio.dart';
+import 'package:eduma_app/data/Model/productWishlistBodyModel.dart';
 import 'package:eduma_app/data/Model/wishlistBodyModel.dart';
 import 'package:flutter/material.dart';
 
@@ -29,68 +31,67 @@ class WishlistControllerClass {
   }
 }
 
-// class WishlistState {
-//   final bool isLoading;
-//   final String? successMessage;
-//   final String? errorMessage;
-
-//   const WishlistState({
-//     this.isLoading = false,
-//     this.successMessage,
-//     this.errorMessage,
-//   });
-
-//   WishlistState copyWith({
-//     bool? isLoading,
-//     String? successMessage,
-//     String? errorMessage,
-//   }) {
-//     return WishlistState(
-//       isLoading: isLoading ?? this.isLoading,
-//       successMessage: successMessage,
-//       errorMessage: errorMessage,
-//     );
-//   }
-
-//   // @override
-//   // List<Object?> get props => [isLoading, successMessage, errorMessage];
-// }
-
-// class WishlistNotifier extends StateNotifier<WishlistState> {
-//   WishlistNotifier() : super(const WishlistState());
-
-//   Future<bool> addToWishlist(WishlistBodyModel body) async {
-//     state = state.copyWith(
-//       isLoading: true,
-//       errorMessage: null,
-//       successMessage: null,
-//     );
-
+// class productWishlistController {
+//   static Future<bool> productWishlist({
+//     required BuildContext context,
+//     required int productId,
+//     required bool currentStatus,
+//   }) async {
 //     try {
-//       final service = APIStateNetwork(createDio());
-//       final response = await service.wishlist(body);
-
-//       if (response != null) {
-//         state = state.copyWith(
-//           isLoading: false,
-//           successMessage: response.message,
-//         );
-//         return true;
-//       } else {
-//         state = state.copyWith(
-//           isLoading: false,
-//           errorMessage: "Something went wrong",
-//         );
-//         return false;
+//       final body = ProductWishlistBodyModel(productId: productId);
+//       final service = APIStateNetwork(createWooCommerceDio());
+//       final reponse = await service.productWishlist(body);
+//       if (reponse.success == true) {
+//         showSuccessMessage(context, reponse.message);
+//         return !currentStatus;
 //       }
 //     } catch (e) {
-//       state = state.copyWith(isLoading: false, errorMessage: e.toString());
-//       return false;
+//       log(e.toString());
 //     }
+//     return currentStatus;
 //   }
 // }
 
-// final wishlistNotifierProvider =
-//     StateNotifierProvider<WishlistNotifier, WishlistState>(
-//       (ref) => WishlistNotifier(),
-//     );
+class ProductWishlistController {
+  static Future<bool> productWishlist({
+    required BuildContext context,
+    required int productId,
+    required bool currentStatus,
+  }) async {
+    try {
+      final body = ProductWishlistBodyModel(productId: productId);
+      final service = APIStateNetwork(createWooCommerceDio());
+
+      final response = await service.productWishlist(body);
+
+      // Agar API ne success return kiya
+      if (response.success == true) {
+        showSuccessMessage(context, response.message);
+        return !currentStatus; // state toggle karo
+      }
+    } on DioException catch (e) {
+      if (e.response != null && e.response?.data != null) {
+        final data = e.response!.data;
+
+        // 👇 check karo error code
+        if (data['code'] == "already_in_wishlist") {
+          showSuccessMessage(context, data['message']);
+          return true; // wishlist mein already hai
+        }
+      }
+      log("Wishlist API Error: ${e.response?.data ?? e.message}");
+
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Something went wrong!")));
+    } catch (e) {
+      log("Wishlist Exception: $e");
+
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Unexpected error!")));
+    }
+
+    return currentStatus;
+  }
+}

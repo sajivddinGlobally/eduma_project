@@ -1,5 +1,7 @@
 import 'package:eduma_app/Screen/productDetails.page.dart';
 import 'package:eduma_app/data/Controller/productListController.dart';
+import 'package:eduma_app/data/Controller/wishlistControllerClass.dart';
+import 'package:eduma_app/data/Model/productListModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -56,6 +58,7 @@ class _ShopPageState extends ConsumerState<ShopPage> {
       "name": "Create an LMS Website With LearnPress",
     },
   ];
+  bool isWishlisted = false;
   @override
   Widget build(BuildContext context) {
     final productListProvider = ref.watch(productListController);
@@ -131,116 +134,7 @@ class _ShopPageState extends ConsumerState<ShopPage> {
                                 childAspectRatio: 190 / 180,
                               ),
                           itemBuilder: (context, index) {
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Stack(
-                                  children: [
-                                    InkWell(
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          CupertinoPageRoute(
-                                            builder: (context) =>
-                                                ProductDetailsPage(
-                                                  id: snap[index].id.toString(),
-                                                ),
-                                          ),
-                                        );
-                                      },
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(
-                                          10.r,
-                                        ),
-                                        child: Image.network(
-                                          // "assets/reading2.png",
-                                          //shopList[index]['image'].toString(),
-                                          snap[index].images![0].medium
-                                              .toString(),
-                                          width: 190.w,
-                                          height: 125.h,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                    ),
-                                    // Align(
-                                    //   alignment: Alignment.topRight,
-                                    //   child: Container(
-                                    //     margin: EdgeInsets.only(
-                                    //       top: 8.h,
-                                    //       right: 13.w,
-                                    //     ),
-                                    //     child: IconButton(
-                                    //       style: IconButton.styleFrom(
-                                    //         minimumSize: Size(0, 0),
-                                    //         padding: EdgeInsets.zero,
-                                    //         tapTargetSize: MaterialTapTargetSize
-                                    //             .shrinkWrap,
-                                    //       ),
-                                    //       onPressed: () {},
-                                    //       icon: Icon(
-                                    //         Icons.favorite_border,
-                                    //         color: Colors.white,
-                                    //       ),
-                                    //     ),
-                                    //   ),
-                                    // ),
-                                    // Positioned(
-                                    //   bottom: 8.h,
-                                    //   left: 13.w,
-                                    //   child: Container(
-                                    //     width: 57.w,
-                                    //     height: 27.h,
-                                    //     decoration: BoxDecoration(
-                                    //       borderRadius: BorderRadius.circular(
-                                    //         5.r,
-                                    //       ),
-                                    //       color: Color(0xFF001E6C),
-                                    //     ),
-                                    //     child: Center(
-                                    //       child: Text(
-                                    //         //"₹ 45.00",
-                                    //         //shopList[index]['paid'].toString(),
-                                    //         snap[index].price.toString(),
-                                    //         style: GoogleFonts.roboto(
-                                    //           fontSize: 12.sp,
-                                    //           fontWeight: FontWeight.w500,
-                                    //           color: Colors.white,
-                                    //         ),
-                                    //       ),
-                                    //     ),
-                                    //   ),
-                                    // ),
-                                  ],
-                                ),
-                                SizedBox(height: 10.h),
-                                Text(
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 1,
-                                  //  "Introduction learn Press - LMS Plugin",
-                                  // shopList[index]['name'].toString(),
-                                  snap[index].name.toString(),
-                                  style: GoogleFonts.roboto(
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w500,
-                                    color: Color(0xFF000000),
-                                    letterSpacing: -0.4,
-                                    height: 1,
-                                  ),
-                                ),
-                                SizedBox(height: 6.h),
-                                Text(
-                                  //"₹ 45.00",
-                                  //shopList[index]['paid'].toString(),
-                                  snap[index].price.toString(),
-                                  style: GoogleFonts.roboto(
-                                    fontSize: 15.sp,
-                                    fontWeight: FontWeight.w500,
-                                    color: Color(0xFF001E6C),
-                                  ),
-                                ),
-                              ],
-                            );
+                            return showBody(data: snap[index]);
                           },
                         ),
                       ),
@@ -255,6 +149,123 @@ class _ShopPageState extends ConsumerState<ShopPage> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class showBody extends StatefulWidget {
+  final ProductListModel data;
+  const showBody({super.key, required this.data});
+
+  @override
+  State<showBody> createState() => _showBodyState();
+}
+
+class _showBodyState extends State<showBody> {
+  bool isWishlisted = false;
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Stack(
+          children: [
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                    builder: (context) =>
+                        ProductDetailsPage(id: widget.data.id!.toString()),
+                  ),
+                );
+              },
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10.r),
+                child: Image.network(
+                  // "assets/reading2.png",
+                  //shopList[index]['image'].toString(),
+                  widget.data.images![0].medium.toString(),
+                  width: 190.w,
+                  height: 125.h,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            Align(
+              alignment: Alignment.topRight,
+              child: Container(
+                margin: EdgeInsets.only(top: 8.h, right: 13.w),
+                child: IconButton(
+                  style: IconButton.styleFrom(
+                    minimumSize: Size(0, 0),
+                    padding: EdgeInsets.zero,
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  ),
+                  onPressed: () async {
+                    // 👇 API call se direct result lo
+                    final result =
+                        await ProductWishlistController.productWishlist(
+                          context: context,
+                          productId: widget.data.id!,
+                          currentStatus: isWishlisted,
+                        );
+
+                    // 👇 bas yehi update karna hai
+                    setState(() {
+                      isWishlisted = result;
+                    });
+                  },
+                  icon: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 500),
+                    transitionBuilder: (child, animation) {
+                      return ScaleTransition(
+                        scale: CurvedAnimation(
+                          parent: animation,
+                          curve: Curves.easeInOutBack,
+                        ),
+                        child: child,
+                      );
+                    },
+                    child: Icon(
+                      isWishlisted ? Icons.favorite : Icons.favorite_border,
+                      key: ValueKey<bool>(isWishlisted),
+                      color: isWishlisted ? Colors.red : Colors.white,
+                      size: 25.sp,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 10.h),
+        Text(
+          overflow: TextOverflow.ellipsis,
+          maxLines: 1,
+          //  "Introduction learn Press - LMS Plugin",
+          // shopList[index]['name'].toString(),
+          widget.data.name.toString(),
+          style: GoogleFonts.roboto(
+            fontSize: 16.sp,
+            fontWeight: FontWeight.w500,
+            color: Color(0xFF000000),
+            letterSpacing: -0.4,
+            height: 1,
+          ),
+        ),
+        SizedBox(height: 6.h),
+        Text(
+          //"₹ 45.00",
+          //shopList[index]['paid'].toString(),
+          widget.data.price.toString(),
+          style: GoogleFonts.roboto(
+            fontSize: 15.sp,
+            fontWeight: FontWeight.w500,
+            color: Color(0xFF001E6C),
+          ),
+        ),
+      ],
     );
   }
 }
