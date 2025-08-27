@@ -26,6 +26,7 @@ import 'package:eduma_app/data/Model/popularCourseModel.dart';
 import 'package:eduma_app/data/Model/productDetailsModel.dart';
 import 'package:eduma_app/data/Model/productListModel.dart';
 import 'package:eduma_app/data/Model/productWishlistBodyModel.dart';
+import 'package:eduma_app/data/Model/productWishlistModel.dart';
 import 'package:eduma_app/data/Model/productWishlistReModel.dart';
 import 'package:eduma_app/data/Model/profileModel.dart';
 import 'package:eduma_app/data/Model/registerBodyCustomeModel.dart';
@@ -119,6 +120,9 @@ abstract class APIStateNetwork {
   Future<ProductWishlistReModel> productWishlist(
     @Body() ProductWishlistBodyModel body,
   );
+
+  @GET("/wc/v3/wishlist")
+  Future<ProductWishlistgetModel> fetchProductWishlist();
 
   @POST("/custom/v1/cart/add")
   Future<ProductAddCartResModel> addToCart(
