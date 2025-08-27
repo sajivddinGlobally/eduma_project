@@ -300,6 +300,7 @@ import 'package:eduma_app/config/network/api.state.dart';
 import 'package:eduma_app/config/utils/pretty.dio.dart';
 import 'package:eduma_app/data/Controller/getWishlistController.dart';
 import 'package:eduma_app/data/Controller/productWishlistController.dart';
+import 'package:eduma_app/data/Model/productDeleteBodyModel.dart';
 import 'package:eduma_app/data/Model/wishlistBodyModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -722,7 +723,7 @@ class _WishlistPageState extends ConsumerState<WishlistPage> {
                               ),
                               SizedBox(height: 16.h),
                               Text(
-                                "Your Wishlist is Empty",
+                                "Your Product Wishlist is Empty",
                                 style: GoogleFonts.roboto(
                                   fontSize: 20.sp,
                                   fontWeight: FontWeight.w500,
@@ -731,7 +732,7 @@ class _WishlistPageState extends ConsumerState<WishlistPage> {
                               ),
                               SizedBox(height: 8.h),
                               Text(
-                                "Add courses you love to see them here!",
+                                "Add Product you love to see them here!",
                                 style: GoogleFonts.roboto(
                                   fontSize: 16.sp,
                                   fontWeight: FontWeight.w400,
@@ -808,30 +809,33 @@ class _WishlistPageState extends ConsumerState<WishlistPage> {
                                           ),
                                           child: IconButton(
                                             onPressed: () async {
-                                              final body = WishlistBodyModel(
-                                                courseId: productwishlist
-                                                    .data[index]
-                                                    .id,
-                                                userId: box.get("storeId"),
+                                              log(
+                                                "Deleting product: ${productwishlist.data[index].id}",
                                               );
-                                              // try {
-                                              //   final service = APIStateNetwork(
-                                              //     createDio(),
-                                              //   );
-                                              //   final response = await service
-                                              //       .deleteWishlist(body);
-                                              //   if (response != null) {
-                                              //     showSuccessMessage(
-                                              //       context,
-                                              //       response.message,
-                                              //     );
-                                              //   }
-                                              //   ref.invalidate(
-                                              //     getWishlistController,
-                                              //   );
-                                              // } catch (e) {
-                                              //   log(e.toString());
-                                              // }
+                                              try {
+                                                final body =
+                                                    ProductDeleteBodyModel(
+                                                      productId: productwishlist
+                                                          .data[index]
+                                                          .id,
+                                                    );
+                                                final service = APIStateNetwork(
+                                                  createDio(),
+                                                );
+                                                final response = await service
+                                                    .productDelete(body);
+                                                if (response.success == true) {
+                                                  showSuccessMessage(
+                                                    context,
+                                                    response.message,
+                                                  );
+                                                }
+                                                ref.invalidate(
+                                                  productWishlistController,
+                                                );
+                                              } catch (e) {
+                                                log(e.toString());
+                                              }
                                             },
                                             icon: Icon(
                                               Icons.delete_outline,
@@ -882,7 +886,8 @@ class _WishlistPageState extends ConsumerState<WishlistPage> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          productwishlist.data[index].inStock.toString(),
+                                          productwishlist.data[index].inStock
+                                              .toString(),
                                           style: GoogleFonts.roboto(
                                             fontSize: 16.sp,
                                             fontWeight: FontWeight.w400,
