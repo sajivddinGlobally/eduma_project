@@ -151,7 +151,7 @@ class _CartPageState extends ConsumerState<CartPage> {
                                   padding: EdgeInsets.only(right: 20.w),
                                   child: Icon(
                                     Icons.delete,
-                                    color: Colors.white,
+                                    color: Colors.black,
                                     size: 24.sp,
                                   ),
                                 ),
@@ -260,7 +260,7 @@ class _CartPageState extends ConsumerState<CartPage> {
                                                   ),
                                                 ),
                                                 Container(
-                                                  width: 110.w,
+                                                  width: 120.w,
                                                   height: 36.h,
                                                   decoration: BoxDecoration(
                                                     borderRadius:
@@ -269,72 +269,80 @@ class _CartPageState extends ConsumerState<CartPage> {
                                                         ),
                                                     color: Color(0xFFF5F7FA),
                                                   ),
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceEvenly,
-                                                    children: [
-                                                      IconButton(
-                                                        style:
-                                                            IconButton.styleFrom(
-                                                              minimumSize:
-                                                                  Size.zero,
-                                                              padding:
-                                                                  EdgeInsets
-                                                                      .zero,
-                                                            ),
-                                                        icon: Icon(
-                                                          Icons.remove,
-                                                          size: 20.sp,
-                                                          color: Color(
-                                                            0xFF001E6C,
+                                                  child: Padding(
+                                                    padding: EdgeInsets.only(
+                                                      left: 10.w,
+                                                      right: 10.w,
+                                                    ),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        IconButton(
+                                                          style: IconButton.styleFrom(
+                                                            minimumSize:
+                                                                Size.zero,
+                                                            padding:
+                                                                EdgeInsets.zero,
+                                                            tapTargetSize:
+                                                                MaterialTapTargetSize
+                                                                    .shrinkWrap,
                                                           ),
+                                                          icon: Icon(
+                                                            Icons.remove,
+                                                            size: 20.sp,
+                                                            color: Color(
+                                                              0xFF001E6C,
+                                                            ),
+                                                          ),
+                                                          onPressed: () {
+                                                            if (item.quantity >
+                                                                1) {
+                                                              setState(() {
+                                                                item.quantity--;
+                                                              });
+                                                            }
+                                                          },
                                                         ),
-                                                        onPressed: () {
-                                                          if (item.quantity >
-                                                              1) {
-                                                            setState(() {
-                                                              item.quantity--;
-                                                            });
-                                                          }
-                                                        },
-                                                      ),
-                                                      Text(
-                                                        "${item.quantity}",
-                                                        style:
-                                                            GoogleFonts.poppins(
-                                                              fontSize: 16.sp,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600,
-                                                              color: Color(
-                                                                0xFF001E6C,
+                                                        Text(
+                                                          "${item.quantity}",
+                                                          style:
+                                                              GoogleFonts.poppins(
+                                                                fontSize: 16.sp,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                                color: Color(
+                                                                  0xFF001E6C,
+                                                                ),
                                                               ),
-                                                            ),
-                                                      ),
-                                                      IconButton(
-                                                        style:
-                                                            IconButton.styleFrom(
-                                                              minimumSize:
-                                                                  Size.zero,
-                                                              padding:
-                                                                  EdgeInsets
-                                                                      .zero,
-                                                            ),
-                                                        icon: Icon(
-                                                          Icons.add,
-                                                          size: 20.sp,
-                                                          color: Color(
-                                                            0xFF001E6C,
-                                                          ),
                                                         ),
-                                                        onPressed: () {
-                                                          setState(() {
-                                                            item.quantity++;
-                                                          });
-                                                        },
-                                                      ),
-                                                    ],
+                                                        IconButton(
+                                                          style: IconButton.styleFrom(
+                                                            minimumSize:
+                                                                Size.zero,
+                                                            padding:
+                                                                EdgeInsets.zero,
+                                                            tapTargetSize:
+                                                                MaterialTapTargetSize
+                                                                    .shrinkWrap,
+                                                          ),
+                                                          icon: Icon(
+                                                            Icons.add,
+                                                            size: 20.sp,
+                                                            color: Color(
+                                                              0xFF001E6C,
+                                                            ),
+                                                          ),
+                                                          onPressed: () {
+                                                            setState(() {
+                                                              item.quantity++;
+                                                            });
+                                                          },
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
                                                 ),
                                               ],
