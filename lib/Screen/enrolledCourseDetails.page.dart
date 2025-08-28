@@ -310,10 +310,7 @@ class _EnrolledDourseDetailsPageState
                       color: Colors.black,
                     ),
                   ),
-
                   SizedBox(height: 24.h),
-
-                  // 📚 Lessons List
                   Expanded(
                     child: ListView.builder(
                       padding: EdgeInsets.zero,
@@ -414,7 +411,7 @@ class _EnrolledDourseDetailsPageState
                 Row(
                   children: [
                     ClipRRect(
-                      borderRadius: BorderRadius.circular(8.r),
+                      borderRadius: BorderRadius.circular(10.r),
                       child: Image.network(
                         videoId.isNotEmpty
                             ? "https://img.youtube.com/vi/$videoId/0.jpg"
@@ -423,11 +420,14 @@ class _EnrolledDourseDetailsPageState
                         height: 70.h,
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) {
-                          return Image.network(
-                            "https://t4.ftcdn.net/jpg/05/97/47/95/360_F_597479556_7bbQ7t4Z8k3xbAloHFHVdZIizWK1PdOo.jpg",
-                            width: 120.w,
-                            height: 70.h,
-                            fit: BoxFit.cover,
+                          return ClipRRect(
+                            borderRadius: BorderRadius.circular(10.r),
+                            child: Image.network(
+                              "https://t4.ftcdn.net/jpg/05/97/47/95/360_F_597479556_7bbQ7t4Z8k3xbAloHFHVdZIizWK1PdOo.jpg",
+                              width: 120.w,
+                              height: 70.h,
+                              fit: BoxFit.cover,
+                            ),
                           );
                         },
                       ),

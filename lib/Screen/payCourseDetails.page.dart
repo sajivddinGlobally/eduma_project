@@ -477,30 +477,46 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10.r),
                                   color: Color(0xFFFFFFFF),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      offset: Offset(0, 1),
-                                      spreadRadius: 0,
-                                      blurRadius: 4,
-                                      color: Color.fromARGB(63, 0, 0, 0),
-                                    ),
-                                  ],
+                                  border: Border.all(
+                                    color: Color.fromARGB(63, 0, 0, 0),
+                                  ),
+                                  // boxShadow: [
+                                  //   BoxShadow(
+                                  //     offset: Offset(0, 1),
+                                  //     spreadRadius: 0,
+                                  //     blurRadius: 4,
+                                  //     color: Color.fromARGB(63, 0, 0, 0),
+                                  //   ),
+                                  // ],
                                 ),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
+                                  // children: courseDetails.topics!
+                                  //     .map(
+                                  //       (e) => modules(
+                                  //         e.topicTitle.toString(),
+                                  //         e.lessons!
+                                  //             .map(
+                                  //               (lesson) => lesson
+                                  //                   .lessonMeta!
+                                  //                   .video
+                                  //                   .toString(),
+                                  //             )
+                                  //             .toList(),
+                                  //       ),
+                                  //     )
+                                  //     .toList(),
                                   children: courseDetails.topics!
-                                      .map(
-                                        (e) => modules(
-                                          e.topicTitle.toString(),
-                                          e.lessons!
-                                              .map(
-                                                (lesson) => lesson
-                                                    .lessonMeta!
-                                                    .video
+                                      .expand(
+                                        (topic) => topic.lessons!
+                                            .map(
+                                              (lession) => modules(
+                                                lession.lessonTitle.toString(),
+                                                lession.lessonMeta!.video
                                                     .toString(),
-                                              )
-                                              .toList(),
-                                        ),
+                                              ),
+                                            )
+                                            .toList(),
                                       )
                                       .toList(),
                                 ),
@@ -777,106 +793,223 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
     );
   }
 
-  Widget modules(String txt, List<String> videos) {
-    return Theme(
-      data: Theme.of(context).copyWith(
-        dividerColor: Colors.transparent,
-        splashColor: Colors.transparent,
-        highlightColor: Colors.transparent,
-      ),
+  // Widget modules(String txt, List<String> videos) {
+  //   return Theme(
+  //     data: Theme.of(context).copyWith(
+  //       dividerColor: Colors.transparent,
+  //       splashColor: Colors.transparent,
+  //       highlightColor: Colors.transparent,
+  //     ),
+  //     child: ExpansionTile(
+  //       tilePadding: EdgeInsets.zero,
+  //       title: Column(
+  //         crossAxisAlignment: CrossAxisAlignment.start,
+  //         children: [
+  //           Text(
+  //             txt,
+  //             style: GoogleFonts.roboto(
+  //               fontSize: 16.sp,
+  //               fontWeight: FontWeight.w500,
+  //               color: const Color(0xFF000000),
+  //               letterSpacing: -0.4,
+  //               height: 1.1,
+  //             ),
+  //           ),
+  //           Text(
+  //             "${videos.length} Video(s)",
+  //             style: GoogleFonts.roboto(
+  //               fontSize: 14.sp,
+  //               fontWeight: FontWeight.w400,
+  //               color: const Color(0xFF000000),
+  //               letterSpacing: -0.3,
+  //             ),
+  //           ),
+  //         ],
+  //       ),
+  //       children: videos
+  //           .map(
+  //             (video) => GestureDetector(
+  //               onTap: () {
+  //                 log(video.toString());
+  //                 final id = _extractYouTubeId(video);
+  //                 if (id.isNotEmpty) {
+  //                   Navigator.push(
+  //                     context,
+  //                     MaterialPageRoute(
+  //                       builder: (_) => YoutubePlayerScreen(videoId: id),
+  //                     ),
+  //                   );
+  //                 } else {
+  //                   ScaffoldMessenger.of(context).showSnackBar(
+  //                     const SnackBar(content: Text("Invalid YouTube link")),
+  //                   );
+  //                 }
+  //               },
+  //               child: Container(
+  //                 margin: EdgeInsets.symmetric(vertical: 5.h),
+  //                 child: Row(
+  //                   crossAxisAlignment: CrossAxisAlignment.start,
+  //                   children: [
+  //                     ClipRRect(
+  //                       borderRadius: BorderRadius.circular(8.r),
+  //                       child: Image.network(
+  //                         video.contains('youtube.com') ||
+  //                                 video.contains('youtu.be')
+  //                             ? 'https://img.youtube.com/vi/${_extractYouTubeId(video)}/0.jpg'
+  //                             : 'https://via.placeholder.com/100x60.png?text=Video',
+  //                         width: 100.w,
+  //                         height: 60.h,
+  //                         fit: BoxFit.cover,
+  //                         errorBuilder: (context, error, stackTrace) =>
+  //                             Container(
+  //                               width: 100.w,
+  //                               height: 60.h,
+  //                               color: Colors.grey,
+  //                               child: Icon(
+  //                                 Icons.videocam,
+  //                                 color: Colors.white,
+  //                                 size: 30.sp,
+  //                               ),
+  //                             ),
+  //                       ),
+  //                     ),
+  //                     SizedBox(width: 10.w),
+  //                     Expanded(
+  //                       child: Text(
+  //                         video,
+  //                         maxLines: 2,
+  //                         overflow: TextOverflow.ellipsis,
+  //                         style: GoogleFonts.roboto(
+  //                           fontSize: 14.sp,
+  //                           fontWeight: FontWeight.w400,
+  //                           color: const Color(0xFF000000),
+  //                           letterSpacing: -0.3,
+  //                         ),
+  //                       ),
+  //                     ),
+  //                   ],
+  //                 ),
+  //               ),
+  //             ),
+  //           )
+  //           .toList(),
+  //     ),
+  //   );
+  // }
+
+  Widget modules(String title, String videoUrl) {
+    final videoId = _extractYouTubeId(videoUrl);
+    return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+      margin: EdgeInsets.symmetric(vertical: 8.h),
+      elevation: 2,
       child: ExpansionTile(
-        tilePadding: EdgeInsets.zero,
+        tilePadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+        childrenPadding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 12.h),
+        collapsedShape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.r),
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.r),
+        ),
+        backgroundColor: Colors.white,
+        collapsedBackgroundColor: Colors.white,
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              txt,
+              title,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style: GoogleFonts.roboto(
                 fontSize: 16.sp,
-                fontWeight: FontWeight.w500,
-                color: const Color(0xFF000000),
-                letterSpacing: -0.4,
-                height: 1.1,
+                fontWeight: FontWeight.w600,
+                color: Colors.black,
               ),
             ),
+            SizedBox(height: 4.h),
             Text(
-              "${videos.length} Video(s)",
+              "1 Video",
               style: GoogleFonts.roboto(
-                fontSize: 14.sp,
+                fontSize: 13.sp,
                 fontWeight: FontWeight.w400,
-                color: const Color(0xFF000000),
-                letterSpacing: -0.3,
+                color: Colors.grey[600],
               ),
             ),
           ],
         ),
-        children: videos
-            .map(
-              (video) => GestureDetector(
-                onTap: () {
-                  log(video.toString());
-                  final id = _extractYouTubeId(video);
-                  if (id.isNotEmpty) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => YoutubePlayerScreen(videoId: id),
-                      ),
-                    );
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Invalid YouTube link")),
-                    );
-                  }
-                },
-                child: Container(
-                  margin: EdgeInsets.symmetric(vertical: 5.h),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(8.r),
-                        child: Image.network(
-                          video.contains('youtube.com') ||
-                                  video.contains('youtu.be')
-                              ? 'https://img.youtube.com/vi/${_extractYouTubeId(video)}/0.jpg'
-                              : 'https://via.placeholder.com/100x60.png?text=Video',
-                          width: 100.w,
-                          height: 60.h,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) =>
-                              Container(
-                                width: 100.w,
-                                height: 60.h,
-                                color: Colors.grey,
-                                child: Icon(
-                                  Icons.videocam,
-                                  color: Colors.white,
-                                  size: 30.sp,
-                                ),
-                              ),
-                        ),
-                      ),
-                      SizedBox(width: 10.w),
-                      Expanded(
-                        child: Text(
-                          video,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: GoogleFonts.roboto(
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w400,
-                            color: const Color(0xFF000000),
-                            letterSpacing: -0.3,
-                          ),
-                        ),
-                      ),
-                    ],
+        children: [
+          InkWell(
+            borderRadius: BorderRadius.circular(8.r),
+            onTap: () {
+              if (videoId.isNotEmpty) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => YoutubePlayerScreen(videoId: videoId),
                   ),
+                );
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text("Invalid YouTube link")),
+                );
+              }
+            },
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Divider(color: Color(0xFFBFBFBF), thickness: 0.90.w),
+                SizedBox(height: 10.h),
+                Row(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(10.r),
+                      child: Image.network(
+                        videoId.isNotEmpty
+                            ? "https://img.youtube.com/vi/$videoId/0.jpg"
+                            : "https://via.placeholder.com/120x90.png?text=No+Video",
+                        width: 120.w,
+                        height: 70.h,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return ClipRRect(
+                            borderRadius: BorderRadius.circular(10.r),
+                            child: Image.network(
+                              "https://t4.ftcdn.net/jpg/05/97/47/95/360_F_597479556_7bbQ7t4Z8k3xbAloHFHVdZIizWK1PdOo.jpg",
+                              width: 120.w,
+                              height: 70.h,
+                              fit: BoxFit.cover,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    SizedBox(width: 12.w),
+                    Expanded(
+                      child: Text(
+                        title,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: GoogleFonts.roboto(
+                          fontSize: 15.sp,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black87,
+                        ),
+                      ),
+                    ),
+
+                    Icon(
+                      Icons.play_circle_fill,
+                      size: 28.sp,
+                      color: Colors.redAccent,
+                    ),
+                  ],
                 ),
-              ),
-            )
-            .toList(),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
