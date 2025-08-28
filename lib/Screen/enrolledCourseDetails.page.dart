@@ -124,10 +124,9 @@ class _EnrolledDourseDetailsPageState
                                 .expand(
                                   (topic) => topic.lessons!
                                       .map(
-                                        (lession) => lessonTile(
-                                          lession.lessonTitle.toString(),
-                                          lession.lessonMeta!.video.toString(),
-                                          lession.lessonTitle.toString(),
+                                        (lesson) => lessonTile(
+                                          lesson.lessonTitle.toString(),
+                                          lesson.lessonMeta!.video.toString(),
                                         ),
                                       )
                                       .toList(),
@@ -149,7 +148,7 @@ class _EnrolledDourseDetailsPageState
     );
   }
 
-  Widget lessonTile(String title, String video, String lessionTitle) {
+  Widget lessonTile(String title, String video) {
     return Theme(
       data: Theme.of(context).copyWith(
         dividerColor: Colors.transparent,
@@ -158,36 +157,37 @@ class _EnrolledDourseDetailsPageState
       ),
       child: ExpansionTile(
         tilePadding: EdgeInsets.zero,
-        title: Expanded(
-          child: Padding(
-            padding: EdgeInsets.only(left: 15.w, top: 10.h),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: GoogleFonts.roboto(
-                    fontSize: 18.sp,
-                    fontWeight: FontWeight.w500,
-                    color: const Color(0xFF000000),
-                    letterSpacing: -0.3,
-                  ),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(left: 15.w),
+              child: Text(
+                title,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: GoogleFonts.roboto(
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.w600,
+                  color: const Color(0xFF000000),
+                  letterSpacing: -0.3,
                 ),
-                Text(
-                  //"${video.length} video",
-                  "video",
-                  style: GoogleFonts.roboto(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w400,
-                    color: const Color(0xFF000000),
-                    letterSpacing: -0.3,
-                  ),
-                ),
-              ],
+              ),
             ),
-          ),
+            Padding(
+              padding: EdgeInsets.only(left: 15.w),
+              child: Text(
+                "1 Video",
+                style: GoogleFonts.roboto(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w400,
+                  color: const Color(0xFF000000),
+                ),
+              ),
+            ),
+            SizedBox(height: 8.h),
+            Divider(color: Color(0xFFBFBFBF)),
+          ],
         ),
         children: [
           InkWell(
@@ -207,36 +207,17 @@ class _EnrolledDourseDetailsPageState
               }
             },
             child: Padding(
-              padding: EdgeInsets.only(left: 25.w),
+              padding: EdgeInsets.only(left: 25.w, bottom: 10.h),
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Icon(Icons.ondemand_video_outlined),
-                  // ClipRRect(
-                  //   borderRadius: BorderRadius.circular(8.r),
-                  //   child: Image.network(
-                  //     video.contains('youtube.com') || video.contains('youtu.be')
-                  //         ? 'https://img.youtube.com/vi/${_extractYouTubeId(video)}/0.jpg'
-                  //         : 'https://via.placeholder.com/100x60.png?text=Video',
-                  //     width: 100.w,
-                  //     height: 60.h,
-                  //     fit: BoxFit.cover,
-                  //     errorBuilder: (context, error, stackTrace) => Container(
-                  //       width: 100.w,
-                  //       height: 60.h,
-                  //       color: Colors.grey,
-                  //       child: Icon(
-                  //         Icons.videocam,
-                  //         color: Colors.white,
-                  //         size: 30.sp,
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 10.w),
+                  Icon(Icons.ondemand_video_outlined, size: 24.sp),
+                  SizedBox(width: 10.w),
+                  Expanded(
                     child: Text(
-                      lessionTitle,
+                      title,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                       style: GoogleFonts.roboto(
                         fontSize: 18.sp,
                         fontWeight: FontWeight.w400,
