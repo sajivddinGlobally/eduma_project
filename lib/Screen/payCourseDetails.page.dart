@@ -480,14 +480,6 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                   border: Border.all(
                                     color: Color.fromARGB(63, 0, 0, 0),
                                   ),
-                                  // boxShadow: [
-                                  //   BoxShadow(
-                                  //     offset: Offset(0, 1),
-                                  //     spreadRadius: 0,
-                                  //     blurRadius: 4,
-                                  //     color: Color.fromARGB(63, 0, 0, 0),
-                                  //   ),
-                                  // ],
                                 ),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -998,7 +990,6 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                         ),
                       ),
                     ),
-
                     Icon(
                       Icons.play_circle_fill,
                       size: 28.sp,
