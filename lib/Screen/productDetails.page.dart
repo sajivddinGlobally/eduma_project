@@ -510,13 +510,13 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                         child: Image.network(
                           data.images.isNotEmpty
                               ? data.images[0].thumbnail.toString()
-                              : "https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg",
+                              : "https://thumbs.dreamstime.com/b/no-image-vector-symbol-missing-available-icon-gallery-moment-placeholder-246411909.jpg",
                           width: MediaQuery.of(context).size.width,
                           height: 250.h,
                           fit: BoxFit.cover,
                           errorBuilder: (context, error, stackTrace) {
                             return Image.network(
-                              "https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg",
+                              "https://thumbs.dreamstime.com/b/no-image-vector-symbol-missing-available-icon-gallery-moment-placeholder-246411909.jpg",
                               width: MediaQuery.of(context).size.width,
                               height: 250.h,
                               fit: BoxFit.cover,
@@ -539,27 +539,27 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                             ),
                           ),
                         ),
-                        Row(
-                          children: List.generate(5, (index) {
-                            return Icon(
-                              index < (data.ratingCount.toInt() ?? 0)
-                                  ? Icons.star
-                                  : Icons.star_border,
-                              color: Colors.amber,
-                              size: 20.sp,
-                            );
-                          }),
-                        ),
+                        // Row(
+                        //   children: List.generate(5, (index) {
+                        //     return Icon(
+                        //       index < (data.ratingCount.toInt() ?? 0)
+                        //           ? Icons.star
+                        //           : Icons.star_border,
+                        //       color: Colors.amber,
+                        //       size: 20.sp,
+                        //     );
+                        //   }),
+                        // ),
                       ],
                     ),
-                    SizedBox(height: 8.h),
-                    Text(
-                      "(${data.ratingCount ?? 0} reviews)",
-                      style: GoogleFonts.roboto(
-                        fontSize: 14.sp,
-                        color: Colors.grey[600],
-                      ),
-                    ),
+                    // SizedBox(height: 8.h),
+                    // Text(
+                    //   "(${data.ratingCount ?? 0} reviews)",
+                    //   style: GoogleFonts.roboto(
+                    //     fontSize: 14.sp,
+                    //     color: Colors.grey[600],
+                    //   ),
+                    // ),
                     SizedBox(height: 12.h),
                     Row(
                       children: [
@@ -874,7 +874,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                     ),
                     SizedBox(height: 16.h),
                     SizedBox(
-                      height: 200.h,
+                      height: 180.h,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
                         itemCount: data.images.length,
