@@ -880,7 +880,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                       height: 200.h,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
-                        itemCount: 3, // Placeholder for related products
+                        itemCount: data.images.length,
                         itemBuilder: (context, index) {
                           return Container(
                             width: 160.w,
@@ -905,7 +905,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                     top: Radius.circular(12.r),
                                   ),
                                   child: Image.network(
-                                    data.images[0].medium,
+                                    data.images[index].medium,
                                     height: 100.h,
                                     width: double.infinity,
                                     fit: BoxFit.cover,
