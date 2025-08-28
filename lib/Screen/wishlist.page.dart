@@ -820,7 +820,7 @@ class _WishlistPageState extends ConsumerState<WishlistPage> {
                                                           .id,
                                                     );
                                                 final service = APIStateNetwork(
-                                                  createDio(),
+                                                  createWooCommerceDio(),
                                                 );
                                                 final response = await service
                                                     .productDelete(body);
