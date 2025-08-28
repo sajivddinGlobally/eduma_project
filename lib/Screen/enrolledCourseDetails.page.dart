@@ -423,7 +423,12 @@ class _EnrolledDourseDetailsPageState
                         height: 70.h,
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) {
-                          return Icon(Icons.error_outline);
+                          return Image.network(
+                            "https://t4.ftcdn.net/jpg/05/97/47/95/360_F_597479556_7bbQ7t4Z8k3xbAloHFHVdZIizWK1PdOo.jpg",
+                            width: 120.w,
+                            height: 70.h,
+                            fit: BoxFit.cover,
+                          );
                         },
                       ),
                     ),
