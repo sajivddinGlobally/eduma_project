@@ -636,6 +636,12 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                           child: Row(
                             children: [
                               IconButton(
+                                style: IconButton.styleFrom(
+                                  minimumSize: Size.zero,
+                                  padding: EdgeInsets.zero,
+                                  tapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                ),
                                 onPressed: quantity > 1
                                     ? () => setState(() => quantity--)
                                     : null,
@@ -648,6 +654,12 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                               ),
                               SizedBox(width: 8.w),
                               IconButton(
+                                style: IconButton.styleFrom(
+                                  minimumSize: Size.zero,
+                                  padding: EdgeInsets.zero,
+                                  tapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                ),
                                 onPressed: () => setState(() => quantity++),
                                 icon: Icon(Icons.add, size: 20.sp),
                               ),
