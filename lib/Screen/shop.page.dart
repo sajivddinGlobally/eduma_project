@@ -312,165 +312,153 @@ class _ShopPageState extends ConsumerState<ShopPage> {
                 ),
               ),
             ),
-            Column(
-              children: [
-                Container(
-                  padding: EdgeInsets.only(top: 40.h, left: 20.w, right: 20.w),
-                  color: Colors.white,
-                  child: Column(
+            Container(
+              padding: EdgeInsets.only(top: 40.h, left: 20.w, right: 20.w),
+              color: Colors.white,
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Row(
-                            children: [
-                              Image.asset("assets/eduimage.png", width: 40.w),
-                              SizedBox(width: 10.w),
-                              Text(
-                                "EDUCATION",
-                                style: GoogleFonts.inter(
-                                  fontSize: 22.sp,
-                                  fontWeight: FontWeight.w600,
-                                  color: Color(0xFF001E6C),
-                                ),
-                              ),
-                            ],
-                          ),
-                          IconButton(
-                            icon: Icon(
-                              Icons.notifications_none_outlined,
-                              size: 28.sp,
+                          Image.asset("assets/eduimage.png", width: 40.w),
+                          SizedBox(width: 10.w),
+                          Text(
+                            "EDUCATION",
+                            style: GoogleFonts.inter(
+                              fontSize: 22.sp,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xFF001E6C),
                             ),
-                            onPressed: () {},
                           ),
                         ],
                       ),
-                      SizedBox(height: 16.h),
-                      TextField(
-                        controller: _searchController,
-                        decoration: InputDecoration(
-                          hintText: "Search products...",
-                          hintStyle: GoogleFonts.roboto(
-                            fontSize: 14.sp,
-                            color: Colors.grey[500],
-                          ),
-                          prefixIcon: Icon(
-                            Icons.search,
-                            color: Colors.grey[500],
-                          ),
-                          filled: true,
-                          fillColor: Colors.grey[100],
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12.r),
-                            borderSide: BorderSide.none,
-                          ),
-                          contentPadding: EdgeInsets.symmetric(vertical: 12.h),
+                      IconButton(
+                        icon: Icon(
+                          Icons.notifications_none_outlined,
+                          size: 28.sp,
                         ),
-                        onChanged: (value) {
-                          setState(() => searchQuery = value.toLowerCase());
-                        },
+                        onPressed: () {},
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 16.h),
+                  TextField(
+                    controller: _searchController,
+                    decoration: InputDecoration(
+                      hintText: "Search products...",
+                      hintStyle: GoogleFonts.roboto(
+                        fontSize: 14.sp,
+                        color: Colors.grey[500],
+                      ),
+                      prefixIcon: Icon(Icons.search, color: Colors.grey[500]),
+                      filled: true,
+                      fillColor: Colors.grey[100],
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12.r),
+                        borderSide: BorderSide.none,
+                      ),
+                      contentPadding: EdgeInsets.symmetric(vertical: 12.h),
+                    ),
+                    onChanged: (value) {
+                      setState(() => searchQuery = value.toLowerCase());
+                    },
+                  ),
+                  SizedBox(height: 16.h),
+                ],
+              ),
+            ),
+            Expanded(
+              child: productListProvider.when(
+                data: (snap) {
+                  final filteredProducts = snap.where((product) {
+                    final title = product.name!.toLowerCase();
+                    return title.contains(searchQuery);
+                  }).toList();
+                  if (filteredProducts.isEmpty) {
+                    return Center(
+                      child: Text(
+                        "No products found",
+                        style: GoogleFonts.roboto(
+                          fontSize: 16.sp,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    );
+                  }
+                  return GridView.builder(
+                    padding: EdgeInsets.all(20.w),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 16.w,
+                      mainAxisSpacing: 16.h,
+                      childAspectRatio: 0.75,
+                    ),
+                    itemCount: filteredProducts.length,
+                    itemBuilder: (context, index) {
+                      return ProductCard(data: filteredProducts[index]);
+                    },
+                  );
+                },
+                error: (error, stackTrace) => Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.error_outline, color: Colors.red, size: 48.sp),
+                      SizedBox(height: 16.h),
+                      Text(
+                        "Failed to load products",
+                        style: GoogleFonts.roboto(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      SizedBox(height: 8.h),
+                      Text(
+                        error.toString(),
+                        style: GoogleFonts.roboto(
+                          fontSize: 14.sp,
+                          color: Colors.grey[600],
+                        ),
                       ),
                       SizedBox(height: 16.h),
+                      ElevatedButton(
+                        onPressed: () => ref.refresh(productListController),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xFF001E6C),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.r),
+                          ),
+                        ),
+                        child: Text(
+                          "Retry",
+                          style: GoogleFonts.roboto(
+                            fontSize: 14.sp,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
-                Expanded(
-                  child: productListProvider.when(
-                    data: (snap) {
-                      final filteredProducts = snap.where((product) {
-                        final title = product.name!.toLowerCase();
-                        return title.contains(searchQuery);
-                      }).toList();
-
-                      if (filteredProducts.isEmpty) {
-                        return Center(
-                          child: Text(
-                            "No products found",
-                            style: GoogleFonts.roboto(
-                              fontSize: 16.sp,
-                              color: Colors.grey[600],
-                            ),
-                          ),
-                        );
-                      }
-                      return GridView.builder(
-                        padding: EdgeInsets.all(20.w),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 16.w,
-                          mainAxisSpacing: 16.h,
-                          childAspectRatio: 0.75,
+                loading: () => Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator(color: Color(0xFF001E6C)),
+                      SizedBox(height: 16.h),
+                      Text(
+                        "Loading products...",
+                        style: GoogleFonts.roboto(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w500,
                         ),
-                        itemCount: filteredProducts.length,
-                        itemBuilder: (context, index) {
-                          return ProductCard(data: filteredProducts[index]);
-                        },
-                      );
-                    },
-                    error: (error, stackTrace) => Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.error_outline,
-                            color: Colors.red,
-                            size: 48.sp,
-                          ),
-                          SizedBox(height: 16.h),
-                          Text(
-                            "Failed to load products",
-                            style: GoogleFonts.roboto(
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          SizedBox(height: 8.h),
-                          Text(
-                            error.toString(),
-                            style: GoogleFonts.roboto(
-                              fontSize: 14.sp,
-                              color: Colors.grey[600],
-                            ),
-                          ),
-                          SizedBox(height: 16.h),
-                          ElevatedButton(
-                            onPressed: () => ref.refresh(productListController),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Color(0xFF001E6C),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8.r),
-                              ),
-                            ),
-                            child: Text(
-                              "Retry",
-                              style: GoogleFonts.roboto(
-                                fontSize: 14.sp,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ],
                       ),
-                    ),
-                    loading: () => Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          CircularProgressIndicator(color: Color(0xFF001E6C)),
-                          SizedBox(height: 16.h),
-                          Text(
-                            "Loading products...",
-                            style: GoogleFonts.roboto(
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    ],
                   ),
                 ),
-              ],
+              ),
             ),
           ],
         ),
@@ -492,188 +480,165 @@ class _ProductCardState extends ConsumerState<ProductCard> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          CupertinoPageRoute(
-            builder: (context) =>
-                ProductDetailsPage(id: widget.data.id!.toString()),
-          ),
-        );
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12.r),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Stack(
           children: [
-            Stack(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(12.r),
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                    builder: (context) =>
+                        ProductDetailsPage(id: widget.data.id!.toString()),
                   ),
-                  child: Image.network(
-                    widget.data.images?.isNotEmpty == true
-                        ? widget.data.images![0].medium.toString()
-                        : "https://via.placeholder.com/190x125.png?text=No+Image",
+                );
+              },
+              child: ClipRRect(
+                borderRadius: BorderRadius.vertical(top: Radius.circular(12.r)),
+                child: Image.network(
+                  widget.data.images?.isNotEmpty == true
+                      ? widget.data.images![0].medium.toString()
+                      : "https://via.placeholder.com/190x125.png?text=No+Image",
+                  width: double.infinity,
+                  height: 125.h,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) => Image.network(
+                    "https://via.placeholder.com/190x125.png?text=No+Image",
                     width: double.infinity,
                     height: 125.h,
                     fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) => Image.network(
-                      "https://via.placeholder.com/190x125.png?text=No+Image",
-                      width: double.infinity,
-                      height: 125.h,
-                      fit: BoxFit.cover,
-                    ),
                   ),
                 ),
-                Positioned(
-                  top: 8.h,
-                  right: 8.w,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.8),
-                      shape: BoxShape.circle,
-                    ),
-                    child: IconButton(
-                      style: IconButton.styleFrom(
-                        minimumSize: Size(32.w, 32.h),
-                        padding: EdgeInsets.zero,
-                      ),
-                      onPressed: () async {
-                        final result =
-                            await ProductWishlistController.productWishlist(
-                              context: context,
-                              productId: widget.data.id!,
-                              currentStatus: isWishlisted,
-                            );
-                        setState(() => isWishlisted = result);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              isWishlisted
-                                  ? "Added to Wishlist"
-                                  : "Removed from Wishlist",
-                              style: GoogleFonts.roboto(fontSize: 14.sp),
-                            ),
-                            backgroundColor: isWishlisted
-                                ? Colors.green
-                                : Colors.red,
-                            duration: Duration(seconds: 2),
-                          ),
-                        );
-                      },
-                      icon: AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 300),
-                        transitionBuilder: (child, animation) {
-                          return ScaleTransition(
-                            scale: CurvedAnimation(
-                              parent: animation,
-                              curve: Curves.easeInOutBack,
-                            ),
-                            child: child,
-                          );
-                        },
-                        child: Icon(
-                          isWishlisted ? Icons.favorite : Icons.favorite_border,
-                          key: ValueKey<bool>(isWishlisted),
-                          color: isWishlisted ? Colors.red : Colors.grey[600],
-                          size: 24.sp,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                if (widget.data.dateOnSaleFrom != null)
-                  Positioned(
-                    top: 8.h,
-                    left: 8.w,
-                    child: Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 8.w,
-                        vertical: 4.h,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Color(0xFF1BB93D),
-                        borderRadius: BorderRadius.circular(6.r),
-                      ),
-                      child: Text(
-                        "${widget.data.buttonText} % OFF",
-                        style: GoogleFonts.roboto(
-                          fontSize: 12.sp,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ),
-              ],
-            ),
-            Padding(
-              padding: EdgeInsets.all(12.w),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    widget.data.name.toString(),
-                    style: GoogleFonts.roboto(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w500,
-                      color: Color(0xFF1B1B1B),
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  SizedBox(height: 8.h),
-                  Row(
-                    children: [
-                      Text(
-                        widget.data.price != null
-                            ? "₹ ${widget.data.price}"
-                            : "Free",
-                        style: GoogleFonts.roboto(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xFF001E6C),
-                        ),
-                      ),
-                      if (widget.data.regularPrice != null)
-                        Padding(
-                          padding: EdgeInsets.only(left: 8.w),
-                          child: Text(
-                            "₹ ${widget.data.regularPrice}",
-                            style: GoogleFonts.roboto(
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.grey[600],
-                              decoration: TextDecoration.lineThrough,
-                            ),
-                          ),
-                        ),
-                    ],
-                  ),
-                  SizedBox(height: 4.h),
-                  Row(
-                    children: List.generate(5, (index) {
-                      return Icon(
-                        index < (widget.data.ratingCount ?? 0)
-                            ? Icons.star
-                            : Icons.star_border,
-                        color: Colors.amber,
-                        size: 16.sp,
-                      );
-                    }),
-                  ),
-                ],
               ),
             ),
+            Positioned(
+              top: 8.h,
+              right: 8.w,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.8),
+                  shape: BoxShape.circle,
+                ),
+                child: IconButton(
+                  style: IconButton.styleFrom(
+                    minimumSize: Size(32.w, 32.h),
+                    padding: EdgeInsets.zero,
+                  ),
+                  onPressed: () async {
+                    final result =
+                        await ProductWishlistController.productWishlist(
+                          context: context,
+                          productId: widget.data.id!,
+                          currentStatus: isWishlisted,
+                        );
+                    setState(() => isWishlisted = result);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          isWishlisted
+                              ? "Added to Wishlist"
+                              : "Removed from Wishlist",
+                          style: GoogleFonts.roboto(fontSize: 14.sp),
+                        ),
+                        backgroundColor: isWishlisted
+                            ? Colors.green
+                            : Colors.red,
+                        duration: Duration(seconds: 2),
+                      ),
+                    );
+                  },
+                  icon: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 300),
+                    transitionBuilder: (child, animation) {
+                      return ScaleTransition(
+                        scale: CurvedAnimation(
+                          parent: animation,
+                          curve: Curves.easeInOutBack,
+                        ),
+                        child: child,
+                      );
+                    },
+                    child: Icon(
+                      isWishlisted ? Icons.favorite : Icons.favorite_border,
+                      key: ValueKey<bool>(isWishlisted),
+                      color: isWishlisted ? Colors.red : Colors.grey[600],
+                      size: 24.sp,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            if (widget.data.dateOnSaleFrom != null)
+              Positioned(
+                top: 8.h,
+                left: 8.w,
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                  decoration: BoxDecoration(
+                    color: Color(0xFF1BB93D),
+                    borderRadius: BorderRadius.circular(6.r),
+                  ),
+                  child: Text(
+                    "${widget.data.buttonText} % OFF",
+                    style: GoogleFonts.roboto(
+                      fontSize: 12.sp,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
           ],
         ),
-      ),
+        Padding(
+          padding: EdgeInsets.all(12.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                widget.data.name.toString(),
+                style: GoogleFonts.roboto(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w500,
+                  color: Color(0xFF1B1B1B),
+                ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+              SizedBox(height: 8.h),
+              Row(
+                children: [
+                  Text(
+                    widget.data.price != null
+                        ? "₹ ${widget.data.price}"
+                        : "Free",
+                    style: GoogleFonts.roboto(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xFF001E6C),
+                    ),
+                  ),
+                  if (widget.data.regularPrice != null)
+                    Padding(
+                      padding: EdgeInsets.only(left: 8.w),
+                      child: Text(
+                        "₹ ${widget.data.regularPrice}",
+                        style: GoogleFonts.roboto(
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.grey[600],
+                          decoration: TextDecoration.lineThrough,
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
