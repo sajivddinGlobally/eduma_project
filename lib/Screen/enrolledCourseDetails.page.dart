@@ -1,3 +1,4 @@
+import 'package:eduma_app/Screen/youtubePlayScreen.dart';
 import 'package:eduma_app/data/Controller/popularCourseController.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +7,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class EnrolledDourseDetailsPage extends ConsumerStatefulWidget {
-  const EnrolledDourseDetailsPage({super.key});
+  final String id;
+  const EnrolledDourseDetailsPage({super.key, required this.id});
 
   @override
   ConsumerState<EnrolledDourseDetailsPage> createState() =>
@@ -94,112 +96,21 @@ class _EnrolledDourseDetailsPageState
                         color: Color(0xFF000000),
                       ),
                     ),
-                    Theme(
-                      data: Theme.of(context).copyWith(
-                        dividerColor: Colors.transparent,
-                        splashColor: Colors.transparent,
-                        highlightColor: Colors.transparent,
-                      ),
-                      child: ExpansionTile(
-                        tilePadding: EdgeInsets.zero,
-                        title: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "txt",
-                              style: GoogleFonts.roboto(
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.w500,
-                                color: const Color(0xFF000000),
-                                letterSpacing: -0.4,
-                                height: 1.1,
-                              ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: data.topics!
+                          .map(
+                            (e) => modules(
+                              e.topicTitle.toString(),
+                              e.lessons!
+                                  .map(
+                                    (lesson) =>
+                                        lesson.lessonMeta!.video.toString(),
+                                  )
+                                  .toList(),
                             ),
-                            Text(
-                              "{videos.length} Video(s)",
-                              style: GoogleFonts.roboto(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w400,
-                                color: const Color(0xFF000000),
-                                letterSpacing: -0.3,
-                              ),
-                            ),
-                          ],
-                        ),
-                        children: videos
-                            .map(
-                              (video) => GestureDetector(
-                                onTap: () {
-                                  final id = _extractYouTubeId(video);
-                                  if (id.isNotEmpty) {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (_) =>
-                                            YoutubePlayerScreen(videoId: id),
-                                      ),
-                                    );
-                                  } else {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Text("Invalid YouTube link"),
-                                      ),
-                                    );
-                                  }
-                                },
-                                child: Container(
-                                  margin: EdgeInsets.symmetric(vertical: 5.h),
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      ClipRRect(
-                                        borderRadius: BorderRadius.circular(
-                                          8.r,
-                                        ),
-                                        child: Image.network(
-                                          video.contains('youtube.com') ||
-                                                  video.contains('youtu.be')
-                                              ? 'https://img.youtube.com/vi/${_extractYouTubeId(video)}/0.jpg'
-                                              : 'https://via.placeholder.com/100x60.png?text=Video',
-                                          width: 100.w,
-                                          height: 60.h,
-                                          fit: BoxFit.cover,
-                                          errorBuilder:
-                                              (context, error, stackTrace) =>
-                                                  Container(
-                                                    width: 100.w,
-                                                    height: 60.h,
-                                                    color: Colors.grey,
-                                                    child: Icon(
-                                                      Icons.videocam,
-                                                      color: Colors.white,
-                                                      size: 30.sp,
-                                                    ),
-                                                  ),
-                                        ),
-                                      ),
-                                      SizedBox(width: 10.w),
-                                      Expanded(
-                                        child: Text(
-                                          video,
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: GoogleFonts.roboto(
-                                            fontSize: 14.sp,
-                                            fontWeight: FontWeight.w400,
-                                            color: const Color(0xFF000000),
-                                            letterSpacing: -0.3,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            )
-                            .toList(),
-                      ),
+                          )
+                          .toList(),
                     ),
                   ],
                 ),
@@ -207,9 +118,122 @@ class _EnrolledDourseDetailsPageState
             ],
           );
         },
-        error: error,
-        loading: loading,
+        error: (error, stackTrace) => Center(child: Text(error.toString())),
+        loading: () => Center(child: CircularProgressIndicator()),
       ),
     );
+  }
+
+  Widget modules(String txt, List<String> videos) {
+    return Theme(
+      data: Theme.of(context).copyWith(
+        dividerColor: Colors.transparent,
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+      ),
+      child: ExpansionTile(
+        tilePadding: EdgeInsets.zero,
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              txt,
+              style: GoogleFonts.roboto(
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w500,
+                color: const Color(0xFF000000),
+                letterSpacing: -0.4,
+                height: 1.1,
+              ),
+            ),
+            Text(
+              "${videos.length} Video(s)",
+              style: GoogleFonts.roboto(
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w400,
+                color: const Color(0xFF000000),
+                letterSpacing: -0.3,
+              ),
+            ),
+          ],
+        ),
+        children: videos
+            .map(
+              (video) => GestureDetector(
+                onTap: () {
+                  final id = _extractYouTubeId(video);
+                  if (id.isNotEmpty) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => YoutubePlayerScreen(videoId: id),
+                      ),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Invalid YouTube link")),
+                    );
+                  }
+                },
+                child: Container(
+                  margin: EdgeInsets.symmetric(vertical: 5.h),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(8.r),
+                        child: Image.network(
+                          video.contains('youtube.com') ||
+                                  video.contains('youtu.be')
+                              ? 'https://img.youtube.com/vi/${_extractYouTubeId(video)}/0.jpg'
+                              : 'https://via.placeholder.com/100x60.png?text=Video',
+                          width: 100.w,
+                          height: 60.h,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) =>
+                              Container(
+                                width: 100.w,
+                                height: 60.h,
+                                color: Colors.grey,
+                                child: Icon(
+                                  Icons.videocam,
+                                  color: Colors.white,
+                                  size: 30.sp,
+                                ),
+                              ),
+                        ),
+                      ),
+                      SizedBox(width: 10.w),
+                      Expanded(
+                        child: Text(
+                          video,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: GoogleFonts.roboto(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w400,
+                            color: const Color(0xFF000000),
+                            letterSpacing: -0.3,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            )
+            .toList(),
+      ),
+    );
+  }
+
+  String _extractYouTubeId(String url) {
+    // Extract YouTube video ID from URL
+    RegExp regExp = RegExp(
+      r'^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?v=))([^#\&\?]*).*',
+      caseSensitive: false,
+    );
+    Match? match = regExp.firstMatch(url);
+    return match != null && match.group(7)!.length == 11 ? match.group(7)! : '';
   }
 }

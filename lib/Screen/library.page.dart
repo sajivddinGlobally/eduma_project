@@ -117,7 +117,10 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
                                       context,
                                       CupertinoPageRoute(
                                         builder: (context) =>
-                                            EnrolledDourseDetailsPage(),
+                                            EnrolledDourseDetailsPage(
+                                              id: data.courses[index].id
+                                                  .toString(),
+                                            ),
                                       ),
                                     );
                                   },
@@ -184,7 +187,7 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
                 ),
               );
             },
-            error: (error, stackTrace) => Center(child: Text(e.toString())),
+            error: (error, stackTrace) => Center(child: Text(error.toString())),
             loading: () => Center(child: CircularProgressIndicator()),
           ),
         ],
