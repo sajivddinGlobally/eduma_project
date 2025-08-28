@@ -347,10 +347,8 @@ class _EnrolledDourseDetailsPageState
     );
   }
 
-  /// 🎥 Single Lesson Tile
   Widget _lessonTile(String title, String videoUrl) {
     final videoId = _extractYouTubeId(videoUrl);
-
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
       margin: EdgeInsets.symmetric(vertical: 8.h),
@@ -407,40 +405,48 @@ class _EnrolledDourseDetailsPageState
                 );
               }
             },
-            child: Row(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                // 📷 Thumbnail
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(8.r),
-                  child: Image.network(
-                    videoId.isNotEmpty
-                        ? "https://img.youtube.com/vi/$videoId/0.jpg"
-                        : "https://via.placeholder.com/120x90.png?text=No+Video",
-                    width: 120.w,
-                    height: 70.h,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                SizedBox(width: 12.w),
-
-                // 📝 Video title
-                Expanded(
-                  child: Text(
-                    title,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: GoogleFonts.roboto(
-                      fontSize: 15.sp,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black87,
+                Divider(color: Color(0xFFBFBFBF), thickness: 0.90.w),
+                SizedBox(height: 10.h),
+                Row(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(8.r),
+                      child: Image.network(
+                        videoId.isNotEmpty
+                            ? "https://img.youtube.com/vi/$videoId/0.jpg"
+                            : "https://via.placeholder.com/120x90.png?text=No+Video",
+                        width: 120.w,
+                        height: 70.h,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Icon(Icons.error_outline);
+                        },
+                      ),
                     ),
-                  ),
-                ),
+                    SizedBox(width: 12.w),
+                    Expanded(
+                      child: Text(
+                        title,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: GoogleFonts.roboto(
+                          fontSize: 15.sp,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black87,
+                        ),
+                      ),
+                    ),
 
-                Icon(
-                  Icons.play_circle_fill,
-                  size: 28.sp,
-                  color: Colors.redAccent,
+                    Icon(
+                      Icons.play_circle_fill,
+                      size: 28.sp,
+                      color: Colors.redAccent,
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -450,7 +456,6 @@ class _EnrolledDourseDetailsPageState
     );
   }
 
-  /// 🔎 Extract YouTube Video ID
   String _extractYouTubeId(String url) {
     final regExp = RegExp(
       r'^.*((youtu.be/)|(v/)|(u/\w/)|(embed/)|(watch\?v=))([^#&?]*).*',
