@@ -151,7 +151,7 @@ class _CartPageState extends ConsumerState<CartPage> {
                                   padding: EdgeInsets.only(right: 20.w),
                                   child: Icon(
                                     Icons.delete,
-                                    color: Colors.black,
+                                    color: Colors.yellow,
                                     size: 24.sp,
                                   ),
                                 ),
