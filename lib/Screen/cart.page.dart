@@ -23,7 +23,7 @@ class _CartPageState extends ConsumerState<CartPage> {
   Widget build(BuildContext context) {
     final cartProvider = ref.watch(cartController);
     return Scaffold(
-      backgroundColor: Color(0xFFFFFFFF),
+      backgroundColor: Color(0xFFF5F7FA),
       body: Stack(
         children: [
           Positioned(
@@ -45,6 +45,15 @@ class _CartPageState extends ConsumerState<CartPage> {
               width: 470.w,
               height: 450.h,
               fit: BoxFit.fill,
+            ),
+          ),
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [Color(0xFFE8F0FE), Color(0xFFF5F7FA)],
+              ),
             ),
           ),
           cartProvider.when(
