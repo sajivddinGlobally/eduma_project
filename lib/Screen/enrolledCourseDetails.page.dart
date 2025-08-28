@@ -301,7 +301,6 @@ class _EnrolledDourseDetailsPageState
 
                   SizedBox(height: 24.h),
 
-                  // 📌 Course Title
                   Text(
                     data.title ?? "Untitled Course",
                     style: GoogleFonts.inter(
