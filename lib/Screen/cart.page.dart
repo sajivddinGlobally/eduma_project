@@ -53,391 +53,301 @@ class _CartPageState extends ConsumerState<CartPage> {
                 0,
                 (sum, item) => sum + (item.price * item.quantity),
               );
-
               return Column(
                 children: [
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20.w),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(height: 33.h),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                width: 37.w,
-                                height: 37.h,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Color.fromARGB(25, 0, 0, 0),
+                  Container(
+                    padding: EdgeInsets.only(
+                      top: 30.h,
+                      left: 20.w,
+                      right: 20.w,
+                    ),
+                    child: Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () => Navigator.pop(context),
+                          child: Container(
+                            padding: EdgeInsets.all(8.w),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              shape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black12,
+                                  blurRadius: 8,
+                                  offset: Offset(0, 2),
                                 ),
-                                child: IconButton(
-                                  style: IconButton.styleFrom(
-                                    minimumSize: Size.zero,
-                                    padding: EdgeInsets.zero,
-                                    tapTargetSize:
-                                        MaterialTapTargetSize.shrinkWrap,
-                                  ),
-                                  onPressed: () => Navigator.pop(context),
-                                  icon: Icon(
-                                    Icons.arrow_back,
-                                    color: Color(0xFF001E6C),
-                                    size: 20.sp,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(width: 50.w),
-                              Text(
-                                "Your Cart",
-                                style: GoogleFonts.roboto(
-                                  fontSize: 26.sp,
-                                  fontWeight: FontWeight.w600,
-                                  color: Color(0xFF1B1B1B),
-                                  letterSpacing: -0.4,
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 20.h),
-                          Text(
-                            "Review Your Order",
-                            style: GoogleFonts.roboto(
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w500,
+                              ],
+                            ),
+                            child: Icon(
+                              Icons.arrow_back,
                               color: Color(0xFF001E6C),
-                              letterSpacing: -0.4,
+                              size: 24.sp,
                             ),
                           ),
-                          SizedBox(height: 10.h),
-                          Expanded(
-                            child: data.items.isEmpty
-                                ? Center(
-                                    child: Text(
-                                      "Your cart is empty",
-                                      style: GoogleFonts.roboto(
-                                        fontSize: 18.sp,
-                                        color: Color(0xFF747474),
+                        ),
+                        SizedBox(width: 20.w),
+                        Text(
+                          "Your Cart",
+                          style: GoogleFonts.poppins(
+                            fontSize: 28.sp,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xFF001E6C),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 20.h),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.w),
+                    child: Text(
+                      "Review Your Order",
+                      style: GoogleFonts.poppins(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xFF001E6C).withOpacity(0.8),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 15.h),
+                  Expanded(
+                    child: data.items.isEmpty
+                        ? Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.shopping_cart_outlined,
+                                  size: 80.sp,
+                                  color: Color(0xFF747474),
+                                ),
+                                SizedBox(height: 10.h),
+                                Text(
+                                  "Your cart is empty",
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 18.sp,
+                                    fontWeight: FontWeight.w500,
+                                    color: Color(0xFF747474),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        : ListView.builder(
+                            padding: EdgeInsets.symmetric(horizontal: 20.w),
+                            itemCount: data.items.length,
+                            itemBuilder: (context, index) {
+                              final item = data.items[index];
+                              return Dismissible(
+                                key: Key(item.productId.toString()),
+                                direction: DismissDirection.endToStart,
+                                background: Container(
+                                  margin: EdgeInsets.only(top: 15.h),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(16.r),
+                                    color: Color(0xFFEF5350),
+                                  ),
+                                  alignment: Alignment.centerRight,
+                                  padding: EdgeInsets.only(right: 20.w),
+                                  child: Icon(
+                                    Icons.delete,
+                                    color: Colors.white,
+                                    size: 24.sp,
+                                  ),
+                                ),
+                                onDismissed: (direction) async {
+                                  final body = CarRemoveBodyModel(
+                                    productId: item.productId,
+                                  );
+                                  try {
+                                    final service = APIStateNetwork(
+                                      createDio(),
+                                    );
+                                    final response = await service.removeCart(
+                                      body,
+                                    );
+                                    if (response.success == true) {
+                                      showSuccessMessage(
+                                        context,
+                                        response.message,
+                                      );
+                                    }
+                                    ref.invalidate(cartController);
+                                  } catch (e) {
+                                    log(e.toString());
+                                    showSuccessMessage(context, e.toString());
+                                  }
+                                },
+                                child: Container(
+                                  margin: EdgeInsets.only(top: 15.h),
+                                  padding: EdgeInsets.all(12.w),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(16.r),
+                                    color: Colors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black12,
+                                        blurRadius: 6,
+                                        offset: Offset(0, 2),
                                       ),
-                                    ),
-                                  )
-                                : ListView.builder(
-                                    padding: EdgeInsets.zero,
-                                    itemCount: data.items.length,
-                                    itemBuilder: (context, index) {
-                                      final item = data.items[index];
-                                      return Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            margin: EdgeInsets.only(top: 15.h),
-                                            padding: EdgeInsets.all(10.w),
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(20.r),
-                                              color: Color.fromARGB(
-                                                255,
-                                                232,
-                                                228,
-                                                228,
+                                    ],
+                                  ),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(
+                                          12.r,
+                                        ),
+                                        child: Image.network(
+                                          item.thumbnail,
+                                          width: 90.w,
+                                          height: 90.h,
+                                          fit: BoxFit.cover,
+                                          errorBuilder:
+                                              (context, error, stackTrace) {
+                                                return Container(
+                                                  width: 90.w,
+                                                  height: 90.h,
+                                                  color: Colors.grey[200],
+                                                  child: Icon(
+                                                    Icons.image_not_supported,
+                                                    color: Colors.grey[600],
+                                                    size: 40.sp,
+                                                  ),
+                                                );
+                                              },
+                                        ),
+                                      ),
+                                      SizedBox(width: 12.w),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              item.name,
+                                              style: GoogleFonts.poppins(
+                                                fontSize: 16.sp,
+                                                fontWeight: FontWeight.w600,
+                                                color: Color(0xFF001E6C),
+                                              ),
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                            SizedBox(height: 8.h),
+                                            Text(
+                                              "\$${item.price.toStringAsFixed(2)}",
+                                              style: GoogleFonts.poppins(
+                                                fontSize: 14.sp,
+                                                fontWeight: FontWeight.w500,
+                                                color: Color(0xFF001E6C),
                                               ),
                                             ),
-                                            child: Row(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                            SizedBox(height: 8.h),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               children: [
-                                                ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                        10.r,
-                                                      ),
-                                                  child: Image.network(
-                                                    item.thumbnail,
-                                                    width: 100.w,
-                                                    height: 100.h,
-                                                    fit: BoxFit.cover,
-                                                    errorBuilder:
-                                                        (
-                                                          context,
-                                                          error,
-                                                          stackTrace,
-                                                        ) {
-                                                          return Container(
-                                                            width: 100.w,
-                                                            height: 100.h,
-                                                            color: Colors
-                                                                .grey[300],
-                                                            child: Icon(
-                                                              Icons
-                                                                  .image_not_supported,
-                                                              color: Colors
-                                                                  .grey[600],
-                                                            ),
-                                                          );
-                                                        },
+                                                Text(
+                                                  "Qty: ${item.quantity}",
+                                                  style: GoogleFonts.poppins(
+                                                    fontSize: 14.sp,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Color(0xFF747474),
                                                   ),
                                                 ),
-                                                SizedBox(width: 10.w),
-                                                Expanded(
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
+                                                Container(
+                                                  width: 110.w,
+                                                  height: 36.h,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                          10.r,
+                                                        ),
+                                                    color: Color(0xFFF5F7FA),
+                                                  ),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
                                                     children: [
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          SizedBox(
-                                                            width: 200.w,
-                                                            child: Text(
-                                                              item.name,
-                                                              style: GoogleFonts.roboto(
-                                                                fontSize: 16.sp,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500,
-                                                                color: Color(
-                                                                  0xFF000000,
-                                                                ),
-                                                                letterSpacing:
-                                                                    -0.4,
-                                                                height: 1,
-                                                              ),
-                                                              maxLines: 2,
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
-                                                            ),
-                                                          ),
-                                                          Padding(
-                                                            padding:
-                                                                EdgeInsets.only(
-                                                                  right: 10.w,
-                                                                  top: 10.h,
-                                                                ),
-                                                            child: IconButton(
-                                                              style: IconButton.styleFrom(
-                                                                minimumSize:
-                                                                    Size(0, 0),
-                                                                padding:
-                                                                    EdgeInsets
-                                                                        .zero,
-                                                                tapTargetSize:
-                                                                    MaterialTapTargetSize
-                                                                        .shrinkWrap,
-                                                              ),
-                                                              icon: Icon(
-                                                                Icons.delete,
-                                                                size: 20.sp,
-                                                                color: Color(
-                                                                  0xFFEF5350,
-                                                                ),
-                                                              ),
-                                                              onPressed: () async {
-                                                                
-                                                                final body =
-                                                                    CarRemoveBodyModel(
-                                                                      productId:
-                                                                          item.productId,
-                                                                    );
-                                                                try {
-                                                                  final service =
-                                                                      APIStateNetwork(
-                                                                        createDio(),
-                                                                      );
-                                                                  final response =
-                                                                      await service
-                                                                          .removeCart(
-                                                                            body,
-                                                                          );
-                                                                  if (response
-                                                                          .success ==
-                                                                      true) {
-                                                                    showSuccessMessage(
-                                                                      context,
-                                                                      response
-                                                                          .message,
-                                                                    );
-                                                                  }
-                                                                  ref.invalidate(
-                                                                    cartController,
-                                                                  );
-                                                                } catch (e) {
-                                                                  log(
-                                                                    e.toString(),
-                                                                  );
-                                                                  showSuccessMessage(
-                                                                    context,
-                                                                    e.toString(),
-                                                                  );
-                                                                }
-                                                              },
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      SizedBox(height: 5.h),
-                                                      Text(
-                                                        "\$${item.price.toStringAsFixed(2)}",
+                                                      IconButton(
                                                         style:
-                                                            GoogleFonts.roboto(
-                                                              fontSize: 14.sp,
+                                                            IconButton.styleFrom(
+                                                              minimumSize:
+                                                                  Size.zero,
+                                                              padding:
+                                                                  EdgeInsets
+                                                                      .zero,
+                                                            ),
+                                                        icon: Icon(
+                                                          Icons.remove,
+                                                          size: 20.sp,
+                                                          color: Color(
+                                                            0xFF001E6C,
+                                                          ),
+                                                        ),
+                                                        onPressed: () {
+                                                          if (item.quantity >
+                                                              1) {
+                                                            setState(() {
+                                                              item.quantity--;
+                                                            });
+                                                          }
+                                                        },
+                                                      ),
+                                                      Text(
+                                                        "${item.quantity}",
+                                                        style:
+                                                            GoogleFonts.poppins(
+                                                              fontSize: 16.sp,
                                                               fontWeight:
                                                                   FontWeight
-                                                                      .w500,
+                                                                      .w600,
                                                               color: Color(
                                                                 0xFF001E6C,
                                                               ),
-                                                              letterSpacing:
-                                                                  -0.4,
                                                             ),
                                                       ),
-                                                      SizedBox(height: 5.h),
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          Text(
-                                                            "Qty: ${item.quantity}",
-                                                            style:
-                                                                GoogleFonts.roboto(
-                                                                  fontSize:
-                                                                      14.sp,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500,
-                                                                  color: Color(
-                                                                    0xFF747474,
-                                                                  ),
-                                                                ),
-                                                          ),
-                                                          Container(
-                                                            width: 120.w,
-                                                            height: 40.h,
-                                                            decoration: BoxDecoration(
-                                                              borderRadius:
-                                                                  BorderRadius.circular(
-                                                                    10.r,
-                                                                  ),
-                                                              border: Border.all(
-                                                                color: Colors
-                                                                    .white,
-                                                              ),
+                                                      IconButton(
+                                                        style:
+                                                            IconButton.styleFrom(
+                                                              minimumSize:
+                                                                  Size.zero,
+                                                              padding:
+                                                                  EdgeInsets
+                                                                      .zero,
                                                             ),
-                                                            child: Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceEvenly,
-                                                              children: [
-                                                                IconButton(
-                                                                  style: IconButton.styleFrom(
-                                                                    minimumSize:
-                                                                        Size(
-                                                                          0,
-                                                                          0,
-                                                                        ),
-                                                                    padding:
-                                                                        EdgeInsets
-                                                                            .zero,
-                                                                    tapTargetSize:
-                                                                        MaterialTapTargetSize
-                                                                            .shrinkWrap,
-                                                                  ),
-                                                                  icon: Text(
-                                                                    "-",
-                                                                    style: GoogleFonts.roboto(
-                                                                      fontSize:
-                                                                          30.sp,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w500,
-                                                                      color: Colors
-                                                                          .black,
-                                                                    ),
-                                                                  ),
-                                                                  onPressed: () {
-                                                                    if (item.quantity >
-                                                                        1) {
-                                                                      setState(
-                                                                        () {
-                                                                          item.quantity--;
-                                                                        },
-                                                                      );
-                                                                    } else {
-                                                                      // Optionally remove item if quantity becomes 0
-                                                                      // ref.read(cartController.notifier).removeItem(item.productId);
-                                                                      // setState(() {});
-                                                                    }
-                                                                  },
-                                                                ),
-                                                                Text(
-                                                                  "${item.quantity}",
-                                                                  style: GoogleFonts.roboto(
-                                                                    fontSize:
-                                                                        20.sp,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500,
-                                                                    color: Colors
-                                                                        .black,
-                                                                  ),
-                                                                ),
-                                                                IconButton(
-                                                                  style: IconButton.styleFrom(
-                                                                    minimumSize:
-                                                                        Size(
-                                                                          0,
-                                                                          0,
-                                                                        ),
-                                                                    padding:
-                                                                        EdgeInsets
-                                                                            .zero,
-                                                                    tapTargetSize:
-                                                                        MaterialTapTargetSize
-                                                                            .shrinkWrap,
-                                                                  ),
-                                                                  icon: Text(
-                                                                    "+",
-                                                                    style: GoogleFonts.roboto(
-                                                                      fontSize:
-                                                                          27.sp,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w500,
-                                                                      color: Colors
-                                                                          .black,
-                                                                    ),
-                                                                  ),
-                                                                  onPressed: () {
-                                                                    setState(() {
-                                                                      item.quantity++;
-                                                                    });
-                                                                  },
-                                                                ),
-                                                              ],
-                                                            ),
+                                                        icon: Icon(
+                                                          Icons.add,
+                                                          size: 20.sp,
+                                                          color: Color(
+                                                            0xFF001E6C,
                                                           ),
-                                                        ],
+                                                        ),
+                                                        onPressed: () {
+                                                          setState(() {
+                                                            item.quantity++;
+                                                          });
+                                                        },
                                                       ),
                                                     ],
                                                   ),
                                                 ),
                                               ],
                                             ),
-                                          ),
-                                        ],
-                                      );
-                                    },
+                                          ],
+                                        ),
+                                      ),
+                                    ],
                                   ),
+                                ),
+                              );
+                            },
                           ),
-                        ],
-                      ),
-                    ),
                   ),
                   if (data.items.isNotEmpty)
                     Container(
@@ -462,7 +372,7 @@ class _CartPageState extends ConsumerState<CartPage> {
                             children: [
                               Text(
                                 "Total:",
-                                style: GoogleFonts.roboto(
+                                style: GoogleFonts.poppins(
                                   fontSize: 18.sp,
                                   fontWeight: FontWeight.w600,
                                   color: Color(0xFF001E6C),
@@ -470,7 +380,7 @@ class _CartPageState extends ConsumerState<CartPage> {
                               ),
                               Text(
                                 "\$${totalPrice.toStringAsFixed(2)}",
-                                style: GoogleFonts.roboto(
+                                style: GoogleFonts.poppins(
                                   fontSize: 18.sp,
                                   fontWeight: FontWeight.w600,
                                   color: Color(0xFF001E6C),
@@ -486,22 +396,27 @@ class _CartPageState extends ConsumerState<CartPage> {
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Color(0xFF001E6C),
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10.r),
+                                  borderRadius: BorderRadius.circular(12.r),
                                 ),
+                                elevation: 2,
                               ),
                               onPressed: () {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
-                                    content: Text("Proceeding to checkout"),
+                                    content: Text(
+                                      "Proceeding to checkout",
+                                      style: GoogleFonts.poppins(),
+                                    ),
                                     duration: Duration(seconds: 2),
+                                    backgroundColor: Color(0xFF001E6C),
                                   ),
                                 );
                               },
                               child: Text(
                                 "Proceed to Checkout",
-                                style: GoogleFonts.roboto(
+                                style: GoogleFonts.poppins(
                                   fontSize: 16.sp,
-                                  fontWeight: FontWeight.w500,
+                                  fontWeight: FontWeight.w600,
                                   color: Colors.white,
                                 ),
                               ),
@@ -516,7 +431,11 @@ class _CartPageState extends ConsumerState<CartPage> {
             error: (error, stackTrace) => Center(
               child: Text(
                 error.toString(),
-                style: GoogleFonts.roboto(fontSize: 16.sp, color: Colors.red),
+                style: GoogleFonts.poppins(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.red,
+                ),
               ),
             ),
             loading: () => Padding(
@@ -529,19 +448,19 @@ class _CartPageState extends ConsumerState<CartPage> {
                     highlightColor: Colors.grey[100]!,
                     child: Container(
                       margin: EdgeInsets.only(bottom: 15.h),
-                      padding: EdgeInsets.all(10.w),
+                      padding: EdgeInsets.all(12.w),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20.r),
+                        borderRadius: BorderRadius.circular(16.r),
                         color: Colors.white,
                       ),
                       child: Row(
                         children: [
                           Container(
-                            width: 100.w,
-                            height: 100.h,
+                            width: 90.w,
+                            height: 90.h,
                             color: Colors.grey[400],
                           ),
-                          SizedBox(width: 10.w),
+                          SizedBox(width: 12.w),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
