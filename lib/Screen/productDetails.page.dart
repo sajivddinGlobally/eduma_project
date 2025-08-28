@@ -439,7 +439,6 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
     final productDetailsProvider = ref.watch(
       productDetailsController(widget.id),
     );
-
     return Scaffold(
       backgroundColor: Color(0xFFF5F5F5),
       appBar: AppBar(
@@ -511,13 +510,13 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                         child: Image.network(
                           data.images.isNotEmpty
                               ? data.images[0].thumbnail.toString()
-                              : "https://via.placeholder.com/300x200.png?text=No+Image",
+                              : "https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg",
                           width: MediaQuery.of(context).size.width,
                           height: 250.h,
                           fit: BoxFit.cover,
                           errorBuilder: (context, error, stackTrace) {
                             return Image.network(
-                              "https://via.placeholder.com/300x200.png?text=No+Image",
+                              "https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg",
                               width: MediaQuery.of(context).size.width,
                               height: 250.h,
                               fit: BoxFit.cover,
@@ -561,8 +560,6 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                         color: Colors.grey[600],
                       ),
                     ),
-
-                    // Price and Discount
                     SizedBox(height: 12.h),
                     Row(
                       children: [
@@ -912,6 +909,9 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                     errorBuilder: (context, error, stackTrace) {
                                       return Image.network(
                                         "https://thumbs.dreamstime.com/b/no-image-vector-symbol-missing-available-icon-gallery-moment-placeholder-246411909.jpg",
+                                        height: 100.h,
+                                        width: double.infinity,
+                                        fit: BoxFit.cover,
                                       );
                                     },
                                   ),

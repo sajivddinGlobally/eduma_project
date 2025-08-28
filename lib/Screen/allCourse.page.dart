@@ -106,7 +106,6 @@ class _AllCoursePageState extends ConsumerState<AllCoursePage> {
                       if (filterData.isEmpty) {
                         return Center(child: Text("No Course Available"));
                       }
-
                       return Padding(
                         padding: EdgeInsets.only(
                           left: 20.w,
