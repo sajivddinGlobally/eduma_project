@@ -814,6 +814,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
             .map(
               (video) => GestureDetector(
                 onTap: () {
+                  log(video.toString());
                   final id = _extractYouTubeId(video);
                   if (id.isNotEmpty) {
                     Navigator.push(

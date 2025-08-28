@@ -126,7 +126,7 @@ class _EnrolledDourseDetailsPageState
                                       .map(
                                         (lesson) => lessonTile(
                                           lesson.lessonTitle.toString(),
-                                          lesson.lessonMeta!.video.toString(),
+                                          lesson.lessonMeta!.video![0],
                                         ),
                                       )
                                       .toList(),
