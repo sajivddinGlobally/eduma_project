@@ -477,4 +477,80 @@ class _EnrolledDourseDetailsPageState
     Match? match = regExp.firstMatch(url);
     return match != null && match.group(7)!.length == 11 ? match.group(7)! : '';
   }
+
+  Widget lession(String title, String videos) {
+    return Theme(
+      data: Theme.of(context).copyWith(
+        dividerColor: Colors.transparent,
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+      ),
+      child: ExpansionTile(
+        tilePadding: EdgeInsets.zero,
+        title: Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: GoogleFonts.roboto(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w400,
+                  color: const Color(0xFF000000),
+                  letterSpacing: -0.3,
+                ),
+              ),
+              Text(
+                "${videos.length} Video(s)",
+                style: GoogleFonts.roboto(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w400,
+                  color: const Color(0xFF000000),
+                  letterSpacing: -0.3,
+                ),
+              ),
+            ],
+          ),
+        ),
+        children: [
+          Row(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8.r),
+                child: Image.network(
+                  videos.contains('youtube.com') || videos.contains('youtu.be')
+                      ? 'https://img.youtube.com/vi/${_extractYouTubeId(videos)}/0.jpg'
+                      : 'https://via.placeholder.com/100x60.png?text=Video',
+                  width: 100.w,
+                  height: 60.h,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) => Container(
+                    width: 100.w,
+                    height: 60.h,
+                    color: Colors.grey,
+                    child: Icon(
+                      Icons.videocam,
+                      color: Colors.white,
+                      size: 30.sp,
+                    ),
+                  ),
+                ),
+              ),
+              Text(
+                "data",
+                style: GoogleFonts.roboto(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w400,
+                  color: const Color(0xFF000000),
+                  letterSpacing: -0.3,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 }
