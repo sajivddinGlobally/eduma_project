@@ -89,28 +89,52 @@ class _EnrolledDourseDetailsPageState
                     ),
                     SizedBox(height: 30.h),
                     Text(
-                      "title",
+                      data.title.toString(),
                       style: GoogleFonts.inter(
                         fontSize: 20.sp,
                         fontWeight: FontWeight.w700,
                         color: Color(0xFF000000),
                       ),
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: data.topics!
-                          .map(
-                            (e) => modules(
-                              e.topicTitle.toString(),
-                              e.lessons!
-                                  .map(
-                                    (lesson) =>
-                                        lesson.lessonMeta!.video.toString(),
-                                  )
-                                  .toList(),
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.only(
+                          left: 10.w,
+                          right: 10.w,
+                          top: 10.h,
+                          bottom: 10.h,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.r),
+                          color: Color(0xFFFFFFFF),
+                          boxShadow: [
+                            BoxShadow(
+                              offset: Offset(0, 1),
+                              spreadRadius: 0,
+                              blurRadius: 4,
+                              color: Color.fromARGB(63, 0, 0, 0),
                             ),
-                          )
-                          .toList(),
+                          ],
+                        ),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: data.topics!
+                                .map(
+                                  (e) => modules(
+                                    e.topicTitle.toString(),
+                                    e.lessons!
+                                        .map(
+                                          (lesson) => lesson.lessonMeta!.video
+                                              .toString(),
+                                        )
+                                        .toList(),
+                                  ),
+                                )
+                                .toList(),
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 ),
