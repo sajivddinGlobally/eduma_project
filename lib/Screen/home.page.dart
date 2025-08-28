@@ -570,25 +570,25 @@ class _HomePageState extends ConsumerState<HomePage> {
                       ],
                     ),
                     SizedBox(height: 20.h),
-                    // latestCourseProvider.when(
-                    //   data: (data) {
-                    //     return Container(
-                    //       height: 200.h,
-                    //       // color: Colors.amber,
-                    //       child: ListView.builder(
-                    //         scrollDirection: Axis.horizontal,
-                    //         padding: EdgeInsets.zero,
-                    //         itemCount: data.courses.length,
-                    //         itemBuilder: (context, index) {
-                    //           return PopularBody(data: data.courses[index]);
-                    //         },
-                    //       ),
-                    //     );
-                    //   },
-                    //   error: (error, stackTrace) =>
-                    //       Center(child: Text(error.toString())),
-                    //   loading: () => Center(child: CircularProgressIndicator()),
-                    // ),
+                    latestCourseProvider.when(
+                      data: (data) {
+                        return Container(
+                          height: 200.h,
+                          // color: Colors.amber,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            padding: EdgeInsets.zero,
+                            itemCount: data.courses.length,
+                            itemBuilder: (context, index) {
+                              return PopularBody(data: data.courses[index]);
+                            },
+                          ),
+                        );
+                      },
+                      error: (error, stackTrace) =>
+                          Center(child: Text(error.toString())),
+                      loading: () => Center(child: CircularProgressIndicator()),
+                    ),
                     SizedBox(height: 10.h),
                     Row(
                       children: [

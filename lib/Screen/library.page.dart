@@ -1,5 +1,7 @@
 import 'dart:math';
+import 'package:eduma_app/Screen/enrolledCourseDetails.page.dart';
 import 'package:eduma_app/data/Controller/enrolleCourseController.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -110,7 +112,15 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 InkWell(
-                                  onTap: () {},
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      CupertinoPageRoute(
+                                        builder: (context) =>
+                                            EnrolledDourseDetailsPage(),
+                                      ),
+                                    );
+                                  },
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment:
@@ -149,18 +159,14 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
                                               ),
                                             ),
                                           ),
-                                          SizedBox(height: 10.h),
+                                          SizedBox(height: 6.h),
                                           Text(
                                             //"data",
-                                            data
-                                                .courses[index]
-                                                .stats
-                                                .totalLessons
-                                                .toString(),
+                                            data.courses[index].instructor.name,
                                             style: GoogleFonts.roboto(
                                               fontSize: 16.sp,
                                               fontWeight: FontWeight.w400,
-                                              color: Colors.blue,
+                                              color: Colors.grey,
                                             ),
                                           ),
                                         ],
