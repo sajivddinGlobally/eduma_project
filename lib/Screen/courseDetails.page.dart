@@ -250,7 +250,7 @@ class _CourseDetailsPageState extends ConsumerState<CourseDetailsPage> {
                                 SizedBox(height: 10.h),
                                 Text(
                                   // "With over 5 years of experience, I've guided 300+ students to land jobs in top companies like Google, TCS, and Deloitte. My sessions focus on mock interviews, resume building, and effective communication",
-                                  courseDetails.excerpt.toString(),
+                                  courseDetails.description.toString(),
                                   style: GoogleFonts.roboto(
                                     fontSize: 16.sp,
                                     fontWeight: FontWeight.w400,
