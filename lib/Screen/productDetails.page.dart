@@ -635,6 +635,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                           ),
                           child: Row(
                             children: [
+                              SizedBox(width: 8.w),
                               IconButton(
                                 style: IconButton.styleFrom(
                                   minimumSize: Size.zero,
@@ -647,12 +648,12 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                     : null,
                                 icon: Icon(Icons.remove, size: 20.sp),
                               ),
-                              SizedBox(width: 8.w),
+                              SizedBox(width: 12.w),
                               Text(
                                 quantity.toString(),
                                 style: GoogleFonts.roboto(fontSize: 16.sp),
                               ),
-                              SizedBox(width: 8.w),
+                              SizedBox(width: 12.w),
                               IconButton(
                                 style: IconButton.styleFrom(
                                   minimumSize: Size.zero,
@@ -663,6 +664,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                 onPressed: () => setState(() => quantity++),
                                 icon: Icon(Icons.add, size: 20.sp),
                               ),
+                              SizedBox(width: 10.w),
                             ],
                           ),
                         ),
