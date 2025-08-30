@@ -457,10 +457,10 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
           ),
         ),
         actions: [
-          IconButton(
-            icon: Icon(Icons.share, color: Color(0xFF001E6C)),
-            onPressed: () {},
-          ),
+          // IconButton(
+          //   icon: Icon(Icons.share, color: Color(0xFF001E6C)),
+          //   onPressed: () {},
+          // ),
         ],
       ),
       body: productDetailsProvider.when(
@@ -571,51 +571,51 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                             color: Color(0xFF001E6C),
                           ),
                         ),
-                        if (data.regularPrice != null)
+                       // if (data.regularPrice != null)
                           Text(
-                            "₹ ${data.regularPrice}",
+                            "₹ ${data.price}",
                             style: GoogleFonts.roboto(
                               fontSize: 16.sp,
                               fontWeight: FontWeight.w400,
                               color: Color(0xFF001E6C),
-                              decoration: TextDecoration.lineThrough,
+                              //decoration: TextDecoration.lineThrough,
                             ),
                           ),
                         SizedBox(width: 12.w),
-                        if (data.backorders != null)
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 8.w,
-                              vertical: 4.h,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Color(0xFF1BB93D).withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(6.r),
-                            ),
-                            child: Text(
-                              "${data.dateOnSaleTo} % off",
-                              style: GoogleFonts.roboto(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w500,
-                                color: Color(0xFF1BB93D),
-                              ),
+                        // if (data.backorders != null)
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 8.w,
+                            vertical: 4.h,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Color(0xFF1BB93D).withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(6.r),
+                          ),
+                          child: Text(
+                            "${data.amsPriceToDisplay} % off",
+                            style: GoogleFonts.roboto(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xFF1BB93D),
                             ),
                           ),
+                        ),
                       ],
                     ),
-                    SizedBox(height: 12.h),
-                    Text(
-                      data.stockStatus == 'instock'
-                          ? 'In Stock'
-                          : 'Out of Stock',
-                      style: GoogleFonts.roboto(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w500,
-                        color: data.stockStatus == 'instock'
-                            ? Colors.green
-                            : Colors.red,
-                      ),
-                    ),
+                    // SizedBox(height: 12.h),
+                    // Text(
+                    //   data.stockStatus == 'instock'
+                    //       ? 'In Stock'
+                    //       : 'Out of Stock',
+                    //   style: GoogleFonts.roboto(
+                    //     fontSize: 14.sp,
+                    //     fontWeight: FontWeight.w500,
+                    //     color: data.stockStatus == 'instock'
+                    //         ? Colors.green
+                    //         : Colors.red,
+                    //   ),
+                    // ),
                     SizedBox(height: 16.h),
                     Row(
                       children: [
