@@ -4,6 +4,7 @@ import 'package:eduma_app/config/network/api.state.dart';
 import 'package:eduma_app/config/utils/pretty.dio.dart';
 import 'package:eduma_app/data/Controller/cartController.dart';
 import 'package:eduma_app/data/Model/addCartBodyModel.dart';
+import 'package:eduma_app/data/Model/cartModel.dart';
 import 'package:eduma_app/data/Model/cartRemoveBodyModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -182,246 +183,247 @@ class _CartPageState extends ConsumerState<CartPage> {
                             itemCount: data.items.length,
                             itemBuilder: (context, index) {
                               final item = data.items[index];
-                              return Dismissible(
-                                key: Key(item.productId.toString()),
-                                direction: DismissDirection.endToStart,
-                                background: Container(
-                                  margin: EdgeInsets.only(top: 15.h),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(16.r),
-                                    color: Color(0xFFEF5350),
-                                  ),
-                                  alignment: Alignment.centerRight,
-                                  padding: EdgeInsets.only(right: 20.w),
-                                  child: Icon(
-                                    Icons.delete,
-                                    color: Colors.yellow,
-                                    size: 24.sp,
-                                  ),
-                                ),
-                                onDismissed: (direction) async {
-                                  final body = CarRemoveBodyModel(
-                                    productId: item.productId,
-                                  );
-                                  try {
-                                    final service = APIStateNetwork(
-                                      createDio(),
-                                    );
-                                    final response = await service.removeCart(
-                                      body,
-                                    );
-                                    if (response.success == true) {
-                                      showSuccessMessage(
-                                        context,
-                                        response.message,
-                                      );
-                                    }
-                                    ref.invalidate(cartController);
-                                  } catch (e) {
-                                    log(e.toString());
-                                    showSuccessMessage(context, e.toString());
-                                  }
-                                },
-                                child: Container(
-                                  margin: EdgeInsets.only(top: 15.h),
-                                  padding: EdgeInsets.all(12.w),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(16.r),
-                                    color: Colors.white,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black12,
-                                        blurRadius: 6,
-                                        offset: Offset(0, 2),
-                                      ),
-                                    ],
-                                  ),
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      ClipRRect(
-                                        borderRadius: BorderRadius.circular(
-                                          12.r,
-                                        ),
-                                        child: Image.network(
-                                          item.thumbnail,
-                                          width: 90.w,
-                                          height: 90.h,
-                                          fit: BoxFit.cover,
-                                          errorBuilder:
-                                              (context, error, stackTrace) {
-                                                return Container(
-                                                  width: 90.w,
-                                                  height: 90.h,
-                                                  color: Colors.grey[200],
-                                                  child: Icon(
-                                                    Icons.image_not_supported,
-                                                    color: Colors.grey[600],
-                                                    size: 40.sp,
-                                                  ),
-                                                );
-                                              },
-                                        ),
-                                      ),
-                                      SizedBox(width: 12.w),
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              item.name,
-                                              style: GoogleFonts.poppins(
-                                                fontSize: 16.sp,
-                                                fontWeight: FontWeight.w600,
-                                                color: Color(0xFF001E6C),
-                                              ),
-                                              maxLines: 2,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                            SizedBox(height: 8.h),
-                                            Text(
-                                              "₹${item.price}",
-                                              style: GoogleFonts.poppins(
-                                                fontSize: 14.sp,
-                                                fontWeight: FontWeight.w500,
-                                                color: Color(0xFF001E6C),
-                                              ),
-                                            ),
-                                            SizedBox(height: 8.h),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(
-                                                  "Qty: ${item.quantity}",
-                                                  style: GoogleFonts.poppins(
-                                                    fontSize: 14.sp,
-                                                    fontWeight: FontWeight.w500,
-                                                    color: Color(0xFF747474),
-                                                  ),
-                                                ),
-                                                Container(
-                                                  width: 120.w,
-                                                  height: 36.h,
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                          10.r,
-                                                        ),
-                                                    color: Color(0xFFF5F7FA),
-                                                  ),
-                                                  child: Padding(
-                                                    padding: EdgeInsets.only(
-                                                      left: 10.w,
-                                                      right: 10.w,
-                                                    ),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        IconButton(
-                                                          style: IconButton.styleFrom(
-                                                            minimumSize:
-                                                                Size.zero,
-                                                            padding:
-                                                                EdgeInsets.zero,
-                                                            tapTargetSize:
-                                                                MaterialTapTargetSize
-                                                                    .shrinkWrap,
-                                                          ),
-                                                          icon: Icon(
-                                                            Icons.remove,
-                                                            size: 20.sp,
-                                                            color: Color(
-                                                              0xFF001E6C,
-                                                            ),
-                                                          ),
+                              // return Dismissible(
+                              //   key: Key(item.productId.toString()),
+                              //   direction: DismissDirection.endToStart,
+                              //   background: Container(
+                              //     margin: EdgeInsets.only(top: 15.h),
+                              //     decoration: BoxDecoration(
+                              //       borderRadius: BorderRadius.circular(16.r),
+                              //       color: Color(0xFFEF5350),
+                              //     ),
+                              //     alignment: Alignment.centerRight,
+                              //     padding: EdgeInsets.only(right: 20.w),
+                              //     child: Icon(
+                              //       Icons.delete,
+                              //       color: Colors.yellow,
+                              //       size: 24.sp,
+                              //     ),
+                              //   ),
+                              //   onDismissed: (direction) async {
+                              //     final body = CarRemoveBodyModel(
+                              //       productId: item.productId,
+                              //     );
+                              //     try {
+                              //       final service = APIStateNetwork(
+                              //         createDio(),
+                              //       );
+                              //       final response = await service.removeCart(
+                              //         body,
+                              //       );
+                              //       if (response.success == true) {
+                              //         showSuccessMessage(
+                              //           context,
+                              //           response.message,
+                              //         );
+                              //       }
+                              //       ref.invalidate(cartController);
+                              //     } catch (e) {
+                              //       log(e.toString());
+                              //       showSuccessMessage(context, e.toString());
+                              //     }
+                              //   },
+                              //   child: Container(
+                              //     margin: EdgeInsets.only(top: 15.h),
+                              //     padding: EdgeInsets.all(12.w),
+                              //     decoration: BoxDecoration(
+                              //       borderRadius: BorderRadius.circular(16.r),
+                              //       color: Colors.white,
+                              //       boxShadow: [
+                              //         BoxShadow(
+                              //           color: Colors.black12,
+                              //           blurRadius: 6,
+                              //           offset: Offset(0, 2),
+                              //         ),
+                              //       ],
+                              //     ),
+                              //     child: Row(
+                              //       crossAxisAlignment:
+                              //           CrossAxisAlignment.start,
+                              //       children: [
+                              //         ClipRRect(
+                              //           borderRadius: BorderRadius.circular(
+                              //             12.r,
+                              //           ),
+                              //           child: Image.network(
+                              //             item.thumbnail,
+                              //             width: 90.w,
+                              //             height: 90.h,
+                              //             fit: BoxFit.cover,
+                              //             errorBuilder:
+                              //                 (context, error, stackTrace) {
+                              //                   return Container(
+                              //                     width: 90.w,
+                              //                     height: 90.h,
+                              //                     color: Colors.grey[200],
+                              //                     child: Icon(
+                              //                       Icons.image_not_supported,
+                              //                       color: Colors.grey[600],
+                              //                       size: 40.sp,
+                              //                     ),
+                              //                   );
+                              //                 },
+                              //           ),
+                              //         ),
+                              //         SizedBox(width: 12.w),
+                              //         Expanded(
+                              //           child: Column(
+                              //             crossAxisAlignment:
+                              //                 CrossAxisAlignment.start,
+                              //             children: [
+                              //               Text(
+                              //                 item.name,
+                              //                 style: GoogleFonts.poppins(
+                              //                   fontSize: 16.sp,
+                              //                   fontWeight: FontWeight.w600,
+                              //                   color: Color(0xFF001E6C),
+                              //                 ),
+                              //                 maxLines: 2,
+                              //                 overflow: TextOverflow.ellipsis,
+                              //               ),
+                              //               SizedBox(height: 8.h),
+                              //               Text(
+                              //                 "₹${item.price}",
+                              //                 style: GoogleFonts.poppins(
+                              //                   fontSize: 14.sp,
+                              //                   fontWeight: FontWeight.w500,
+                              //                   color: Color(0xFF001E6C),
+                              //                 ),
+                              //               ),
+                              //               SizedBox(height: 8.h),
+                              //               Row(
+                              //                 mainAxisAlignment:
+                              //                     MainAxisAlignment
+                              //                         .spaceBetween,
+                              //                 children: [
+                              //                   Text(
+                              //                     "Qty: ${item.quantity}",
+                              //                     style: GoogleFonts.poppins(
+                              //                       fontSize: 14.sp,
+                              //                       fontWeight: FontWeight.w500,
+                              //                       color: Color(0xFF747474),
+                              //                     ),
+                              //                   ),
+                              //                   Container(
+                              //                     width: 120.w,
+                              //                     height: 36.h,
+                              //                     decoration: BoxDecoration(
+                              //                       borderRadius:
+                              //                           BorderRadius.circular(
+                              //                             10.r,
+                              //                           ),
+                              //                       color: Color(0xFFF5F7FA),
+                              //                     ),
+                              //                     child: Padding(
+                              //                       padding: EdgeInsets.only(
+                              //                         left: 10.w,
+                              //                         right: 10.w,
+                              //                       ),
+                              //                       child: Row(
+                              //                         mainAxisAlignment:
+                              //                             MainAxisAlignment
+                              //                                 .spaceBetween,
+                              //                         children: [
+                              //                           IconButton(
+                              //                             style: IconButton.styleFrom(
+                              //                               minimumSize:
+                              //                                   Size.zero,
+                              //                               padding:
+                              //                                   EdgeInsets.zero,
+                              //                               tapTargetSize:
+                              //                                   MaterialTapTargetSize
+                              //                                       .shrinkWrap,
+                              //                             ),
+                              //                             icon: Icon(
+                              //                               Icons.remove,
+                              //                               size: 20.sp,
+                              //                               color: Color(
+                              //                                 0xFF001E6C,
+                              //                               ),
+                              //                             ),
 
-                                                          // onPressed:
-                                                          //     isUpdating ||
-                                                          //         item.quantity <=
-                                                          //             1
-                                                          //     ? null
-                                                          //     : () async {
-                                                          //         await updateCartQuantity(
-                                                          //           item.productId,
-                                                          //           item.quantity,
-                                                          //           item.quantity -
-                                                          //               1,
-                                                          //         );
-                                                          //       },
-                                                          onPressed: () {
-                                                            if (item.quantity >
-                                                                1) {
-                                                              setState(() {
-                                                                item.quantity--;
-                                                              });
-                                                            }
-                                                          },
-                                                        ),
-                                                        Text(
-                                                          "${item.quantity}",
-                                                          style:
-                                                              GoogleFonts.poppins(
-                                                                fontSize: 16.sp,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600,
-                                                                color: Color(
-                                                                  0xFF001E6C,
-                                                                ),
-                                                              ),
-                                                        ),
-                                                        IconButton(
-                                                          style: IconButton.styleFrom(
-                                                            minimumSize:
-                                                                Size.zero,
-                                                            padding:
-                                                                EdgeInsets.zero,
-                                                            tapTargetSize:
-                                                                MaterialTapTargetSize
-                                                                    .shrinkWrap,
-                                                          ),
-                                                          icon: Icon(
-                                                            Icons.add,
-                                                            size: 20.sp,
-                                                            color: Color(
-                                                              0xFF001E6C,
-                                                            ),
-                                                          ),
-                                                          // onPressed: isUpdating
-                                                          //     ? null
-                                                          //     : () async {
-                                                          //         await updateCartQuantity(
-                                                          //           item.productId,
-                                                          //           item.quantity,
-                                                          //           item.quantity +
-                                                          //               1,
-                                                          //         );
-                                                          //       },
-                                                          onPressed: () async {
-                                                            setState(() {
-                                                              item.quantity++;
-                                                            });
-                                                          },
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
+                              //                             // onPressed:
+                              //                             //     isUpdating ||
+                              //                             //         item.quantity <=
+                              //                             //             1
+                              //                             //     ? null
+                              //                             //     : () async {
+                              //                             //         await updateCartQuantity(
+                              //                             //           item.productId,
+                              //                             //           item.quantity,
+                              //                             //           item.quantity -
+                              //                             //               1,
+                              //                             //         );
+                              //                             //       },
+                              //                             onPressed: () {
+                              //                               if (item.quantity >
+                              //                                   1) {
+                              //                                 setState(() {
+                              //                                   item.quantity--;
+                              //                                 });
+                              //                               }
+                              //                             },
+                              //                           ),
+                              //                           Text(
+                              //                             "${item.quantity}",
+                              //                             style:
+                              //                                 GoogleFonts.poppins(
+                              //                                   fontSize: 16.sp,
+                              //                                   fontWeight:
+                              //                                       FontWeight
+                              //                                           .w600,
+                              //                                   color: Color(
+                              //                                     0xFF001E6C,
+                              //                                   ),
+                              //                                 ),
+                              //                           ),
+                              //                           IconButton(
+                              //                             style: IconButton.styleFrom(
+                              //                               minimumSize:
+                              //                                   Size.zero,
+                              //                               padding:
+                              //                                   EdgeInsets.zero,
+                              //                               tapTargetSize:
+                              //                                   MaterialTapTargetSize
+                              //                                       .shrinkWrap,
+                              //                             ),
+                              //                             icon: Icon(
+                              //                               Icons.add,
+                              //                               size: 20.sp,
+                              //                               color: Color(
+                              //                                 0xFF001E6C,
+                              //                               ),
+                              //                             ),
+                              //                             // onPressed: isUpdating
+                              //                             //     ? null
+                              //                             //     : () async {
+                              //                             //         await updateCartQuantity(
+                              //                             //           item.productId,
+                              //                             //           item.quantity,
+                              //                             //           item.quantity +
+                              //                             //               1,
+                              //                             //         );
+                              //                             //       },
+                              //                             onPressed: () async {
+                              //                               setState(() {
+                              //                                 item.quantity++;
+                              //                               });
+                              //                             },
+                              //                           ),
+                              //                         ],
+                              //                       ),
+                              //                     ),
+                              //                   ),
+                              //                 ],
+                              //               ),
+                              //             ],
+                              //           ),
+                              //         ),
+                              //       ],
+                              //     ),
+                              //   ),
+                              // );
+                              return CartBody(data: data.items[index]);
                             },
                           ),
                   ),
@@ -569,6 +571,241 @@ class _CartPageState extends ConsumerState<CartPage> {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class CartBody extends ConsumerStatefulWidget {
+  final Item data;
+  const CartBody({super.key, required this.data});
+
+  @override
+  ConsumerState<CartBody> createState() => _CartBodyState();
+}
+
+class _CartBodyState extends ConsumerState<CartBody> {
+  bool isUpdating = false;
+  Future<void> updateCartQuantity(int productId, int newQuantity) async {
+    if (isUpdating) return;
+    setState(() => isUpdating = true);
+
+    try {
+      final body = ProductAddCartBodyModel(
+        productId: productId,
+        quantity: newQuantity, // ✅ Pure new quantity bhejo
+      );
+
+      final service = APIStateNetwork(createDio());
+      final response = await service.addToCart(body);
+
+      if (response.success == true) {
+        ref.invalidate(cartController); // ✅ Refresh cart after update
+      } else {
+        showSuccessMessage(
+          context,
+          "Failed to update quantity: ${response.message}",
+        );
+      }
+    } catch (e) {
+      showSuccessMessage(context, "Error updating quantity: $e");
+    } finally {
+      setState(() => isUpdating = false);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Dismissible(
+      key: Key(widget.data.productId.toString()),
+      direction: DismissDirection.endToStart,
+      background: Container(
+        margin: EdgeInsets.only(top: 15.h),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16.r),
+          color: Color(0xFFEF5350),
+        ),
+        alignment: Alignment.centerRight,
+        padding: EdgeInsets.only(right: 20.w),
+        child: Icon(Icons.delete, color: Colors.yellow, size: 24.sp),
+      ),
+      onDismissed: (direction) async {
+        final body = CarRemoveBodyModel(productId: widget.data.productId);
+        try {
+          final service = APIStateNetwork(createDio());
+          final response = await service.removeCart(body);
+          if (response.success == true) {
+            showSuccessMessage(context, response.message);
+          }
+          ref.invalidate(cartController);
+        } catch (e) {
+          log(e.toString());
+          showSuccessMessage(context, e.toString());
+        }
+      },
+      child: Container(
+        margin: EdgeInsets.only(top: 15.h),
+        padding: EdgeInsets.all(12.w),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16.r),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black12,
+              blurRadius: 6,
+              offset: Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12.r),
+              child: Image.network(
+                widget.data.thumbnail,
+                width: 90.w,
+                height: 90.h,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return Container(
+                    width: 90.w,
+                    height: 90.h,
+                    color: Colors.grey[200],
+                    child: Icon(
+                      Icons.image_not_supported,
+                      color: Colors.grey[600],
+                      size: 40.sp,
+                    ),
+                  );
+                },
+              ),
+            ),
+            SizedBox(width: 12.w),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    widget.data.name,
+                    style: GoogleFonts.poppins(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xFF001E6C),
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  SizedBox(height: 8.h),
+                  Text(
+                    "₹${widget.data.price}",
+                    style: GoogleFonts.poppins(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xFF001E6C),
+                    ),
+                  ),
+                  SizedBox(height: 8.h),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Qty: ${widget.data.quantity}",
+                        style: GoogleFonts.poppins(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xFF747474),
+                        ),
+                      ),
+                      Container(
+                        width: 120.w,
+                        height: 36.h,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.r),
+                          color: Color(0xFFF5F7FA),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 10.w, right: 10.w),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              IconButton(
+                                style: IconButton.styleFrom(
+                                  minimumSize: Size.zero,
+                                  padding: EdgeInsets.zero,
+                                  tapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                ),
+                                icon: Icon(
+                                  Icons.remove,
+                                  size: 20.sp,
+                                  color: Color(0xFF001E6C),
+                                ),
+
+                                onPressed:
+                                    isUpdating || widget.data.quantity <= 1
+                                    ? null
+                                    : () async {
+                                        await updateCartQuantity(
+                                          widget.data.productId,
+                                          -1,
+                                        );
+                                      },
+
+                                // onPressed: () {
+                                //   if (widget.data.quantity > 1) {
+                                //     setState(() {
+                                //       widget.data.quantity--;
+                                //     });
+                                //   }
+                                // },
+                              ),
+                              Text(
+                                "${widget.data.quantity}",
+                                style: GoogleFonts.poppins(
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.w600,
+                                  color: Color(0xFF001E6C),
+                                ),
+                              ),
+                              IconButton(
+                                style: IconButton.styleFrom(
+                                  minimumSize: Size.zero,
+                                  padding: EdgeInsets.zero,
+                                  tapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                ),
+                                icon: Icon(
+                                  Icons.add,
+                                  size: 20.sp,
+                                  color: Color(0xFF001E6C),
+                                ),
+                                onPressed: isUpdating
+                                    ? null
+                                    : () async {
+                                        await updateCartQuantity(
+                                          widget.data.productId,
+                                          1, // ✅ sirf +1 bhejo
+                                        );
+                                      },
+
+                                // onPressed: () async {
+                                //   setState(() {
+                                //     widget.data.quantity++;
+                                //   });
+                                // },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
