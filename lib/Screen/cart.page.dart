@@ -3,6 +3,7 @@ import 'package:eduma_app/Screen/editProfile.page.dart';
 import 'package:eduma_app/config/network/api.state.dart';
 import 'package:eduma_app/config/utils/pretty.dio.dart';
 import 'package:eduma_app/data/Controller/cartController.dart';
+import 'package:eduma_app/data/Model/addCartBodyModel.dart';
 import 'package:eduma_app/data/Model/cartRemoveBodyModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,40 @@ class CartPage extends ConsumerStatefulWidget {
 }
 
 class _CartPageState extends ConsumerState<CartPage> {
+  bool isUpdating = false;
+  Future<void> updateCartQuantity(
+    int productId,
+    int quantity,
+    int newquantity,
+  ) async {
+    if (newquantity < 1) return;
+    log("Updating quantity for product $productId to $quantity");
+    setState(() => isUpdating = true);
+    try {
+      final body = ProductAddCartBodyModel(
+        productId: productId,
+        quantity: newquantity,
+      );
+      final service = APIStateNetwork(createDio());
+      final response = await service.addToCart(body);
+      if (response.success == true) {
+        ref.invalidate(cartController); // Refresh cart data
+        showSuccessMessage(context, "Quantity updated successfully");
+        setState(() => isUpdating = false);
+      } else {
+        showSuccessMessage(
+          context,
+          "Failed to update quantity: ${response.message}",
+        );
+      }
+    } catch (e) {
+      log("Error updating quantity: $e");
+      showSuccessMessage(context, "Error updating quantity");
+    } finally {
+      setState(() => isUpdating = false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final cartProvider = ref.watch(cartController);
@@ -247,7 +282,7 @@ class _CartPageState extends ConsumerState<CartPage> {
                                             ),
                                             SizedBox(height: 8.h),
                                             Text(
-                                              "₹${item.price.toStringAsFixed(2)}",
+                                              "₹${item.price}",
                                               style: GoogleFonts.poppins(
                                                 fontSize: 14.sp,
                                                 fontWeight: FontWeight.w500,
@@ -305,6 +340,20 @@ class _CartPageState extends ConsumerState<CartPage> {
                                                               0xFF001E6C,
                                                             ),
                                                           ),
+
+                                                          // onPressed:
+                                                          //     isUpdating ||
+                                                          //         item.quantity <=
+                                                          //             1
+                                                          //     ? null
+                                                          //     : () async {
+                                                          //         await updateCartQuantity(
+                                                          //           item.productId,
+                                                          //           item.quantity,
+                                                          //           item.quantity -
+                                                          //               1,
+                                                          //         );
+                                                          //       },
                                                           onPressed: () {
                                                             if (item.quantity >
                                                                 1) {
@@ -344,7 +393,17 @@ class _CartPageState extends ConsumerState<CartPage> {
                                                               0xFF001E6C,
                                                             ),
                                                           ),
-                                                          onPressed: () {
+                                                          // onPressed: isUpdating
+                                                          //     ? null
+                                                          //     : () async {
+                                                          //         await updateCartQuantity(
+                                                          //           item.productId,
+                                                          //           item.quantity,
+                                                          //           item.quantity +
+                                                          //               1,
+                                                          //         );
+                                                          //       },
+                                                          onPressed: () async {
                                                             setState(() {
                                                               item.quantity++;
                                                             });
@@ -397,6 +456,7 @@ class _CartPageState extends ConsumerState<CartPage> {
                               ),
                               Text(
                                 "₹${totalPrice.toStringAsFixed(2)}",
+                                // "₹${data.subtotal.toString()}",
                                 style: GoogleFonts.poppins(
                                   fontSize: 18.sp,
                                   fontWeight: FontWeight.w600,

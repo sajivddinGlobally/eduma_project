@@ -706,14 +706,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                         ),
                       ],
                     ),
-                    // SizedBox(height: 8.h),
-                    // Text(
-                    //   "(${data.ratingCount ?? 0} reviews)",
-                    //   style: GoogleFonts.roboto(
-                    //     fontSize: 14.sp,
-                    //     color: Colors.grey[600],
-                    //   ),
-                    // ),
+
                     SizedBox(height: 12.h),
                     Row(
                       children: [
@@ -1033,23 +1026,23 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
           ),
         ),
       ),
-      // bottomSheet: ElevatedButton(
-      //   style: ElevatedButton.styleFrom(
-      //     backgroundColor: Color(0xFF001E6C),
-      //     minimumSize: Size(400.w, 40.h),
-      //     shape: RoundedRectangleBorder(
-      //       borderRadius: BorderRadius.circular(12.r),
-      //     ),
-      //   ),
-      //   onPressed: () {},
-      //   child: Text(
-      //     "Buy Now",
-      //     style: GoogleFonts.roboto(
-      //       fontWeight: FontWeight.w500,
-      //       color: Colors.white,
-      //     ),
-      //   ),
-      // ),
+      bottomSheet: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Color(0xFF001E6C),
+          minimumSize: Size(400.w, 55.h),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.r),
+          ),
+        ),
+        onPressed: () {},
+        child: Text(
+          "Buy Now",
+          style: GoogleFonts.roboto(
+            fontWeight: FontWeight.w500,
+            color: Colors.white,
+          ),
+        ),
+      ),
     );
   }
 }
