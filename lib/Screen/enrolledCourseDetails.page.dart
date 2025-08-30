@@ -310,16 +310,16 @@ class _EnrolledDourseDetailsPageState
                   Expanded(
                     child: ListView.builder(
                       padding: EdgeInsets.zero,
-                      itemCount: data.curriculum!.length ?? 0,
+                      itemCount: data.topics!.length ?? 0,
                       itemBuilder: (context, topicIndex) {
-                        final topic = data.curriculum![topicIndex];
+                        final topic = data.topics![topicIndex];
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             ...topic.lessons!.map(
                               (lesson) => _lessonTile(
                                 lesson.lessonTitle ?? "Untitled Lesson",
-                                lesson.video!.url ?? "",
+                                lesson.lessonMeta!.video.toString(),
                               ),
                             ),
                           ],

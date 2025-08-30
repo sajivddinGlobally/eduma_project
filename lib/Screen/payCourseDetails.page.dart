@@ -269,7 +269,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                               ),
                               SizedBox(height: 12.h),
                               Text(
-                                courseDetails.description ?? "",
+                                courseDetails.excerpt ?? "",
                                 style: GoogleFonts.roboto(
                                   fontSize: 16.sp,
                                   fontWeight: FontWeight.w400,
@@ -483,6 +483,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                 ),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
+
                                   // children: courseDetails.topics!
                                   //     .map(
                                   //       (e) => modules(
@@ -498,18 +499,27 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                   //       ),
                                   //     )
                                   //     .toList(),
-                                  children: courseDetails.curriculum!
-                                      .expand(
-                                        (topic) => topic.lessons!
-                                            .map(
-                                              (lession) => modules(
-                                                lession.lessonTitle.toString(),
-                                                lession.video!.url.toString(),
-                                              ),
-                                            )
-                                            .toList(),
-                                      )
-                                      .toList(),
+                                  children: [
+                                    // ...courseDetails.topics!.map(
+                                    //   (lesson) => modules(
+                                    //     lesson.lessons!.map((e) => e.lessonTitle,).toString(),
+                                    //     lesson.lessons!.map((e) => e.lessonMeta!.video.toString(),).toString()),
+                                    // ),
+                                    for (var topic in courseDetails.topics!)
+                                      for (var lesson in topic.lessons!)
+                                        modules(
+                                          lesson.lessonTitle ??
+                                              "Untitled Lesson",
+                                          lesson.lessonMeta?.video
+                                                  ?.toString() ??
+                                              "",
+                                        ),
+
+                                        // ...courseDetails.topics!.expand((topic) => topic.lessons!.map((lesson) => modules(
+                                        //   lesson.lessonTitle ?? "Untitled Lesson",
+                                        //   lesson.lessonMeta?.video?.toString() ?? "",
+                                        // ))),
+                                  ],
                                 ),
                               ),
                               SizedBox(height: 15.h),
@@ -586,7 +596,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                       color: Colors.grey,
                                       image: DecorationImage(
                                         image: NetworkImage(
-                                          courseDetails.instructor!.avatar ??
+                                          courseDetails.author?.avatarUrl ??
                                               "https://www.google.com/url?sa=i&url=https%3A%2F%2Fcommons.wikimedia.org%2Fwiki%2FFile%3ANo-Image-Placeholder.svg&psig=AOvVaw1MZ0Y-EQnAjmnyZjr5zMZ3&ust=1755926612664000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCPiV9cHWnY8DFQAAAAAdAAAAABAE",
                                         ),
                                       ),
@@ -621,7 +631,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                   ),
                                   SizedBox(height: 20.h),
                                   Text(
-                                    courseDetails.instructor!.name ?? "",
+                                    courseDetails.author?.name ?? "",
                                     style: GoogleFonts.roboto(
                                       fontSize: 16.sp,
                                       fontWeight: FontWeight.w400,
@@ -762,8 +772,8 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                         },
                       );
                     }
-                  } catch (e) {
-                    log(e.toString());
+                  } catch (err) {
+                    log(err.toString());
                   }
                 },
                 child: Text(
