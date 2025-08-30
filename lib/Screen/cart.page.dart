@@ -746,9 +746,10 @@ class _CartBodyState extends ConsumerState<CartBody> {
                                     isUpdating || widget.data.quantity <= 1
                                     ? null
                                     : () async {
+                                        int newQuan = widget.data.quantity - 1;
                                         await updateCartQuantity(
                                           widget.data.productId,
-                                          -1,
+                                          newQuan,
                                         );
                                       },
 
