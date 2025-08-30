@@ -483,42 +483,33 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                 ),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
-
-                                  // children: courseDetails.topics!
-                                  //     .map(
-                                  //       (e) => modules(
-                                  //         e.topicTitle.toString(),
-                                  //         e.lessons!
-                                  //             .map(
-                                  //               (lesson) => lesson
-                                  //                   .lessonMeta!
-                                  //                   .video
-                                  //                   .toString(),
-                                  //             )
-                                  //             .toList(),
-                                  //       ),
-                                  //     )
-                                  //     .toList(),
                                   children: [
                                     // ...courseDetails.topics!.map(
                                     //   (lesson) => modules(
                                     //     lesson.lessons!.map((e) => e.lessonTitle,).toString(),
                                     //     lesson.lessons!.map((e) => e.lessonMeta!.video.toString(),).toString()),
                                     // ),
-                                    for (var topic in courseDetails.topics!)
-                                      for (var lesson in topic.lessons!)
-                                        modules(
+                                    // for (var topic in courseDetails.topics!)
+                                    //   for (var lesson in topic.lessons!)
+                                    //     modules(
+                                    //       lesson.lessonTitle ??
+                                    //           "Untitled Lesson",
+                                    //       lesson.lessonMeta?.video
+                                    //               ?.toString() ??
+                                    //           "",
+                                    //     ),
+                                    
+                                    ...courseDetails.topics!.expand(
+                                      (topic) => topic.lessons!.map(
+                                        (lesson) => modules(
                                           lesson.lessonTitle ??
                                               "Untitled Lesson",
                                           lesson.lessonMeta?.video
                                                   ?.toString() ??
                                               "",
                                         ),
-
-                                        // ...courseDetails.topics!.expand((topic) => topic.lessons!.map((lesson) => modules(
-                                        //   lesson.lessonTitle ?? "Untitled Lesson",
-                                        //   lesson.lessonMeta?.video?.toString() ?? "",
-                                        // ))),
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ),
