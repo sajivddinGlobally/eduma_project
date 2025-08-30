@@ -219,7 +219,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                               ),
                               SizedBox(height: 14.h),
                               Text(
-                                courseDetails.excerpt ?? "",
+                                courseDetails.description ?? "",
                                 style: GoogleFonts.roboto(
                                   fontSize: 16.sp,
                                   fontWeight: FontWeight.w400,
@@ -498,13 +498,13 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                   //       ),
                                   //     )
                                   //     .toList(),
-                                  children: courseDetails.topics!
+                                  children: courseDetails.curriculum!
                                       .expand(
                                         (topic) => topic.lessons!
                                             .map(
                                               (lession) => modules(
                                                 lession.lessonTitle.toString(),
-                                                lession.lessonMeta!.video
+                                                lession.video
                                                     .toString(),
                                               ),
                                             )
@@ -587,7 +587,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                       color: Colors.grey,
                                       image: DecorationImage(
                                         image: NetworkImage(
-                                          courseDetails.author!.avatarUrl ??
+                                          courseDetails.instructor!.avatar ??
                                               "https://www.google.com/url?sa=i&url=https%3A%2F%2Fcommons.wikimedia.org%2Fwiki%2FFile%3ANo-Image-Placeholder.svg&psig=AOvVaw1MZ0Y-EQnAjmnyZjr5zMZ3&ust=1755926612664000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCPiV9cHWnY8DFQAAAAAdAAAAABAE",
                                         ),
                                       ),
@@ -622,7 +622,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                   ),
                                   SizedBox(height: 20.h),
                                   Text(
-                                    courseDetails.author!.name ?? "",
+                                    courseDetails.instructor!.name ?? "",
                                     style: GoogleFonts.roboto(
                                       fontSize: 16.sp,
                                       fontWeight: FontWeight.w400,
@@ -642,7 +642,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                   ),
                                   SizedBox(height: 14.h),
                                   Text(
-                                    courseDetails.excerpt ?? "",
+                                    courseDetails.description ?? "",
                                     style: GoogleFonts.roboto(
                                       fontSize: 16.sp,
                                       fontWeight: FontWeight.w400,
