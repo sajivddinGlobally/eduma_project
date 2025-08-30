@@ -504,8 +504,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                             .map(
                                               (lession) => modules(
                                                 lession.lessonTitle.toString(),
-                                                lession.video
-                                                    .toString(),
+                                                lession.video!.url.toString(),
                                               ),
                                             )
                                             .toList(),
