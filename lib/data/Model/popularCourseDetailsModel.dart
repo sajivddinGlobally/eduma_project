@@ -276,91 +276,106 @@
 
 import 'dart:convert';
 
-PopularCourseDetailsModel popularCourseDetailsModelFromJson(String str) => PopularCourseDetailsModel.fromJson(json.decode(str));
+PopularCourseDetailsModel popularCourseDetailsModelFromJson(String str) =>
+    PopularCourseDetailsModel.fromJson(json.decode(str));
 
-String popularCourseDetailsModelToJson(PopularCourseDetailsModel data) => json.encode(data.toJson());
+String popularCourseDetailsModelToJson(PopularCourseDetailsModel? data) =>
+    json.encode(data?.toJson());
 
 class PopularCourseDetailsModel {
-    bool success;
-    int id;
-    String title;
-    String url;
-    String thumbnail;
-    String description;
-    String content;
-    String price;
-    String regularPrice;
-    String salePrice;
-    int finalPrice;
-    bool isFree;
-    String courseType;
-    String currency;
-    String level;
-    Duration duration;
-    dynamic enrollCount;
-    Rating rating;
-    dynamic popularityScore;
-    Instructor instructor;
-    List<Curriculum> curriculum;
-    int totalTopics;
-    int totalLessons;
-    EnrollmentStatus enrollmentStatus;
+  bool? success;
+  int? id;
+  String? title;
+  String? url;
+  String? thumbnail;
+  String? description;
+  String? content;
+  String? price;
+  String? regularPrice;
+  String? salePrice;
+  int? finalPrice;
+  bool? isFree;
+  String? courseType;
+  String? currency;
+  String? level;
+  DurationModel? duration;
+  dynamic enrollCount;
+  Rating? rating;
+  dynamic popularityScore;
+  Instructor? instructor;
+  List<Curriculum>? curriculum;
+  int? totalTopics;
+  int? totalLessons;
+  EnrollmentStatus? enrollmentStatus;
 
-    PopularCourseDetailsModel({
-        required this.success,
-        required this.id,
-        required this.title,
-        required this.url,
-        required this.thumbnail,
-        required this.description,
-        required this.content,
-        required this.price,
-        required this.regularPrice,
-        required this.salePrice,
-        required this.finalPrice,
-        required this.isFree,
-        required this.courseType,
-        required this.currency,
-        required this.level,
-        required this.duration,
-        required this.enrollCount,
-        required this.rating,
-        required this.popularityScore,
-        required this.instructor,
-        required this.curriculum,
-        required this.totalTopics,
-        required this.totalLessons,
-        required this.enrollmentStatus,
-    });
+  PopularCourseDetailsModel({
+    this.success,
+    this.id,
+    this.title,
+    this.url,
+    this.thumbnail,
+    this.description,
+    this.content,
+    this.price,
+    this.regularPrice,
+    this.salePrice,
+    this.finalPrice,
+    this.isFree,
+    this.courseType,
+    this.currency,
+    this.level,
+    this.duration,
+    this.enrollCount,
+    this.rating,
+    this.popularityScore,
+    this.instructor,
+    this.curriculum,
+    this.totalTopics,
+    this.totalLessons,
+    this.enrollmentStatus,
+  });
 
-    factory PopularCourseDetailsModel.fromJson(Map<String, dynamic> json) => PopularCourseDetailsModel(
-        success: json["success"],
-        id: json["id"],
-        title: json["title"],
-        url: json["url"],
-        thumbnail: json["thumbnail"],
-        description: json["description"],
-        content: json["content"],
-        price: json["price"],
-        regularPrice: json["regular_price"],
-        salePrice: json["sale_price"],
-        finalPrice: json["final_price"],
-        isFree: json["is_free"],
-        courseType: json["course_type"],
-        currency: json["currency"],
-        level: json["level"],
-        duration: Duration.fromJson(json["duration"]),
-        enrollCount: json["enroll_count"],
-        rating: Rating.fromJson(json["rating"]),
-        popularityScore: json["popularity_score"],
-        instructor: Instructor.fromJson(json["instructor"]),
-        curriculum: List<Curriculum>.from(json["curriculum"].map((x) => Curriculum.fromJson(x))),
-        totalTopics: json["total_topics"],
-        totalLessons: json["total_lessons"],
-        enrollmentStatus: EnrollmentStatus.fromJson(json["enrollment_status"]),
-    );
+  factory PopularCourseDetailsModel.fromJson(Map<String, dynamic>? json) =>
+      PopularCourseDetailsModel(
+        success: json?["success"] == true,
+        id: _toInt(json?["id"]),
+        title: json?["title"]?.toString(),
+        url: json?["url"]?.toString(),
+        thumbnail: json?["thumbnail"]?.toString(),
+        description: json?["description"]?.toString(),
+        content: json?["content"]?.toString(),
+        price: json?["price"]?.toString(),
+        regularPrice: json?["regular_price"]?.toString(),
+        salePrice: json?["sale_price"]?.toString(),
+        finalPrice: _toInt(json?["final_price"]),
+        isFree: json?["is_free"] == true,
+        courseType: json?["course_type"]?.toString(),
+        currency: json?["currency"]?.toString(),
+        level: json?["level"]?.toString(),
+        duration: (json?["duration"] is Map)
+            ? DurationModel.fromJson(json?["duration"])
+            : null,
+        enrollCount: json?["enroll_count"],
+        rating:
+            (json?["rating"] is Map) ? Rating.fromJson(json?["rating"]) : null,
+        popularityScore: json?["popularity_score"],
+        instructor: (json?["instructor"] is Map)
+            ? Instructor.fromJson(json?["instructor"])
+            : null,
+        curriculum: (json?["curriculum"] is List)
+            ? List<Curriculum>.from(
+                (json?["curriculum"] as List)
+                    .map((x) => Curriculum.fromJson(x)),
+              )
+            : [],
+        totalTopics: _toInt(json?["total_topics"]),
+        totalLessons: _toInt(json?["total_lessons"]),
+        enrollmentStatus: (json?["enrollment_status"] is Map)
+            ? EnrollmentStatus.fromJson(json?["enrollment_status"])
+            : null,
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "success": success,
         "id": id,
         "title": title,
@@ -376,246 +391,242 @@ class PopularCourseDetailsModel {
         "course_type": courseType,
         "currency": currency,
         "level": level,
-        "duration": duration.toJson(),
+        "duration": duration?.toJson(),
         "enroll_count": enrollCount,
-        "rating": rating.toJson(),
+        "rating": rating?.toJson(),
         "popularity_score": popularityScore,
-        "instructor": instructor.toJson(),
-        "curriculum": List<dynamic>.from(curriculum.map((x) => x.toJson())),
+        "instructor": instructor?.toJson(),
+        "curriculum": curriculum != null
+            ? List<dynamic>.from(curriculum!.map((x) => x.toJson()))
+            : [],
         "total_topics": totalTopics,
         "total_lessons": totalLessons,
-        "enrollment_status": enrollmentStatus.toJson(),
-    };
+        "enrollment_status": enrollmentStatus?.toJson(),
+      };
 }
 
 class Curriculum {
-    String topicId;
-    String topicTitle;
-    String topicContent;
-    List<Lesson> lessons;
+  String? topicId;
+  String? topicTitle;
+  String? topicContent;
+  List<Lesson>? lessons;
 
-    Curriculum({
-        required this.topicId,
-        required this.topicTitle,
-        required this.topicContent,
-        required this.lessons,
-    });
+  Curriculum({this.topicId, this.topicTitle, this.topicContent, this.lessons});
 
-    factory Curriculum.fromJson(Map<String, dynamic> json) => Curriculum(
-        topicId: json["topic_id"],
-        topicTitle: json["topic_title"],
-        topicContent: json["topic_content"],
-        lessons: List<Lesson>.from(json["lessons"].map((x) => Lesson.fromJson(x))),
-    );
+  factory Curriculum.fromJson(Map<String, dynamic>? json) => Curriculum(
+        topicId: json?["topic_id"]?.toString(),
+        topicTitle: json?["topic_title"]?.toString(),
+        topicContent: json?["topic_content"]?.toString(),
+        lessons: (json?["lessons"] is List)
+            ? List<Lesson>.from(
+                (json?["lessons"] as List).map((x) => Lesson.fromJson(x)))
+            : [],
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "topic_id": topicId,
         "topic_title": topicTitle,
         "topic_content": topicContent,
-        "lessons": List<dynamic>.from(lessons.map((x) => x.toJson())),
-    };
+        "lessons": lessons != null
+            ? List<dynamic>.from(lessons!.map((x) => x.toJson()))
+            : [],
+      };
 }
 
 class Lesson {
-    String lessonId;
-    String lessonTitle;
-    String lessonContent;
-    String lessonExcerpt;
-    bool featuredImage;
-    Video video;
-    List<dynamic> attachments;
-    String duration;
-    List<dynamic> quizzes;
-    List<dynamic> assignments;
+  String? lessonId;
+  String? lessonTitle;
+  String? lessonContent;
+  String? lessonExcerpt;
+  bool? featuredImage;
+  Video? video;
+  List<dynamic>? attachments;
+  String? duration;
+  List<dynamic>? quizzes;
+  List<dynamic>? assignments;
 
-    Lesson({
-        required this.lessonId,
-        required this.lessonTitle,
-        required this.lessonContent,
-        required this.lessonExcerpt,
-        required this.featuredImage,
-        required this.video,
-        required this.attachments,
-        required this.duration,
-        required this.quizzes,
-        required this.assignments,
-    });
+  Lesson({
+    this.lessonId,
+    this.lessonTitle,
+    this.lessonContent,
+    this.lessonExcerpt,
+    this.featuredImage,
+    this.video,
+    this.attachments,
+    this.duration,
+    this.quizzes,
+    this.assignments,
+  });
 
-    factory Lesson.fromJson(Map<String, dynamic> json) => Lesson(
-        lessonId: json["lesson_id"],
-        lessonTitle: json["lesson_title"],
-        lessonContent: json["lesson_content"],
-        lessonExcerpt: json["lesson_excerpt"],
-        featuredImage: json["featured_image"],
-        video: Video.fromJson(json["video"]),
-        attachments: List<dynamic>.from(json["attachments"].map((x) => x)),
-        duration: json["duration"],
-        quizzes: List<dynamic>.from(json["quizzes"].map((x) => x)),
-        assignments: List<dynamic>.from(json["assignments"].map((x) => x)),
-    );
+  factory Lesson.fromJson(Map<String, dynamic>? json) => Lesson(
+        lessonId: json?["lesson_id"]?.toString(),
+        lessonTitle: json?["lesson_title"]?.toString(),
+        lessonContent: json?["lesson_content"]?.toString(),
+        lessonExcerpt: json?["lesson_excerpt"]?.toString(),
+        featuredImage: json?["featured_image"] == true,
+        video:
+            (json?["video"] is Map) ? Video.fromJson(json?["video"]) : null,
+        attachments: (json?["attachments"] is List)
+            ? List<dynamic>.from(json?["attachments"].map((x) => x))
+            : [],
+        duration: json?["duration"]?.toString(),
+        quizzes: (json?["quizzes"] is List)
+            ? List<dynamic>.from(json?["quizzes"].map((x) => x))
+            : [],
+        assignments: (json?["assignments"] is List)
+            ? List<dynamic>.from(json?["assignments"].map((x) => x))
+            : [],
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "lesson_id": lessonId,
         "lesson_title": lessonTitle,
         "lesson_content": lessonContent,
         "lesson_excerpt": lessonExcerpt,
         "featured_image": featuredImage,
-        "video": video.toJson(),
-        "attachments": List<dynamic>.from(attachments.map((x) => x)),
+        "video": video?.toJson(),
+        "attachments": attachments ?? [],
         "duration": duration,
-        "quizzes": List<dynamic>.from(quizzes.map((x) => x)),
-        "assignments": List<dynamic>.from(assignments.map((x) => x)),
-    };
+        "quizzes": quizzes ?? [],
+        "assignments": assignments ?? [],
+      };
 }
 
 class Video {
-    String source;
-    String url;
-    Runtime runtime;
+  String? source;
+  String? url;
+  Runtime? runtime;
 
-    Video({
-        required this.source,
-        required this.url,
-        required this.runtime,
-    });
+  Video({this.source, this.url, this.runtime});
 
-    factory Video.fromJson(Map<String, dynamic> json) => Video(
-        source: json["source"],
-        url: json["url"],
-        runtime: Runtime.fromJson(json["runtime"]),
-    );
+  factory Video.fromJson(Map<String, dynamic>? json) => Video(
+        source: json?["source"]?.toString(),
+        url: json?["url"]?.toString(),
+        runtime:
+            (json?["runtime"] is Map) ? Runtime.fromJson(json?["runtime"]) : null,
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "source": source,
         "url": url,
-        "runtime": runtime.toJson(),
-    };
+        "runtime": runtime?.toJson(),
+      };
 }
 
 class Runtime {
-    String hours;
-    String minutes;
-    String seconds;
+  String? hours;
+  String? minutes;
+  String? seconds;
 
-    Runtime({
-        required this.hours,
-        required this.minutes,
-        required this.seconds,
-    });
+  Runtime({this.hours, this.minutes, this.seconds});
 
-    factory Runtime.fromJson(Map<String, dynamic> json) => Runtime(
-        hours: json["hours"],
-        minutes: json["minutes"],
-        seconds: json["seconds"],
-    );
+  factory Runtime.fromJson(Map<String, dynamic>? json) => Runtime(
+        hours: json?["hours"]?.toString(),
+        minutes: json?["minutes"]?.toString(),
+        seconds: json?["seconds"]?.toString(),
+      );
 
-    Map<String, dynamic> toJson() => {
-        "hours": hours,
-        "minutes": minutes,
-        "seconds": seconds,
-    };
+  Map<String, dynamic> toJson() =>
+      {"hours": hours, "minutes": minutes, "seconds": seconds};
 }
 
-class Duration {
-    String hours;
-    String minutes;
+class DurationModel {
+  String? hours;
+  String? minutes;
 
-    Duration({
-        required this.hours,
-        required this.minutes,
-    });
+  DurationModel({this.hours, this.minutes});
 
-    factory Duration.fromJson(Map<String, dynamic> json) => Duration(
-        hours: json["hours"],
-        minutes: json["minutes"],
-    );
+  factory DurationModel.fromJson(Map<String, dynamic>? json) => DurationModel(
+        hours: json?["hours"]?.toString(),
+        minutes: json?["minutes"]?.toString(),
+      );
 
-    Map<String, dynamic> toJson() => {
-        "hours": hours,
-        "minutes": minutes,
-    };
+  Map<String, dynamic> toJson() => {"hours": hours, "minutes": minutes};
 }
 
 class EnrollmentStatus {
-    bool isEnrolled;
-    bool canEnroll;
+  bool? isEnrolled;
+  bool? canEnroll;
 
-    EnrollmentStatus({
-        required this.isEnrolled,
-        required this.canEnroll,
-    });
+  EnrollmentStatus({this.isEnrolled, this.canEnroll});
 
-    factory EnrollmentStatus.fromJson(Map<String, dynamic> json) => EnrollmentStatus(
-        isEnrolled: json["is_enrolled"],
-        canEnroll: json["can_enroll"],
-    );
+  factory EnrollmentStatus.fromJson(Map<String, dynamic>? json) =>
+      EnrollmentStatus(
+        isEnrolled: json?["is_enrolled"] == true,
+        canEnroll: json?["can_enroll"] == true,
+      );
 
-    Map<String, dynamic> toJson() => {
-        "is_enrolled": isEnrolled,
-        "can_enroll": canEnroll,
-    };
+  Map<String, dynamic> toJson() =>
+      {"is_enrolled": isEnrolled, "can_enroll": canEnroll};
 }
 
 class Instructor {
-    int id;
-    String name;
-    String email;
-    String bio;
-    String avatar;
-    String phone;
+  int? id;
+  String? name;
+  String? email;
+  String? bio;
+  String? avatar;
+  String? phone;
 
-    Instructor({
-        required this.id,
-        required this.name,
-        required this.email,
-        required this.bio,
-        required this.avatar,
-        required this.phone,
-    });
+  Instructor({this.id, this.name, this.email, this.bio, this.avatar, this.phone});
 
-    factory Instructor.fromJson(Map<String, dynamic> json) => Instructor(
-        id: json["id"],
-        name: json["name"],
-        email: json["email"],
-        bio: json["bio"],
-        avatar: json["avatar"],
-        phone: json["phone"],
-    );
+  factory Instructor.fromJson(Map<String, dynamic>? json) => Instructor(
+        id: _toInt(json?["id"]),
+        name: json?["name"]?.toString(),
+        email: json?["email"]?.toString(),
+        bio: json?["bio"]?.toString(),
+        avatar: json?["avatar"]?.toString(),
+        phone: json?["phone"]?.toString(),
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
         "email": email,
         "bio": bio,
         "avatar": avatar,
         "phone": phone,
-    };
+      };
 }
 
 class Rating {
-    int ratingCount;
-    int ratingSum;
-    int ratingAvg;
-    Map<String, int> countByValue;
+  int? ratingCount;
+  int? ratingSum;
+  int? ratingAvg;
+  Map<String, int>? countByValue;
 
-    Rating({
-        required this.ratingCount,
-        required this.ratingSum,
-        required this.ratingAvg,
-        required this.countByValue,
-    });
+  Rating({this.ratingCount, this.ratingSum, this.ratingAvg, this.countByValue});
 
-    factory Rating.fromJson(Map<String, dynamic> json) => Rating(
-        ratingCount: json["rating_count"],
-        ratingSum: json["rating_sum"],
-        ratingAvg: json["rating_avg"],
-        countByValue: Map.from(json["count_by_value"]).map((k, v) => MapEntry<String, int>(k, v)),
-    );
+  factory Rating.fromJson(Map<String, dynamic>? json) => Rating(
+        ratingCount: _toInt(json?["rating_count"]),
+        ratingSum: _toInt(json?["rating_sum"]),
+        ratingAvg: _toInt(json?["rating_avg"]),
+        countByValue: (json?["count_by_value"] is Map)
+            ? Map.from(json?["count_by_value"])
+                .map((k, v) => MapEntry<String, int>(k, _toInt(v)))
+            : {},
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "rating_count": ratingCount,
         "rating_sum": ratingSum,
         "rating_avg": ratingAvg,
-        "count_by_value": Map.from(countByValue).map((k, v) => MapEntry<String, dynamic>(k, v)),
-    };
+        "count_by_value": countByValue ?? {},
+      };
+}
+
+/// 🔑 Helper Functions
+int _toInt(dynamic value) {
+  if (value == null) return 0;
+  if (value is int) return value;
+  if (value is String) return int.tryParse(value) ?? 0;
+  return 0;
+}
+
+double _toDouble(dynamic value) {
+  if (value == null) return 0.0;
+  if (value is double) return value;
+  if (value is int) return value.toDouble();
+  if (value is String) return double.tryParse(value) ?? 0.0;
+  return 0.0;
 }
