@@ -280,7 +280,6 @@ class _EnrolledDourseDetailsPageState
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // 🔙 Back Button
                   Row(
                     children: [
                       CircleAvatar(
@@ -298,9 +297,7 @@ class _EnrolledDourseDetailsPageState
                       ),
                     ],
                   ),
-
                   SizedBox(height: 24.h),
-
                   Text(
                     data.title ?? "Untitled Course",
                     style: GoogleFonts.inter(
@@ -313,7 +310,7 @@ class _EnrolledDourseDetailsPageState
                   Expanded(
                     child: ListView.builder(
                       padding: EdgeInsets.zero,
-                      itemCount: data.curriculum?.length ?? 0,
+                      itemCount: data.curriculum!.length ?? 0,
                       itemBuilder: (context, topicIndex) {
                         final topic = data.curriculum![topicIndex];
                         return Column(
@@ -322,7 +319,7 @@ class _EnrolledDourseDetailsPageState
                             ...topic.lessons!.map(
                               (lesson) => _lessonTile(
                                 lesson.lessonTitle ?? "Untitled Lesson",
-                                lesson.video.toString() ?? "",
+                                lesson.video!.url ?? "",
                               ),
                             ),
                           ],
