@@ -184,8 +184,7 @@ class _CartPageState extends ConsumerState<CartPage> {
                                     ref.invalidate(cartController);
                                   } catch (e) {
                                     log(e.toString());
-                                    showSuccessMessage(context, e.toString());
-                                  }
+                                    showSuccessMessage(context, e.toString());                         }
                                 },
                                 child: Container(
                                   margin: EdgeInsets.only(top: 15.h),
