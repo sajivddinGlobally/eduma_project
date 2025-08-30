@@ -528,6 +528,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                     SizedBox(height: 20.h),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Expanded(
                           child: Text(
@@ -539,6 +540,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                             ),
                           ),
                         ),
+
                         // Row(
                         //   children: List.generate(5, (index) {
                         //     return Icon(
@@ -571,16 +573,16 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                             color: Color(0xFF001E6C),
                           ),
                         ),
-                       // if (data.regularPrice != null)
-                          Text(
-                            "₹ ${data.price}",
-                            style: GoogleFonts.roboto(
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w400,
-                              color: Color(0xFF001E6C),
-                              //decoration: TextDecoration.lineThrough,
-                            ),
+                        // if (data.regularPrice != null)
+                        Text(
+                          "₹ ${data.price}",
+                          style: GoogleFonts.roboto(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xFF001E6C),
+                            //decoration: TextDecoration.lineThrough,
                           ),
+                        ),
                         SizedBox(width: 12.w),
                         // if (data.backorders != null)
                         Container(
@@ -1029,6 +1031,23 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
           ),
         ),
       ),
+      // bottomSheet: ElevatedButton(
+      //   style: ElevatedButton.styleFrom(
+      //     backgroundColor: Color(0xFF001E6C),
+      //     minimumSize: Size(400.w, 40.h),
+      //     shape: RoundedRectangleBorder(
+      //       borderRadius: BorderRadius.circular(12.r),
+      //     ),
+      //   ),
+      //   onPressed: () {},
+      //   child: Text(
+      //     "Buy Now",
+      //     style: GoogleFonts.roboto(
+      //       fontWeight: FontWeight.w500,
+      //       color: Colors.white,
+      //     ),
+      //   ),
+      // ),
     );
   }
 }

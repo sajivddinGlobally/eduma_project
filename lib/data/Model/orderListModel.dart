@@ -26,8 +26,8 @@ class OrderListModel {
     String totalTax;
     int customerId;
     String orderKey;
-    Ing billing;
-    Ing shipping;
+    Billing billing;
+    Billing shipping;
     String paymentMethod;
     String paymentMethodTitle;
     String transactionId;
@@ -35,8 +35,8 @@ class OrderListModel {
     String customerUserAgent;
     String createdVia;
     String customerNote;
-    DateTime dateCompleted;
-    DateTime datePaid;
+    DateTime? dateCompleted;
+    DateTime? datePaid;
     String cartHash;
     String number;
     List<OrderListModelMetaDatum> metaData;
@@ -52,8 +52,8 @@ class OrderListModel {
     bool needsProcessing;
     DateTime dateCreatedGmt;
     DateTime dateModifiedGmt;
-    DateTime dateCompletedGmt;
-    DateTime datePaidGmt;
+    DateTime? dateCompletedGmt;
+    DateTime? datePaidGmt;
     String featuredImageSrc;
     List<dynamic> amsAcf;
     String amsPaymentMethodTitle;
@@ -133,8 +133,8 @@ class OrderListModel {
         totalTax: json["total_tax"],
         customerId: json["customer_id"],
         orderKey: json["order_key"],
-        billing: Ing.fromJson(json["billing"]),
-        shipping: Ing.fromJson(json["shipping"]),
+        billing: Billing.fromJson(json["billing"]),
+        shipping: Billing.fromJson(json["shipping"]),
         paymentMethod: json["payment_method"],
         paymentMethodTitle: json["payment_method_title"],
         transactionId: json["transaction_id"],
@@ -142,8 +142,8 @@ class OrderListModel {
         customerUserAgent: json["customer_user_agent"],
         createdVia: json["created_via"],
         customerNote: json["customer_note"],
-        dateCompleted: DateTime.parse(json["date_completed"]),
-        datePaid: DateTime.parse(json["date_paid"]),
+        dateCompleted: json["date_completed"] == null ? null : DateTime.parse(json["date_completed"]),
+        datePaid: json["date_paid"] == null ? null : DateTime.parse(json["date_paid"]),
         cartHash: json["cart_hash"],
         number: json["number"],
         metaData: List<OrderListModelMetaDatum>.from(json["meta_data"].map((x) => OrderListModelMetaDatum.fromJson(x))),
@@ -159,8 +159,8 @@ class OrderListModel {
         needsProcessing: json["needs_processing"],
         dateCreatedGmt: DateTime.parse(json["date_created_gmt"]),
         dateModifiedGmt: DateTime.parse(json["date_modified_gmt"]),
-        dateCompletedGmt: DateTime.parse(json["date_completed_gmt"]),
-        datePaidGmt: DateTime.parse(json["date_paid_gmt"]),
+        dateCompletedGmt: json["date_completed_gmt"] == null ? null : DateTime.parse(json["date_completed_gmt"]),
+        datePaidGmt: json["date_paid_gmt"] == null ? null : DateTime.parse(json["date_paid_gmt"]),
         featuredImageSrc: json["featured_image_src"],
         amsAcf: List<dynamic>.from(json["ams_acf"].map((x) => x)),
         amsPaymentMethodTitle: json["ams_payment_method_title"],
@@ -196,8 +196,8 @@ class OrderListModel {
         "customer_user_agent": customerUserAgent,
         "created_via": createdVia,
         "customer_note": customerNote,
-        "date_completed": dateCompleted.toIso8601String(),
-        "date_paid": datePaid.toIso8601String(),
+        "date_completed": dateCompleted?.toIso8601String(),
+        "date_paid": datePaid?.toIso8601String(),
         "cart_hash": cartHash,
         "number": number,
         "meta_data": List<dynamic>.from(metaData.map((x) => x.toJson())),
@@ -213,8 +213,8 @@ class OrderListModel {
         "needs_processing": needsProcessing,
         "date_created_gmt": dateCreatedGmt.toIso8601String(),
         "date_modified_gmt": dateModifiedGmt.toIso8601String(),
-        "date_completed_gmt": dateCompletedGmt.toIso8601String(),
-        "date_paid_gmt": datePaidGmt.toIso8601String(),
+        "date_completed_gmt": dateCompletedGmt?.toIso8601String(),
+        "date_paid_gmt": datePaidGmt?.toIso8601String(),
         "featured_image_src": featuredImageSrc,
         "ams_acf": List<dynamic>.from(amsAcf.map((x) => x)),
         "ams_payment_method_title": amsPaymentMethodTitle,
@@ -224,34 +224,34 @@ class OrderListModel {
     };
 }
 
-class Ing {
+class Billing {
     String firstName;
     String lastName;
-    String company;
+    String? company;
     String address1;
-    String address2;
+    String? address2;
     String city;
     String state;
     String postcode;
     String country;
     String? email;
-    String phone;
+    String? phone;
 
-    Ing({
+    Billing({
         required this.firstName,
         required this.lastName,
-        required this.company,
+        this.company,
         required this.address1,
-        required this.address2,
+        this.address2,
         required this.city,
         required this.state,
         required this.postcode,
         required this.country,
         this.email,
-        required this.phone,
+        this.phone,
     });
 
-    factory Ing.fromJson(Map<String, dynamic> json) => Ing(
+    factory Billing.fromJson(Map<String, dynamic> json) => Billing(
         firstName: json["first_name"],
         lastName: json["last_name"],
         company: json["company"],
@@ -293,12 +293,12 @@ class LineItem {
     String totalTax;
     List<dynamic> taxes;
     List<LineItemMetaDatum> metaData;
-    dynamic sku;
-    dynamic globalUniqueId;
+    String? sku;
+    String? globalUniqueId;
     int price;
     Image image;
     dynamic parentName;
-    dynamic amsOrderThumbnail;
+    String? amsOrderThumbnail;
 
     LineItem({
         required this.id,
@@ -365,7 +365,7 @@ class LineItem {
 }
 
 class Image {
-    int id;
+    dynamic id;
     String src;
 
     Image({
@@ -519,7 +519,7 @@ class TargetHints {
 class OrderListModelMetaDatum {
     int id;
     String key;
-    String value;
+    dynamic value;
 
     OrderListModelMetaDatum({
         required this.id,

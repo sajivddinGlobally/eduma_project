@@ -184,7 +184,8 @@ class _CartPageState extends ConsumerState<CartPage> {
                                     ref.invalidate(cartController);
                                   } catch (e) {
                                     log(e.toString());
-                                    showSuccessMessage(context, e.toString());                         }
+                                    showSuccessMessage(context, e.toString());
+                                  }
                                 },
                                 child: Container(
                                   margin: EdgeInsets.only(top: 15.h),
@@ -246,7 +247,7 @@ class _CartPageState extends ConsumerState<CartPage> {
                                             ),
                                             SizedBox(height: 8.h),
                                             Text(
-                                              "\$${item.price.toStringAsFixed(2)}",
+                                              "₹${item.price.toStringAsFixed(2)}",
                                               style: GoogleFonts.poppins(
                                                 fontSize: 14.sp,
                                                 fontWeight: FontWeight.w500,
@@ -395,7 +396,7 @@ class _CartPageState extends ConsumerState<CartPage> {
                                 ),
                               ),
                               Text(
-                                "\$${totalPrice.toStringAsFixed(2)}",
+                                "₹${totalPrice.toStringAsFixed(2)}",
                                 style: GoogleFonts.poppins(
                                   fontSize: 18.sp,
                                   fontWeight: FontWeight.w600,

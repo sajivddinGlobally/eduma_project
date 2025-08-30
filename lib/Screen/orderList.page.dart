@@ -125,13 +125,10 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
                                 children: [
                                   ClipRRect(
                                     borderRadius: BorderRadius.circular(10.r),
-                                    child: Image.asset(
-                                      "assets/shop1.png",
-                                      // orderList[index]
-                                      //     .lineItems[index]
-                                      //     .image
-                                      //     .src
-                                      //     .toString(),
+                                    child: Image.network(
+                                      // "assets/shop1.png",
+                                      orderList[index].lineItems.first.image.src
+                                          .toString(),
                                       width: 84.w,
                                       height: 69.h,
                                       fit: BoxFit.cover,
@@ -155,10 +152,7 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
                                         width: 190.w,
                                         child: Text(
                                           // "Create an LMS Website With LearnPress",
-                                          orderList[index]
-                                              .lineItems[index]
-                                              .name,
-
+                                          orderList[index].lineItems.first.name,
                                           style: GoogleFonts.roboto(
                                             fontSize: 16.sp,
                                             fontWeight: FontWeight.w500,
@@ -170,7 +164,7 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
                                       ),
                                       Text(
                                         // "₹ 45k",
-                                        orderList[index].lineItems[index].total,
+                                        orderList[index].lineItems.first.total,
                                         style: GoogleFonts.roboto(
                                           fontSize: 14.sp,
                                           fontWeight: FontWeight.w500,
