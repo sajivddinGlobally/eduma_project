@@ -527,31 +527,183 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                     ),
                     SizedBox(height: 20.h),
                     Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Expanded(
                           child: Text(
+                            //  "Create an LMS Website With LearnPress",
                             data.name.toString(),
                             style: GoogleFonts.roboto(
-                              fontSize: 20.sp,
-                              fontWeight: FontWeight.w600,
-                              color: Color(0xFF1B1B1B),
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xFF000000),
+                              letterSpacing: -0.4,
                             ),
                           ),
                         ),
+                        Spacer(),
+                        Container(
+                          width: 80.w,
+                          height: 36.h,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.r),
+                            color: Color(0xFF001E6C),
+                          ),
+                          child: TextButton(
+                            style: IconButton.styleFrom(
+                              minimumSize: Size(0, 0),
+                              padding: EdgeInsets.zero,
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            ),
+                            onPressed: () async {
+                              final body = ProductAddCartBodyModel(
+                                productId: data.id,
+                                quantity: 1,
+                              );
 
-                        // Row(
-                        //   children: List.generate(5, (index) {
-                        //     return Icon(
-                        //       index < (data.ratingCount.toInt() ?? 0)
-                        //           ? Icons.star
-                        //           : Icons.star_border,
-                        //       color: Colors.amber,
-                        //       size: 20.sp,
-                        //     );
-                        //   }),
-                        // ),
+                              setState(() {
+                                isLoading = true;
+                              });
+
+                              try {
+                                final service = APIStateNetwork(createDio());
+                                final response = await service.addToCart(body);
+
+                                if (response.success == true) {
+                                  setState(() {
+                                    isLoading = false;
+                                  });
+
+                                  await showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            16,
+                                          ),
+                                        ),
+                                        title: Row(
+                                          children: [
+                                            Icon(
+                                              Icons.check_circle,
+                                              color: Colors.green,
+                                              size: 28,
+                                            ),
+                                            SizedBox(width: 8),
+                                            Text(
+                                              "Success",
+                                              style: GoogleFonts.roboto(
+                                                fontSize: 18.sp,
+                                                fontWeight: FontWeight.w600,
+                                                color: Colors.black87,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        content: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Text(
+                                              response.message,
+                                              textAlign: TextAlign.center,
+                                              style: GoogleFonts.roboto(
+                                                fontSize: 14.sp,
+                                                fontWeight: FontWeight.w400,
+                                                color: Colors.black54,
+                                              ),
+                                            ),
+                                            SizedBox(height: 12),
+                                            Icon(
+                                              Icons.shopping_cart,
+                                              color: Color(0xFF001E6C),
+                                              size: 40,
+                                            ),
+                                          ],
+                                        ),
+                                        actionsAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            style: TextButton.styleFrom(
+                                              foregroundColor: Colors.redAccent,
+                                            ),
+                                            child: Text(
+                                              "Close",
+                                              style: GoogleFonts.roboto(
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          ),
+                                          ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: Color(
+                                                0xFF001E6C,
+                                              ),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                              ),
+                                            ),
+                                            onPressed: () {
+                                              Navigator.pushAndRemoveUntil(
+                                                context,
+                                                CupertinoPageRoute(
+                                                  builder: (_) =>
+                                                      const CartPage(),
+                                                  settings: const RouteSettings(
+                                                    name: "CartPage",
+                                                  ),
+                                                ),
+                                                (route) => route.isFirst,
+                                              );
+                                            },
+                                            child: Text(
+                                              "Go to Cart",
+                                              style: GoogleFonts.roboto(
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                } else {
+                                  setState(() {
+                                    isLoading = false;
+                                  });
+                                }
+                              } catch (e) {
+                                setState(() {
+                                  isLoading = false;
+                                });
+                                log(e.toString());
+                              }
+                            },
+                            child: isLoading
+                                ? SizedBox(
+                                    width: 20.w,
+                                    height: 20.h,
+                                    child: Center(
+                                      child: CircularProgressIndicator(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  )
+                                : Text(
+                                    "Add to Cart",
+                                    style: GoogleFonts.roboto(
+                                      fontSize: 12.sp,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                          ),
+                        ),
                       ],
                     ),
                     // SizedBox(height: 8.h),
@@ -618,210 +770,60 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                     //         : Colors.red,
                     //   ),
                     // ),
-                    SizedBox(height: 16.h),
-                    Row(
-                      children: [
-                        Text(
-                          "Quantity:",
-                          style: GoogleFonts.roboto(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xFF1B1B1B),
-                          ),
-                        ),
-                        SizedBox(width: 12.w),
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey[300]!),
-                            borderRadius: BorderRadius.circular(8.r),
-                          ),
-                          child: Row(
-                            children: [
-                              SizedBox(width: 8.w),
-                              IconButton(
-                                style: IconButton.styleFrom(
-                                  minimumSize: Size.zero,
-                                  padding: EdgeInsets.zero,
-                                  tapTargetSize:
-                                      MaterialTapTargetSize.shrinkWrap,
-                                ),
-                                onPressed: quantity > 1
-                                    ? () => setState(() => quantity--)
-                                    : null,
-                                icon: Icon(Icons.remove, size: 20.sp),
-                              ),
-                              SizedBox(width: 12.w),
-                              Text(
-                                quantity.toString(),
-                                style: GoogleFonts.roboto(fontSize: 16.sp),
-                              ),
-                              SizedBox(width: 12.w),
-                              IconButton(
-                                style: IconButton.styleFrom(
-                                  minimumSize: Size.zero,
-                                  padding: EdgeInsets.zero,
-                                  tapTargetSize:
-                                      MaterialTapTargetSize.shrinkWrap,
-                                ),
-                                onPressed: () => setState(() => quantity++),
-                                icon: Icon(Icons.add, size: 20.sp),
-                              ),
-                              SizedBox(width: 10.w),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 20.h),
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFF001E6C),
-                          padding: EdgeInsets.symmetric(vertical: 16.h),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12.r),
-                          ),
-                        ),
-                        onPressed: data.stockStatus == 'instock' && !isLoading
-                            ? () async {
-                                setState(() => isLoading = true);
-                                try {
-                                  final body = ProductAddCartBodyModel(
-                                    productId: data.id,
-                                    quantity: quantity,
-                                  );
-                                  final service = APIStateNetwork(createDio());
-                                  final response = await service.addToCart(
-                                    body,
-                                  );
-
-                                  if (response.success == true) {
-                                    await showDialog(
-                                      context: context,
-                                      builder: (context) => AlertDialog(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            16.r,
-                                          ),
-                                        ),
-                                        title: Row(
-                                          children: [
-                                            Icon(
-                                              Icons.check_circle,
-                                              color: Colors.green,
-                                              size: 28.sp,
-                                            ),
-                                            SizedBox(width: 8.w),
-                                            Text(
-                                              "Success",
-                                              style: GoogleFonts.roboto(
-                                                fontSize: 18.sp,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        content: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Text(
-                                              response.message,
-                                              textAlign: TextAlign.center,
-                                              style: GoogleFonts.roboto(
-                                                fontSize: 14.sp,
-                                                color: Colors.black54,
-                                              ),
-                                            ),
-                                            SizedBox(height: 12.h),
-                                            Icon(
-                                              Icons.shopping_cart,
-                                              color: Color(0xFF001E6C),
-                                              size: 40.sp,
-                                            ),
-                                          ],
-                                        ),
-                                        actions: [
-                                          TextButton(
-                                            onPressed: () =>
-                                                Navigator.pop(context),
-                                            child: Text(
-                                              "Continue Shopping",
-                                              style: GoogleFonts.roboto(
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.redAccent,
-                                              ),
-                                            ),
-                                          ),
-                                          ElevatedButton(
-                                            style: ElevatedButton.styleFrom(
-                                              backgroundColor: Color(
-                                                0xFF001E6C,
-                                              ),
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(8.r),
-                                              ),
-                                            ),
-                                            onPressed: () {
-                                              Navigator.pushAndRemoveUntil(
-                                                context,
-                                                CupertinoPageRoute(
-                                                  builder: (_) =>
-                                                      const CartPage(),
-                                                  settings: const RouteSettings(
-                                                    name: "CartPage",
-                                                  ),
-                                                ),
-                                                (route) => route.isFirst,
-                                              );
-                                            },
-                                            child: Text(
-                                              "Go to Cart",
-                                              style: GoogleFonts.roboto(
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  }
-                                } catch (e) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        "Failed to add to cart: $e",
-                                      ),
-                                      backgroundColor: Colors.red,
-                                    ),
-                                  );
-                                  log(e.toString());
-                                } finally {
-                                  setState(() => isLoading = false);
-                                }
-                              }
-                            : null,
-                        child: isLoading
-                            ? SizedBox(
-                                width: 20.w,
-                                height: 20.h,
-                                child: CircularProgressIndicator(
-                                  color: Colors.white,
-                                ),
-                              )
-                            : Text(
-                                "Add to Cart",
-                                style: GoogleFonts.roboto(
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.white,
-                                ),
-                              ),
-                      ),
-                    ),
-
+                    //SizedBox(height: 16.h),
+                    // Row(
+                    //   children: [
+                    //     Text(
+                    //       "Quantity:",
+                    //       style: GoogleFonts.roboto(
+                    //         fontSize: 16.sp,
+                    //         fontWeight: FontWeight.w500,
+                    //         color: Color(0xFF1B1B1B),
+                    //       ),
+                    //     ),
+                    //     SizedBox(width: 12.w),
+                    //     Container(
+                    //       decoration: BoxDecoration(
+                    //         border: Border.all(color: Colors.grey[300]!),
+                    //         borderRadius: BorderRadius.circular(8.r),
+                    //       ),
+                    //       child: Row(
+                    //         children: [
+                    //           SizedBox(width: 8.w),
+                    //           IconButton(
+                    //             style: IconButton.styleFrom(
+                    //               minimumSize: Size.zero,
+                    //               padding: EdgeInsets.zero,
+                    //               tapTargetSize:
+                    //                   MaterialTapTargetSize.shrinkWrap,
+                    //             ),
+                    //             onPressed: quantity > 1
+                    //                 ? () => setState(() => quantity--)
+                    //                 : null,
+                    //             icon: Icon(Icons.remove, size: 20.sp),
+                    //           ),
+                    //           SizedBox(width: 12.w),
+                    //           Text(
+                    //             quantity.toString(),
+                    //             style: GoogleFonts.roboto(fontSize: 16.sp),
+                    //           ),
+                    //           SizedBox(width: 12.w),
+                    //           IconButton(
+                    //             style: IconButton.styleFrom(
+                    //               minimumSize: Size.zero,
+                    //               padding: EdgeInsets.zero,
+                    //               tapTargetSize:
+                    //                   MaterialTapTargetSize.shrinkWrap,
+                    //             ),
+                    //             onPressed: () => setState(() => quantity++),
+                    //             icon: Icon(Icons.add, size: 20.sp),
+                    //           ),
+                    //           SizedBox(width: 10.w),
+                    //         ],
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
                     SizedBox(height: 24.h),
                     Text(
                       "Description",
