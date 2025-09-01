@@ -21,7 +21,7 @@ class _YoutubeChannelOpenerState extends State<YoutubeChannelOpener> {
 
     if (!await launchUrl(
       youtubeUrl,
-      mode: LaunchMode.externalApplication, 
+      //mode: LaunchMode.externalApplication,  // ye line app close na ho back karne par ok 
     )) {
       throw Exception("Could not launch $youtubeUrl");
     }
