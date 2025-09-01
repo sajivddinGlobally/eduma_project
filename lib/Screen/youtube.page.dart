@@ -21,59 +21,17 @@ class _YoutubeChannelOpenerState extends State<YoutubeChannelOpener> {
 
     if (!await launchUrl(
       youtubeUrl,
-      // mode: LaunchMode.externalApplication, // ✅ force external app/browser
+      mode: LaunchMode.externalApplication, 
     )) {
       throw Exception("Could not launch $youtubeUrl");
     }
   }
-
-  // Future<void> _openYoutubeChannel() async {
-  //   if (_isLoading) return;
-  //   setState(() => _isLoading = true);
-
-  //   const String channelId = 'UCmFHSJGwYAsrtjF8xcVZOFw';
-
-  //   // ✅ Correct app scheme for YouTube
-  //   final Uri youtubeAppUrl = Uri.parse('vnd.youtube://channel/$channelId');
-  //   final Uri youtubeWebUrl = Uri.parse(
-  //     'https://www.youtube.com/channel/$channelId',
-  //   );
-
-  //   try {
-  //     // First try to open in YouTube app
-  //     if (await canLaunchUrl(youtubeAppUrl)) {
-  //       await launchUrl(youtubeAppUrl, mode: LaunchMode.externalApplication);
-  //     } else {
-  //       // Fallback: open in browser
-  //       if (await canLaunchUrl(youtubeWebUrl)) {
-  //         await launchUrl(youtubeWebUrl, mode: LaunchMode.externalApplication);
-  //       } else {
-  //         if (mounted) {
-  //           ScaffoldMessenger.of(context).showSnackBar(
-  //             const SnackBar(content: Text('Could not open YouTube channel')),
-  //           );
-  //         }
-  //       }
-  //     }
-  //   } catch (e) {
-  //     if (mounted) {
-  //       ScaffoldMessenger.of(context).showSnackBar(
-  //         SnackBar(content: Text('Error opening YouTube channel: $e')),
-  //       );
-  //     }
-  //   } finally {
-  //     if (mounted) {
-  //       setState(() => _isLoading = false);
-  //     }
-  //   }
-  // }
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
-        // _openYoutubeChannel();
         _openYoutubeChannel();
       }
     });
