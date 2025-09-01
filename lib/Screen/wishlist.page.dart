@@ -867,8 +867,7 @@ class _WishlistPageState extends ConsumerState<WishlistPage> {
                                             ],
                                           ),
                                           child: Text(
-                                            productwishlist.data[index].price
-                                                .toString(),
+                                            "₹${productwishlist.data[index].price.toString()}",
                                             style: GoogleFonts.roboto(
                                               fontSize: 16.sp,
                                               fontWeight: FontWeight.w600,
