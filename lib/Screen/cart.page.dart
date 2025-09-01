@@ -710,15 +710,69 @@ class _CartBodyState extends ConsumerState<CartBody> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  widget.data.name,
-                  style: GoogleFonts.poppins(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xFF001E6C),
-                  ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        widget.data.name,
+                        style: GoogleFonts.poppins(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xFF001E6C),
+                          height: 1.2,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () async {
+                        final body = CarRemoveBodyModel(
+                          productId: widget.data.productId,
+                        );
+                        try {
+                          final service = APIStateNetwork(createDio());
+                          final response = await service.removeCart(body);
+                          if (response.success == true) {
+                            showSuccessMessage(context, response.message);
+                            ref.invalidate(cartController);
+                          } else {
+                            showSuccessMessage(
+                              context,
+                              "Failed to remove item: ${response.message}",
+                            );
+                          }
+                        } catch (e) {
+                          log(e.toString());
+                          showSuccessMessage(
+                            context,
+                            "Error removing item: $e",
+                          );
+                        }
+                      },
+                      child: Container(
+                        width: 40.w,
+                        height: 40.h,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black12,
+                              blurRadius: 6.r,
+                              offset: Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: Icon(
+                          Icons.delete_outline,
+                          color: Colors.redAccent,
+                          size: 24.sp,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 SizedBox(height: 8.h),
                 Text(
@@ -805,47 +859,6 @@ class _CartBodyState extends ConsumerState<CartBody> {
               ],
             ),
           ),
-          // InkWell(
-          //   onTap: () async {
-          //     final body = CarRemoveBodyModel(productId: widget.data.productId);
-          //     try {
-          //       final service = APIStateNetwork(createDio());
-          //       final response = await service.removeCart(body);
-          //       if (response.success == true) {
-          //         showSuccessMessage(context, response.message);
-          //         ref.invalidate(cartController);
-          //       } else {
-          //         showSuccessMessage(
-          //           context,
-          //           "Failed to remove item: ${response.message}",
-          //         );
-          //       }
-          //     } catch (e) {
-          //       log(e.toString());
-          //       showSuccessMessage(context, "Error removing item: $e");
-          //     }
-          //   },
-          //   child: Container(
-          //     width: 40.w,
-          //     height: 40.h,
-          //     decoration: BoxDecoration(
-          //       shape: BoxShape.circle,
-          //       color: Colors.white,
-          //       boxShadow: [
-          //         BoxShadow(
-          //           color: Colors.black12,
-          //           blurRadius: 6.r,
-          //           offset: Offset(0, 2),
-          //         ),
-          //       ],
-          //     ),
-          //     child: Icon(
-          //       Icons.delete_outline,
-          //       color: Colors.redAccent,
-          //       size: 24.sp,
-          //     ),
-          //   ),
-          // ),
         ],
       ),
     );
