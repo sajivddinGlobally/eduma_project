@@ -1,9 +1,9 @@
 import 'dart:developer';
 import 'package:eduma_app/Screen/changePassword.page.dart';
-
 import 'package:eduma_app/config/core/showFlushbar.dart';
 import 'package:eduma_app/config/network/api.state.dart';
 import 'package:eduma_app/config/utils/pretty.dio.dart';
+import 'package:eduma_app/data/Model/sendOTPBodyModel.dart';
 import 'package:eduma_app/data/Model/verifyOTPBodyModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +13,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:otp_pin_field/otp_pin_field.dart';
 
 class OtpPage extends ConsumerStatefulWidget {
-  const OtpPage({super.key});
+  final String email;
+  const OtpPage({super.key, required this.email});
 
   @override
   ConsumerState<OtpPage> createState() => _OtpPageState();
@@ -22,6 +23,9 @@ class OtpPage extends ConsumerStatefulWidget {
 class _OtpPageState extends ConsumerState<OtpPage> {
   String otpValue = "";
   bool isLoading = false;
+  bool isResending = false; // Added to track resend OTP loading state
+  final _otpPinFieldController = GlobalKey<OtpPinFieldState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,6 +69,7 @@ class _OtpPageState extends ConsumerState<OtpPage> {
               // ),
               SizedBox(height: 15.h),
               OtpPinField(
+                key: _otpPinFieldController,
                 maxLength: 6,
                 fieldHeight: 55.h,
                 fieldWidth: 55.w,
@@ -101,6 +106,7 @@ class _OtpPageState extends ConsumerState<OtpPage> {
                       isLoading = false;
                     });
                   } catch (e) {
+                    _otpPinFieldController.currentState?.clearOtp();
                     setState(() {
                       isLoading = false;
                     });
@@ -127,6 +133,56 @@ class _OtpPageState extends ConsumerState<OtpPage> {
                           letterSpacing: -1,
                         ),
                       ),
+              ),
+
+              Align(
+                alignment: Alignment.centerLeft,
+                child: TextButton(
+                  onPressed: () async {
+                    setState(() {
+                      isResending = true;
+                    });
+                    final body = SendOtpBodyModel(email: widget.email);
+                    try {
+                      final service = APIStateNetwork(createDio());
+                      final response = await service.sendOTP(body);
+                      if (response != null) {
+                        Navigator.pushReplacement(
+                          context,
+                          CupertinoPageRoute(
+                            builder: (context) => OtpPage(email: widget.email),
+                          ),
+                        );
+                      }
+                      showSuccessMessage(context, response.message);
+                      setState(() {
+                        isLoading = false;
+                      });
+                    } catch (e) {
+                      setState(() {
+                        isLoading = false;
+                      });
+                      log(e.toString());
+                    }
+                  },
+                  child: isResending
+                      ? SizedBox(
+                          height: 20.h,
+                          width: 20.w,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: Color(0xFF001E6C),
+                          ),
+                        )
+                      : Text(
+                          "Resend OTP",
+                          style: GoogleFonts.roboto(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFF001E6C),
+                          ),
+                        ),
+                ),
               ),
               SizedBox(height: 20.h),
             ],

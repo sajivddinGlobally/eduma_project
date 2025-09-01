@@ -106,7 +106,10 @@ class _ForgorPasswordPageState extends ConsumerState<ForgorPasswordPage> {
                     if (response != null) {
                       Navigator.pushReplacement(
                         context,
-                        CupertinoPageRoute(builder: (context) => OtpPage()),
+                        CupertinoPageRoute(
+                          builder: (context) =>
+                              OtpPage(email: emailController.text),
+                        ),
                       );
                     }
                     showSuccessMessage(context, response.message);
