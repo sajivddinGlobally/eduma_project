@@ -1,148 +1,170 @@
-// import 'package:eduma_app/Screen/youtubePlayScreen.dart';
 // import 'package:flutter/material.dart';
-// import 'package:flutter_screenutil/flutter_screenutil.dart';
-// import 'package:google_fonts/google_fonts.dart';
-// import 'package:youtube_player_iframe/youtube_player_iframe.dart';
+// import 'package:url_launcher/url_launcher.dart';
 
-// class YoutubePage extends StatefulWidget {
-//   const YoutubePage({super.key});
+// class YoutubeChannelOpener extends StatefulWidget {
+//   const YoutubeChannelOpener({super.key});
 
 //   @override
-//   State<YoutubePage> createState() => _YoutubePageState();
+//   State<YoutubeChannelOpener> createState() => _YoutubeChannelOpenerState();
 // }
 
-// class _YoutubePageState extends State<YoutubePage> {
-//   final List<String> youtubeUrls = [
-//     "https://www.youtube.com/watch?v=p8gXqMfF2uU",
-//     "https://www.youtube.com/watch?v=jNQXAC9IVRw",
-//     "https://www.youtube.com/watch?v=aqz-KE-bpKQ",
-//   ];
+// class _YoutubeChannelOpenerState extends State<YoutubeChannelOpener> {
+//   Future<void> _openYoutubeChannel() async {
+//     final Uri youtubeAppUrl = Uri.parse(
+//       "https://www.youtube.com/channel/UCmFHSJGwYAsrtjF8xcVZOFw",
+//     );
+
+//     // Web fallback (opens in browser if app not installed)
+//     final Uri youtubeWebUrl = Uri.parse(
+//       "https://www.youtube.com/channel/UCmFHSJGwYAsrtjF8xcVZOFw",
+//     );
+
+//     try {
+//       if (await canLaunchUrl(youtubeAppUrl)) {
+//         await launchUrl(youtubeAppUrl, mode: LaunchMode.externalApplication);
+//       } else if (await canLaunchUrl(youtubeWebUrl)) {
+//         await launchUrl(youtubeWebUrl, mode: LaunchMode.externalApplication);
+//       } else {
+//         if (mounted) {
+//           ScaffoldMessenger.of(context).showSnackBar(
+//             const SnackBar(content: Text("Could not open YouTube channel")),
+//           );
+//         }
+//       }
+//     } catch (e) {
+//       if (mounted) {
+//         ScaffoldMessenger.of(
+//           context,
+//         ).showSnackBar(SnackBar(content: Text("Error: $e")));
+//       }
+//     }
+//   }
+
+//   @override
+//   void initState() {
+//     super.initState();
+//     // Automatically open channel when widget loads
+//     WidgetsBinding.instance.addPostFrameCallback((_) {
+//       _openYoutubeChannel();
+//     });
+//   }
 
 //   @override
 //   Widget build(BuildContext context) {
 //     return Scaffold(
-//       backgroundColor: Color(0xFFFFFFFF),
-//       body: Stack(
-//         children: [
-//           Positioned(
-//             left: -120,
-//             top: -100.h,
-//             child: Image.asset(
-//               "assets/vect.png",
-//               width: 363.w,
-//               height: 270.h,
-//               fit: BoxFit.fitHeight,
-//             ),
-//           ),
-//           Positioned(
-//             bottom: -40.h,
-//             left: 0,
-//             right: 0,
-//             child: Image.asset(
-//               "assets/vec.png",
-//               width: 470.w,
-//               height: 450.h,
-//               fit: BoxFit.fill,
-//             ),
-//           ),
-//           Column(
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             children: [
-//               Padding(
-//                 padding: EdgeInsets.only(left: 15.w, right: 15.w, top: 20.h),
+//       body: RefreshIndicator(
+//         onRefresh: _openYoutubeChannel, // ✅ Refresh पर फिर से open होगा
+//         child: ListView(
+//           physics: const AlwaysScrollableScrollPhysics(),
+//           children: const [
+//             SizedBox(
+//               height: 500,
+//               child: Center(
 //                 child: Text(
-//                   "YouTube Video List",
-//                   style: GoogleFonts.inter(
-//                     fontSize: 18.sp,
-//                     fontWeight: FontWeight.w500,
-//                   ),
+//                   "Opening YouTube Channel...\nPull down to retry",
+//                   textAlign: TextAlign.center,
+//                   style: TextStyle(fontSize: 18),
 //                 ),
 //               ),
-//               SizedBox(height: 10.h),
-//               Expanded(
-//                 child: ListView.builder(
-//                   itemCount: youtubeUrls.length,
-//                   padding: EdgeInsets.zero,
-//                   itemBuilder: (context, index) {
-//                     final url = youtubeUrls[index];
-//                     final videoId = YoutubePlayerController.convertUrlToId(url);
-//                     return Card(
-//                       margin: const EdgeInsets.all(10),
-//                       child: ListTile(
-//                         leading: videoId != null
-//                             ? Image.network(
-//                                 "https://img.youtube.com/vi/$videoId/0.jpg",
-//                                 width: 100,
-//                                 fit: BoxFit.cover,
-//                               )
-//                             : const Icon(Icons.video_library),
-//                         title: Text("Video ${index + 1}"),
-//                         subtitle: Text(url),
-//                         onTap: () {
-//                           if (videoId != null) {
-//                             Navigator.push(
-//                               context,
-//                               MaterialPageRoute(
-//                                 builder: (context) =>
-//                                     YoutubePlayerScreen(videoId: videoId),
-//                               ),
-//                             );
-//                           }
-//                         },
-//                       ),
-//                     );
-//                   },
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ],
+//             ),
+//           ],
+//         ),
 //       ),
 //     );
 //   }
 // }
 
-
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class YoutubePage extends StatefulWidget {
-  const YoutubePage({Key? key}) : super(key: key);
+class YoutubeChannelOpener extends StatefulWidget {
+  const YoutubeChannelOpener({super.key});
 
   @override
-  State<YoutubePage> createState() => _YoutubePageState();
+  State<YoutubeChannelOpener> createState() => _YoutubeChannelOpenerState();
 }
 
-class _YoutubePageState extends State<YoutubePage> {
-  final String youtubeChannelUrl =
-      "https://www.youtube.com/channel/UCmFHSJGwYAsrtjF8xcVZOFw";
-
-  @override
-  void initState() {
-    super.initState();
-    _openYoutubeChannel();
-  }
+class _YoutubeChannelOpenerState extends State<YoutubeChannelOpener> {
+  bool _isLoading = false;
 
   Future<void> _openYoutubeChannel() async {
-    final Uri url = Uri.parse(youtubeChannelUrl);
+    if (_isLoading) return;
+    setState(() => _isLoading = true);
 
-    if (await canLaunchUrl(url)) {
-      await launchUrl(
-        url,
-        mode: LaunchMode.externalApplication, 
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Could not open YouTube channel")),
-      );
+    // YouTube app URL scheme
+    const String channelId = 'UCmFHSJGwYAsrtjF8xcVZOFw';
+    final Uri youtubeAppUrl = Uri.parse(
+      'https://www.youtube.com/channel/$channelId',
+    );
+    final Uri youtubeWebUrl = Uri.parse(
+      'https://www.youtube.com/channel/$channelId',
+    );
+
+    try {
+      // Try opening in YouTube app
+      if (await canLaunchUrl(youtubeAppUrl)) {
+        await launchUrl(youtubeAppUrl, mode: LaunchMode.inAppWebView);
+      } else {
+        // Fallback to web URL
+        if (await canLaunchUrl(youtubeWebUrl)) {
+          await launchUrl(youtubeWebUrl, mode: LaunchMode.inAppBrowserView);
+        } else {
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Could not open YouTube channel')),
+            );
+          }
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error opening YouTube channel: $e')),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
     }
   }
 
   @override
+  void initState() {
+    super.initState();
+    // Delay opening until widget is fully built
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        _openYoutubeChannel();
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text("Opening YouTube Channel..."),
+    return Scaffold(
+      body: RefreshIndicator(
+        onRefresh: _openYoutubeChannel,
+        child: Stack(
+          children: [
+            ListView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              children: const [
+                SizedBox(
+                  height: 500,
+                  child: Center(
+                    child: Text(
+                      'Opening YouTube Channel...\nPull down to refresh',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            if (_isLoading) const Center(child: CircularProgressIndicator()),
+          ],
+        ),
       ),
     );
   }
