@@ -95,7 +95,7 @@ class _OtpPageState extends ConsumerState<OtpPage> {
                           ),
                         ),
                       );
-                      showSuccessMessage(context, response.message);
+                      showSuccessMessage(context, "OTP verified successfully.");
                     }
                     setState(() {
                       isLoading = false;

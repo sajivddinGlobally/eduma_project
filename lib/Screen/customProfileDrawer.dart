@@ -224,10 +224,10 @@ class _CustomProfileDrawerState extends ConsumerState<CustomProfileDrawer> {
                         },
                         child: tileBuild("assets/pay.png", "Payment Method"),
                       ),
-                      SizedBox(height: 20.h),
-                      tileBuild("assets/help.png", "Help Centerd"),
-                      SizedBox(height: 20.h),
-                      tileBuild("assets/invite.png", "Invite Friend"),
+                      // SizedBox(height: 20.h),
+                      // tileBuild("assets/help.png", "Help Centerd"),
+                      // SizedBox(height: 20.h),
+                      // tileBuild("assets/invite.png", "Invite Friend"),
                       SizedBox(height: 20.h),
                       InkWell(
                         onTap: () {
@@ -289,77 +289,77 @@ class _CustomProfileDrawerState extends ConsumerState<CustomProfileDrawer> {
                         ],
                       ),
                       SizedBox(height: 20.h),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.notifications_none,
-                            color: Color(0xFF001E6C),
-                            size: 24.sp,
-                          ),
-                          SizedBox(width: 10.w),
-                          Text(
-                            "Notification",
-                            style: GoogleFonts.roboto(
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xFF001E6C),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 20.h),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.dark_mode_outlined,
-                            color: Color(0xFF001E6C),
-                            size: 24.sp,
-                          ),
-                          SizedBox(width: 10.w),
-                          Text(
-                            "Dark Mode",
-                            style: GoogleFonts.roboto(
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xFF001E6C),
-                            ),
-                          ),
-                          Spacer(),
-                          SizedBox(
-                            height: 28.h,
-                            child: Transform.scale(
-                              scale: 0.7,
-                              child: Switch(
-                                value: themeMode == ThemeMode.dark,
-                                onChanged: (value) {
-                                  ref
-                                      .read(themeNotifierProvider.notifier)
-                                      .toggleTheme();
-                                },
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 20.h),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.settings,
-                            color: Color(0xFF001E6C),
-                            size: 24.sp,
-                          ),
-                          SizedBox(width: 10.w),
-                          Text(
-                            "Setting",
-                            style: GoogleFonts.roboto(
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xFF001E6C),
-                            ),
-                          ),
-                        ],
-                      ),
+                      // Row(
+                      //   children: [
+                      //     Icon(
+                      //       Icons.notifications_none,
+                      //       color: Color(0xFF001E6C),
+                      //       size: 24.sp,
+                      //     ),
+                      //     SizedBox(width: 10.w),
+                      //     Text(
+                      //       "Notification",
+                      //       style: GoogleFonts.roboto(
+                      //         fontSize: 16.sp,
+                      //         fontWeight: FontWeight.w500,
+                      //         color: Color(0xFF001E6C),
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
+                      // SizedBox(height: 20.h),
+                      // Row(
+                      //   children: [
+                      //     Icon(
+                      //       Icons.dark_mode_outlined,
+                      //       color: Color(0xFF001E6C),
+                      //       size: 24.sp,
+                      //     ),
+                      //     SizedBox(width: 10.w),
+                      //     Text(
+                      //       "Dark Mode",
+                      //       style: GoogleFonts.roboto(
+                      //         fontSize: 16.sp,
+                      //         fontWeight: FontWeight.w500,
+                      //         color: Color(0xFF001E6C),
+                      //       ),
+                      //     ),
+                      //     Spacer(),
+                      //     SizedBox(
+                      //       height: 28.h,
+                      //       child: Transform.scale(
+                      //         scale: 0.7,
+                      //         child: Switch(
+                      //           value: themeMode == ThemeMode.dark,
+                      //           onChanged: (value) {
+                      //             ref
+                      //                 .read(themeNotifierProvider.notifier)
+                      //                 .toggleTheme();
+                      //           },
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
+                      // SizedBox(height: 20.h),
+                      // Row(
+                      //   children: [
+                      //     Icon(
+                      //       Icons.settings,
+                      //       color: Color(0xFF001E6C),
+                      //       size: 24.sp,
+                      //     ),
+                      //     SizedBox(width: 10.w),
+                      //     Text(
+                      //       "Setting",
+                      //       style: GoogleFonts.roboto(
+                      //         fontSize: 16.sp,
+                      //         fontWeight: FontWeight.w500,
+                      //         color: Color(0xFF001E6C),
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
                     ],
                   ),
                 ),

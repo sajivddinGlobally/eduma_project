@@ -9,7 +9,7 @@ ResetPassResModel resetPassResModelFromJson(String str) => ResetPassResModel.fro
 String resetPassResModelToJson(ResetPassResModel data) => json.encode(data.toJson());
 
 class ResetPassResModel {
-    String success;
+    bool success;
     String message;
 
     ResetPassResModel({
