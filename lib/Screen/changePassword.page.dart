@@ -160,7 +160,7 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
                   try {
                     final service = APIStateNetwork(createDio());
                     final response = await service.resetPassword(body);
-                    if (response.success == true) {
+                    if (response != null) {
                       Navigator.pushAndRemoveUntil(
                         context,
                         CupertinoPageRoute(builder: (context) => LoginPage()),

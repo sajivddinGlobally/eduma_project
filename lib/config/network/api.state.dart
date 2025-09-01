@@ -33,6 +33,8 @@ import 'package:eduma_app/data/Model/productWishlistReModel.dart';
 import 'package:eduma_app/data/Model/profileModel.dart';
 import 'package:eduma_app/data/Model/registerBodyCustomeModel.dart';
 import 'package:eduma_app/data/Model/registerResCustomeModel.dart';
+import 'package:eduma_app/data/Model/removeCartQuantityResModel.dart';
+import 'package:eduma_app/data/Model/removerCartQuanityrBodModel.dart';
 import 'package:eduma_app/data/Model/resetPassBodyModel.dart';
 import 'package:eduma_app/data/Model/resetPassResModel.dart';
 import 'package:eduma_app/data/Model/sendOTPBodyModel.dart';
@@ -142,6 +144,11 @@ abstract class APIStateNetwork {
   @POST("/custom/v1/cart/remove")
   Future<ProductAddCartResModel> removeCart(@Body() CarRemoveBodyModel body);
 
+  @POST("/custom/v1/cart/remove-quantity")
+  Future<RemoveCartQuantityResModel> removerQuantiry(
+    @Body() RemoveCartQuantityBodyModel body,
+  );
+  
   @GET("/wc/v3/orders")
   Future<List<OrderListModel>> order();
 

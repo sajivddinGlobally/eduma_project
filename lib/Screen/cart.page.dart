@@ -6,6 +6,7 @@ import 'package:eduma_app/data/Controller/cartController.dart';
 import 'package:eduma_app/data/Model/addCartBodyModel.dart';
 import 'package:eduma_app/data/Model/cartModel.dart';
 import 'package:eduma_app/data/Model/cartRemoveBodyModel.dart';
+import 'package:eduma_app/data/Model/removerCartQuanityrBodModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -338,6 +339,257 @@ class _CartPageState extends ConsumerState<CartPage> {
   }
 }
 
+// class CartBody extends ConsumerStatefulWidget {
+//   final Item data;
+//   const CartBody({super.key, required this.data});
+
+//   @override
+//   ConsumerState<CartBody> createState() => _CartBodyState();
+// }
+
+// class _CartBodyState extends ConsumerState<CartBody> {
+//   bool isUpdating = false;
+
+//   Future<void> updateCartQuantity(int productId, int newQuantity) async {
+//     if (isUpdating) return;
+//     setState(() => isUpdating = true);
+
+//     try {
+//       final body = ProductAddCartBodyModel(
+//         productId: productId,
+//         quantity: newQuantity, // ✅ Pure new quantity bhejo
+//       );
+
+//       final service = APIStateNetwork(createDio());
+//       final response = await service.addToCart(body);
+
+//       if (response.success == true) {
+//         ref.invalidate(cartController); // ✅ Refresh cart after update
+//       } else {
+//         showSuccessMessage(
+//           context,
+//           "Failed to update quantity: ${response.message}",
+//         );
+//       }
+//     } catch (e) {
+//       showSuccessMessage(context, "Error updating quantity: $e");
+//     } finally {
+//       setState(() => isUpdating = false);
+//     }
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Stack(
+//       children: [
+//         Container(
+//           margin: EdgeInsets.only(top: 15.h),
+//           padding: EdgeInsets.all(12.w),
+//           decoration: BoxDecoration(
+//             borderRadius: BorderRadius.circular(16.r),
+//             color: Colors.white,
+//             boxShadow: [
+//               BoxShadow(
+//                 color: Colors.black12,
+//                 blurRadius: 6,
+//                 offset: Offset(0, 2),
+//               ),
+//             ],
+//           ),
+//           child: Row(
+//             crossAxisAlignment: CrossAxisAlignment.start,
+//             children: [
+//               ClipRRect(
+//                 borderRadius: BorderRadius.circular(12.r),
+//                 child: Image.network(
+//                   widget.data.thumbnail,
+//                   width: 90.w,
+//                   height: 90.h,
+//                   fit: BoxFit.cover,
+//                   errorBuilder: (context, error, stackTrace) {
+//                     return Container(
+//                       width: 90.w,
+//                       height: 90.h,
+//                       color: Colors.grey[200],
+//                       child: Icon(
+//                         Icons.image_not_supported,
+//                         color: Colors.grey[600],
+//                         size: 40.sp,
+//                       ),
+//                     );
+//                   },
+//                 ),
+//               ),
+
+//               SizedBox(width: 12.w),
+//               Expanded(
+//                 child: Column(
+//                   crossAxisAlignment: CrossAxisAlignment.start,
+//                   children: [
+//                     Text(
+//                       widget.data.name,
+//                       style: GoogleFonts.poppins(
+//                         fontSize: 16.sp,
+//                         fontWeight: FontWeight.w600,
+//                         color: Color(0xFF001E6C),
+//                       ),
+//                       maxLines: 2,
+//                       overflow: TextOverflow.ellipsis,
+//                     ),
+//                     SizedBox(height: 8.h),
+//                     Text(
+//                       "₹${widget.data.price}",
+//                       style: GoogleFonts.poppins(
+//                         fontSize: 14.sp,
+//                         fontWeight: FontWeight.w500,
+//                         color: Color(0xFF001E6C),
+//                       ),
+//                     ),
+//                     SizedBox(height: 8.h),
+//                     Row(
+//                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                       children: [
+//                         Text(
+//                           "Qty: ${widget.data.quantity}",
+//                           style: GoogleFonts.poppins(
+//                             fontSize: 14.sp,
+//                             fontWeight: FontWeight.w500,
+//                             color: Color(0xFF747474),
+//                           ),
+//                         ),
+//                         Container(
+//                           width: 120.w,
+//                           height: 36.h,
+//                           decoration: BoxDecoration(
+//                             borderRadius: BorderRadius.circular(10.r),
+//                             color: Color(0xFFF5F7FA),
+//                           ),
+//                           child: Padding(
+//                             padding: EdgeInsets.only(left: 10.w, right: 10.w),
+//                             child: Row(
+//                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                               children: [
+//                                 IconButton(
+//                                   style: IconButton.styleFrom(
+//                                     minimumSize: Size.zero,
+//                                     padding: EdgeInsets.zero,
+//                                     tapTargetSize:
+//                                         MaterialTapTargetSize.shrinkWrap,
+//                                   ),
+//                                   icon: Icon(
+//                                     Icons.remove,
+//                                     size: 20.sp,
+//                                     color: Color(0xFF001E6C),
+//                                   ),
+
+//                                   onPressed: () async {
+//                                     final body = RemoveCartQuantityBodyModel(
+//                                       productId: widget.data.productId,
+//                                     );
+//                                     try {
+//                                       final serivice = APIStateNetwork(
+//                                         createDio(),
+//                                       );
+//                                       final response = await serivice
+//                                           .removerQuantiry(body);
+//                                       if (response.success == true) {
+//                                         showSuccessMessage(
+//                                           context,
+//                                           response.message,
+//                                         );
+//                                       } else {
+//                                         log("Sorry");
+//                                       }
+//                                     } catch (e) {
+//                                       log(e.toString());
+//                                     }
+//                                   },
+//                                 ),
+//                                 Text(
+//                                   "${widget.data.quantity}",
+//                                   style: GoogleFonts.poppins(
+//                                     fontSize: 16.sp,
+//                                     fontWeight: FontWeight.w600,
+//                                     color: Color(0xFF001E6C),
+//                                   ),
+//                                 ),
+//                                 IconButton(
+//                                   style: IconButton.styleFrom(
+//                                     minimumSize: Size.zero,
+//                                     padding: EdgeInsets.zero,
+//                                     tapTargetSize:
+//                                         MaterialTapTargetSize.shrinkWrap,
+//                                   ),
+//                                   icon: Icon(
+//                                     Icons.add,
+//                                     size: 20.sp,
+//                                     color: Color(0xFF001E6C),
+//                                   ),
+
+//                                   onPressed: isUpdating
+//                                       ? null
+//                                       : () async {
+//                                           await updateCartQuantity(
+//                                             widget.data.productId,
+//                                             1,
+//                                           );
+//                                         },
+//                                 ),
+//                               ],
+//                             ),
+//                           ),
+//                         ),
+//                       ],
+//                     ),
+//                   ],
+//                 ),
+//               ),
+//               InkWell(
+//                 onTap: () async {
+//                   final body = CarRemoveBodyModel(
+//                     productId: widget.data.productId,
+//                   );
+//                   try {
+//                     final service = APIStateNetwork(createDio());
+//                     final response = await service.removeCart(body);
+//                     if (response.success == true) {
+//                       showSuccessMessage(context, response.message);
+//                     }
+//                     ref.invalidate(cartController);
+//                   } catch (e) {
+//                     log(e.toString());
+//                     showSuccessMessage(context, e.toString());
+//                   }
+//                 },
+//                 child: Container(
+//                   width: 40.w,
+//                   height: 40.h,
+//                   decoration: BoxDecoration(
+//                     shape: BoxShape.circle,
+//                     color: Colors.white,
+//                     boxShadow: [
+//                       BoxShadow(
+//                         color: Colors.black12,
+//                         blurRadius: 6.r,
+//                         offset: Offset(0, 2),
+//                       ),
+//                     ],
+//                   ),
+//                   child: Icon(
+//                     Icons.delete_outline,
+//                     color: Colors.redAccent,
+//                     size: 24.sp,
+//                   ),
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ),
+//       ],
+//     );
+//   }
+// }
+
 class CartBody extends ConsumerStatefulWidget {
   final Item data;
   const CartBody({super.key, required this.data});
@@ -348,22 +600,6 @@ class CartBody extends ConsumerStatefulWidget {
 
 class _CartBodyState extends ConsumerState<CartBody> {
   bool isUpdating = false;
-  bool isUp = false;
-
-  Future<void> removeItemFromCart(int productId) async {
-    try {
-      final body = CarRemoveBodyModel(productId: productId);
-      final service = APIStateNetwork(createDio());
-      final response = await service.removeCart(body);
-      if (response.success == true) {
-        showSuccessMessage(context, response.message);
-      }
-      ref.invalidate(cartController);
-    } catch (e) {
-      log(e.toString());
-      showSuccessMessage(context, e.toString());
-    }
-  }
 
   Future<void> updateCartQuantity(int productId, int newQuantity) async {
     if (isUpdating) return;
@@ -372,14 +608,14 @@ class _CartBodyState extends ConsumerState<CartBody> {
     try {
       final body = ProductAddCartBodyModel(
         productId: productId,
-        quantity: newQuantity, // ✅ Pure new quantity bhejo
+        quantity: newQuantity,
       );
 
       final service = APIStateNetwork(createDio());
       final response = await service.addToCart(body);
 
       if (response.success == true) {
-        ref.invalidate(cartController); // ✅ Refresh cart after update
+        ref.invalidate(cartController);
       } else {
         showSuccessMessage(
           context,
@@ -393,8 +629,36 @@ class _CartBodyState extends ConsumerState<CartBody> {
     }
   }
 
+  Future<void> removeCartQuantity(int productId) async {
+    if (isUpdating) return;
+    setState(() => isUpdating = true);
+
+    try {
+      final body = RemoveCartQuantityBodyModel(productId: productId);
+      final service = APIStateNetwork(createDio());
+      final response = await service.removerQuantiry(body);
+
+      if (response.success == true) {
+        //showSuccessMessage(context, response.message);
+        ref.invalidate(cartController);
+      } else {
+        showSuccessMessage(
+          context,
+          "Failed to remove quantity: ${response.message}",
+        );
+      }
+    } catch (e) {
+      log(e.toString());
+      showSuccessMessage(context, "Error removing quantity: $e");
+    } finally {
+      setState(() => isUpdating = false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final totalPrice = widget.data.price * widget.data.quantity;
+
     return Stack(
       children: [
         Container(
@@ -435,7 +699,6 @@ class _CartBodyState extends ConsumerState<CartBody> {
                   },
                 ),
               ),
-
               SizedBox(width: 12.w),
               Expanded(
                 child: Column(
@@ -496,34 +759,12 @@ class _CartBodyState extends ConsumerState<CartBody> {
                                     size: 20.sp,
                                     color: Color(0xFF001E6C),
                                   ),
-
-                                  // onPressed: isUpdating
-                                  //     ? null
-                                  //     : () async {
-                                  //         if (widget.data.quantity > 1) {
-                                  //           await updateCartQuantity(
-                                  //             widget.data.productId,
-                                  //             -1,
-                                  //           );
-                                  //         } else {
-                                  //           await removeItemFromCart(
-                                  //             widget.data.productId,
-                                  //           );
-                                  //         }
-                                  //       },
                                   onPressed: isUpdating
                                       ? null
                                       : () async {
-                                          if (widget.data.quantity > 1) {
-                                            await updateCartQuantity(
-                                              widget.data.productId,
-                                              -1,
-                                            );
-                                          } else {
-                                            await removeItemFromCart(
-                                              widget.data.productId,
-                                            );
-                                          }
+                                          await removeCartQuantity(
+                                            widget.data.productId,
+                                          );
                                         },
                                 ),
                                 Text(
@@ -546,13 +787,12 @@ class _CartBodyState extends ConsumerState<CartBody> {
                                     size: 20.sp,
                                     color: Color(0xFF001E6C),
                                   ),
-
                                   onPressed: isUpdating
                                       ? null
                                       : () async {
                                           await updateCartQuantity(
                                             widget.data.productId,
-                                            1,
+                                            widget.data.quantity + 1,
                                           );
                                         },
                                 ),
@@ -575,11 +815,16 @@ class _CartBodyState extends ConsumerState<CartBody> {
                     final response = await service.removeCart(body);
                     if (response.success == true) {
                       showSuccessMessage(context, response.message);
+                      ref.invalidate(cartController);
+                    } else {
+                      showSuccessMessage(
+                        context,
+                        "Failed to remove item: ${response.message}",
+                      );
                     }
-                    ref.invalidate(cartController);
                   } catch (e) {
                     log(e.toString());
-                    showSuccessMessage(context, e.toString());
+                    showSuccessMessage(context, "Error removing item: $e");
                   }
                 },
                 child: Container(
