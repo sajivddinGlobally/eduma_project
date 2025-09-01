@@ -295,6 +295,8 @@
 // }
 
 import 'dart:developer';
+import 'package:eduma_app/Screen/payCourseDetails.page.dart';
+import 'package:eduma_app/Screen/productDetails.page.dart';
 import 'package:eduma_app/config/core/showFlushbar.dart';
 import 'package:eduma_app/config/network/api.state.dart';
 import 'package:eduma_app/config/utils/pretty.dio.dart';
@@ -518,7 +520,18 @@ class _WishlistPageState extends ConsumerState<WishlistPage> {
                                   Stack(
                                     children: [
                                       InkWell(
-                                        onTap: () {},
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            CupertinoPageRoute(
+                                              builder: (context) =>
+                                                  PayCourseDetailsPage(
+                                                    id: wishlist.items[index].id
+                                                        .toString(),
+                                                  ),
+                                            ),
+                                          );
+                                        },
                                         borderRadius: BorderRadius.vertical(
                                           top: Radius.circular(16.r),
                                         ),
@@ -763,7 +776,20 @@ class _WishlistPageState extends ConsumerState<WishlistPage> {
                                   Stack(
                                     children: [
                                       InkWell(
-                                        onTap: () {},
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            CupertinoPageRoute(
+                                              builder: (context) =>
+                                                  ProductDetailsPage(
+                                                    id: productwishlist
+                                                        .data[index]
+                                                        .id
+                                                        .toString(),
+                                                  ),
+                                            ),
+                                          );
+                                        },
                                         borderRadius: BorderRadius.vertical(
                                           top: Radius.circular(16.r),
                                         ),
