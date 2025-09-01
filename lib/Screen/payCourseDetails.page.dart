@@ -489,7 +489,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                     //     lesson.lessons!.map((e) => e.lessonTitle,).toString(),
                                     //     lesson.lessons!.map((e) => e.lessonMeta!.video.toString(),).toString()),
                                     // ),
-                                    
+
                                     // for (var topic in courseDetails.topics!)
                                     //   for (var lesson in topic.lessons!)
                                     //     modules(
@@ -499,7 +499,6 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                     //               ?.toString() ??
                                     //           "",
                                     //     ),
-
                                     ...courseDetails.topics!.expand(
                                       (topic) => topic.lessons!.map(
                                         (lesson) => modules(
@@ -663,6 +662,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                 ),
               ],
             ),
+
             floatingActionButton: Container(
               width: 100.w,
               height: 50.h,

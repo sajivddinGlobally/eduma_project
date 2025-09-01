@@ -58,6 +58,7 @@ class _CartPageState extends ConsumerState<CartPage> {
   @override
   Widget build(BuildContext context) {
     final cartProvider = ref.watch(cartController);
+
     return Scaffold(
       backgroundColor: Color(0xFFF5F7FA),
       body: Stack(
@@ -394,203 +395,218 @@ class _CartBodyState extends ConsumerState<CartBody> {
 
   @override
   Widget build(BuildContext context) {
-    return Dismissible(
-      key: Key(widget.data.productId.toString()),
-      direction: DismissDirection.endToStart,
-      background: Container(
-        margin: EdgeInsets.only(top: 15.h),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16.r),
-          color: Color(0xFFEF5350),
-        ),
-        alignment: Alignment.centerRight,
-        padding: EdgeInsets.only(right: 20.w),
-        child: Icon(Icons.delete, color: Colors.yellow, size: 24.sp),
-      ),
-      onDismissed: (direction) async {
-        final body = CarRemoveBodyModel(productId: widget.data.productId);
-        try {
-          final service = APIStateNetwork(createDio());
-          final response = await service.removeCart(body);
-          if (response.success == true) {
-            showSuccessMessage(context, response.message);
-          }
-          ref.invalidate(cartController);
-        } catch (e) {
-          log(e.toString());
-          showSuccessMessage(context, e.toString());
-        }
-      },
-      child: Container(
-        margin: EdgeInsets.only(top: 15.h),
-        padding: EdgeInsets.all(12.w),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16.r),
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black12,
-              blurRadius: 6,
-              offset: Offset(0, 2),
-            ),
-          ],
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(12.r),
-              child: Image.network(
-                widget.data.thumbnail,
-                width: 90.w,
-                height: 90.h,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  return Container(
-                    width: 90.w,
-                    height: 90.h,
-                    color: Colors.grey[200],
-                    child: Icon(
-                      Icons.image_not_supported,
-                      color: Colors.grey[600],
-                      size: 40.sp,
-                    ),
-                  );
-                },
+    return Stack(
+      children: [
+        Container(
+          margin: EdgeInsets.only(top: 15.h),
+          padding: EdgeInsets.all(12.w),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16.r),
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black12,
+                blurRadius: 6,
+                offset: Offset(0, 2),
               ),
-            ),
-            SizedBox(width: 12.w),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    widget.data.name,
-                    style: GoogleFonts.poppins(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w600,
-                      color: Color(0xFF001E6C),
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  SizedBox(height: 8.h),
-                  Text(
-                    "₹${widget.data.price}",
-                    style: GoogleFonts.poppins(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w500,
-                      color: Color(0xFF001E6C),
-                    ),
-                  ),
-                  SizedBox(height: 8.h),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Qty: ${widget.data.quantity}",
-                        style: GoogleFonts.poppins(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xFF747474),
-                        ),
+            ],
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12.r),
+                child: Image.network(
+                  widget.data.thumbnail,
+                  width: 90.w,
+                  height: 90.h,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Container(
+                      width: 90.w,
+                      height: 90.h,
+                      color: Colors.grey[200],
+                      child: Icon(
+                        Icons.image_not_supported,
+                        color: Colors.grey[600],
+                        size: 40.sp,
                       ),
-                      Container(
-                        width: 120.w,
-                        height: 36.h,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.r),
-                          color: Color(0xFFF5F7FA),
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.only(left: 10.w, right: 10.w),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              IconButton(
-                                style: IconButton.styleFrom(
-                                  minimumSize: Size.zero,
-                                  padding: EdgeInsets.zero,
-                                  tapTargetSize:
-                                      MaterialTapTargetSize.shrinkWrap,
-                                ),
-                                icon: Icon(
-                                  Icons.remove,
-                                  size: 20.sp,
-                                  color: Color(0xFF001E6C),
-                                ),
+                    );
+                  },
+                ),
+              ),
 
-                                // onPressed: isUpdating
-                                //     ? null
-                                //     : () async {
-                                //         if (widget.data.quantity > 1) {
-                                //           await updateCartQuantity(
-                                //             widget.data.productId,
-                                //             -1,
-                                //           );
-                                //         } else {
-                                //           await removeItemFromCart(
-                                //             widget.data.productId,
-                                //           );
-                                //         }
-                                //       },
-                                onPressed: isUpdating
-                                    ? null
-                                    : () async {
-                                        if (widget.data.quantity > 1) {
-                                          await updateCartQuantity(
-                                            widget.data.productId,
-                                            -1,
-                                          );
-                                        } else {
-                                          await removeItemFromCart(
-                                            widget.data.productId,
-                                          );
-                                        }
-                                      },
-                              ),
-                              Text(
-                                "${widget.data.quantity}",
-                                style: GoogleFonts.poppins(
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.w600,
-                                  color: Color(0xFF001E6C),
-                                ),
-                              ),
-                              IconButton(
-                                style: IconButton.styleFrom(
-                                  minimumSize: Size.zero,
-                                  padding: EdgeInsets.zero,
-                                  tapTargetSize:
-                                      MaterialTapTargetSize.shrinkWrap,
-                                ),
-                                icon: Icon(
-                                  Icons.add,
-                                  size: 20.sp,
-                                  color: Color(0xFF001E6C),
-                                ),
-
-                                onPressed: isUpdating
-                                    ? null
-                                    : () async {
-                                        await updateCartQuantity(
-                                          widget.data.productId,
-                                          1, 
-                                        );
-                                      },
-                              ),
-                            ],
+              SizedBox(width: 12.w),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.data.name,
+                      style: GoogleFonts.poppins(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xFF001E6C),
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    SizedBox(height: 8.h),
+                    Text(
+                      "₹${widget.data.price}",
+                      style: GoogleFonts.poppins(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xFF001E6C),
+                      ),
+                    ),
+                    SizedBox(height: 8.h),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Qty: ${widget.data.quantity}",
+                          style: GoogleFonts.poppins(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFF747474),
                           ),
                         ),
+                        Container(
+                          width: 120.w,
+                          height: 36.h,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.r),
+                            color: Color(0xFFF5F7FA),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 10.w, right: 10.w),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                IconButton(
+                                  style: IconButton.styleFrom(
+                                    minimumSize: Size.zero,
+                                    padding: EdgeInsets.zero,
+                                    tapTargetSize:
+                                        MaterialTapTargetSize.shrinkWrap,
+                                  ),
+                                  icon: Icon(
+                                    Icons.remove,
+                                    size: 20.sp,
+                                    color: Color(0xFF001E6C),
+                                  ),
+
+                                  // onPressed: isUpdating
+                                  //     ? null
+                                  //     : () async {
+                                  //         if (widget.data.quantity > 1) {
+                                  //           await updateCartQuantity(
+                                  //             widget.data.productId,
+                                  //             -1,
+                                  //           );
+                                  //         } else {
+                                  //           await removeItemFromCart(
+                                  //             widget.data.productId,
+                                  //           );
+                                  //         }
+                                  //       },
+                                  onPressed: isUpdating
+                                      ? null
+                                      : () async {
+                                          if (widget.data.quantity > 1) {
+                                            await updateCartQuantity(
+                                              widget.data.productId,
+                                              -1,
+                                            );
+                                          } else {
+                                            await removeItemFromCart(
+                                              widget.data.productId,
+                                            );
+                                          }
+                                        },
+                                ),
+                                Text(
+                                  "${widget.data.quantity}",
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: Color(0xFF001E6C),
+                                  ),
+                                ),
+                                IconButton(
+                                  style: IconButton.styleFrom(
+                                    minimumSize: Size.zero,
+                                    padding: EdgeInsets.zero,
+                                    tapTargetSize:
+                                        MaterialTapTargetSize.shrinkWrap,
+                                  ),
+                                  icon: Icon(
+                                    Icons.add,
+                                    size: 20.sp,
+                                    color: Color(0xFF001E6C),
+                                  ),
+
+                                  onPressed: isUpdating
+                                      ? null
+                                      : () async {
+                                          await updateCartQuantity(
+                                            widget.data.productId,
+                                            1,
+                                          );
+                                        },
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              InkWell(
+                onTap: () async {
+                  final body = CarRemoveBodyModel(
+                    productId: widget.data.productId,
+                  );
+                  try {
+                    final service = APIStateNetwork(createDio());
+                    final response = await service.removeCart(body);
+                    if (response.success == true) {
+                      showSuccessMessage(context, response.message);
+                    }
+                    ref.invalidate(cartController);
+                  } catch (e) {
+                    log(e.toString());
+                    showSuccessMessage(context, e.toString());
+                  }
+                },
+                child: Container(
+                  width: 40.w,
+                  height: 40.h,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black12,
+                        blurRadius: 6.r,
+                        offset: Offset(0, 2),
                       ),
                     ],
                   ),
-                ],
+                  child: Icon(
+                    Icons.delete_outline,
+                    color: Colors.redAccent,
+                    size: 24.sp,
+                  ),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
+      ],
     );
   }
 }
