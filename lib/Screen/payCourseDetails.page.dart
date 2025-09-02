@@ -491,8 +491,16 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                   children: [
                                     // ...courseDetails.topics!.map(
                                     //   (lesson) => modules(
-                                    //     lesson.lessons!.map((e) => e.lessonTitle,).toString(),
-                                    //     lesson.lessons!.map((e) => e.lessonMeta!.video.toString(),).toString()),
+                                    //     lesson.lessons!
+                                    //         .map((e) => e.lessonTitle)
+                                    //         .toString(),
+                                    //     lesson.lessons!
+                                    //         .map(
+                                    //           (e) => e.lessonMeta!.video
+                                    //               .toString(),
+                                    //         )
+                                    //         .toString(),
+                                    //   ),
                                     // ),
 
                                     // for (var topic in courseDetails.topics!)
