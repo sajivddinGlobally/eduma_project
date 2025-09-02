@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:eduma_app/Screen/enrolledCourseDetails.page.dart';
 import 'package:eduma_app/Screen/library.page.dart';
 import 'package:eduma_app/Screen/youtubePlayScreen.dart';
 import 'package:eduma_app/config/network/api.state.dart';
@@ -694,150 +695,161 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                               backgroundColor: Color(0xFF001E6C),
                             ),
                             onPressed: () async {
-                              // Show loading dialog
-                              showDialog(
-                                context: context,
-                                barrierDismissible: false,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(16),
-                                    ),
-                                    content: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        CircularProgressIndicator(),
-                                        SizedBox(height: 16),
-                                        Text(
-                                          "Enrolling...",
-                                          style: GoogleFonts.roboto(
-                                            fontSize: 16.sp,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.black87,
-                                          ),
+                              if (enrolled) {
+                                Navigator.push(
+                                  context,
+                                  CupertinoPageRoute(
+                                    builder: (context) =>
+                                        EnrolledDourseDetailsPage(
+                                          id: courseDetails.id.toString(),
                                         ),
-                                      ],
-                                    ),
-                                  );
-                                },
-                              );
-
-                              final body = EnrollBodyModel(
-                                courseId: courseDetails.id ?? 0,
-                              );
-                              try {
-                                final service = APIStateNetwork(createDio());
-                                final response = await service.enroll(body);
-
-                                // Close loading dialog
-                                Navigator.pop(context);
-
-                                if (response.success == true) {
-                                  setState(() {
-                                    enrolled = true;
-                                  });
-                                  await showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return AlertDialog(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            16,
-                                          ),
-                                        ),
-                                        title: Row(
-                                          children: [
-                                            Icon(
-                                              Icons.check_circle,
-                                              color: Colors.green,
-                                              size: 28,
-                                            ),
-                                            SizedBox(width: 8),
-                                            Text(
-                                              "Success",
-                                              style: GoogleFonts.roboto(
-                                                fontSize: 18.sp,
-                                                fontWeight: FontWeight.w600,
-                                                color: Colors.black87,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        content: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Text(
-                                              response.message.toString(),
-                                              textAlign: TextAlign.center,
-                                              style: GoogleFonts.roboto(
-                                                fontSize: 14.sp,
-                                                fontWeight: FontWeight.w400,
-                                                color: Colors.black54,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        actionsAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        actions: [
-                                          TextButton(
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
-                                            style: TextButton.styleFrom(
-                                              foregroundColor: Colors.redAccent,
-                                            ),
-                                            child: Text(
-                                              "Close",
-                                              style: GoogleFonts.roboto(
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                          ),
-                                          ElevatedButton(
-                                            style: ElevatedButton.styleFrom(
-                                              backgroundColor: Color(
-                                                0xFF001E6C,
-                                              ),
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(8),
-                                              ),
-                                            ),
-                                            onPressed: () {
-                                              Navigator.pushAndRemoveUntil(
-                                                context,
-                                                CupertinoPageRoute(
-                                                  builder: (context) =>
-                                                      const LibraryPage(),
-                                                  settings: const RouteSettings(
-                                                    name: "LibraryPage",
-                                                  ),
-                                                ),
-                                                (route) => route.isFirst,
-                                              );
-                                            },
-                                            child: Text(
-                                              "Go to Library",
-                                              style: GoogleFonts.roboto(
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.white,
-                                              ),
+                                  ),
+                                );
+                              } else {
+                                showDialog(
+                                  context: context,
+                                  barrierDismissible: false,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(16),
+                                      ),
+                                      content: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          CircularProgressIndicator(),
+                                          SizedBox(height: 16),
+                                          Text(
+                                            "Loading...",
+                                            style: GoogleFonts.roboto(
+                                              fontSize: 16.sp,
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.black87,
                                             ),
                                           ),
                                         ],
-                                      );
-                                    },
-                                  );
+                                      ),
+                                    );
+                                  },
+                                );
+
+                                final body = EnrollBodyModel(
+                                  courseId: courseDetails.id ?? 0,
+                                );
+                                try {
+                                  final service = APIStateNetwork(createDio());
+                                  final response = await service.enroll(body);
+
+                                  Navigator.pop(context);
+
+                                  if (response.success == true) {
+                                    setState(() {
+                                      enrolled = true;
+                                    });
+                                    await showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                              16,
+                                            ),
+                                          ),
+                                          title: Row(
+                                            children: [
+                                              Icon(
+                                                Icons.check_circle,
+                                                color: Colors.green,
+                                                size: 28,
+                                              ),
+                                              SizedBox(width: 8),
+                                              Text(
+                                                "Success",
+                                                style: GoogleFonts.roboto(
+                                                  fontSize: 18.sp,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Colors.black87,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          content: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Text(
+                                                response.message.toString(),
+                                                textAlign: TextAlign.center,
+                                                style: GoogleFonts.roboto(
+                                                  fontSize: 14.sp,
+                                                  fontWeight: FontWeight.w400,
+                                                  color: Colors.black54,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          actionsAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              style: TextButton.styleFrom(
+                                                foregroundColor:
+                                                    Colors.redAccent,
+                                              ),
+                                              child: Text(
+                                                "Close",
+                                                style: GoogleFonts.roboto(
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                            ),
+                                            ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor: Color(
+                                                  0xFF001E6C,
+                                                ),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                ),
+                                              ),
+                                              onPressed: () {
+                                                Navigator.pushAndRemoveUntil(
+                                                  context,
+                                                  CupertinoPageRoute(
+                                                    builder: (context) =>
+                                                        const LibraryPage(),
+                                                    settings:
+                                                        const RouteSettings(
+                                                          name: "LibraryPage",
+                                                        ),
+                                                  ),
+                                                  (route) => route.isFirst,
+                                                );
+                                              },
+                                              child: Text(
+                                                "Go to Library",
+                                                style: GoogleFonts.roboto(
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  }
+                                } catch (err) {
+                                  Navigator.pop(context);
+                                  log(err.toString());
                                 }
-                              } catch (err) {
-                                // Close loading dialog in case of error
-                                Navigator.pop(context);
-                                log(err.toString());
                               }
                             },
                             child: Text(
-                              "Free to Get",
+                              enrolled ? "Continue" : "Free to Get",
                               style: GoogleFonts.roboto(
                                 fontSize: 16.sp,
                                 fontWeight: FontWeight.w500,
@@ -857,110 +869,6 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
       ),
     );
   }
-
-  // Widget modules(String txt, List<String> videos) {
-  //   return Theme(
-  //     data: Theme.of(context).copyWith(
-  //       dividerColor: Colors.transparent,
-  //       splashColor: Colors.transparent,
-  //       highlightColor: Colors.transparent,
-  //     ),
-  //     child: ExpansionTile(
-  //       tilePadding: EdgeInsets.zero,
-  //       title: Column(
-  //         crossAxisAlignment: CrossAxisAlignment.start,
-  //         children: [
-  //           Text(
-  //             txt,
-  //             style: GoogleFonts.roboto(
-  //               fontSize: 16.sp,
-  //               fontWeight: FontWeight.w500,
-  //               color: const Color(0xFF000000),
-  //               letterSpacing: -0.4,
-  //               height: 1.1,
-  //             ),
-  //           ),
-  //           Text(
-  //             "${videos.length} Video(s)",
-  //             style: GoogleFonts.roboto(
-  //               fontSize: 14.sp,
-  //               fontWeight: FontWeight.w400,
-  //               color: const Color(0xFF000000),
-  //               letterSpacing: -0.3,
-  //             ),
-  //           ),
-  //         ],
-  //       ),
-  //       children: videos
-  //           .map(
-  //             (video) => GestureDetector(
-  //               onTap: () {
-  //                 log(video.toString());
-  //                 final id = _extractYouTubeId(video);
-  //                 if (id.isNotEmpty) {
-  //                   Navigator.push(
-  //                     context,
-  //                     MaterialPageRoute(
-  //                       builder: (_) => YoutubePlayerScreen(videoId: id),
-  //                     ),
-  //                   );
-  //                 } else {
-  //                   ScaffoldMessenger.of(context).showSnackBar(
-  //                     const SnackBar(content: Text("Invalid YouTube link")),
-  //                   );
-  //                 }
-  //               },
-  //               child: Container(
-  //                 margin: EdgeInsets.symmetric(vertical: 5.h),
-  //                 child: Row(
-  //                   crossAxisAlignment: CrossAxisAlignment.start,
-  //                   children: [
-  //                     ClipRRect(
-  //                       borderRadius: BorderRadius.circular(8.r),
-  //                       child: Image.network(
-  //                         video.contains('youtube.com') ||
-  //                                 video.contains('youtu.be')
-  //                             ? 'https://img.youtube.com/vi/${_extractYouTubeId(video)}/0.jpg'
-  //                             : 'https://via.placeholder.com/100x60.png?text=Video',
-  //                         width: 100.w,
-  //                         height: 60.h,
-  //                         fit: BoxFit.cover,
-  //                         errorBuilder: (context, error, stackTrace) =>
-  //                             Container(
-  //                               width: 100.w,
-  //                               height: 60.h,
-  //                               color: Colors.grey,
-  //                               child: Icon(
-  //                                 Icons.videocam,
-  //                                 color: Colors.white,
-  //                                 size: 30.sp,
-  //                               ),
-  //                             ),
-  //                       ),
-  //                     ),
-  //                     SizedBox(width: 10.w),
-  //                     Expanded(
-  //                       child: Text(
-  //                         video,
-  //                         maxLines: 2,
-  //                         overflow: TextOverflow.ellipsis,
-  //                         style: GoogleFonts.roboto(
-  //                           fontSize: 14.sp,
-  //                           fontWeight: FontWeight.w400,
-  //                           color: const Color(0xFF000000),
-  //                           letterSpacing: -0.3,
-  //                         ),
-  //                       ),
-  //                     ),
-  //                   ],
-  //                 ),
-  //               ),
-  //             ),
-  //           )
-  //           .toList(),
-  //     ),
-  //   );
-  // }
 
   Widget modules(String title, String videoUrl) {
     final videoId = _extractYouTubeId(videoUrl);
