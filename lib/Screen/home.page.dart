@@ -7,6 +7,7 @@ import 'package:eduma_app/Screen/customProfileDrawer.dart';
 import 'package:eduma_app/Screen/enrolledCourseDetails.page.dart';
 import 'package:eduma_app/Screen/library.page.dart';
 import 'package:eduma_app/Screen/login.page.dart';
+import 'package:eduma_app/Screen/networkErrorPage.dart';
 import 'package:eduma_app/Screen/payCourseDetails.page.dart';
 import 'package:eduma_app/Screen/productDetails.page.dart';
 import 'package:eduma_app/Screen/register.page.dart';
@@ -142,7 +143,14 @@ class _HomePageState extends ConsumerState<HomePage> {
                       //   ),
                       // ),
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                              builder: (context) => NetworkErrorPage(),
+                            ),
+                          );
+                        },
                         icon: Icon(Icons.notifications_none_outlined),
                       ),
                       SizedBox(width: 10.w),

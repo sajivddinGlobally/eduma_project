@@ -1,5 +1,8 @@
+import 'dart:async';
 import 'dart:developer';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:eduma_app/Screen/home.page.dart';
+import 'package:eduma_app/Screen/networkErrorPage.dart';
 import 'package:eduma_app/Screen/onbording.page.dart';
 import 'package:eduma_app/config/utils/navigatorKey.dart';
 import 'package:eduma_app/data/Controller/themeModeController.dart';
@@ -16,11 +19,40 @@ void main() async {
   runApp(ProviderScope(child: const MyApp()));
 }
 
-class MyApp extends ConsumerWidget {
+class MyApp extends ConsumerStatefulWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends ConsumerState<MyApp> {
+  late StreamSubscription<List<ConnectivityResult>> _subscription;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _subscription = Connectivity().onConnectivityChanged.listen((
+      List<ConnectivityResult> results,
+    ) {
+      final hasInternet =
+          results.isNotEmpty && results.first != ConnectivityResult.none;
+
+      if (!hasInternet) {
+        // Agar internet nahi hai -> NetworkErrorPage pe bhej do
+        navigatorKey.currentState?.pushNamed("/networkErrorPage");
+      } else {
+        // Agar internet wapas aata hai -> sirf tabhi pop karo agar koi page stack me hai
+        if (navigatorKey.currentState?.canPop() ?? false) {
+          navigatorKey.currentState?.popUntil((route) => route.isFirst);
+        }
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final themeMode = ref.watch(themeNotifierProvider);
 
     var box = Hive.box("userBox");
@@ -45,26 +77,11 @@ class MyApp extends ConsumerWidget {
             themeMode: themeMode,
 
             home: token == null ? OnbordingPage() : HomePage(),
+            
+            routes: {'/networkErrorPage': (context) => NetworkErrorPage()},
           );
         },
       ),
     );
   }
 }
-
-
-  // theme: ThemeData(
-            //   brightness: Brightness.light,
-            //   colorScheme: ColorScheme.fromSeed(
-            //     seedColor: Colors.blue,
-            //     brightness: Brightness.light,
-            //   ),
-            // ),
-
-            // darkTheme: ThemeData(
-            //   brightness: Brightness.dark,
-            //   colorScheme: ColorScheme.fromSeed(
-            //     seedColor: Colors.deepPurple,
-            //     brightness: Brightness.dark,
-            //   ),
-            // ),

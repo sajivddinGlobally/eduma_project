@@ -696,7 +696,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                         children: [
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              minimumSize: Size(100.w, 50.h),
+                              minimumSize: Size(60.w, 50.h),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10.r),
                               ),
