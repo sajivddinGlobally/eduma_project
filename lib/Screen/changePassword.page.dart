@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:eduma_app/Screen/login.page.dart';
 import 'package:eduma_app/config/core/showFlushbar.dart';
 import 'package:eduma_app/config/network/api.state.dart';
@@ -167,10 +166,7 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
                         (route) => false,
                       );
                     }
-                    // showSuccessMessage(
-                    //   context,
-                    //   "Password changed successfully",
-                    // );
+
                     showSuccessMessage(context, response.message);
                     setState(() {
                       isLoading = false;
