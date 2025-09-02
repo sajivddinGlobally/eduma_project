@@ -56,7 +56,6 @@ class _MyAppState extends ConsumerState<MyApp> {
   @override
   Widget build(BuildContext context) {
     final themeMode = ref.watch(themeNotifierProvider);
-
     var box = Hive.box("userBox");
     var token = box.get("token");
     log("////////////////////////////");
