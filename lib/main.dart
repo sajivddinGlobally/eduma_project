@@ -44,9 +44,11 @@ class _MyAppState extends ConsumerState<MyApp> {
         navigatorKey.currentState?.pushNamed("/networkErrorPage");
       } else {
         // Agar internet wapas aata hai -> sirf tabhi pop karo agar koi page stack me hai
-        if (navigatorKey.currentState?.canPop() ?? false) {
-          navigatorKey.currentState?.popUntil((route) => route.isFirst);
-        }
+        Future.delayed(Duration(seconds: 1), () {
+          if (navigatorKey.currentState?.canPop() ?? false) {
+            navigatorKey.currentState?.popUntil((route) => route.isFirst);
+          }
+        });
       }
     });
   }
@@ -77,7 +79,7 @@ class _MyAppState extends ConsumerState<MyApp> {
             themeMode: themeMode,
 
             home: token == null ? OnbordingPage() : HomePage(),
-            
+
             routes: {'/networkErrorPage': (context) => NetworkErrorPage()},
           );
         },
