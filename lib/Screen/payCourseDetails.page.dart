@@ -667,125 +667,185 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
               ],
             ),
 
-            floatingActionButton: isFree
+            bottomNavigationBar: isFree
                 ? Container(
-                    width: 100.w,
-                    height: 50.h,
-                    child: FloatingActionButton(
-                      backgroundColor: Color(0xFF001E6C),
-                      onPressed: () async {
-                        final body = EnrollBodyModel(
-                          courseId: courseDetails.id ?? 0,
-                        );
-                        try {
-                          final service = APIStateNetwork(createDio());
-                          final response = await service.enroll(body);
-                          if (response.success == true) {
-                            setState(() {
-                              enrolled = true;
-                            });
-                            await showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16),
-                                  ),
-                                  title: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.check_circle,
-                                        color: Colors.green,
-                                        size: 28,
-                                      ),
-                                      SizedBox(width: 8),
-                                      Text(
-                                        "Success",
-                                        style: GoogleFonts.roboto(
-                                          fontSize: 18.sp,
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.black87,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  content: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text(
-                                        response.message.toString(),
-                                        textAlign: TextAlign.center,
-                                        style: GoogleFonts.roboto(
-                                          fontSize: 14.sp,
-                                          fontWeight: FontWeight.w400,
-                                          color: Colors.black54,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  actionsAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      style: TextButton.styleFrom(
-                                        foregroundColor: Colors.redAccent,
-                                      ),
-                                      child: Text(
-                                        "Close",
-                                        style: GoogleFonts.roboto(
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 8,
+                          offset: Offset(0, -2),
+                        ),
+                      ],
+                    ),
+                    child: BottomAppBar(
+                      color: Colors.transparent,
+                      elevation: 0,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: Size(100.w, 50.h),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.r),
+                              ),
+                              backgroundColor: Color(0xFF001E6C),
+                            ),
+                            onPressed: () async {
+                              // Show loading dialog
+                              showDialog(
+                                context: context,
+                                barrierDismissible: false,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(16),
                                     ),
-                                    ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Color(0xFF001E6C),
+                                    content: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        CircularProgressIndicator(),
+                                        SizedBox(height: 16),
+                                        Text(
+                                          "Enrolling...",
+                                          style: GoogleFonts.roboto(
+                                            fontSize: 16.sp,
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.black87,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              );
+
+                              final body = EnrollBodyModel(
+                                courseId: courseDetails.id ?? 0,
+                              );
+                              try {
+                                final service = APIStateNetwork(createDio());
+                                final response = await service.enroll(body);
+
+                                // Close loading dialog
+                                Navigator.pop(context);
+
+                                if (response.success == true) {
+                                  setState(() {
+                                    enrolled = true;
+                                  });
+                                  await showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
                                         shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(
-                                            8,
+                                            16,
                                           ),
                                         ),
-                                      ),
-                                      onPressed: () {
-                                        Navigator.pushAndRemoveUntil(
-                                          context,
-                                          CupertinoPageRoute(
-                                            builder: (context) =>
-                                                const LibraryPage(),
-                                            settings: const RouteSettings(
-                                              name: "LibraryPage",
+                                        title: Row(
+                                          children: [
+                                            Icon(
+                                              Icons.check_circle,
+                                              color: Colors.green,
+                                              size: 28,
+                                            ),
+                                            SizedBox(width: 8),
+                                            Text(
+                                              "Success",
+                                              style: GoogleFonts.roboto(
+                                                fontSize: 18.sp,
+                                                fontWeight: FontWeight.w600,
+                                                color: Colors.black87,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        content: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Text(
+                                              response.message.toString(),
+                                              textAlign: TextAlign.center,
+                                              style: GoogleFonts.roboto(
+                                                fontSize: 14.sp,
+                                                fontWeight: FontWeight.w400,
+                                                color: Colors.black54,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        actionsAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            style: TextButton.styleFrom(
+                                              foregroundColor: Colors.redAccent,
+                                            ),
+                                            child: Text(
+                                              "Close",
+                                              style: GoogleFonts.roboto(
+                                                fontWeight: FontWeight.w500,
+                                              ),
                                             ),
                                           ),
-                                          (route) => route.isFirst,
-                                        );
-                                      },
-                                      child: Text(
-                                        "Go to Library",
-                                        style: GoogleFonts.roboto(
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                          }
-                        } catch (err) {
-                          log(err.toString());
-                        }
-                      },
-                      child: Text(
-                        enrolled ? "Continue" : "Get",
-                        style: GoogleFonts.roboto(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white,
-                        ),
+                                          ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: Color(
+                                                0xFF001E6C,
+                                              ),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                              ),
+                                            ),
+                                            onPressed: () {
+                                              Navigator.pushAndRemoveUntil(
+                                                context,
+                                                CupertinoPageRoute(
+                                                  builder: (context) =>
+                                                      const LibraryPage(),
+                                                  settings: const RouteSettings(
+                                                    name: "LibraryPage",
+                                                  ),
+                                                ),
+                                                (route) => route.isFirst,
+                                              );
+                                            },
+                                            child: Text(
+                                              "Go to Library",
+                                              style: GoogleFonts.roboto(
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                }
+                              } catch (err) {
+                                // Close loading dialog in case of error
+                                Navigator.pop(context);
+                                log(err.toString());
+                              }
+                            },
+                            child: Text(
+                              "Free to Get",
+                              style: GoogleFonts.roboto(
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   )
@@ -929,7 +989,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
               style: GoogleFonts.roboto(
                 fontSize: 16.sp,
                 fontWeight: FontWeight.w600,
-                color: Colors.black,
+                color: const Color.fromARGB(255, 1, 1, 1),
               ),
             ),
             SizedBox(height: 4.h),
