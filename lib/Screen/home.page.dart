@@ -4,6 +4,7 @@ import 'package:eduma_app/Screen/apiCall/api.register.dart';
 import 'package:eduma_app/Screen/continueMyCourse.page.dart';
 import 'package:eduma_app/Screen/course.page.dart';
 import 'package:eduma_app/Screen/customProfileDrawer.dart';
+import 'package:eduma_app/Screen/enrolledCourseDetails.page.dart';
 import 'package:eduma_app/Screen/library.page.dart';
 import 'package:eduma_app/Screen/login.page.dart';
 import 'package:eduma_app/Screen/payCourseDetails.page.dart';
@@ -12,6 +13,7 @@ import 'package:eduma_app/Screen/register.page.dart';
 import 'package:eduma_app/Screen/shop.page.dart';
 import 'package:eduma_app/Screen/youtube.page.dart';
 import 'package:eduma_app/data/Controller/allCategoryController.dart';
+import 'package:eduma_app/data/Controller/enrolleCourseController.dart';
 import 'package:eduma_app/data/Controller/latestCourseController.dart';
 import 'package:eduma_app/data/Controller/popularCourseController.dart';
 import 'package:eduma_app/data/Controller/productListController.dart';
@@ -308,14 +310,6 @@ class _HomePageState extends ConsumerState<HomePage> {
                             letterSpacing: -0.4,
                           ),
                         ),
-                        Spacer(),
-                        Icon(
-                          Icons.arrow_forward_ios,
-                          color: Color(0xFF001E6C),
-                          weight: 3,
-                          size: 23.sp,
-                        ),
-                        SizedBox(width: 20.w),
                       ],
                     ),
                     SizedBox(height: 20.h),
@@ -1053,112 +1047,181 @@ class _PopularCourState extends State<PopularCour> {
   }
 }
 
-class LearningBody extends StatefulWidget {
+class LearningBody extends ConsumerStatefulWidget {
   const LearningBody({super.key});
 
   @override
-  State<LearningBody> createState() => _LearningBodyState();
+  ConsumerState<LearningBody> createState() => _LearningBodyState();
 }
 
-class _LearningBodyState extends State<LearningBody> {
-  final int currentStep = 16; // Dynamic value use kar sakte ho
-  final int totalSteps = 100;
-  List myList = [
-    {"imageUrl": "assets/learning1.png"},
-    {"imageUrl": "assets/learning2.png"},
-  ];
+class _LearningBodyState extends ConsumerState<LearningBody> {
+  // Adjusted to handle course.progress as an int (percentage)
+  int getCurrentStep(dynamic course) =>
+      course.progress ?? 0; // Progress as percentage (0-100)
+  int getTotalSteps(dynamic course) =>
+      100; // Total steps fixed to 100 for percentage
+
+  String truncateString(String text, int maxLength) {
+    if (text.length <= maxLength) return text;
+    return '${text.substring(0, maxLength - 3)}...';
+  }
+
   @override
   Widget build(BuildContext context) {
-    double percent = (currentStep / totalSteps) * 100;
+    final enrolleCourseProvider = ref.watch(enrollCourseController);
+
     return Container(
       height: 265.h,
-      // color: Colors.amber,
-      child: ListView.builder(
-        itemCount: myList.length,
-        scrollDirection: Axis.horizontal,
-        padding: EdgeInsets.zero,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: EdgeInsets.only(left: 20.w, right: 10.w),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Stack(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(10.r),
-                      child: Image.asset(
-                        //"assets/learning1.png",
-                        myList[index]["imageUrl"],
-                        width: 295.w,
-                        height: 165.h,
-                        fit: BoxFit.cover,
-                      ),
+      child: enrolleCourseProvider.when(
+        data: (data) {
+          if (data.courses.isEmpty) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.book_outlined,
+                    size: 80.sp,
+                    color: const Color(0xFF747474),
+                  ),
+                  SizedBox(height: 10.h),
+                  Text(
+                    "No Enrolled Courses",
+                    style: GoogleFonts.poppins(
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.w500,
+                      color: const Color(0xFF747474),
                     ),
-                    // Progress bar
-                    Positioned(
-                      left: 10.w,
-                      right: 10.w,
-                      bottom: 20.h,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  ),
+                ],
+              ),
+            );
+          }
+          return ListView.builder(
+            itemCount: data.courses.length,
+            scrollDirection: Axis.horizontal,
+            padding: EdgeInsets.zero,
+            itemBuilder: (context, index) {
+              final course = data.courses[index];
+              final double percent = getCurrentStep(
+                course,
+              ).toDouble(); // Use progress directly as percentage
+              return Padding(
+                padding: EdgeInsets.only(left: 20.w, right: 10.w),
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                        builder: (context) =>
+                            EnrolledDourseDetailsPage(id: course.id.toString()),
+                      ),
+                    );
+                  },
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Stack(
                         children: [
-                          Container(
-                            width: 180.w,
-                            // color: Colors.white,
-                            child: StepProgressIndicator(
-                              totalSteps: totalSteps,
-                              currentStep: currentStep,
-                              size: 8.h,
-                              padding: 0,
-                              selectedColor: Color(0xFF001E6C),
-                              unselectedColor: Colors.white,
-                              roundedEdges: Radius.circular(10.r),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(10.r),
+                            child: Image.network(
+                              course.thumbnail ?? '',
+                              width: 295.w,
+                              height: 165.h,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) =>
+                                  Container(
+                                    width: 295.w,
+                                    height: 165.h,
+                                    color: Colors.grey[200],
+                                    child: Icon(
+                                      Icons.image_not_supported,
+                                      color: Colors.grey[600],
+                                      size: 40.sp,
+                                    ),
+                                  ),
                             ),
                           ),
-                          Text(
-                            "${percent.toInt()}% Complete",
-                            style: GoogleFonts.roboto(
-                              fontSize: 15.sp,
-                              fontWeight: FontWeight.w600,
-                              color: Color(0xFFFFFFFF),
-                              letterSpacing: -0.4,
+                          // Progress bar
+                          Positioned(
+                            left: 10.w,
+                            right: 10.w,
+                            bottom: 20.h,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  width: 180.w,
+                                  child: StepProgressIndicator(
+                                    totalSteps: getTotalSteps(course),
+                                    currentStep: getCurrentStep(course),
+                                    size: 8.h,
+                                    padding: 0,
+                                    selectedColor: const Color(0xFF001E6C),
+                                    unselectedColor: Colors.white,
+                                    roundedEdges: Radius.circular(10.r),
+                                  ),
+                                ),
+                                Text(
+                                  "${percent.toInt()}% Complete",
+                                  style: GoogleFonts.roboto(
+                                    fontSize: 15.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white,
+                                    letterSpacing: -0.4,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ],
                       ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 5.h),
-                SizedBox(
-                  width: 250.w,
-                  child: Text(
-                    truncateString(
-                      "15th Online  Workshop based on treatise Part-7 (09-12 jan 2024)",
-                      100,
-                    ),
-                    style: GoogleFonts.roboto(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w600,
-                      color: Color(0xFF001E6C),
-                      letterSpacing: -0.4,
-                    ),
+                      SizedBox(height: 5.h),
+                      SizedBox(
+                        width: 295.w,
+                        child: Text(
+                          truncateString(
+                            course.title ?? 'Untitled Course',
+                            100,
+                          ),
+                          style: GoogleFonts.roboto(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w600,
+                            color: const Color(0xFF001E6C),
+                            letterSpacing: -0.4,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 5.h),
+                      Text(
+                        course.instructor?.name ?? 'Unknown Instructor',
+                        style: GoogleFonts.roboto(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w400,
+                          color: const Color.fromARGB(132, 0, 30, 108),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                SizedBox(height: 5.h),
-                Text(
-                  "By Anil Kumar Singh",
-                  style: GoogleFonts.roboto(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w400,
-                    color: Color.fromARGB(132, 0, 30, 108),
-                  ),
-                ),
-              ],
-            ),
+              );
+            },
           );
         },
+        error: (error, stackTrace) => Center(
+          child: Text(
+            error.toString(),
+            style: GoogleFonts.poppins(
+              fontSize: 16.sp,
+              fontWeight: FontWeight.w500,
+              color: Colors.red,
+            ),
+          ),
+        ),
+        loading: () => const Center(
+          child: CircularProgressIndicator(color: Color(0xFF001E6C)),
+        ),
       ),
     );
   }
