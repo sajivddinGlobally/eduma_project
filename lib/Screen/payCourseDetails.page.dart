@@ -1,7 +1,9 @@
 import 'dart:developer';
 import 'package:eduma_app/Screen/enrolledCourseDetails.page.dart';
 import 'package:eduma_app/Screen/library.page.dart';
+import 'package:eduma_app/Screen/login.page.dart';
 import 'package:eduma_app/Screen/youtubePlayScreen.dart';
+import 'package:eduma_app/config/core/showFlushbar.dart';
 import 'package:eduma_app/config/network/api.state.dart';
 import 'package:eduma_app/config/utils/pretty.dio.dart';
 import 'package:eduma_app/data/Controller/popularCourseController.dart';
@@ -31,6 +33,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
   @override
   Widget build(BuildContext context) {
     var box = Hive.box("userBox");
+    var token = box.get("token");
     final courseDetailsProvider = ref.watch(
       popularCourseDetailsController(widget.id),
     );
@@ -644,26 +647,6 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                     ),
                                   ),
                                   SizedBox(height: 20.h),
-                                  Text(
-                                    courseDetails.title ?? "",
-                                    style: GoogleFonts.roboto(
-                                      fontSize: 20.sp,
-                                      fontWeight: FontWeight.w600,
-                                      color: Color(0xFF000000),
-                                      letterSpacing: -1,
-                                    ),
-                                  ),
-                                  SizedBox(height: 14.h),
-                                  Text(
-                                    courseDetails.description ?? "",
-                                    style: GoogleFonts.roboto(
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w400,
-                                      color: Color(0xFF000000),
-                                      letterSpacing: -0.4,
-                                    ),
-                                  ),
-                                  SizedBox(height: 30.h),
                                 ],
                               ),
                             ],
@@ -703,6 +686,20 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                               backgroundColor: Color(0xFF001E6C),
                             ),
                             onPressed: () async {
+                              if (token == null) {
+                                Navigator.push(
+                                  context,
+                                  CupertinoPageRoute(
+                                    builder: (context) => LoginPage(),
+                                  ),
+                                );
+                                showSuccessMessage(
+                                  context,
+                                  "Please Login First",
+                                );
+                                return;
+                              }
+
                               if (enrolled) {
                                 Navigator.push(
                                   context,

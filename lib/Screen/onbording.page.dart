@@ -1,3 +1,4 @@
+import 'package:eduma_app/Screen/home.page.dart';
 import 'package:eduma_app/Screen/login.page.dart';
 import 'package:eduma_app/Screen/register.page.dart';
 import 'package:flutter/cupertino.dart';
@@ -76,7 +77,7 @@ class _OnbordingPageState extends State<OnbordingPage> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  CupertinoPageRoute(builder: (context) => RegisterPage()),
+                  CupertinoPageRoute(builder: (context) => HomePage()),
                 );
               },
               style: ElevatedButton.styleFrom(

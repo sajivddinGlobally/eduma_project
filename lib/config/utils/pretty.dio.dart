@@ -34,12 +34,9 @@ Dio createDio() {
         });
         handler.next(options);
       },
-      onResponse: (response, handler) {
-        handler.next(response);
-      },
+
       onError: (DioException e, handler) {
         final globalContext = navigatorKey.currentContext;
-
         final statusCode = e.response?.statusCode;
         final errorData = e.response?.data;
         final errorMessage = errorData is Map
@@ -50,12 +47,9 @@ Dio createDio() {
         final cleanedMessage = errorMessage
             .replaceAll(RegExp(r'<[^>]*>'), '')
             .trim();
-
         log("API Error ($statusCode): $cleanedMessage");
-
         if (globalContext != null) {
           if (statusCode == 401) {
-            // Clear token from Hive on expiration
             box.delete("token");
             showSuccessMessage(
               globalContext,
@@ -80,6 +74,9 @@ Dio createDio() {
         }
 
         handler.next(e);
+      },
+      onResponse: (response, handler) {
+        handler.next(response);
       },
     ),
   );
