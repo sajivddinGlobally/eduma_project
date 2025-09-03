@@ -321,17 +321,17 @@ class _HomePageState extends ConsumerState<HomePage> {
                       ],
                     ),
                     SizedBox(height: 20.h),
-                    // InkWell(
-                    //   onTap: () {
-                    //     Navigator.push(
-                    //       context,
-                    //       CupertinoPageRoute(
-                    //         builder: (context) => ContinueMyCoursePage(),
-                    //       ),
-                    //     );
-                    //   },
-                    //   child: LearningBody(),
-                    // ),
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                            builder: (context) => ContinueMyCoursePage(),
+                          ),
+                        );
+                      },
+                      child: LearningBody(),
+                    ),
                     SizedBox(height: 10.h),
                     Row(
                       children: [
