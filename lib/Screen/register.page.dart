@@ -1,10 +1,9 @@
-
-
 import 'package:eduma_app/Screen/apiCall/api.register.dart';
 import 'package:eduma_app/Screen/login.page.dart';
 import 'package:eduma_app/config/utils/navigatorKey.dart';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -451,28 +450,36 @@ class _RegisterPageState extends ConsumerState<RegisterPage>
                         ),
                 ),
                 SizedBox(height: 6.h),
+
                 Center(
-                  child: TextButton(
-                    style: TextButton.styleFrom(
-                      padding: EdgeInsets.zero, // Removes default padding
-                      minimumSize: Size(0, 0), // Removes default min size
-                      tapTargetSize:
-                          MaterialTapTargetSize.shrinkWrap, // Shrinks tap area
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        CupertinoPageRoute(builder: (context) => LoginPage()),
-                      );
-                    },
-                    child: Text(
-                      "I Have Already Account? Login",
+                  child: Text.rich(
+                    TextSpan(
+                      text: "I Have Already Account?",
                       style: GoogleFonts.roboto(
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w400,
                         color: Color(0xFF7F7F7F),
                         letterSpacing: -0.4,
                       ),
+                      children: [
+                        TextSpan(
+                          text: " Login",
+                          style: GoogleFonts.roboto(
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFF001E6C),
+                          ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              Navigator.push(
+                                context,
+                                CupertinoPageRoute(
+                                  builder: (context) => LoginPage(),
+                                ),
+                              );
+                            },
+                        ),
+                      ],
                     ),
                   ),
                 ),
