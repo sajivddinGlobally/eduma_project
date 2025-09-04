@@ -877,6 +877,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
 
   Widget modules(String title, String videoUrl) {
     final videoId = _extractYouTubeId(videoUrl);
+    final displayTitle = videoId.isNotEmpty ? title : "No Video";
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
       margin: EdgeInsets.symmetric(vertical: 8.h),
@@ -896,7 +897,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              title,
+              displayTitle,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: GoogleFonts.roboto(
@@ -907,7 +908,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
             ),
             SizedBox(height: 4.h),
             Text(
-              "1 Video",
+              videoId.isNotEmpty ? "1 Video" : "No Video Available",
               style: GoogleFonts.roboto(
                 fontSize: 13.sp,
                 fontWeight: FontWeight.w400,
@@ -923,14 +924,12 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
               if (videoId.isNotEmpty) {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (_) => VideoPge(videoId: videoId),
-                  ),
+                  MaterialPageRoute(builder: (_) => VideoPge(videoId: videoId)),
                 );
               } else {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text("Invalid YouTube link")),
-                );
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(const SnackBar(content: Text("No video")));
               }
             },
             child: Column(

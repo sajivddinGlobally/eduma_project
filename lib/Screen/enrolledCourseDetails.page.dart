@@ -342,6 +342,7 @@ class _EnrolledDourseDetailsPageState
 
   Widget _lessonTile(String title, String videoUrl) {
     final videoId = _extractYouTubeId(videoUrl);
+    final displayTitle = videoId.isNotEmpty ? title : "No Video";
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
       margin: EdgeInsets.symmetric(vertical: 8.h),
@@ -372,7 +373,7 @@ class _EnrolledDourseDetailsPageState
             ),
             SizedBox(height: 4.h),
             Text(
-             "1 Video",
+              videoId.isNotEmpty ? "1 Video" : "No Video Available",
               style: GoogleFonts.roboto(
                 fontSize: 13.sp,
                 fontWeight: FontWeight.w400,
@@ -429,7 +430,7 @@ class _EnrolledDourseDetailsPageState
                     SizedBox(width: 12.w),
                     Expanded(
                       child: Text(
-                        title,
+                        displayTitle,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: GoogleFonts.roboto(
