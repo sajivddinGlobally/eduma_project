@@ -1232,47 +1232,42 @@ class _LearningBodyState extends ConsumerState<LearningBody> {
         loading: () => Padding(
           padding: EdgeInsets.all(20.w),
           child: ListView.builder(
-            itemCount: 4,
+            scrollDirection: Axis.horizontal,
+            itemCount: 3,
             itemBuilder: (context, index) {
-              return Shimmer.fromColors(
-                baseColor: Colors.grey[300]!,
-                highlightColor: Colors.grey[100]!,
-                child: Container(
-                  margin: EdgeInsets.only(bottom: 15.h),
-                  padding: EdgeInsets.all(12.w),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16.r),
-                    color: Colors.white,
-                  ),
-                  child: Row(
+              return Padding(
+                padding: EdgeInsets.only(left: 10.w, right: 10.w),
+                child: Shimmer.fromColors(
+                  baseColor: Colors.grey[300]!,
+                  highlightColor: Colors.grey[100]!,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        width: 90.w,
-                        height: 90.h,
-                        color: Colors.grey[400],
+                        width: 295.w,
+                        height: 165.h,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16.r),
+                          color: Colors.white,
+                        ),
                       ),
-                      SizedBox(width: 12.w),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: 200.w,
-                            height: 16.h,
-                            color: Colors.grey[400],
-                          ),
-                          SizedBox(height: 10.h),
-                          Container(
-                            width: 120.w,
-                            height: 14.h,
-                            color: Colors.grey[400],
-                          ),
-                          SizedBox(height: 10.h),
-                          Container(
-                            width: 80.w,
-                            height: 14.h,
-                            color: Colors.grey[400],
-                          ),
-                        ],
+                      SizedBox(height: 10.h),
+                      Container(
+                        width: 295.w,
+                        height: 14.h,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16.r),
+                          color: Colors.grey[400],
+                        ),
+                      ),
+                      SizedBox(height: 10.h),
+                      Container(
+                        width: 200.w,
+                        height: 14.h,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16.r),
+                          color: Colors.grey[400],
+                        ),
                       ),
                     ],
                   ),
