@@ -450,7 +450,6 @@ class _RegisterPageState extends ConsumerState<RegisterPage>
                         ),
                 ),
                 SizedBox(height: 6.h),
-
                 Center(
                   child: Text.rich(
                     TextSpan(
