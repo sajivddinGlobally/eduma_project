@@ -1,5 +1,5 @@
 // import 'package:flutter/material.dart';
-// import 'package:url_launcher/url_launcher.dart';
+// import 'package:webview_flutter/webview_flutter.dart';
 
 // class YoutubePage extends StatefulWidget {
 //   const YoutubePage({super.key});
@@ -9,60 +9,108 @@
 // }
 
 // class _YoutubePageState extends State<YoutubePage> {
-//   bool _isLoading = false;
-
-//   Future<void> _openYoutubeChannel() async {
-//     const String channelId = "UCmFHSJGwYAsrtjF8xcVZOFw";
-
-//     // Universal link (app install hai to YouTube app me open hoga, warna browser)
-//     final Uri youtubeUrl = Uri.parse(
-//       "https://www.youtube.com/channel/$channelId",
-//     );
-
-//     if (!await launchUrl(youtubeUrl, mode: LaunchMode.externalApplication)) {
-//       throw Exception("Could not launch $youtubeUrl");
-//     }
-//   }
+//   late final WebViewController _controller;
+//   bool _isLoading = true;
 
 //   @override
 //   void initState() {
 //     super.initState();
-//     WidgetsBinding.instance.addPostFrameCallback((_) {
-//       if (mounted) {
-//         _openYoutubeChannel();
-//       }
-//     });
+
+//     _controller = WebViewController()
+//       ..setJavaScriptMode(JavaScriptMode.unrestricted)
+//       ..setNavigationDelegate(
+//         NavigationDelegate(
+//           onPageStarted: (_) => setState(() => _isLoading = true),
+//           onPageFinished: (_) {
+//             setState(() => _isLoading = false);
+//             // Inject JavaScript to hide the YouTube bottom navigation bar
+//             _controller.runJavaScript("""
+//               document.querySelector('ytm-cwc-bottom-nav').style.display = 'none';
+//             """);
+//           },
+//         ),
+//       )
+//       ..loadRequest(
+//         Uri.parse("https://www.youtube.com/channel/UCmFHSJGwYAsrtjF8xcVZOFw"),
+//       );
 //   }
 
 //   @override
 //   Widget build(BuildContext context) {
 //     return Scaffold(
-//       body: RefreshIndicator(
-//         onRefresh: _openYoutubeChannel,
-//         child: Stack(
-//           children: [
-//             ListView(
-//               physics: const AlwaysScrollableScrollPhysics(),
-//               children: const [
-//                 SizedBox(
-//                   height: 500,
-//                   child: Center(
-//                     child: Text(
-//                       'Opening YouTube Channel...\nPull down to refresh',
-//                       textAlign: TextAlign.center,
-//                       style: TextStyle(fontSize: 18),
-//                     ),
-//                   ),
-//                 ),
-//               ],
-//             ),
-//             if (_isLoading) const Center(child: CircularProgressIndicator()),
-//           ],
-//         ),
+//       appBar: AppBar(
+//         title: const Text("YouTube Channel"),
+//         backgroundColor: Colors.red,
+//       ),
+//       body: Stack(
+//         children: [
+//           WebViewWidget(controller: _controller),
+//           if (_isLoading) const Center(child: CircularProgressIndicator()),
+//         ],
 //       ),
 //     );
 //   }
 // }
+import 'package:flutter/material.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+
+class YoutubePage extends StatefulWidget {
+  const YoutubePage({super.key});
+
+  @override
+  State<YoutubePage> createState() => _YoutubePageState();
+}
+
+class _YoutubePageState extends State<YoutubePage> {
+  late final WebViewController _controller;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onPageStarted: (_) => setState(() => _isLoading = true),
+          onPageFinished: (_) {
+            setState(() => _isLoading = false);
+            // Hide YouTube bottom navigation bar
+            _controller.runJavaScript("""
+              document.querySelector('ytm-cwc-bottom-nav').style.display = 'none';
+            """);
+          },
+        ),
+      )
+      ..loadRequest(
+        Uri.parse("https://www.youtube.com/channel/UCmFHSJGwYAsrtjF8xcVZOFw"),
+      );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("YouTube Channel"),
+        backgroundColor: Colors.red,
+      ),
+      body: Stack(
+        children: [
+          // Wrap WebViewWidget with Focus to handle key events
+          Focus(
+            onKey: (FocusNode node, RawKeyEvent event) {
+              // Ignore key events to prevent them from reaching Flutter's HardwareKeyboard
+              return KeyEventResult.handled;
+            },
+            child: WebViewWidget(controller: _controller),
+          ),
+          if (_isLoading) const Center(child: CircularProgressIndicator()),
+        ],
+      ),
+    );
+  }
+}
 
 // import 'package:flutter/material.dart';
 // import 'package:webview_flutter/webview_flutter.dart';
@@ -175,53 +223,55 @@
 //     );
 //   }
 // }
-import 'package:flutter/material.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
-class YoutubePage extends StatefulWidget {
-  const YoutubePage({super.key});
+// channel video
 
-  @override
-  State<YoutubePage> createState() => _YoutubePageState();
-}
+// import 'package:flutter/material.dart';
+// import 'package:webview_flutter/webview_flutter.dart';
 
-class _YoutubePageState extends State<YoutubePage> {
-  late final WebViewController _controller;
-  bool _isLoading = true;
+// class YoutubePage extends StatefulWidget {
+//   const YoutubePage({super.key});
 
-  final String playlistId = "UUmFHSJGwYAsrtjF8xcVZOFw"; // ✅ uploads playlist id
+//   @override
+//   State<YoutubePage> createState() => _YoutubePageState();
+// }
 
-  @override
-  void initState() {
-    super.initState();
+// class _YoutubePageState extends State<YoutubePage> {
+//   late final WebViewController _controller;
+//   bool _isLoading = true;
 
-    final String embedUrl =
-        "https://www.youtube.com/embed/videoseries?list=$playlistId";
+//   @override
+//   void initState() {
+//     super.initState();
 
-    _controller = WebViewController()
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setNavigationDelegate(
-        NavigationDelegate(
-          onPageStarted: (_) => setState(() => _isLoading = true),
-          onPageFinished: (_) => setState(() => _isLoading = false),
-        ),
-      )
-      ..loadRequest(Uri.parse(embedUrl));
-  }
+//     _controller = WebViewController()
+//       ..setJavaScriptMode(JavaScriptMode.unrestricted)
+//       ..setNavigationDelegate(
+//         NavigationDelegate(
+//           onPageStarted: (_) => setState(() => _isLoading = true),
+//           onPageFinished: (_) => setState(() => _isLoading = false),
+//         ),
+//       )
+//       ..loadRequest(
+//         Uri.parse(
+//           "https://www.youtube.com/embed/videoseries?list=UUmFHSJGwYAsrtjF8xcVZOFw",
+//         ),
+//       );
+//   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Channel Playlist"),
-        backgroundColor: Colors.red,
-      ),
-      body: Stack(
-        children: [
-          WebViewWidget(controller: _controller),
-          if (_isLoading) const Center(child: CircularProgressIndicator()),
-        ],
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text("My YouTube Uploads"),
+//         backgroundColor: Colors.red,
+//       ),
+//       body: Stack(
+//         children: [
+//           WebViewWidget(controller: _controller),
+//           if (_isLoading) const Center(child: CircularProgressIndicator()),
+//         ],
+//       ),
+//     );
+//   }
+// }
