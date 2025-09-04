@@ -421,6 +421,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class ProductDetailsPage extends ConsumerStatefulWidget {
   final String id;
@@ -431,6 +432,7 @@ class ProductDetailsPage extends ConsumerStatefulWidget {
 }
 
 class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
+  final PageController _pageController = PageController();
   bool isLoading = false;
   int quantity = 1;
 
@@ -488,515 +490,435 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
               ),
             ),
             SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Container(
-                    //   decoration: BoxDecoration(
-                    //     borderRadius: BorderRadius.circular(15.r),
-                    //     boxShadow: [
-                    //       BoxShadow(
-                    //         color: Colors.grey.withOpacity(0.2),
-                    //         spreadRadius: 2,
-                    //         blurRadius: 5,
-                    //         offset: Offset(0, 3),
-                    //       ),
-                    //     ],
-                    //   ),
-                    //   child: ClipRRect(
-                    //     borderRadius: BorderRadius.circular(15.r),
-                    //     child: Image.network(
-                    //       data.images.isNotEmpty
-                    //           ? data.images[0].thumbnail.toString()
-                    //           : "https://thumbs.dreamstime.com/b/no-image-vector-symbol-missing-available-icon-gallery-moment-placeholder-246411909.jpg",
-                    //       width: MediaQuery.of(context).size.width,
-                    //       height: 250.h,
-                    //       fit: BoxFit.cover,
-                    //       errorBuilder: (context, error, stackTrace) {
-                    //         return Image.network(
-                    //           "https://thumbs.dreamstime.com/b/no-image-vector-symbol-missing-available-icon-gallery-moment-placeholder-246411909.jpg",
-                    //           width: MediaQuery.of(context).size.width,
-                    //           height: 250.h,
-                    //           fit: BoxFit.cover,
-                    //         );
-                    //       },
-                    //     ),
-                    //   ),
-                    // ),
-                    SizedBox(
-                      height: 250.h,
-                      child: ListView.separated(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: data.images.isNotEmpty
-                            ? data.images.length
-                            : 1,
-                        separatorBuilder: (context, index) {
-                          return SizedBox(width: 12.w);
-                        },
-                        itemBuilder: (context, index) {
-                          final imageUrl = data.images.isNotEmpty
-                              ? data.images[index].medium.toString()
-                              : "https://thumbs.dreamstime.com/b/no-image-vector-symbol-missing-available-icon-gallery-moment-placeholder-246411909.jpg";
-                          return ClipRRect(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: 280.h,
+                    child: PageView.builder(
+                      controller: _pageController,
+                      itemCount: data.images.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: EdgeInsets.only(left: 10.w, right: 10.w),
+                          child: ClipRRect(
                             borderRadius: BorderRadius.circular(15.r),
                             child: Image.network(
-                              imageUrl,
-                              width: 280.w,
-                              height: 200.h,
+                              data.images[index].medium,
                               fit: BoxFit.cover,
+                              width: double.infinity,
                               errorBuilder: (context, error, stackTrace) {
                                 return Image.network(
                                   "https://thumbs.dreamstime.com/b/no-image-vector-symbol-missing-available-icon-gallery-moment-placeholder-246411909.jpg",
-                                  width: 280.w,
-                                  height: 200.h,
                                   fit: BoxFit.cover,
+                                  width: double.infinity,
                                 );
                               },
                             ),
-                          );
-                        },
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  SizedBox(height: 12.h),
+                  Center(
+                    child: SmoothPageIndicator(
+                      controller: _pageController,
+                      count: data.images.length,
+                      effect: ExpandingDotsEffect(
+                        dotHeight: 10.h,
+                        dotWidth: 10.w,
+                        activeDotColor: Color(0xFF001E6C),
+                        dotColor: Colors.grey.shade300,
+                        spacing: 6.w,
                       ),
                     ),
-                    SizedBox(height: 20.h),
-                    Row(
+                  ),
+                  SizedBox(height: 20.h),
+                  Padding(
+                    padding: EdgeInsets.only(left: 20.w, right: 20.w),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Expanded(
-                          child: Text(
-                            //  "Create an LMS Website With LearnPress",
-                            data.name.toString(),
-                            style: GoogleFonts.roboto(
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xFF000000),
-                              letterSpacing: -0.4,
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                //  "Create an LMS Website With LearnPress",
+                                data.name.toString(),
+                                style: GoogleFonts.roboto(
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Color(0xFF000000),
+                                  letterSpacing: -0.4,
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                        Spacer(),
-                        Container(
-                          width: 80.w,
-                          height: 36.h,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.r),
-                            color: Color(0xFF001E6C),
-                          ),
-                          child: TextButton(
-                            style: IconButton.styleFrom(
-                              minimumSize: Size(0, 0),
-                              padding: EdgeInsets.zero,
-                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                            ),
-                            onPressed: () async {
-                              final body = ProductAddCartBodyModel(
-                                productId: data.id,
-                                quantity: 1,
-                              );
+                            Spacer(),
+                            Container(
+                              width: 80.w,
+                              height: 36.h,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10.r),
+                                color: Color(0xFF001E6C),
+                              ),
+                              child: TextButton(
+                                style: IconButton.styleFrom(
+                                  minimumSize: Size(0, 0),
+                                  padding: EdgeInsets.zero,
+                                  tapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                ),
+                                onPressed: () async {
+                                  final body = ProductAddCartBodyModel(
+                                    productId: data.id,
+                                    quantity: 1,
+                                  );
 
-                              setState(() {
-                                isLoading = true;
-                              });
-
-                              try {
-                                final service = APIStateNetwork(createDio());
-                                final response = await service.addToCart(body);
-
-                                if (response.success == true) {
                                   setState(() {
-                                    isLoading = false;
+                                    isLoading = true;
                                   });
 
-                                  await showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return AlertDialog(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            16,
-                                          ),
-                                        ),
-                                        title: Row(
-                                          children: [
-                                            Icon(
-                                              Icons.check_circle,
-                                              color: Colors.green,
-                                              size: 28,
+                                  try {
+                                    final service = APIStateNetwork(
+                                      createDio(),
+                                    );
+                                    final response = await service.addToCart(
+                                      body,
+                                    );
+
+                                    if (response.success == true) {
+                                      setState(() {
+                                        isLoading = false;
+                                      });
+
+                                      await showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(16),
                                             ),
-                                            SizedBox(width: 8),
-                                            Text(
-                                              "Success",
-                                              style: GoogleFonts.roboto(
-                                                fontSize: 18.sp,
-                                                fontWeight: FontWeight.w600,
-                                                color: Colors.black87,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        content: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Text(
-                                              response.message,
-                                              textAlign: TextAlign.center,
-                                              style: GoogleFonts.roboto(
-                                                fontSize: 14.sp,
-                                                fontWeight: FontWeight.w400,
-                                                color: Colors.black54,
-                                              ),
-                                            ),
-                                            SizedBox(height: 12),
-                                            Icon(
-                                              Icons.shopping_cart,
-                                              color: Color(0xFF001E6C),
-                                              size: 40,
-                                            ),
-                                          ],
-                                        ),
-                                        actionsAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        actions: [
-                                          TextButton(
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
-                                            style: TextButton.styleFrom(
-                                              foregroundColor: Colors.redAccent,
-                                            ),
-                                            child: Text(
-                                              "Close",
-                                              style: GoogleFonts.roboto(
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                          ),
-                                          ElevatedButton(
-                                            style: ElevatedButton.styleFrom(
-                                              backgroundColor: Color(
-                                                0xFF001E6C,
-                                              ),
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(8),
-                                              ),
-                                            ),
-                                            onPressed: () {
-                                              Navigator.pushAndRemoveUntil(
-                                                context,
-                                                CupertinoPageRoute(
-                                                  builder: (_) =>
-                                                      const CartPage(),
-                                                  settings: const RouteSettings(
-                                                    name: "CartPage",
+                                            title: Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.check_circle,
+                                                  color: Colors.green,
+                                                  size: 28,
+                                                ),
+                                                SizedBox(width: 8),
+                                                Text(
+                                                  "Success",
+                                                  style: GoogleFonts.roboto(
+                                                    fontSize: 18.sp,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Colors.black87,
                                                   ),
                                                 ),
-                                                (route) => route.isFirst,
-                                              );
-                                            },
-                                            child: Text(
-                                              "Go to Cart",
-                                              style: GoogleFonts.roboto(
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.white,
-                                              ),
+                                              ],
                                             ),
+                                            content: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Text(
+                                                  response.message,
+                                                  textAlign: TextAlign.center,
+                                                  style: GoogleFonts.roboto(
+                                                    fontSize: 14.sp,
+                                                    fontWeight: FontWeight.w400,
+                                                    color: Colors.black54,
+                                                  ),
+                                                ),
+                                                SizedBox(height: 12),
+                                                Icon(
+                                                  Icons.shopping_cart,
+                                                  color: Color(0xFF001E6C),
+                                                  size: 40,
+                                                ),
+                                              ],
+                                            ),
+                                            actionsAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                style: TextButton.styleFrom(
+                                                  foregroundColor:
+                                                      Colors.redAccent,
+                                                ),
+                                                child: Text(
+                                                  "Close",
+                                                  style: GoogleFonts.roboto(
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
+                                              ),
+                                              ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor: Color(
+                                                    0xFF001E6C,
+                                                  ),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                          8,
+                                                        ),
+                                                  ),
+                                                ),
+                                                onPressed: () {
+                                                  Navigator.pushAndRemoveUntil(
+                                                    context,
+                                                    CupertinoPageRoute(
+                                                      builder: (_) =>
+                                                          const CartPage(),
+                                                      settings:
+                                                          const RouteSettings(
+                                                            name: "CartPage",
+                                                          ),
+                                                    ),
+                                                    (route) => route.isFirst,
+                                                  );
+                                                },
+                                                child: Text(
+                                                  "Go to Cart",
+                                                  style: GoogleFonts.roboto(
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    } else {
+                                      setState(() {
+                                        isLoading = false;
+                                      });
+                                    }
+                                  } catch (e) {
+                                    setState(() {
+                                      isLoading = false;
+                                    });
+                                    log(e.toString());
+                                  }
+                                },
+                                child: isLoading
+                                    ? SizedBox(
+                                        width: 20.w,
+                                        height: 20.h,
+                                        child: Center(
+                                          child: CircularProgressIndicator(
+                                            color: Colors.white,
                                           ),
-                                        ],
-                                      );
-                                    },
-                                  );
-                                } else {
-                                  setState(() {
-                                    isLoading = false;
-                                  });
-                                }
-                              } catch (e) {
-                                setState(() {
-                                  isLoading = false;
-                                });
-                                log(e.toString());
-                              }
-                            },
-                            child: isLoading
-                                ? SizedBox(
-                                    width: 20.w,
-                                    height: 20.h,
-                                    child: Center(
-                                      child: CircularProgressIndicator(
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  )
-                                : Text(
-                                    "Add to Cart",
-                                    style: GoogleFonts.roboto(
-                                      fontSize: 12.sp,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                          ),
-                        ),
-                      ],
-                    ),
-
-                    SizedBox(height: 12.h),
-                    Row(
-                      children: [
-                        Text(
-                          "${data.salePrice ?? '45k'}",
-                          style: GoogleFonts.roboto(
-                            fontSize: 22.sp,
-                            fontWeight: FontWeight.w700,
-                            color: Color(0xFF001E6C),
-                          ),
-                        ),
-                        // if (data.regularPrice != null)
-                        Text(
-                          "₹ ${data.price}",
-                          style: GoogleFonts.roboto(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xFF001E6C),
-                            //decoration: TextDecoration.lineThrough,
-                          ),
-                        ),
-                        SizedBox(width: 12.w),
-                        // if (data.backorders != null)
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 8.w,
-                            vertical: 4.h,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Color(0xFF1BB93D).withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(6.r),
-                          ),
-                          child: Text(
-                            "${data.amsPriceToDisplay} % off",
-                            style: GoogleFonts.roboto(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xFF1BB93D),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    // SizedBox(height: 12.h),
-                    // Text(
-                    //   data.stockStatus == 'instock'
-                    //       ? 'In Stock'
-                    //       : 'Out of Stock',
-                    //   style: GoogleFonts.roboto(
-                    //     fontSize: 14.sp,
-                    //     fontWeight: FontWeight.w500,
-                    //     color: data.stockStatus == 'instock'
-                    //         ? Colors.green
-                    //         : Colors.red,
-                    //   ),
-                    // ),
-                    //SizedBox(height: 16.h),
-                    // Row(
-                    //   children: [
-                    //     Text(
-                    //       "Quantity:",
-                    //       style: GoogleFonts.roboto(
-                    //         fontSize: 16.sp,
-                    //         fontWeight: FontWeight.w500,
-                    //         color: Color(0xFF1B1B1B),
-                    //       ),
-                    //     ),
-                    //     SizedBox(width: 12.w),
-                    //     Container(
-                    //       decoration: BoxDecoration(
-                    //         border: Border.all(color: Colors.grey[300]!),
-                    //         borderRadius: BorderRadius.circular(8.r),
-                    //       ),
-                    //       child: Row(
-                    //         children: [
-                    //           SizedBox(width: 8.w),
-                    //           IconButton(
-                    //             style: IconButton.styleFrom(
-                    //               minimumSize: Size.zero,
-                    //               padding: EdgeInsets.zero,
-                    //               tapTargetSize:
-                    //                   MaterialTapTargetSize.shrinkWrap,
-                    //             ),
-                    //             onPressed: quantity > 1
-                    //                 ? () => setState(() => quantity--)
-                    //                 : null,
-                    //             icon: Icon(Icons.remove, size: 20.sp),
-                    //           ),
-                    //           SizedBox(width: 12.w),
-                    //           Text(
-                    //             quantity.toString(),
-                    //             style: GoogleFonts.roboto(fontSize: 16.sp),
-                    //           ),
-                    //           SizedBox(width: 12.w),
-                    //           IconButton(
-                    //             style: IconButton.styleFrom(
-                    //               minimumSize: Size.zero,
-                    //               padding: EdgeInsets.zero,
-                    //               tapTargetSize:
-                    //                   MaterialTapTargetSize.shrinkWrap,
-                    //             ),
-                    //             onPressed: () => setState(() => quantity++),
-                    //             icon: Icon(Icons.add, size: 20.sp),
-                    //           ),
-                    //           SizedBox(width: 10.w),
-                    //         ],
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
-                    SizedBox(height: 24.h),
-                    Text(
-                      "Description",
-                      style: GoogleFonts.roboto(
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xFF1B1B1B),
-                      ),
-                    ),
-                    SizedBox(height: 8.h),
-                    Text(
-                      data.description.toString(),
-                      style: GoogleFonts.roboto(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.grey[800],
-                        height: 1.5,
-                      ),
-                    ),
-
-                    SizedBox(height: 20.h),
-                    Text(
-                      "Category",
-                      style: GoogleFonts.roboto(
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xFF1B1B1B),
-                      ),
-                    ),
-                    SizedBox(height: 8.h),
-                    Text(
-                      data.categories[0].name ?? 'Uncategorized',
-                      style: GoogleFonts.roboto(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.grey[800],
-                      ),
-                    ),
-                    SizedBox(height: 20.h),
-                    Text(
-                      "Shipping Policy",
-                      style: GoogleFonts.roboto(
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xFF1B1B1B),
-                      ),
-                    ),
-                    SizedBox(height: 8.h),
-                    Text(
-                      data.wcfmProductPolicyData.shippingPolicy.toString(),
-                      style: GoogleFonts.roboto(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.grey[800],
-                        height: 1.5,
-                      ),
-                    ),
-                    SizedBox(height: 24.h),
-                    Text(
-                      "Related Products",
-                      style: GoogleFonts.roboto(
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xFF1B1B1B),
-                      ),
-                    ),
-                    SizedBox(height: 16.h),
-                    SizedBox(
-                      height: 180.h,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: data.images.length,
-                        itemBuilder: (context, index) {
-                          return Container(
-                            width: 160.w,
-                            margin: EdgeInsets.only(right: 16.w),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(12.r),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.1),
-                                  spreadRadius: 1,
-                                  blurRadius: 4,
-                                  offset: Offset(0, 2),
-                                ),
-                              ],
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.vertical(
-                                    top: Radius.circular(12.r),
-                                  ),
-                                  child: Image.network(
-                                    data.images[index].medium,
-                                    height: 100.h,
-                                    width: double.infinity,
-                                    fit: BoxFit.cover,
-                                    errorBuilder: (context, error, stackTrace) {
-                                      return Image.network(
-                                        "https://thumbs.dreamstime.com/b/no-image-vector-symbol-missing-available-icon-gallery-moment-placeholder-246411909.jpg",
-                                        height: 100.h,
-                                        width: double.infinity,
-                                        fit: BoxFit.cover,
-                                      );
-                                    },
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.all(8.w),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "Related Product ${index + 1}",
+                                        ),
+                                      )
+                                    : Text(
+                                        "Add to Cart",
                                         style: GoogleFonts.roboto(
-                                          fontSize: 14.sp,
+                                          fontSize: 12.sp,
                                           fontWeight: FontWeight.w500,
-                                        ),
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                      SizedBox(height: 4.h),
-                                      Text(
-                                        "₹ 30k",
-                                        style: GoogleFonts.roboto(
-                                          fontSize: 14.sp,
-                                          fontWeight: FontWeight.w600,
-                                          color: Color(0xFF001E6C),
+                                          color: Colors.white,
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                ),
-                              ],
+                              ),
                             ),
-                          );
-                        },
-                      ),
+                          ],
+                        ),
+                        SizedBox(height: 12.h),
+                        Row(
+                          children: [
+                            Text(
+                              "${data.salePrice ?? '45k'}",
+                              style: GoogleFonts.roboto(
+                                fontSize: 22.sp,
+                                fontWeight: FontWeight.w700,
+                                color: Color(0xFF001E6C),
+                              ),
+                            ),
+                            // if (data.regularPrice != null)
+                            Text(
+                              "₹ ${data.price}",
+                              style: GoogleFonts.roboto(
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xFF001E6C),
+                                //decoration: TextDecoration.lineThrough,
+                              ),
+                            ),
+                            SizedBox(width: 12.w),
+                            // if (data.backorders != null)
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 8.w,
+                                vertical: 4.h,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Color(0xFF1BB93D).withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(6.r),
+                              ),
+                              child: Text(
+                                "${data.amsPriceToDisplay} % off",
+                                style: GoogleFonts.roboto(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Color(0xFF1BB93D),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        SizedBox(height: 24.h),
+                        Text(
+                          "Description",
+                          style: GoogleFonts.roboto(
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xFF1B1B1B),
+                          ),
+                        ),
+                        SizedBox(height: 8.h),
+                        Text(
+                          data.description.toString(),
+                          style: GoogleFonts.roboto(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.grey[800],
+                            height: 1.5,
+                          ),
+                        ),
+
+                        SizedBox(height: 20.h),
+                        Text(
+                          "Category",
+                          style: GoogleFonts.roboto(
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xFF1B1B1B),
+                          ),
+                        ),
+                        SizedBox(height: 8.h),
+                        Text(
+                          data.categories[0].name ?? 'Uncategorized',
+                          style: GoogleFonts.roboto(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.grey[800],
+                          ),
+                        ),
+                        SizedBox(height: 20.h),
+                        Text(
+                          "Shipping Policy",
+                          style: GoogleFonts.roboto(
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xFF1B1B1B),
+                          ),
+                        ),
+                        SizedBox(height: 8.h),
+                        Text(
+                          data.wcfmProductPolicyData.shippingPolicy.toString(),
+                          style: GoogleFonts.roboto(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.grey[800],
+                            height: 1.5,
+                          ),
+                        ),
+                        SizedBox(height: 24.h),
+                        Text(
+                          "Related Products",
+                          style: GoogleFonts.roboto(
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xFF1B1B1B),
+                          ),
+                        ),
+                      ],
                     ),
-                    SizedBox(height: 40.h),
-                  ],
-                ),
+                  ),
+                  SizedBox(height: 16.h),
+                  SizedBox(
+                    height: 180.h,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: data.images.length,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          margin: EdgeInsets.only(left: 20.w),
+                          width: 160.w,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12.r),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.1),
+                                spreadRadius: 1,
+                                blurRadius: 4,
+                                offset: Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(12.r),
+                                ),
+                                child: Image.network(
+                                  data.images[index].medium,
+                                  height: 100.h,
+                                  width: double.infinity,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Image.network(
+                                      "https://thumbs.dreamstime.com/b/no-image-vector-symbol-missing-available-icon-gallery-moment-placeholder-246411909.jpg",
+                                      height: 100.h,
+                                      width: double.infinity,
+                                      fit: BoxFit.cover,
+                                    );
+                                  },
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.all(8.w),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Related Product ${index + 1}",
+                                      style: GoogleFonts.roboto(
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    SizedBox(height: 4.h),
+                                    Text(
+                                      "₹ 30k",
+                                      style: GoogleFonts.roboto(
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w600,
+                                        color: Color(0xFF001E6C),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  SizedBox(height: 40.h),
+                ],
               ),
             ),
           ],
