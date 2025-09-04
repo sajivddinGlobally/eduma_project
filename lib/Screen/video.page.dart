@@ -166,9 +166,12 @@ class _VideoPgeState extends State<VideoPge> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFFFFFFF),
-
       body: _isLoading
-          ? const CircularProgressIndicator()
+          ? SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              child: Center(child: CircularProgressIndicator()),
+            )
           : YoutubePlayerBuilder(
               player: YoutubePlayer(
                 controller: _controller,
