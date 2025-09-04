@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
-class YoutubePlayerScreen extends StatefulWidget {
+class VideoPge extends StatefulWidget {
   final String videoId;
 
-  const YoutubePlayerScreen({super.key, required this.videoId});
+  const VideoPge({super.key, required this.videoId});
 
   @override
-  State<YoutubePlayerScreen> createState() => _YoutubePlayerScreenState();
+  State<VideoPge> createState() => _VideoPgeState();
 }
 
-class _YoutubePlayerScreenState extends State<YoutubePlayerScreen> {
+class _VideoPgeState extends State<VideoPge> {
   late YoutubePlayerController _controller;
 
   @override

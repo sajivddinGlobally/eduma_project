@@ -246,7 +246,7 @@
 //   }
 // }
 
-import 'package:eduma_app/Screen/youtubePlayScreen.dart';
+import 'package:eduma_app/Screen/video.page.dart';
 import 'package:eduma_app/data/Controller/popularCourseController.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
