@@ -698,8 +698,8 @@ class _HomePageState extends ConsumerState<HomePage> {
               },
               currentIndex: selectIndex,
               type: BottomNavigationBarType.fixed,
-              backgroundColor: Colors.transparent, // 🔥 important
-              elevation: 0, // 🔥 important
+              backgroundColor: Colors.transparent,
+              elevation: 0,
               showSelectedLabels: true,
               showUnselectedLabels: true,
               selectedLabelStyle: GoogleFonts.inter(
@@ -800,15 +800,12 @@ class _PopularCourState extends State<PopularCour> {
                     showSuccessMessage(context, "Please Login First");
                     return;
                   }
-                  // 👇 API call se direct result lo
                   final result = await WishlistControllerClass.toggle(
                     context: context,
                     courseId: widget.data.id,
                     userId: box.get("storeId"),
                     currentStatus: isWishlisted,
                   );
-
-                  // 👇 bas yehi update karna hai
                   setState(() {
                     isWishlisted = result;
                   });
@@ -939,9 +936,7 @@ class _LearningBodyState extends ConsumerState<LearningBody> {
             padding: EdgeInsets.zero,
             itemBuilder: (context, index) {
               final course = data.courses[index];
-              final double percent = getCurrentStep(
-                course,
-              ).toDouble(); // Use progress directly as percentage
+              final double percent = getCurrentStep(course).toDouble();
               return Padding(
                 padding: EdgeInsets.only(left: 20.w, right: 10.w),
                 child: GestureDetector(
@@ -979,7 +974,6 @@ class _LearningBodyState extends ConsumerState<LearningBody> {
                                   ),
                             ),
                           ),
-                          // Progress bar
                           Positioned(
                             left: 10.w,
                             right: 10.w,
@@ -1197,9 +1191,7 @@ class _PopularBodyState extends State<PopularBody> {
                       },
                       child: Icon(
                         isWishlisted ? Icons.favorite : Icons.favorite_border,
-                        key: ValueKey<bool>(
-                          isWishlisted,
-                        ), // 👈 ye key change hone se hi animation hoga
+                        key: ValueKey<bool>(isWishlisted),
                         color: isWishlisted ? Colors.red : Colors.white,
                         size: 25.sp,
                       ),
@@ -1327,15 +1319,12 @@ class _allProductState extends State<allProduct> {
                     showSuccessMessage(context, "please login first");
                     return;
                   }
-                  // 👇 API call se direct result lo
                   final result =
                       await ProductWishlistController.productWishlist(
                         context: context,
                         productId: widget.data.id!,
                         currentStatus: isWishlisted,
                       );
-
-                  // 👇 bas yehi update karna hai
                   setState(() {
                     isWishlisted = result;
                   });
