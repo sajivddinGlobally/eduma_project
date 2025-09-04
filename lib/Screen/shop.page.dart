@@ -144,109 +144,6 @@ class _ShopPageState extends ConsumerState<ShopPage> {
                 ),
                 SizedBox(height: 16.h),
 
-                // productListProvider.when(
-                //   data: (snap) {
-                //     final filteredProducts = snap.where((product) {
-                //       final title = product.name!.toLowerCase();
-                //       return title.contains(searchQuery);
-                //     }).toList();
-                //     if (filteredProducts.isEmpty) {
-                //       return Center(
-                //         child: Text(
-                //           "No products found",
-                //           style: GoogleFonts.roboto(
-                //             fontSize: 16.sp,
-                //             color: Colors.grey[600],
-                //           ),
-                //         ),
-                //       );
-                //     }
-                //     return Expanded(
-                //       child: Padding(
-                //         padding: EdgeInsets.only(
-                //           left: 20.w,
-                //           right: 20.w,
-                //           top: 20.h,
-                //         ),
-                //         child: GridView.builder(
-                //           itemCount: filteredProducts.length,
-                //           padding: EdgeInsets.zero,
-                //           gridDelegate:
-                //               SliverGridDelegateWithFixedCrossAxisCount(
-                //                 crossAxisCount: 2,
-                //                 crossAxisSpacing: 20.w,
-                //                 mainAxisSpacing: 15.h,
-                //                 childAspectRatio: 190 / 180,
-                //               ),
-                //           itemBuilder: (context, index) {
-                //             return ProductCard(data: filteredProducts[index]);
-                //           },
-                //         ),
-                //       ),
-                //     );
-                //   },
-                //   error: (error, stackTrace) => Center(
-                //     child: Column(
-                //       mainAxisAlignment: MainAxisAlignment.center,
-                //       children: [
-                //         Icon(
-                //           Icons.error_outline,
-                //           color: Colors.red,
-                //           size: 48.sp,
-                //         ),
-                //         SizedBox(height: 16.h),
-                //         Text(
-                //           "Failed to load products",
-                //           style: GoogleFonts.roboto(
-                //             fontSize: 16.sp,
-                //             fontWeight: FontWeight.w500,
-                //           ),
-                //         ),
-                //         SizedBox(height: 8.h),
-                //         Text(
-                //           error.toString(),
-                //           style: GoogleFonts.roboto(
-                //             fontSize: 14.sp,
-                //             color: Colors.grey[600],
-                //           ),
-                //         ),
-                //         SizedBox(height: 16.h),
-                //         ElevatedButton(
-                //           onPressed: () => ref.refresh(productListController),
-                //           style: ElevatedButton.styleFrom(
-                //             backgroundColor: Color(0xFF001E6C),
-                //             shape: RoundedRectangleBorder(
-                //               borderRadius: BorderRadius.circular(8.r),
-                //             ),
-                //           ),
-                //           child: Text(
-                //             "Retry",
-                //             style: GoogleFonts.roboto(
-                //               fontSize: 14.sp,
-                //               color: Colors.white,
-                //             ),
-                //           ),
-                //         ),
-                //       ],
-                //     ),
-                //   ),
-                //   loading: () => Center(
-                //     child: Column(
-                //       mainAxisAlignment: MainAxisAlignment.center,
-                //       children: [
-                //         CircularProgressIndicator(color: Color(0xFF001E6C)),
-                //         SizedBox(height: 16.h),
-                //         Text(
-                //           "Loading products...",
-                //           style: GoogleFonts.roboto(
-                //             fontSize: 16.sp,
-                //             fontWeight: FontWeight.w500,
-                //           ),
-                //         ),
-                //       ],
-                //     ),
-                //   ),
-                // ),
                 productListProvider.when(
                   data: (snap) {
                     final filteredProducts = snap.where((product) {
@@ -334,17 +231,28 @@ class _ProductCardState extends State<ProductCard> {
       children: [
         Stack(
           children: [
-            Container(
-              width: 190.w,
-              height: widget.boxHeight,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10.r),
-                child: Image.network(
-                  widget.data.images![0].medium.toString(),
-                  fit: BoxFit.cover,
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                    builder: (context) =>
+                        ProductDetailsPage(id: widget.data.id.toString()),
+                  ),
+                );
+              },
+              child: Container(
+                width: 190.w,
+                height: widget.boxHeight,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10.r),
+                  child: Image.network(
+                    widget.data.images![0].medium.toString(),
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
             ),
