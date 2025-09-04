@@ -143,7 +143,6 @@ class _ShopPageState extends ConsumerState<ShopPage> {
                   ),
                 ),
                 SizedBox(height: 16.h),
-
                 productListProvider.when(
                   data: (snap) {
                     final filteredProducts = snap.where((product) {

@@ -493,36 +493,70 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15.r),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.2),
-                            spreadRadius: 2,
-                            blurRadius: 5,
-                            offset: Offset(0, 3),
-                          ),
-                        ],
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(15.r),
-                        child: Image.network(
-                          data.images.isNotEmpty
-                              ? data.images[0].thumbnail.toString()
-                              : "https://thumbs.dreamstime.com/b/no-image-vector-symbol-missing-available-icon-gallery-moment-placeholder-246411909.jpg",
-                          width: MediaQuery.of(context).size.width,
-                          height: 250.h,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) {
-                            return Image.network(
-                              "https://thumbs.dreamstime.com/b/no-image-vector-symbol-missing-available-icon-gallery-moment-placeholder-246411909.jpg",
-                              width: MediaQuery.of(context).size.width,
-                              height: 250.h,
+                    // Container(
+                    //   decoration: BoxDecoration(
+                    //     borderRadius: BorderRadius.circular(15.r),
+                    //     boxShadow: [
+                    //       BoxShadow(
+                    //         color: Colors.grey.withOpacity(0.2),
+                    //         spreadRadius: 2,
+                    //         blurRadius: 5,
+                    //         offset: Offset(0, 3),
+                    //       ),
+                    //     ],
+                    //   ),
+                    //   child: ClipRRect(
+                    //     borderRadius: BorderRadius.circular(15.r),
+                    //     child: Image.network(
+                    //       data.images.isNotEmpty
+                    //           ? data.images[0].thumbnail.toString()
+                    //           : "https://thumbs.dreamstime.com/b/no-image-vector-symbol-missing-available-icon-gallery-moment-placeholder-246411909.jpg",
+                    //       width: MediaQuery.of(context).size.width,
+                    //       height: 250.h,
+                    //       fit: BoxFit.cover,
+                    //       errorBuilder: (context, error, stackTrace) {
+                    //         return Image.network(
+                    //           "https://thumbs.dreamstime.com/b/no-image-vector-symbol-missing-available-icon-gallery-moment-placeholder-246411909.jpg",
+                    //           width: MediaQuery.of(context).size.width,
+                    //           height: 250.h,
+                    //           fit: BoxFit.cover,
+                    //         );
+                    //       },
+                    //     ),
+                    //   ),
+                    // ),
+                    SizedBox(
+                      height: 250.h,
+                      child: ListView.separated(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: data.images.isNotEmpty
+                            ? data.images.length
+                            : 1,
+                        separatorBuilder: (context, index) {
+                          return SizedBox(width: 12.w);
+                        },
+                        itemBuilder: (context, index) {
+                          final imageUrl = data.images.isNotEmpty
+                              ? data.images[index].medium.toString()
+                              : "https://thumbs.dreamstime.com/b/no-image-vector-symbol-missing-available-icon-gallery-moment-placeholder-246411909.jpg";
+                          return ClipRRect(
+                            borderRadius: BorderRadius.circular(15.r),
+                            child: Image.network(
+                              imageUrl,
+                              width: 280.w,
+                              height: 200.h,
                               fit: BoxFit.cover,
-                            );
-                          },
-                        ),
+                              errorBuilder: (context, error, stackTrace) {
+                                return Image.network(
+                                  "https://thumbs.dreamstime.com/b/no-image-vector-symbol-missing-available-icon-gallery-moment-placeholder-246411909.jpg",
+                                  width: 280.w,
+                                  height: 200.h,
+                                  fit: BoxFit.cover,
+                                );
+                              },
+                            ),
+                          );
+                        },
                       ),
                     ),
                     SizedBox(height: 20.h),
