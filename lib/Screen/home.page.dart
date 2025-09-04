@@ -839,7 +839,7 @@ class _HomePageState extends ConsumerState<HomePage> {
             : selectIndex == 1
             ? LibraryPage()
             : selectIndex == 2
-            ? YoutubeBottom()
+            ? YoutubePage()
             : ShopPage(),
 
         bottomNavigationBar: Container(
