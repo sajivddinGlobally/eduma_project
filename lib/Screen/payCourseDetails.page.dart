@@ -897,7 +897,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              displayTitle,
+              title,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: GoogleFonts.roboto(
@@ -929,7 +929,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
               } else {
                 ScaffoldMessenger.of(
                   context,
-                ).showSnackBar(const SnackBar(content: Text("No video")));
+                ).showSnackBar(const SnackBar(content: Text("No Video Available")));
               }
             },
             child: Column(
@@ -965,7 +965,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                     SizedBox(width: 12.w),
                     Expanded(
                       child: Text(
-                        title,
+                        displayTitle,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: GoogleFonts.roboto(
