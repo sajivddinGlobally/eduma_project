@@ -173,7 +173,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "Welcome Back, ${box.get("storeName")}",
+                            "Welcome Back, ${box.get("storeName") ?? "Name"}",
                             style: GoogleFonts.roboto(
                               fontSize: 16.sp,
                               fontWeight: FontWeight.w600,

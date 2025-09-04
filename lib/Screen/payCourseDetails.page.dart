@@ -137,6 +137,20 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                       onPressed: isLoading
                                           ? null
                                           : () async {
+                                              if (token == null) {
+                                                Navigator.push(
+                                                  context,
+                                                  CupertinoPageRoute(
+                                                    builder: (context) =>
+                                                        LoginPage(),
+                                                  ),
+                                                );
+                                                showSuccessMessage(
+                                                  context,
+                                                  "please login first",
+                                                );
+                                                return;
+                                              }
                                               setState(() => isLoading = true);
                                               isWishlisted =
                                                   await WishlistControllerClass.toggle(
@@ -927,9 +941,9 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                   MaterialPageRoute(builder: (_) => VideoPge(videoId: videoId)),
                 );
               } else {
-                ScaffoldMessenger.of(
-                  context,
-                ).showSnackBar(const SnackBar(content: Text("No Video Available")));
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text("No Video Available")),
+                );
               }
             },
             child: Column(
