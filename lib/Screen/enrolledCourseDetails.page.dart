@@ -392,9 +392,9 @@ class _EnrolledDourseDetailsPageState
                   MaterialPageRoute(builder: (_) => VideoPge(videoId: videoId)),
                 );
               } else {
-                ScaffoldMessenger.of(
-                  context,
-                ).showSnackBar(const SnackBar(content: Text("No Video")));
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text("No Video Available")),
+                );
               }
             },
             child: Column(
