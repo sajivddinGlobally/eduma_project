@@ -372,7 +372,7 @@ class _EnrolledDourseDetailsPageState
             ),
             SizedBox(height: 4.h),
             Text(
-              "1 Video",
+             "1 Video",
               style: GoogleFonts.roboto(
                 fontSize: 13.sp,
                 fontWeight: FontWeight.w400,
@@ -388,14 +388,12 @@ class _EnrolledDourseDetailsPageState
               if (videoId.isNotEmpty) {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (_) => VideoPge(videoId: videoId),
-                  ),
+                  MaterialPageRoute(builder: (_) => VideoPge(videoId: videoId)),
                 );
               } else {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text("Invalid YouTube link")),
-                );
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(const SnackBar(content: Text("No Video")));
               }
             },
             child: Column(
