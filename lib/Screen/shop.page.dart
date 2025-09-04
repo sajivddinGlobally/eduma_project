@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ShopPage extends ConsumerStatefulWidget {
@@ -142,6 +143,110 @@ class _ShopPageState extends ConsumerState<ShopPage> {
                   ),
                 ),
                 SizedBox(height: 16.h),
+
+                // productListProvider.when(
+                //   data: (snap) {
+                //     final filteredProducts = snap.where((product) {
+                //       final title = product.name!.toLowerCase();
+                //       return title.contains(searchQuery);
+                //     }).toList();
+                //     if (filteredProducts.isEmpty) {
+                //       return Center(
+                //         child: Text(
+                //           "No products found",
+                //           style: GoogleFonts.roboto(
+                //             fontSize: 16.sp,
+                //             color: Colors.grey[600],
+                //           ),
+                //         ),
+                //       );
+                //     }
+                //     return Expanded(
+                //       child: Padding(
+                //         padding: EdgeInsets.only(
+                //           left: 20.w,
+                //           right: 20.w,
+                //           top: 20.h,
+                //         ),
+                //         child: GridView.builder(
+                //           itemCount: filteredProducts.length,
+                //           padding: EdgeInsets.zero,
+                //           gridDelegate:
+                //               SliverGridDelegateWithFixedCrossAxisCount(
+                //                 crossAxisCount: 2,
+                //                 crossAxisSpacing: 20.w,
+                //                 mainAxisSpacing: 15.h,
+                //                 childAspectRatio: 190 / 180,
+                //               ),
+                //           itemBuilder: (context, index) {
+                //             return ProductCard(data: filteredProducts[index]);
+                //           },
+                //         ),
+                //       ),
+                //     );
+                //   },
+                //   error: (error, stackTrace) => Center(
+                //     child: Column(
+                //       mainAxisAlignment: MainAxisAlignment.center,
+                //       children: [
+                //         Icon(
+                //           Icons.error_outline,
+                //           color: Colors.red,
+                //           size: 48.sp,
+                //         ),
+                //         SizedBox(height: 16.h),
+                //         Text(
+                //           "Failed to load products",
+                //           style: GoogleFonts.roboto(
+                //             fontSize: 16.sp,
+                //             fontWeight: FontWeight.w500,
+                //           ),
+                //         ),
+                //         SizedBox(height: 8.h),
+                //         Text(
+                //           error.toString(),
+                //           style: GoogleFonts.roboto(
+                //             fontSize: 14.sp,
+                //             color: Colors.grey[600],
+                //           ),
+                //         ),
+                //         SizedBox(height: 16.h),
+                //         ElevatedButton(
+                //           onPressed: () => ref.refresh(productListController),
+                //           style: ElevatedButton.styleFrom(
+                //             backgroundColor: Color(0xFF001E6C),
+                //             shape: RoundedRectangleBorder(
+                //               borderRadius: BorderRadius.circular(8.r),
+                //             ),
+                //           ),
+                //           child: Text(
+                //             "Retry",
+                //             style: GoogleFonts.roboto(
+                //               fontSize: 14.sp,
+                //               color: Colors.white,
+                //             ),
+                //           ),
+                //         ),
+                //       ],
+                //     ),
+                //   ),
+                //   loading: () => Center(
+                //     child: Column(
+                //       mainAxisAlignment: MainAxisAlignment.center,
+                //       children: [
+                //         CircularProgressIndicator(color: Color(0xFF001E6C)),
+                //         SizedBox(height: 16.h),
+                //         Text(
+                //           "Loading products...",
+                //           style: GoogleFonts.roboto(
+                //             fontSize: 16.sp,
+                //             fontWeight: FontWeight.w500,
+                //           ),
+                //         ),
+                //       ],
+                //     ),
+                //   ),
+                // ),
                 productListProvider.when(
                   data: (snap) {
                     final filteredProducts = snap.where((product) {
@@ -166,68 +271,25 @@ class _ShopPageState extends ConsumerState<ShopPage> {
                           right: 20.w,
                           top: 20.h,
                         ),
-                        child: GridView.builder(
+                        child: MasonryGridView.count(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 20.w,
+                          mainAxisSpacing: 15.h,
                           itemCount: filteredProducts.length,
-                          padding: EdgeInsets.zero,
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                crossAxisSpacing: 20.w,
-                                mainAxisSpacing: 15.h,
-                                childAspectRatio: 190 / 180,
-                              ),
                           itemBuilder: (context, index) {
-                            return ProductCard(data: filteredProducts[index]);
+                            final product = filteredProducts[index];
+                            final boxHeight = index.isEven ? 250.0 : 150.0;
+                            return ProductCard(
+                              data: product,
+                              boxHeight: boxHeight,
+                            );
                           },
                         ),
                       ),
                     );
                   },
-                  error: (error, stackTrace) => Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.error_outline,
-                          color: Colors.red,
-                          size: 48.sp,
-                        ),
-                        SizedBox(height: 16.h),
-                        Text(
-                          "Failed to load products",
-                          style: GoogleFonts.roboto(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        SizedBox(height: 8.h),
-                        Text(
-                          error.toString(),
-                          style: GoogleFonts.roboto(
-                            fontSize: 14.sp,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                        SizedBox(height: 16.h),
-                        ElevatedButton(
-                          onPressed: () => ref.refresh(productListController),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xFF001E6C),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.r),
-                            ),
-                          ),
-                          child: Text(
-                            "Retry",
-                            style: GoogleFonts.roboto(
-                              fontSize: 14.sp,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  error: (error, stackTrace) =>
+                      Center(child: Text(error.toString())),
                   loading: () => Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -256,7 +318,8 @@ class _ShopPageState extends ConsumerState<ShopPage> {
 
 class ProductCard extends StatefulWidget {
   final ProductListModel data;
-  const ProductCard({super.key, required this.data});
+  final double boxHeight;
+  const ProductCard({super.key, required this.data, required this.boxHeight});
 
   @override
   State<ProductCard> createState() => _ProductCardState();
@@ -267,28 +330,20 @@ class _ProductCardState extends State<ProductCard> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Stack(
           children: [
-            InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  CupertinoPageRoute(
-                    builder: (context) =>
-                        ProductDetailsPage(id: widget.data.id!.toString()),
-                  ),
-                );
-              },
+            Container(
+              width: 190.w,
+              height: widget.boxHeight,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+              ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10.r),
                 child: Image.network(
-                  // "assets/reading2.png",
-                  //shopList[index]['image'].toString(),
                   widget.data.images![0].medium.toString(),
-                  width: 190.w,
-                  height: 125.h,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -311,7 +366,6 @@ class _ProductCardState extends State<ProductCard> {
                           productId: widget.data.id!,
                           currentStatus: isWishlisted,
                         );
-
                     // 👇 bas yehi update karna hai
                     setState(() {
                       isWishlisted = result;
@@ -340,10 +394,10 @@ class _ProductCardState extends State<ProductCard> {
             ),
           ],
         ),
-        SizedBox(height: 10.h),
+        SizedBox(height: 13.h),
         Text(
           overflow: TextOverflow.ellipsis,
-          maxLines: 1,
+          maxLines: 2,
           //  "Introduction learn Press - LMS Plugin",
           // shopList[index]['name'].toString(),
           widget.data.name.toString(),
@@ -351,8 +405,7 @@ class _ProductCardState extends State<ProductCard> {
             fontSize: 16.sp,
             fontWeight: FontWeight.w500,
             color: Color(0xFF000000),
-            letterSpacing: -0.4,
-            height: 1,
+            height: 1.3,
           ),
         ),
         SizedBox(height: 6.h),
