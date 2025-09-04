@@ -141,7 +141,7 @@ class _VideoPgeState extends State<VideoPge> {
       initialVideoId: widget.videoId,
       flags: const YoutubePlayerFlags(
         autoPlay: true,
-        mute: false,
+        mute: true,
         controlsVisibleAtStart: true,
       ),
     );
@@ -173,10 +173,13 @@ class _VideoPgeState extends State<VideoPge> {
               child: Center(child: CircularProgressIndicator()),
             )
           : YoutubePlayerBuilder(
+            
               player: YoutubePlayer(
                 controller: _controller,
                 showVideoProgressIndicator: true,
                 progressIndicatorColor: Colors.red,
+
+
               ),
               builder: (context, player) {
                 return AspectRatio(aspectRatio: 16 / 9, child: player);
