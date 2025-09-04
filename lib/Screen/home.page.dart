@@ -13,6 +13,7 @@ import 'package:eduma_app/Screen/productDetails.page.dart';
 import 'package:eduma_app/Screen/register.page.dart';
 import 'package:eduma_app/Screen/shop.page.dart';
 import 'package:eduma_app/Screen/youtube.page.dart';
+import 'package:eduma_app/config/core/showFlushbar.dart';
 import 'package:eduma_app/data/Controller/allCategoryController.dart';
 import 'package:eduma_app/data/Controller/enrolleCourseController.dart';
 import 'package:eduma_app/data/Controller/latestCourseController.dart';
@@ -322,17 +323,17 @@ class _HomePageState extends ConsumerState<HomePage> {
                       ],
                     ),
                     SizedBox(height: 20.h),
-                    InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                            builder: (context) => ContinueMyCoursePage(),
-                          ),
-                        );
-                      },
-                      child: LearningBody(),
-                    ),
+                    // InkWell(
+                    //   onTap: () {
+                    //     Navigator.push(
+                    //       context,
+                    //       CupertinoPageRoute(
+                    //         builder: (context) => ContinueMyCoursePage(),
+                    //       ),
+                    //     );
+                    //   },
+                    //   child: LearningBody(),
+                    // ),
                     SizedBox(height: 10.h),
                     Row(
                       children: [
@@ -937,6 +938,7 @@ class _PopularCourState extends State<PopularCour> {
   @override
   Widget build(BuildContext context) {
     var box = Hive.box("userBox");
+    var token = box.get("token");
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -973,6 +975,14 @@ class _PopularCourState extends State<PopularCour> {
                   tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 ),
                 onPressed: () async {
+                  if (token == null) {
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute(builder: (context) => LoginPage()),
+                    );
+                    showSuccessMessage(context, "Please Login First");
+                    return;
+                  }
                   // 👇 API call se direct result lo
                   final result = await WishlistControllerClass.toggle(
                     context: context,
