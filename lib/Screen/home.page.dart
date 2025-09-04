@@ -1304,6 +1304,7 @@ class _PopularBodyState extends State<PopularBody> {
   @override
   Widget build(BuildContext context) {
     var box = Hive.box("userBox");
+    var token = box.get("token");
     return Container(
       height: 200.h,
       // color: Colors.amber,
@@ -1345,6 +1346,14 @@ class _PopularBodyState extends State<PopularBody> {
                       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     ),
                     onPressed: () async {
+                      if (token == null) {
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute(builder: (context) => LoginPage()),
+                        );
+                        showSuccessMessage(context, "please login first");
+                        return;
+                      }
                       // 👇 API call se direct result lo
                       final result = await WishlistControllerClass.toggle(
                         context: context,
