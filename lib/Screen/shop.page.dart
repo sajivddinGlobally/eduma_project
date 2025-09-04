@@ -1,4 +1,6 @@
+import 'package:eduma_app/Screen/login.page.dart';
 import 'package:eduma_app/Screen/productDetails.page.dart';
+import 'package:eduma_app/config/core/showFlushbar.dart';
 import 'package:eduma_app/data/Controller/productListController.dart';
 import 'package:eduma_app/data/Controller/wishlistControllerClass.dart';
 import 'package:eduma_app/data/Model/productListModel.dart';
@@ -8,6 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hive_flutter/adapters.dart';
 
 class ShopPage extends ConsumerStatefulWidget {
   const ShopPage({super.key});
@@ -225,6 +228,8 @@ class _ProductCardState extends State<ProductCard> {
   bool isWishlisted = false;
   @override
   Widget build(BuildContext context) {
+    var box = Hive.box("userBox");
+    var token = box.get("token");
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -266,6 +271,14 @@ class _ProductCardState extends State<ProductCard> {
                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   ),
                   onPressed: () async {
+                    if (token == null) {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute(builder: (context) => LoginPage()),
+                      );
+                      showSuccessMessage(context, "please login first");
+                      return;
+                    }
                     // 👇 API call se direct result lo
                     final result =
                         await ProductWishlistController.productWishlist(

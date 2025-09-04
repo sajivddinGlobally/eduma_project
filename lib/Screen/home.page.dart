@@ -1443,10 +1443,11 @@ class allProduct extends StatefulWidget {
 }
 
 class _allProductState extends State<allProduct> {
-  var box = Hive.box("userBox");
   bool isWishlisted = false;
   @override
   Widget build(BuildContext context) {
+    var box = Hive.box("userBox");
+    var token = box.get("token");
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -1492,6 +1493,14 @@ class _allProductState extends State<allProduct> {
                   tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 ),
                 onPressed: () async {
+                  if (token == null) {
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute(builder: (context) => LoginPage()),
+                    );
+                    showSuccessMessage(context, "please login first");
+                    return;
+                  }
                   // 👇 API call se direct result lo
                   final result =
                       await ProductWishlistController.productWishlist(

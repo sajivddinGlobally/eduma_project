@@ -412,6 +412,8 @@
 
 import 'dart:developer';
 import 'package:eduma_app/Screen/cart.page.dart';
+import 'package:eduma_app/Screen/login.page.dart';
+import 'package:eduma_app/config/core/showFlushbar.dart';
 import 'package:eduma_app/config/network/api.state.dart';
 import 'package:eduma_app/config/utils/pretty.dio.dart';
 import 'package:eduma_app/data/Controller/productDetailsController.dart';
@@ -421,6 +423,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class ProductDetailsPage extends ConsumerStatefulWidget {
@@ -438,6 +441,8 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
+    var box = Hive.box("userBox");
+    var token = box.get("token");
     final productDetailsProvider = ref.watch(
       productDetailsController(widget.id),
     );
@@ -570,6 +575,19 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                       MaterialTapTargetSize.shrinkWrap,
                                 ),
                                 onPressed: () async {
+                                  if (token == null) {
+                                    Navigator.push(
+                                      context,
+                                      CupertinoPageRoute(
+                                        builder: (context) => LoginPage(),
+                                      ),
+                                    );
+                                    showSuccessMessage(
+                                      context,
+                                      "please login first",
+                                    );
+                                    return;
+                                  }
                                   final body = ProductAddCartBodyModel(
                                     productId: data.id,
                                     quantity: 1,
