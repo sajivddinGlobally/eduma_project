@@ -656,185 +656,6 @@ class _HomePageState extends ConsumerState<HomePage> {
                       loading: () => Center(child: CircularProgressIndicator()),
                     ),
                     SizedBox(height: 15.h),
-
-                    // Container(
-                    //   margin: EdgeInsets.only(left: 20.w),
-                    //   child: Text(
-                    //     "instructor",
-                    //     style: GoogleFonts.roboto(
-                    //       fontSize: 26.sp,
-                    //       fontWeight: FontWeight.w600,
-                    //       color: Color(0xFF1B1B1B),
-                    //     ),
-                    //   ),
-                    // ),
-                    // SizedBox(height: 16.h),
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //   children: [
-                    //     SizedBox(width: 20.w),
-                    //     Container(
-                    //       padding: EdgeInsets.only(
-                    //         left: 10.w,
-                    //         right: 10.w,
-                    //         bottom: 13.h,
-                    //         top: 13.h,
-                    //       ),
-                    //       decoration: BoxDecoration(
-                    //         borderRadius: BorderRadius.circular(5.r),
-                    //         color: Color(0xFFFFFFFF),
-                    //         boxShadow: [
-                    //           BoxShadow(
-                    //             offset: Offset(0, 1),
-                    //             spreadRadius: 0,
-                    //             blurRadius: 4,
-                    //             color: Color.fromARGB(63, 0, 0, 0),
-                    //           ),
-                    //         ],
-                    //       ),
-                    //       child: Row(
-                    //         children: [
-                    //           Container(
-                    //             width: 45.w,
-                    //             height: 45.h,
-                    //             decoration: BoxDecoration(
-                    //               shape: BoxShape.circle,
-                    //               color: Colors.blue,
-                    //             ),
-                    //             child: ClipOval(
-                    //               child: Image.asset(
-                    //                 "assets/mahesh.png",
-                    //                 fit: BoxFit.cover,
-                    //               ),
-                    //             ),
-                    //           ),
-                    //           SizedBox(width: 7.w),
-                    //           Column(
-                    //             crossAxisAlignment: CrossAxisAlignment.start,
-                    //             children: [
-                    //               Text(
-                    //                 "Mahesh Yogi",
-                    //                 style: GoogleFonts.roboto(
-                    //                   fontSize: 20.sp,
-                    //                   fontWeight: FontWeight.w500,
-                    //                   color: Color(0xFF001E6C),
-                    //                   letterSpacing: -0.4,
-                    //                 ),
-                    //               ),
-                    //               Text(
-                    //                 "3 Courses    257 Student",
-                    //                 style: GoogleFonts.roboto(
-                    //                   fontSize: 12.sp,
-                    //                   fontWeight: FontWeight.w500,
-                    //                   color: Color(0xFF000000),
-                    //                   letterSpacing: -0.4,
-                    //                 ),
-                    //               ),
-                    //               SizedBox(height: 4.h),
-                    //               Row(
-                    //                 children: [
-                    //                   Image.asset("assets/birds.png"),
-                    //                   SizedBox(width: 10.w),
-                    //                   Image.asset("assets/call.png"),
-                    //                   SizedBox(width: 10.w),
-                    //                   Image.asset("assets/insta.png"),
-                    //                   SizedBox(width: 10.w),
-                    //                   Image.asset("assets/a.png"),
-                    //                 ],
-                    //               ),
-                    //             ],
-                    //           ),
-                    //         ],
-                    //       ),
-                    //     ),
-                    //     InkWell(
-                    //       onTap: () {
-                    //         Navigator.push(
-                    //           context,
-                    //           CupertinoPageRoute(
-                    //             builder: (context) => InstructorPage(),
-                    //           ),
-                    //         );
-                    //       },
-                    //       child: Container(
-                    //         padding: EdgeInsets.only(
-                    //           left: 10.w,
-                    //           right: 10.w,
-                    //           bottom: 13.h,
-                    //           top: 13.h,
-                    //         ),
-                    //         decoration: BoxDecoration(
-                    //           borderRadius: BorderRadius.circular(5.r),
-                    //           color: Color(0xFFFFFFFF),
-                    //           boxShadow: [
-                    //             BoxShadow(
-                    //               offset: Offset(0, 1),
-                    //               spreadRadius: 0,
-                    //               blurRadius: 4,
-                    //               color: Color.fromARGB(63, 0, 0, 0),
-                    //             ),
-                    //           ],
-                    //         ),
-                    //         child: Row(
-                    //           children: [
-                    //             Container(
-                    //               width: 45.w,
-                    //               height: 45.h,
-                    //               decoration: BoxDecoration(
-                    //                 shape: BoxShape.circle,
-                    //                 color: Colors.blue,
-                    //               ),
-                    //               child: ClipOval(
-                    //                 child: Image.asset(
-                    //                   "assets/annu.png",
-                    //                   fit: BoxFit.cover,
-                    //                 ),
-                    //               ),
-                    //             ),
-                    //             SizedBox(width: 7.w),
-                    //             Column(
-                    //               crossAxisAlignment: CrossAxisAlignment.start,
-                    //               children: [
-                    //                 Text(
-                    //                   "Annu Agarwal",
-                    //                   style: GoogleFonts.roboto(
-                    //                     fontSize: 20.sp,
-                    //                     fontWeight: FontWeight.w500,
-                    //                     color: Color(0xFF001E6C),
-                    //                     letterSpacing: -0.4,
-                    //                   ),
-                    //                 ),
-                    //                 Text(
-                    //                   "3 Courses    257 Student",
-                    //                   style: GoogleFonts.roboto(
-                    //                     fontSize: 12.sp,
-                    //                     fontWeight: FontWeight.w500,
-                    //                     color: Color(0xFF000000),
-                    //                     letterSpacing: -0.4,
-                    //                   ),
-                    //                 ),
-                    //                 SizedBox(height: 4.h),
-                    //                 Row(
-                    //                   children: [
-                    //                     Image.asset("assets/birds.png"),
-                    //                     SizedBox(width: 10.w),
-                    //                     Image.asset("assets/call.png"),
-                    //                     SizedBox(width: 10.w),
-                    //                     Image.asset("assets/insta.png"),
-                    //                     SizedBox(width: 10.w),
-                    //                     Image.asset("assets/a.png"),
-                    //                   ],
-                    //                 ),
-                    //               ],
-                    //             ),
-                    //           ],
-                    //         ),
-                    //       ),
-                    //     ),
-                    //     SizedBox(width: 20.w),
-                    //   ],
-                    // ),
-                    SizedBox(height: 20.h),
                   ],
                 ),
               )
@@ -879,10 +700,8 @@ class _HomePageState extends ConsumerState<HomePage> {
               type: BottomNavigationBarType.fixed,
               backgroundColor: Colors.transparent, // 🔥 important
               elevation: 0, // 🔥 important
-
               showSelectedLabels: true,
               showUnselectedLabels: true,
-
               selectedLabelStyle: GoogleFonts.inter(
                 fontSize: 12.sp,
                 fontWeight: FontWeight.w500,
@@ -893,10 +712,8 @@ class _HomePageState extends ConsumerState<HomePage> {
                 fontWeight: FontWeight.w500,
                 color: Color(0xFF001E6C),
               ),
-
               selectedItemColor: Color(0xFFFE4A55),
               unselectedItemColor: Color(0xFF001E6C),
-
               items: [
                 BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
                 BottomNavigationBarItem(
