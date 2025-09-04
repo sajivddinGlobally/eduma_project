@@ -924,7 +924,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => YoutubePlayerScreen(videoId: videoId),
+                    builder: (_) => VideoPge(videoId: videoId),
                   ),
                 );
               } else {

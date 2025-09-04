@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class VideoPge extends StatefulWidget {
   final String videoId;
@@ -16,14 +17,21 @@ class _VideoPgeState extends State<VideoPge> {
   @override
   void initState() {
     super.initState();
-    _controller = YoutubePlayerController.fromVideoId(
-      videoId: widget.videoId,
-      autoPlay: true,
-      params: const YoutubePlayerParams(
-        showFullscreenButton: true,
-        enableCaption: false,
+
+    _controller = YoutubePlayerController(
+      initialVideoId: widget.videoId,
+      flags: const YoutubePlayerFlags(
+        autoPlay: true,
+        mute: false,
+        controlsVisibleAtStart: true,
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -49,19 +57,17 @@ class _VideoPgeState extends State<VideoPge> {
             child: Image.asset(
               "assets/vec.png",
               width: 470.w,
-              height: 450.h,
-              fit: BoxFit.fill,
+              height: 450.h,              fit: BoxFit.fill,
             ),
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 0.h),
-              YoutubePlayerScaffold(
+              YoutubePlayer(
                 controller: _controller,
-                builder: (context, player) {
-                  return Center(child: player);
-                },
+                showVideoProgressIndicator: true,
+                progressIndicatorColor: Colors.red,
               ),
             ],
           ),
