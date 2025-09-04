@@ -849,7 +849,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                       itemCount: data.images.length,
                       itemBuilder: (context, index) {
                         return Container(
-                          margin: EdgeInsets.only(left: 20.w),
+                          margin: EdgeInsets.only(left: 20.w, bottom: 10.h),
                           width: 160.w,
                           decoration: BoxDecoration(
                             color: Colors.white,
@@ -917,7 +917,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                       },
                     ),
                   ),
-                  SizedBox(height: 40.h),
+                  SizedBox(height: 60.h),
                 ],
               ),
             ),
