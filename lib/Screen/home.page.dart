@@ -27,6 +27,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 
 import '../data/Model/latestCourseModel.dart';
@@ -1228,8 +1229,57 @@ class _LearningBodyState extends ConsumerState<LearningBody> {
             ),
           ),
         ),
-        loading: () => const Center(
-          child: CircularProgressIndicator(color: Color(0xFF001E6C)),
+        loading: () => Padding(
+          padding: EdgeInsets.all(20.w),
+          child: ListView.builder(
+            itemCount: 4,
+            itemBuilder: (context, index) {
+              return Shimmer.fromColors(
+                baseColor: Colors.grey[300]!,
+                highlightColor: Colors.grey[100]!,
+                child: Container(
+                  margin: EdgeInsets.only(bottom: 15.h),
+                  padding: EdgeInsets.all(12.w),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16.r),
+                    color: Colors.white,
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 90.w,
+                        height: 90.h,
+                        color: Colors.grey[400],
+                      ),
+                      SizedBox(width: 12.w),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: 200.w,
+                            height: 16.h,
+                            color: Colors.grey[400],
+                          ),
+                          SizedBox(height: 10.h),
+                          Container(
+                            width: 120.w,
+                            height: 14.h,
+                            color: Colors.grey[400],
+                          ),
+                          SizedBox(height: 10.h),
+                          Container(
+                            width: 80.w,
+                            height: 14.h,
+                            color: Colors.grey[400],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
         ),
       ),
     );

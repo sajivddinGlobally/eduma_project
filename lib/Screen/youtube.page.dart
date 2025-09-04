@@ -128,6 +128,53 @@
 //   }
 // }
 
+// import 'package:flutter/material.dart';
+// import 'package:webview_flutter/webview_flutter.dart';
+
+// class YoutubePage extends StatefulWidget {
+//   const YoutubePage({super.key});
+
+//   @override
+//   State<YoutubePage> createState() => _YoutubePageState();
+// }
+
+// class _YoutubePageState extends State<YoutubePage> {
+//   late final WebViewController _controller;
+//   bool _isLoading = true;
+
+//   @override
+//   void initState() {
+//     super.initState();
+
+//     _controller = WebViewController()
+//       ..setJavaScriptMode(JavaScriptMode.unrestricted)
+//       ..setNavigationDelegate(
+//         NavigationDelegate(
+//           onPageStarted: (_) => setState(() => _isLoading = true),
+//           onPageFinished: (_) => setState(() => _isLoading = false),
+//         ),
+//       )
+//       ..loadRequest(
+//         Uri.parse("https://www.youtube.com/channel/UCmFHSJGwYAsrtjF8xcVZOFw"),
+//       );
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text("YouTube Channel"),
+//         backgroundColor: Colors.red,
+//       ),
+//       body: Stack(
+//         children: [
+//           WebViewWidget(controller: _controller),
+//           if (_isLoading) const Center(child: CircularProgressIndicator()),
+//         ],
+//       ),
+//     );
+//   }
+// }
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -142,9 +189,14 @@ class _YoutubePageState extends State<YoutubePage> {
   late final WebViewController _controller;
   bool _isLoading = true;
 
+  final String playlistId = "UUmFHSJGwYAsrtjF8xcVZOFw"; // ✅ uploads playlist id
+
   @override
   void initState() {
     super.initState();
+
+    final String embedUrl =
+        "https://www.youtube.com/embed/videoseries?list=$playlistId";
 
     _controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
@@ -154,16 +206,14 @@ class _YoutubePageState extends State<YoutubePage> {
           onPageFinished: (_) => setState(() => _isLoading = false),
         ),
       )
-      ..loadRequest(
-        Uri.parse("https://www.youtube.com/channel/UCmFHSJGwYAsrtjF8xcVZOFw"),
-      );
+      ..loadRequest(Uri.parse(embedUrl));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("YouTube Channel"),
+        title: const Text("Channel Playlist"),
         backgroundColor: Colors.red,
       ),
       body: Stack(
