@@ -12,6 +12,7 @@ import 'package:eduma_app/Screen/payCourseDetails.page.dart';
 import 'package:eduma_app/Screen/productDetails.page.dart';
 import 'package:eduma_app/Screen/register.page.dart';
 import 'package:eduma_app/Screen/shop.page.dart';
+import 'package:eduma_app/Screen/video.page.dart';
 import 'package:eduma_app/Screen/youtube.page.dart';
 import 'package:eduma_app/config/core/showFlushbar.dart';
 import 'package:eduma_app/data/Controller/allCategoryController.dart';
