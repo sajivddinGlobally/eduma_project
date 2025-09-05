@@ -966,9 +966,7 @@ class _LearningBodyState extends ConsumerState<LearningBody> {
         ),
       );
     }
-
     final enrolleCourseProvider = ref.watch(enrollCourseController);
-
     return Container(
       height: 265.h,
       child: enrolleCourseProvider.when(
