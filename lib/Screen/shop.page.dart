@@ -1,8 +1,14 @@
+import 'dart:developer';
+
+import 'package:eduma_app/Screen/cart.page.dart';
 import 'package:eduma_app/Screen/login.page.dart';
 import 'package:eduma_app/Screen/productDetails.page.dart';
 import 'package:eduma_app/config/core/showFlushbar.dart';
+import 'package:eduma_app/config/network/api.state.dart';
+import 'package:eduma_app/config/utils/pretty.dio.dart';
 import 'package:eduma_app/data/Controller/productListController.dart';
 import 'package:eduma_app/data/Controller/wishlistControllerClass.dart';
+import 'package:eduma_app/data/Model/addCartBodyModel.dart';
 import 'package:eduma_app/data/Model/productListModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -226,6 +232,7 @@ class ProductCard extends StatefulWidget {
 
 class _ProductCardState extends State<ProductCard> {
   bool isWishlisted = false;
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     var box = Hive.box("userBox");
@@ -338,6 +345,163 @@ class _ProductCardState extends State<ProductCard> {
             fontWeight: FontWeight.w500,
             color: Color(0xFF001E6C),
           ),
+        ),
+        SizedBox(height: 10.h),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            minimumSize: Size(double.infinity, 45.h),
+            backgroundColor: Color(0xFF001E6C),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.r),
+              side: BorderSide.none,
+            ),
+          ),
+          onPressed: () async {
+            if (token == null) {
+              Navigator.push(
+                context,
+                CupertinoPageRoute(builder: (context) => LoginPage()),
+              );
+              showSuccessMessage(context, "please login first");
+              return;
+            }
+            final body = ProductAddCartBodyModel(
+              productId: widget.data.id!,
+              quantity: 1,
+            );
+
+            setState(() {
+              isLoading = true;
+            });
+
+            try {
+              final service = APIStateNetwork(createDio());
+              final response = await service.addToCart(body);
+
+              if (response.success == true) {
+                setState(() {
+                  isLoading = false;
+                });
+
+                await showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      title: Row(
+                        children: [
+                          Icon(
+                            Icons.check_circle,
+                            color: Colors.green,
+                            size: 28,
+                          ),
+                          SizedBox(width: 8),
+                          Text(
+                            "Success",
+                            style: GoogleFonts.roboto(
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black87,
+                            ),
+                          ),
+                        ],
+                      ),
+                      content: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            response.message,
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.roboto(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black54,
+                            ),
+                          ),
+                          SizedBox(height: 12),
+                          Icon(
+                            Icons.shopping_cart,
+                            color: Color(0xFF001E6C),
+                            size: 40,
+                          ),
+                        ],
+                      ),
+                      actionsAlignment: MainAxisAlignment.spaceBetween,
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          style: TextButton.styleFrom(
+                            foregroundColor: Colors.redAccent,
+                          ),
+                          child: Text(
+                            "Close",
+                            style: GoogleFonts.roboto(
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xFF001E6C),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          onPressed: () {
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              CupertinoPageRoute(
+                                builder: (_) => const CartPage(),
+                                settings: const RouteSettings(name: "CartPage"),
+                              ),
+                              (route) => route.isFirst,
+                            );
+                          },
+                          child: Text(
+                            "Go to Cart",
+                            style: GoogleFonts.roboto(
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              } else {
+                setState(() {
+                  isLoading = false;
+                });
+              }
+            } catch (e) {
+              setState(() {
+                isLoading = false;
+              });
+              log(e.toString());
+            }
+          },
+          child: isLoading
+              ? SizedBox(
+                  width: 30.w,
+                  height: 30.h,
+                  child: CircularProgressIndicator(
+                    color: Colors.white,
+                    strokeWidth: 1.5,
+                  ),
+                )
+              : Text(
+                  "Add To Cart",
+                  style: GoogleFonts.roboto(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white,
+                  ),
+                ),
         ),
       ],
     );
