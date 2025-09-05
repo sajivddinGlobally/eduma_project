@@ -323,16 +323,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                       ],
                     ),
                     SizedBox(height: 20.h),
-                    InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          CupertinoPageRoute(builder: (context) => LoginPage()),
-                        );
-                        showSuccessMessage(context, "please login to continue");
-                      },
-                      child: LearningBody(),
-                    ),
+                    LearningBody(),
                     SizedBox(height: 10.h),
                     Row(
                       children: [
@@ -899,64 +890,89 @@ class _LearningBodyState extends ConsumerState<LearningBody> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    var box = Hive.box("userBox");
+    var token = box.get("token");
+
+    if (token != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ref.refresh(enrollCourseController);
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     var box = Hive.box("userBox");
     var token = box.get("token");
+    if (token == null) {
+      // ✅ Agar login nahi hai to sirf ye UI dikhana hai
+      return Padding(
+        padding: EdgeInsets.only(left: 20.w),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: 20.h),
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  CupertinoPageRoute(builder: (context) => LoginPage()),
+                );
+                showSuccessMessage(context, "please login to continue");
+              },
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10.r),
+                child: Image.asset(
+                  "assets/learning1.png",
+                  width: 300.w,
+                  height: 180.h,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            SizedBox(height: 15.h),
+            Row(
+              children: [
+                Container(
+                  width: 180.w,
+                  height: 10.h,
+                  child: StepProgressIndicator(
+                    totalSteps: 10,
+                    currentStep: 0,
+                    size: 8.h,
+                    padding: 0,
+                    selectedColor: const Color(0xFF001E6C),
+                    unselectedColor: Colors.grey,
+                    roundedEdges: Radius.circular(10.r),
+                  ),
+                ),
+                SizedBox(width: 8.w),
+                Text(
+                  "0 % Complete",
+                  style: GoogleFonts.roboto(
+                    fontSize: 17.sp,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.grey,
+                    letterSpacing: -0.4,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
+    }
+
     final enrolleCourseProvider = ref.watch(enrollCourseController);
 
     return Container(
       height: 265.h,
       child: enrolleCourseProvider.when(
         data: (data) {
-          if (token == null) {
-            return Padding(
-              padding: EdgeInsets.only(left: 20.w),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 20.h),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(10.r),
-                    child: Image.asset(
-                      "assets/learning1.png",
-                      width: 300.w,
-                      height: 180.h,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  SizedBox(height: 15.h),
-                  Row(
-                    children: [
-                      Container(
-                        width: 180.w,
-                        height: 10.h,
-                        child: StepProgressIndicator(
-                          totalSteps: 10,
-                          currentStep: 0,
-                          size: 8.h,
-                          padding: 0,
-                          selectedColor: const Color(0xFF001E6C),
-                          unselectedColor: Colors.grey,
-                          roundedEdges: Radius.circular(10.r),
-                        ),
-                      ),
-                      SizedBox(width: 8.w),
-                      Text(
-                        "0 % Complete",
-                        style: GoogleFonts.roboto(
-                          fontSize: 17.sp,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.grey,
-                          letterSpacing: -0.4,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            );
-          }
           if (data.courses.isEmpty) {
             return Center(
               child: Column(
