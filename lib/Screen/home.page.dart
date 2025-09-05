@@ -980,12 +980,20 @@ class _LearningBodyState extends ConsumerState<LearningBody> {
                 children: [
                   Icon(
                     Icons.book_outlined,
-                    size: 80.sp,
+                    size: 60.sp,
                     color: const Color(0xFF747474),
                   ),
                   SizedBox(height: 10.h),
                   Text(
                     "No Enrolled Courses",
+                    style: GoogleFonts.poppins(
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.w500,
+                      color: const Color(0xFF747474),
+                    ),
+                  ),
+                  Text(
+                    "go to the coursedetail page and free to get",
                     style: GoogleFonts.poppins(
                       fontSize: 18.sp,
                       fontWeight: FontWeight.w500,
