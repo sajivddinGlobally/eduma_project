@@ -938,7 +938,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
               if (videoId.isNotEmpty) {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (_) => VideoPge(videoId: videoId)),
+                  MaterialPageRoute(builder: (_) => VideoPage(videoId: videoId)),
                 );
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
