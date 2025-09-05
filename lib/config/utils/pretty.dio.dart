@@ -51,14 +51,14 @@ Dio createDio() {
         if (globalContext != null) {
           if (statusCode == 401) {
             box.delete("token");
-            showSuccessMessage(
-              globalContext,
-              "Token expired, please login again",
-            );
             Navigator.pushAndRemoveUntil(
               globalContext,
               CupertinoPageRoute(builder: (context) => const LoginPage()),
               (route) => false,
+            );
+            showSuccessMessage(
+              globalContext,
+              "Token expired, please login again",
             );
           } else {
             ScaffoldMessenger.of(globalContext).showSnackBar(
