@@ -93,6 +93,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hive/hive.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class VideoPage extends StatefulWidget {
@@ -107,19 +108,33 @@ class VideoPage extends StatefulWidget {
 class _VideoPageState extends State<VideoPage> {
   late YoutubePlayerController _controller;
   bool _isLoading = true;
+  bool _isVideoCompleted = false;
 
   @override
   void initState() {
     super.initState();
 
-    _controller = YoutubePlayerController(
-      initialVideoId: widget.videoId,
-      flags: const YoutubePlayerFlags(
-        autoPlay: true,
-        mute: true,
-        controlsVisibleAtStart: true,
-      ),
-    );
+    _controller =
+        YoutubePlayerController(
+          initialVideoId: widget.videoId,
+          flags: const YoutubePlayerFlags(
+            autoPlay: true,
+            mute: true,
+            controlsVisibleAtStart: true,
+          ),
+        )..addListener(() {
+          // वीडियो की स्थिति ट्रैक करें
+          if (_controller.value.isReady && !_controller.value.isPlaying) {
+            // अगर वीडियो खत्म हो गया है (duration के बराबर position)
+            if (_controller.value.position >= _controller.metadata.duration) {
+              setState(() {
+                _isVideoCompleted = true;
+              });
+              // प्रोग्रेस को अपडेट करें (API या लोकल स्टोरेज)
+              _updateLessonProgress(widget.videoId);
+            }
+          }
+        });
 
     // simulate loading time for smoother UX
     Future.delayed(const Duration(seconds: 2), () {
@@ -129,6 +144,11 @@ class _VideoPageState extends State<VideoPage> {
         });
       }
     });
+  }
+
+   Future<void> _updateLessonProgress(String videoId) async {
+    final box = await Hive.openBox('userBox');
+    await box.put('lesson_$videoId', true); 
   }
 
   @override

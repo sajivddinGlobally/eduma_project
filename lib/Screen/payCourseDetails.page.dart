@@ -880,7 +880,27 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                       ),
                     ),
                   )
-                : null,
+                : Container(
+                    margin: EdgeInsets.only(left: 20.w, right: 20.w),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: Size(60.w, 50.h),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.r),
+                        ),
+                        backgroundColor: Color(0xFF001E6C),
+                      ),
+                      onPressed: () {},
+                      child: Text(
+                        "Buy Now",
+                        style: GoogleFonts.roboto(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
           );
         },
         error: (error, stackTrace) => Center(child: Text(error.toString())),
@@ -935,18 +955,18 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
           InkWell(
             borderRadius: BorderRadius.circular(8.r),
             onTap: () {
-              if (videoId.isNotEmpty) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => VideoPage(videoId: videoId),
-                  ),
-                );
-              } else {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text("No Video Available")),
-                );
-              }
+              // if (videoId.isNotEmpty) {
+              //   Navigator.push(
+              //     context,
+              //     MaterialPageRoute(
+              //       builder: (_) => VideoPage(videoId: videoId),
+              //     ),
+              //   );
+              // } else {
+              //   ScaffoldMessenger.of(context).showSnackBar(
+              //     const SnackBar(content: Text("No Video Available")),
+              //   );
+              // }
             },
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
