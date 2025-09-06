@@ -58,8 +58,6 @@ class _YoutubePageState extends State<YoutubePage> {
   }
 }
 
-
-
 // channel video
 
 // import 'package:flutter/material.dart';
@@ -88,20 +86,12 @@ class _YoutubePageState extends State<YoutubePage> {
 //           onPageFinished: (_) => setState(() => _isLoading = false),
 //         ),
 //       )
-//       ..loadRequest(
-//         Uri.parse(
-//           "https://www.youtube.com/embed/videoseries?list=UUmFHSJGwYAsrtjF8xcVZOFw",
-//         ),
-//       );
+//       ..loadRequest(Uri.parse("https://www.youtube.com/@anilkumarsingh_surat"));
 //   }
 
 //   @override
 //   Widget build(BuildContext context) {
 //     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text("My YouTube Uploads"),
-//         backgroundColor: Colors.red,
-//       ),
 //       body: Stack(
 //         children: [
 //           WebViewWidget(controller: _controller),

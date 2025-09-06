@@ -929,8 +929,8 @@ class _LearningBodyState extends ConsumerState<LearningBody> {
                 borderRadius: BorderRadius.circular(10.r),
                 child: Image.asset(
                   "assets/learning1.png",
-                  width: 300.w,
-                  height: 180.h,
+                  width: 295.w,
+                  height: 165.h,
                   fit: BoxFit.cover,
                 ),
               ),
