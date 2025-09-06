@@ -954,18 +954,9 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
           InkWell(
             borderRadius: BorderRadius.circular(8.r),
             onTap: () {
-              // if (videoId.isNotEmpty) {
-              //   Navigator.push(
-              //     context,
-              //     MaterialPageRoute(
-              //       builder: (_) => VideoPage(videoId: videoId),
-              //     ),
-              //   );
-              // } else {
-              //   ScaffoldMessenger.of(context).showSnackBar(
-              //     const SnackBar(content: Text("No Video Available")),
-              //   );
-              // }
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text("Please buy the course")));
             },
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

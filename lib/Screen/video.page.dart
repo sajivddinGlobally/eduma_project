@@ -118,7 +118,7 @@ class _VideoPageState extends State<VideoPage> {
           initialVideoId: widget.videoId,
           flags: const YoutubePlayerFlags(
             autoPlay: true,
-            mute: true,
+            mute: false,
             controlsVisibleAtStart: true,
           ),
         )..addListener(() {
