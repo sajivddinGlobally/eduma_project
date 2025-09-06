@@ -1,7 +1,6 @@
 import 'package:eduma_app/Screen/allCategory.page.dart';
 import 'package:eduma_app/Screen/allCourse.page.dart';
 import 'package:eduma_app/Screen/apiCall/api.register.dart';
-import 'package:eduma_app/Screen/continueMyCourse.page.dart';
 import 'package:eduma_app/Screen/course.page.dart';
 import 'package:eduma_app/Screen/customProfileDrawer.dart';
 import 'package:eduma_app/Screen/enrolledCourseDetails.page.dart';
@@ -10,9 +9,7 @@ import 'package:eduma_app/Screen/login.page.dart';
 import 'package:eduma_app/Screen/networkErrorPage.dart';
 import 'package:eduma_app/Screen/payCourseDetails.page.dart';
 import 'package:eduma_app/Screen/productDetails.page.dart';
-import 'package:eduma_app/Screen/register.page.dart';
 import 'package:eduma_app/Screen/shop.page.dart';
-import 'package:eduma_app/Screen/video.page.dart';
 import 'package:eduma_app/Screen/youtube.page.dart';
 import 'package:eduma_app/config/core/showFlushbar.dart';
 import 'package:eduma_app/data/Controller/allCategoryController.dart';

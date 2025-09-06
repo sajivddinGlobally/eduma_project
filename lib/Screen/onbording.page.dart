@@ -1,6 +1,5 @@
 import 'package:eduma_app/Screen/home.page.dart';
 import 'package:eduma_app/Screen/login.page.dart';
-import 'package:eduma_app/Screen/register.page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

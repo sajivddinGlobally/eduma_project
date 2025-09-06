@@ -1,8 +1,6 @@
 import 'dart:developer';
-import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:eduma_app/Screen/login.page.dart';
-import 'package:eduma_app/Screen/networkErrorPage.dart';
 import 'package:eduma_app/config/core/showFlushbar.dart';
 import 'package:eduma_app/config/utils/basiAuth.dart';
 import 'package:eduma_app/config/utils/navigatorKey.dart';

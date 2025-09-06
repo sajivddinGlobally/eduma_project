@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:eduma_app/data/Model/addCartBodyModel.dart';
 import 'package:eduma_app/data/Model/addCartResModel.dart';
@@ -8,7 +7,6 @@ import 'package:eduma_app/data/Model/allCoursesModel.dart';
 import 'package:eduma_app/data/Model/avtarResModel.dart';
 import 'package:eduma_app/data/Model/cartModel.dart';
 import 'package:eduma_app/data/Model/cartRemoveBodyModel.dart';
-import 'package:eduma_app/data/Model/cartRemoveResModel.dart';
 import 'package:eduma_app/data/Model/categoryByCourseIdModel.dart';
 import 'package:eduma_app/data/Model/deleteWishlistResModel.dart';
 import 'package:eduma_app/data/Model/enrollBodyModel.dart';
