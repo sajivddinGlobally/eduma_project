@@ -94,17 +94,18 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                       SizedBox(height: 30.h),
                       ClipRRect(
                         borderRadius: BorderRadius.circular(10.r),
-                        child: Image.asset(
+                        child: Image.network(
                           //orderDetaisl.lineItems[0].image.src.toString(),
-                          "assets/shop1.png",
+                          // "assets/shop1.png",
+                          orderDetaisl.lineItems[0].image!.src.toString(),
                           width: MediaQuery.of(context).size.width,
                           height: 198.h,
                           fit: BoxFit.cover,
                           errorBuilder: (context, error, stackTrace) {
                             return Image.network(
-                              "https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg",
+                              "https://t4.ftcdn.net/jpg/05/97/47/95/360_F_597479556_7bbQ7t4Z8k3xbAloHFHVdZIizWK1PdOo.jpg",
                               width: MediaQuery.of(context).size.width,
-                              height: 69.h,
+                              height: 198.h,
                               fit: BoxFit.cover,
                             );
                           },

@@ -127,14 +127,14 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
                                     borderRadius: BorderRadius.circular(10.r),
                                     child: Image.network(
                                       // "assets/shop1.png",
-                                      orderList[index].lineItems.first.image.src
+                                      orderList[index].lineItems[0].image.src
                                           .toString(),
                                       width: 84.w,
                                       height: 69.h,
                                       fit: BoxFit.cover,
                                       errorBuilder: (context, error, stackTrace) {
                                         return Image.network(
-                                          "https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg",
+                                          "https://t4.ftcdn.net/jpg/05/97/47/95/360_F_597479556_7bbQ7t4Z8k3xbAloHFHVdZIizWK1PdOo.jpg",
                                           width: 84.w,
                                           height: 69.h,
                                           fit: BoxFit.cover,
@@ -187,24 +187,24 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
                         },
                       ),
                     ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: Size(400.w, 58.h),
-                        backgroundColor: Color(0xFF001E6C),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.r),
-                        ),
-                      ),
-                      onPressed: () {},
-                      child: Text(
-                        "Add Entire List to Cart",
-                        style: GoogleFonts.roboto(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xFFFFFFFF),
-                        ),
-                      ),
-                    ),
+                    // ElevatedButton(
+                    //   style: ElevatedButton.styleFrom(
+                    //     minimumSize: Size(400.w, 58.h),
+                    //     backgroundColor: Color(0xFF001E6C),
+                    //     shape: RoundedRectangleBorder(
+                    //       borderRadius: BorderRadius.circular(10.r),
+                    //     ),
+                    //   ),
+                    //   onPressed: () {},
+                    //   child: Text(
+                    //     "Add Entire List to Cart",
+                    //     style: GoogleFonts.roboto(
+                    //       fontSize: 16.sp,
+                    //       fontWeight: FontWeight.w500,
+                    //       color: Color(0xFFFFFFFF),
+                    //     ),
+                    //   ),
+                    // ),
                     SizedBox(height: 10.h),
                   ],
                 ),
