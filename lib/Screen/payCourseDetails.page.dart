@@ -554,12 +554,12 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                               ),
                               SizedBox(height: 10.h),
                               Container(
-                                padding: EdgeInsets.only(
-                                  left: 10.w,
-                                  right: 10.w,
-                                  top: 10.h,
-                                  bottom: 10.h,
-                                ),
+                                // padding: EdgeInsets.only(
+                                //   left: 10.w,
+                                //   right: 10.w,
+                                //   top: 10.h,
+                                //   bottom: 10.h,
+                                // ),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10.r),
                                   color: Color(0xFFFFFFFF),
