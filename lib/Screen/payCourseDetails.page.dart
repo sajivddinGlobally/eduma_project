@@ -575,21 +575,27 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    faq("How can I enrol in a course?"),
+                                    faq(
+                                      "How can I enrol in a course?",
+                                      "Enroling in a course is simple! Just browse through our website, select the course you are interest in, and click on the Enroll Now button. Follow the prompts to complete the enrolment process, and you'll gain immediate access to the course materials.",
+                                    ),
                                     SizedBox(height: 6.h),
                                     Divider(color: Color(0xFFBFBFBF)),
                                     faq(
-                                      "Can I access the course materials on any device?",
+                                      "Can l access the course materials any device?",
+                                      "Yes, our platform is designed to be accessible on various devices, including computers, laptops, tabletsm and smartphones. you can access the course materials anytime, anywherem as long as you have an internet connection.",
                                     ),
                                     SizedBox(height: 6.h),
                                     Divider(color: Color(0xFFBFBFBF)),
                                     faq(
                                       "How can I access the course materials?",
+                                      "Once you enrol in a course you well gain access to a dedicated online learning plaform. All course materials, including video lessons, lecture notes and supplementary resourseces, can be accessed conveniently through the plarform at any time.",
                                     ),
                                     SizedBox(height: 6.h),
                                     Divider(color: Color(0xFFBFBFBF)),
                                     faq(
-                                      "How can I access the course materials?",
+                                      "Can I interact with the instructor during the course?",
+                                      "Absolutely! we are committed to providing an engaging and interactive learning experience, You will have oppourtunities to interact with them through our community. Take full advantage to enhance your understanding to enhance your understanding and gain insights directly from the expert.",
                                     ),
                                     SizedBox(height: 6.h),
                                   ],
@@ -1026,27 +1032,50 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
     return match != null && match.group(7)!.length == 11 ? match.group(7)! : '';
   }
 
-  Widget faq(String name) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        SizedBox(
-          width: 275.w,
-          child: Text(
-            name,
-            style: GoogleFonts.roboto(
-              fontSize: 16.sp,
-              fontWeight: FontWeight.w500,
-              color: Color(0xFF000000),
-              letterSpacing: -0.4,
-              height: 1.1,
+  Widget faq(String name, String answer) {
+    return ExpansionTile(
+      childrenPadding: EdgeInsets.only(left: 16.w, right: 16.w),
+      collapsedShape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12.r),
+      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+      backgroundColor: Colors.white,
+      collapsedBackgroundColor: Colors.white,
+      title: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: 275.w,
+            child: Text(
+              name,
+              style: GoogleFonts.roboto(
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w500,
+                color: Color(0xFF000000),
+                letterSpacing: -0.4,
+                height: 1.1,
+              ),
             ),
           ),
-        ),
-        Icon(
-          Icons.keyboard_arrow_down_outlined,
-          color: Color(0xFF001E6C),
-          size: 30.sp,
+        ],
+      ),
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            SizedBox(
+              width: MediaQuery.of(context).size.width / 1.26,
+              child: Text(
+                answer,
+                style: GoogleFonts.roboto(
+                  fontSize: 15.sp,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.grey[700],
+                ),
+              ),
+            ),
+          ],
         ),
       ],
     );

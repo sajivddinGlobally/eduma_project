@@ -70,7 +70,7 @@ abstract class APIStateNetwork {
 
   @GET("/custom/v1/popular-courses/{id}")
   Future<PopularCourseDetailsModel> popularCourseDetails(@Path() String id);
-  // courses
+  //courses
   @GET("/custom/v1/courses")
   Future<AllCoursesModel> allCourses();
 
