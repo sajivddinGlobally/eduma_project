@@ -71,9 +71,67 @@ class _ShopPageState extends ConsumerState<ShopPage> {
     },
   ];
   bool isWishlisted = false;
+
+  List<ProductListModel> products = [];
+  int page = 0;
+  int limit = 10;
+  bool isloading = false;
+  bool allowed = false;
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // initially load first page
+      ref.read(productListController.notifier).loadMore();
+    });
+
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels >=
+              _scrollController.position.maxScrollExtent &&
+          !ref.read(productListController).isLoading &&
+          ref.read(productListController).hasMore) {
+        ref.read(productListController.notifier).loadMore();
+      }
+    });
+  }
+
+  Future<void> _loadMoreProducts() async {
+    setState(() {
+      isloading = true;
+    });
+
+    try {
+      final service = APIStateNetwork(createWooCommerceDio());
+      final response = await service.productList();
+
+      if (response.isNotEmpty) {
+        setState(() {
+          page++;
+          products.addAll(response);
+          if (response.length < limit) allowed = true;
+        });
+      } else {
+        setState(() {
+          isloading = false;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        isloading = false;
+      });
+      log(e.toString());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final productListProvider = ref.watch(productListController);
+    //final productListProvider = ref.watch(productListController);
+    final productState = ref.watch(productListController);
+    final productNotifier = ref.read(productListController.notifier);
+
     return Scaffold(
       backgroundColor: Color(0xFFFFFFFF),
       body: Stack(
@@ -152,63 +210,109 @@ class _ShopPageState extends ConsumerState<ShopPage> {
                   ),
                 ),
                 SizedBox(height: 16.h),
-                productListProvider.when(
-                  data: (snap) {
-                    final filteredProducts = snap.where((product) {
-                      final title = product.name!.toLowerCase();
-                      return title.contains(searchQuery);
-                    }).toList();
-                    if (filteredProducts.isEmpty) {
-                      return Center(
-                        child: Text(
-                          "No products found",
-                          style: GoogleFonts.roboto(
-                            fontSize: 16.sp,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                      );
-                    }
-                    return Expanded(
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                          left: 20.w,
-                          right: 20.w,
-                          top: 20.h,
-                        ),
-                        child: MasonryGridView.count(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 20.w,
-                          mainAxisSpacing: 15.h,
-                          itemCount: filteredProducts.length,
-                          itemBuilder: (context, index) {
-                            final product = filteredProducts[index];
-                            final boxHeight = index.isEven ? 250.0 : 150.0;
-                            return ProductCard(
-                              data: product,
-                              boxHeight: boxHeight,
-                            );
-                          },
-                        ),
-                      ),
-                    );
-                  },
-                  error: (error, stackTrace) =>
-                      Center(child: Text(error.toString())),
-                  loading: () => Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        CircularProgressIndicator(color: Color(0xFF001E6C)),
-                        SizedBox(height: 16.h),
-                        Text(
-                          "Loading products...",
-                          style: GoogleFonts.roboto(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
+                // productListProvider.when(
+                //   data: (snap) {
+                //     final filteredProducts = snap.where((product) {
+                //       final title = product.name!.toLowerCase();
+                //       return title.contains(searchQuery);
+                //     }).toList();
+                //     if (filteredProducts.isEmpty) {
+                //       return Center(
+                //         child: Text(
+                //           "No products found",
+                //           style: GoogleFonts.roboto(
+                //             fontSize: 16.sp,
+                //             color: Colors.grey[600],
+                //           ),
+                //         ),
+                //       );
+                //     }
+                //     return Expanded(
+                //       child: Padding(
+                //         padding: EdgeInsets.only(
+                //           left: 20.w,
+                //           right: 20.w,
+                //           top: 20.h,
+                //         ),
+                //         child: MasonryGridView.count(
+                //           controller: _scrollController,
+                //           crossAxisCount: 2,
+                //           crossAxisSpacing: 20.w,
+                //           mainAxisSpacing: 15.h,
+                //           //itemCount: filteredProducts.length,
+                //           itemCount: products.length + (allowed ? 0 : 1),
+                //           itemBuilder: (context, index) {
+                //             if (index < products.length) {
+                //               final product = products[index];
+                //               final boxHeight = index.isEven ? 250.0 : 150.0;
+                //               return ProductCard(
+                //                 data: product,
+                //                 boxHeight: boxHeight,
+                //               );
+                //             } else {
+                //               return const Center(
+                //                 child: Padding(
+                //                   padding: EdgeInsets.all(8.0),
+                //                   child: CircularProgressIndicator(),
+                //                 ),
+                //               );
+                //             }
+                //           },
+                //         ),
+                //       ),
+                //     );
+                //   },
+                //   error: (error, stackTrace) =>
+                //       Center(child: Text(error.toString())),
+                //   loading: () => Center(
+                //     child: Column(
+                //       mainAxisAlignment: MainAxisAlignment.center,
+                //       children: [
+                //         CircularProgressIndicator(color: Color(0xFF001E6C)),
+                //         SizedBox(height: 16.h),
+                //         Text(
+                //           "Loading products...",
+                //           style: GoogleFonts.roboto(
+                //             fontSize: 16.sp,
+                //             fontWeight: FontWeight.w500,
+                //           ),
+                //         ),
+                //       ],
+                //     ),
+                //   ),
+                // ),
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      left: 20.w,
+                      right: 20.w,
+                      top: 20.h,
+                    ),
+                    child: MasonryGridView.count(
+                      controller: _scrollController,
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 20.w,
+                      mainAxisSpacing: 15.h,
+                      itemCount:
+                          productState.products.length +
+                          (productState.hasMore ? 1 : 0), // +1 for loader
+                      itemBuilder: (context, index) {
+                        if (index < productState.products.length) {
+                          final product = productState.products[index];
+                          final boxHeight = index.isEven ? 250.0 : 150.0;
+                          return ProductCard(
+                            data: product,
+                            boxHeight: boxHeight,
+                          );
+                        } else {
+                          return const Center(
+                            child: Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: CircularProgressIndicator(),
+                            ),
+                          );
+                        }
+                      },
                     ),
                   ),
                 ),

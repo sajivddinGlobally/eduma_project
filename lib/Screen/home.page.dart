@@ -46,21 +46,22 @@ class _HomePageState extends ConsumerState<HomePage> {
   Widget build(BuildContext context) {
     var box = Hive.box("userBox");
     final popularCourseProvider = ref.watch(popularCourseController);
-    final productListProvider = ref.watch(productListController);
+    //final productListProvider = ref.watch(productListController);
+    final productState = ref.watch(productListController);
+    final productNotifier = ref.read(productListController.notifier);
+
     final allCategoryProvider = ref.watch(allCategoryController);
     final latestCourseProvider = ref.watch(latestCourseController);
 
-    final isLoading =
-        // popularCourseProvider.isLoading ||
-        allCategoryProvider.isLoading || productListProvider.isLoading;
+    // final isLoading =
+    //     // popularCourseProvider.isLoading ||
+    //     allCategoryProvider.isLoading || productListProvider.isLoading;
 
-    if (isLoading) {
-      return const ShimmerHomePage();
-    }
+    // if (isLoading) {
+    //   return const ShimmerHomePage();
+    // }
 
-    if (popularCourseProvider.hasError ||
-        productListProvider.hasError ||
-        allCategoryProvider.hasError) {
+    if (popularCourseProvider.hasError || allCategoryProvider.hasError) {
       return Scaffold(
         backgroundColor: Colors.white,
         body: Center(
@@ -143,14 +144,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                       //   ),
                       // ),
                       IconButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                              builder: (context) => NetworkErrorPage(),
-                            ),
-                          );
-                        },
+                        onPressed: () {},
                         icon: Icon(Icons.notifications_none_outlined),
                       ),
                       SizedBox(width: 10.w),
@@ -549,28 +543,28 @@ class _HomePageState extends ConsumerState<HomePage> {
                       ],
                     ),
                     SizedBox(height: 20.h),
-                    productListProvider.when(
-                      data: (productList) {
-                        return Container(
-                          height: 200.h,
-                          // color: Colors.amber,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            padding: EdgeInsets.zero,
-                            itemCount: productList.length,
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding: EdgeInsets.only(left: 20.w),
-                                child: allProduct(data: productList[index]),
-                              );
-                            },
-                          ),
-                        );
-                      },
-                      error: (error, stackTrace) =>
-                          Center(child: Text(error.toString())),
-                      loading: () => Center(child: CircularProgressIndicator()),
-                    ),
+                    // productListProvider.when(
+                    //   data: (productList) {
+                    //     return Container(
+                    //       height: 200.h,
+                    //       // color: Colors.amber,
+                    //       child: ListView.builder(
+                    //         scrollDirection: Axis.horizontal,
+                    //         padding: EdgeInsets.zero,
+                    //         itemCount: productList.length,
+                    //         itemBuilder: (context, index) {
+                    //           return Padding(
+                    //             padding: EdgeInsets.only(left: 20.w),
+                    //             child: allProduct(data: productList[index]),
+                    //           );
+                    //         },
+                    //       ),
+                    //     );
+                    //   },
+                    //   error: (error, stackTrace) =>
+                    //       Center(child: Text(error.toString())),
+                    //   loading: () => Center(child: CircularProgressIndicator()),
+                    // ),
                     SizedBox(height: 15.h),
                   ],
                 ),

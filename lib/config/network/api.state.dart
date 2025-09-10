@@ -113,7 +113,10 @@ abstract class APIStateNetwork {
   Future<EnrolleCourseStudentModel> enrolledCourse();
 
   @GET("/wc/v3/products")
-  Future<List<ProductListModel>> productList();
+  Future<List<ProductListModel>> productList({
+    @Query("page") int page = 1,
+    @Query("per_page") int perPage = 10,
+  });
 
   @GET("/wc/v3/products/{id}")
   Future<ProductDetailsModel> productDetails(@Path() String id);
@@ -146,7 +149,7 @@ abstract class APIStateNetwork {
   Future<RemoveCartQuantityResModel> removerQuantiry(
     @Body() RemoveCartQuantityBodyModel body,
   );
-  
+
   @GET("/wc/v3/orders")
   Future<List<OrderListModel>> order();
 
