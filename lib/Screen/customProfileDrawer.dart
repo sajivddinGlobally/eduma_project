@@ -265,30 +265,30 @@ class _CustomProfileDrawerState extends ConsumerState<CustomProfileDrawer> {
                         child: tileBuild("assets/wishlist.png", "Wishlist"),
                       ),
                       SizedBox(height: 20.h),
-                      Row(
-                        children: [
-                          Image.asset("assets/lan.png"),
-                          SizedBox(width: 10.w),
-                          Text(
-                            "Language",
-                            style: GoogleFonts.roboto(
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xFF001E6C),
-                            ),
-                          ),
-                          Spacer(),
-                          Text(
-                            "English",
-                            style: GoogleFonts.roboto(
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Color.fromARGB(150, 0, 30, 108),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 20.h),
+                      // Row(
+                      //   children: [
+                      //     Image.asset("assets/lan.png"),
+                      //     SizedBox(width: 10.w),
+                      //     Text(
+                      //       "Language",
+                      //       style: GoogleFonts.roboto(
+                      //         fontSize: 16.sp,
+                      //         fontWeight: FontWeight.w500,
+                      //         color: Color(0xFF001E6C),
+                      //       ),
+                      //     ),
+                      //     Spacer(),
+                      //     Text(
+                      //       "English",
+                      //       style: GoogleFonts.roboto(
+                      //         fontSize: 12.sp,
+                      //         fontWeight: FontWeight.w500,
+                      //         color: Color.fromARGB(150, 0, 30, 108),
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
+                      // SizedBox(height: 20.h),
                       // Row(
                       //   children: [
                       //     Icon(
