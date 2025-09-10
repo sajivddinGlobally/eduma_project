@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:eduma_app/Screen/allCategory.page.dart';
 import 'package:eduma_app/Screen/allCourse.page.dart';
 import 'package:eduma_app/Screen/apiCall/api.register.dart';
@@ -42,25 +44,36 @@ class _HomePageState extends ConsumerState<HomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int selectIndex = 0;
   bool isWishlisted = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    @override
+    void initState() {
+      super.initState();
+      // Pehle 10 products load karne ke liye
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ref.read(productListController.notifier).loadMore();
+        log("LoadMore called from initState ✅");
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var box = Hive.box("userBox");
     final popularCourseProvider = ref.watch(popularCourseController);
-    //final productListProvider = ref.watch(productListController);
-    final productState = ref.watch(productListController);
-
     final allCategoryProvider = ref.watch(allCategoryController);
     final latestCourseProvider = ref.watch(latestCourseController);
-
+    final productState = ref.watch(productListController);
     final isLoading =
         popularCourseProvider.isLoading ||
         allCategoryProvider.isLoading ||
         latestCourseProvider.isLoading;
-
     if (isLoading) {
       return const ShimmerHomePage();
     }
-
     if (popularCourseProvider.hasError || allCategoryProvider.hasError) {
       return Scaffold(
         backgroundColor: Colors.white,
@@ -543,28 +556,29 @@ class _HomePageState extends ConsumerState<HomePage> {
                       ],
                     ),
                     SizedBox(height: 20.h),
-                    // productListProvider.when(
-                    //   data: (productList) {
-                    //     return Container(
-                    //       height: 200.h,
-                    //       // color: Colors.amber,
-                    //       child: ListView.builder(
-                    //         scrollDirection: Axis.horizontal,
-                    //         padding: EdgeInsets.zero,
-                    //         itemCount: productList.length,
-                    //         itemBuilder: (context, index) {
-                    //           return Padding(
-                    //             padding: EdgeInsets.only(left: 20.w),
-                    //             child: allProduct(data: productList[index]),
-                    //           );
-                    //         },
-                    //       ),
-                    //     );
-                    //   },
-                    //   error: (error, stackTrace) =>
-                    //       Center(child: Text(error.toString())),
-                    //   loading: () => Center(child: CircularProgressIndicator()),
-                    // ),
+
+                    productState.when(
+                      data: (productList) {
+                        return Container(
+                          height: 200.h,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            padding: EdgeInsets.zero,
+                            itemCount: productList.length,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: EdgeInsets.only(left: 20.w),
+                                child: allProduct(data: productList[index]),
+                              );
+                            },
+                          ),
+                        );
+                      },
+                      error: (error, stackTrace) =>
+                          Center(child: Text(error.toString())),
+                      loading: () => Center(child: CircularProgressIndicator()),
+                    ),
+
                     SizedBox(height: 15.h),
                   ],
                 ),
