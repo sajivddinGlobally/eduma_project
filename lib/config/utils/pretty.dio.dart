@@ -20,12 +20,12 @@ Dio createDio() {
     ),
   );
 
-  var box = Hive.box("userBox");
-  var token = box.get("token");
-
   dio.interceptors.add(
     InterceptorsWrapper(
       onRequest: (options, handler) {
+        var box = Hive.box("userBox");
+        var token = box.get("token");
+
         options.headers.addAll({
           'Content-Type': 'application/json',
           if (token != null) 'Authorization': 'Bearer $token',
@@ -48,7 +48,7 @@ Dio createDio() {
         log("API Error ($statusCode): $cleanedMessage");
         if (globalContext != null) {
           if (statusCode == 401) {
-            box.delete("token");
+            Hive.box("userBox").delete("token");
             Navigator.pushAndRemoveUntil(
               globalContext,
               CupertinoPageRoute(builder: (context) => const LoginPage()),
