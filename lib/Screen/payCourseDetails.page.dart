@@ -960,9 +960,9 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
           InkWell(
             borderRadius: BorderRadius.circular(8.r),
             onTap: () {
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(SnackBar(content: Text("Please buy the course")));
+              // ScaffoldMessenger.of(
+              //   context,
+              // ).showSnackBar(SnackBar(content: Text("Please buy the course")));
             },
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -972,28 +972,29 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                 SizedBox(height: 10.h),
                 Row(
                   children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(10.r),
-                      child: Image.network(
-                        videoId.isNotEmpty
-                            ? "https://img.youtube.com/vi/$videoId/0.jpg"
-                            : "https://via.placeholder.com/120x90.png?text=No+Video",
-                        width: 120.w,
-                        height: 70.h,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return ClipRRect(
-                            borderRadius: BorderRadius.circular(10.r),
-                            child: Image.network(
-                              "https://t4.ftcdn.net/jpg/05/97/47/95/360_F_597479556_7bbQ7t4Z8k3xbAloHFHVdZIizWK1PdOo.jpg",
-                              width: 120.w,
-                              height: 70.h,
-                              fit: BoxFit.cover,
-                            ),
-                          );
-                        },
-                      ),
-                    ),
+                    Icon(Icons.ondemand_video, size: 50.sp),
+                    // ClipRRect(
+                    //   borderRadius: BorderRadius.circular(10.r),
+                    //   child: Image.network(
+                    //     videoId.isNotEmpty
+                    //         ? "https://img.youtube.com/vi/$videoId/0.jpg"
+                    //         : "https://via.placeholder.com/120x90.png?text=No+Video",
+                    //     width: 120.w,
+                    //     height: 70.h,
+                    //     fit: BoxFit.cover,
+                    //     errorBuilder: (context, error, stackTrace) {
+                    //       return ClipRRect(
+                    //         borderRadius: BorderRadius.circular(10.r),
+                    //         child: Image.network(
+                    //           "https://t4.ftcdn.net/jpg/05/97/47/95/360_F_597479556_7bbQ7t4Z8k3xbAloHFHVdZIizWK1PdOo.jpg",
+                    //           width: 120.w,
+                    //           height: 70.h,
+                    //           fit: BoxFit.cover,
+                    //         ),
+                    //       );
+                    //     },
+                    //   ),
+                    // ),
                     SizedBox(width: 12.w),
                     Expanded(
                       child: Text(
@@ -1006,11 +1007,6 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                           color: Colors.black87,
                         ),
                       ),
-                    ),
-                    Icon(
-                      Icons.play_circle_fill,
-                      size: 28.sp,
-                      color: Colors.redAccent,
                     ),
                   ],
                 ),
