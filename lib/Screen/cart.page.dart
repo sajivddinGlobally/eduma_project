@@ -186,7 +186,6 @@ class _CartPageState extends ConsumerState<CartPage> {
                             itemCount: data.items.length,
                             itemBuilder: (context, index) {
                               final item = data.items[index];
-
                               return CartBody(data: data.items[index]);
                             },
                           ),
