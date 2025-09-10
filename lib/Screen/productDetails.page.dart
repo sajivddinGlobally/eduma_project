@@ -425,6 +425,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:photo_view/photo_view_gallery.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class ProductDetailsPage extends ConsumerStatefulWidget {
@@ -439,6 +440,9 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
   final PageController _pageController = PageController();
   bool isLoading = false;
   int quantity = 1;
+
+  int currentIndex = 0;
+  PageController _controller = PageController(initialPage: 0);
 
   @override
   Widget build(BuildContext context) {
@@ -511,16 +515,72 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                               context: context,
                               builder: (context) {
                                 return Dialog(
-                                  backgroundColor: Colors.transparent,
                                   insetPadding: EdgeInsets.zero,
-                                  child: PhotoView(
-                                    imageProvider: NetworkImage(
-                                      data.images[index].medium,
-                                    ),
-                                    errorBuilder: (context, error, stackTrace) {
-                                      return Image.network(
-                                        "https://thumbs.dreamstime.com/b/no-image-vector-symbol-missing-available-icon-gallery-moment-placeholder-246411909.jpg",
-                                        fit: BoxFit.contain,
+                                  child: StatefulBuilder(
+                                    builder: (context, setState) {
+                                      return Stack(
+                                        children: [
+                                          PhotoViewGallery.builder(
+                                            itemCount: data.images.length,
+                                            pageController: _controller,
+                                            backgroundDecoration:
+                                                const BoxDecoration(
+                                                  color: Colors.black,
+                                                ),
+                                            builder: (context, i) {
+                                              return PhotoViewGalleryPageOptions(
+                                                imageProvider: NetworkImage(
+                                                  data.images[i].medium,
+                                                ),
+                                                minScale: PhotoViewComputedScale
+                                                    .contained,
+                                                maxScale:
+                                                    PhotoViewComputedScale
+                                                        .covered *
+                                                    3,
+                                                heroAttributes:
+                                                    PhotoViewHeroAttributes(
+                                                      tag:
+                                                          data.images[i].medium,
+                                                    ),
+                                              );
+                                            },
+                                            onPageChanged: (i) {
+                                              setState(() {
+                                                currentIndex = i;
+                                              });
+                                            },
+                                          ),
+                                          Positioned(
+                                            top: 20,
+                                            left: 10,
+                                            right: 10,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                IconButton(
+                                                  icon: const Icon(
+                                                    Icons.close,
+                                                    color: Colors.white,
+                                                    size: 28,
+                                                  ),
+                                                  onPressed: () =>
+                                                      Navigator.pop(context),
+                                                ),
+                                                Text(
+                                                  "${currentIndex + 1} / ${data.images.length}", // 1-based index
+                                                  style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 16,
+                                                  ),
+                                                ),
+                                                SizedBox(width: 48.w),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
                                       );
                                     },
                                   ),
