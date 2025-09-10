@@ -291,7 +291,7 @@ class _VideoPageState extends State<VideoPage> {
                               onPressed: () =>
                                   _addComment(_commentController.text),
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFF001E6C),
+                                backgroundColor: Color(0xFF001E6C),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12.r),
                                 ),
