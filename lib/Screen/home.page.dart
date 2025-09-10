@@ -85,7 +85,6 @@ class _HomePageState extends ConsumerState<HomePage> {
         ),
       );
     }
-
     return WillPopScope(
       onWillPop: () async {
         if (selectIndex != 0) {
@@ -556,19 +555,21 @@ class _HomePageState extends ConsumerState<HomePage> {
                       ],
                     ),
                     SizedBox(height: 20.h),
-
                     productState.when(
                       data: (productList) {
+                        final productsToShow = productList.length > 10
+                            ? productList.sublist(0, 10)
+                            : productList;
                         return Container(
                           height: 200.h,
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
                             padding: EdgeInsets.zero,
-                            itemCount: productList.length,
+                            itemCount: productsToShow.length,
                             itemBuilder: (context, index) {
                               return Padding(
                                 padding: EdgeInsets.only(left: 20.w),
-                                child: allProduct(data: productList[index]),
+                                child: allProduct(data: productsToShow[index]),
                               );
                             },
                           ),
@@ -576,9 +577,51 @@ class _HomePageState extends ConsumerState<HomePage> {
                       },
                       error: (error, stackTrace) =>
                           Center(child: Text(error.toString())),
-                      loading: () => Center(child: CircularProgressIndicator()),
+                      loading: () => ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: 3,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: EdgeInsets.only(left: 20.w, right: 20.w),
+                            child: Shimmer.fromColors(
+                              baseColor: Colors.grey[300]!,
+                              highlightColor: Colors.grey[100]!,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    width: 295.w,
+                                    height: 165.h,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(16.r),
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  SizedBox(height: 10.h),
+                                  Container(
+                                    width: 280.w,
+                                    height: 14.h,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(16.r),
+                                      color: Colors.grey[400],
+                                    ),
+                                  ),
+                                  SizedBox(height: 10.h),
+                                  Container(
+                                    width: 200.w,
+                                    height: 14.h,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(16.r),
+                                      color: Colors.grey[400],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
                     ),
-
                     SizedBox(height: 15.h),
                   ],
                 ),
