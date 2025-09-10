@@ -98,40 +98,10 @@ class _ShopPageState extends ConsumerState<ShopPage> {
     });
   }
 
-  Future<void> _loadMoreProducts() async {
-    setState(() {
-      isloading = true;
-    });
-
-    try {
-      final service = APIStateNetwork(createWooCommerceDio());
-      final response = await service.productList();
-
-      if (response.isNotEmpty) {
-        setState(() {
-          page++;
-          products.addAll(response);
-          if (response.length < limit) allowed = true;
-        });
-      } else {
-        setState(() {
-          isloading = false;
-        });
-      }
-    } catch (e) {
-      setState(() {
-        isloading = false;
-      });
-      log(e.toString());
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     //final productListProvider = ref.watch(productListController);
     final productState = ref.watch(productListController);
-    final productNotifier = ref.read(productListController.notifier);
-
     return Scaffold(
       backgroundColor: Color(0xFFFFFFFF),
       body: Stack(
@@ -308,7 +278,12 @@ class _ShopPageState extends ConsumerState<ShopPage> {
                         } else {
                           return Center(
                             child: Padding(
-                              padding: EdgeInsets.all(8.0),
+                              padding: EdgeInsets.only(
+                                left: 10.w,
+                                right: 10.w,
+                                bottom: 40.h,
+                                top: 10.h,
+                              ),
                               child: CircularProgressIndicator(),
                             ),
                           );
@@ -368,6 +343,14 @@ class _ProductCardState extends State<ProductCard> {
                   child: Image.network(
                     widget.data.images![0].medium.toString(),
                     fit: BoxFit.fill,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Image.network(
+                        "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png",
+                        width: 190.w,
+                        height: widget.boxHeight,
+                        fit: BoxFit.fill,
+                      );
+                    },
                   ),
                 ),
               ),

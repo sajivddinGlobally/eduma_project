@@ -48,18 +48,18 @@ class _HomePageState extends ConsumerState<HomePage> {
     final popularCourseProvider = ref.watch(popularCourseController);
     //final productListProvider = ref.watch(productListController);
     final productState = ref.watch(productListController);
-    final productNotifier = ref.read(productListController.notifier);
 
     final allCategoryProvider = ref.watch(allCategoryController);
     final latestCourseProvider = ref.watch(latestCourseController);
 
-    // final isLoading =
-    //     // popularCourseProvider.isLoading ||
-    //     allCategoryProvider.isLoading || productListProvider.isLoading;
+    final isLoading =
+        popularCourseProvider.isLoading ||
+        allCategoryProvider.isLoading ||
+        latestCourseProvider.isLoading;
 
-    // if (isLoading) {
-    //   return const ShimmerHomePage();
-    // }
+    if (isLoading) {
+      return const ShimmerHomePage();
+    }
 
     if (popularCourseProvider.hasError || allCategoryProvider.hasError) {
       return Scaffold(
