@@ -102,6 +102,12 @@ class _ShopPageState extends ConsumerState<ShopPage> {
   Widget build(BuildContext context) {
     //final productListProvider = ref.watch(productListController);
     final productState = ref.watch(productListController);
+
+    final filteredProducts = productState.products.where((product) {
+      final title = product.name?.toLowerCase() ?? "";
+      return title.contains(searchQuery.toLowerCase());
+    }).toList();
+
     return Scaffold(
       backgroundColor: Color(0xFFFFFFFF),
       body: Stack(
@@ -259,37 +265,47 @@ class _ShopPageState extends ConsumerState<ShopPage> {
                       right: 20.w,
                       top: 20.h,
                     ),
-                    child: MasonryGridView.count(
-                      controller: _scrollController,
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 20.w,
-                      mainAxisSpacing: 15.h,
-                      itemCount:
-                          productState.products.length +
-                          (productState.hasMore ? 1 : 0), // +1 for loader
-                      itemBuilder: (context, index) {
-                        if (index < productState.products.length) {
-                          final product = productState.products[index];
-                          final boxHeight = index.isEven ? 250.0 : 150.0;
-                          return ProductCard(
-                            data: product,
-                            boxHeight: boxHeight,
-                          );
-                        } else {
-                          return Center(
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                left: 10.w,
-                                right: 10.w,
-                                bottom: 40.h,
-                                top: 10.h,
+                    child: filteredProducts.isEmpty
+                        ? Center(
+                            child: Text(
+                              "No products found",
+                              style: GoogleFonts.roboto(
+                                fontSize: 16.sp,
+                                color: Colors.grey[600],
                               ),
-                              child: CircularProgressIndicator(),
                             ),
-                          );
-                        }
-                      },
-                    ),
+                          )
+                        : MasonryGridView.count(
+                            controller: _scrollController,
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 20.w,
+                            mainAxisSpacing: 15.h,
+                            itemCount:
+                                filteredProducts.length +
+                                (productState.hasMore ? 1 : 0), // +1 for loader
+                            itemBuilder: (context, index) {
+                              if (index < filteredProducts.length) {
+                                final product = filteredProducts[index];
+                                final boxHeight = index.isEven ? 250.0 : 150.0;
+                                return ProductCard(
+                                  data: product,
+                                  boxHeight: boxHeight,
+                                );
+                              } else {
+                                return Center(
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                      left: 10.w,
+                                      right: 10.w,
+                                      bottom: 40.h,
+                                      top: 10.h,
+                                    ),
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                );
+                              }
+                            },
+                          ),
                   ),
                 ),
               ],
