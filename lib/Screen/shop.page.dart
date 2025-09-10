@@ -210,6 +210,7 @@ class _ShopPageState extends ConsumerState<ShopPage> {
                   ),
                 ),
                 SizedBox(height: 16.h),
+
                 // productListProvider.when(
                 //   data: (snap) {
                 //     final filteredProducts = snap.where((product) {
@@ -305,7 +306,7 @@ class _ShopPageState extends ConsumerState<ShopPage> {
                             boxHeight: boxHeight,
                           );
                         } else {
-                          return const Center(
+                          return Center(
                             child: Padding(
                               padding: EdgeInsets.all(8.0),
                               child: CircularProgressIndicator(),
@@ -366,7 +367,7 @@ class _ProductCardState extends State<ProductCard> {
                   borderRadius: BorderRadius.circular(10.r),
                   child: Image.network(
                     widget.data.images![0].medium.toString(),
-                    fit: BoxFit.cover,
+                    fit: BoxFit.fill,
                   ),
                 ),
               ),
@@ -416,7 +417,7 @@ class _ProductCardState extends State<ProductCard> {
                     child: Icon(
                       isWishlisted ? Icons.favorite : Icons.favorite_border,
                       key: ValueKey<bool>(isWishlisted),
-                      color: isWishlisted ? Colors.red : Colors.white,
+                      color: isWishlisted ? Colors.red : Colors.black,
                       size: 25.sp,
                     ),
                   ),
