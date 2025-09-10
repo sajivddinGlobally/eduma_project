@@ -1,93 +1,325 @@
-// import 'dart:developer';
-// import 'package:flutter/material.dart';
-// import 'package:chewie/chewie.dart';
-// import 'package:flutter_screenutil/flutter_screenutil.dart';
-// import 'package:video_player/video_player.dart';
-// import 'package:youtube_explode_dart/youtube_explode_dart.dart';
+import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-// class VideoPage extends StatefulWidget {
-//   final String videoId; // ✅ YouTube videoId pass karenge
+class VideoPage extends StatefulWidget {
+  final String videoId;
 
-//   const VideoPage({super.key, required this.videoId});
+  const VideoPage({super.key, required this.videoId});
 
-//   @override
-//   State<VideoPage> createState() => _VideoPageState();
-// }
+  @override
+  State<VideoPage> createState() => _VideoPageState();
+}
 
-// class _VideoPageState extends State<VideoPage> {
-//   late VideoPlayerController _videoPlayerController;
-//   ChewieController? _chewieController;
-//   bool _isLoading = true;
-//   final YoutubeExplode _yt = YoutubeExplode();
+class _VideoPageState extends State<VideoPage> {
+  late YoutubePlayerController _controller;
+  bool _isLoading = true;
+  bool _isVideoCompleted = false;
+  final TextEditingController _commentController = TextEditingController();
+  List<Map<String, dynamic>> _comments = [];
 
-//   @override
-//   void initState() {
-//     super.initState();
-//     _loadVideo();
-//   }
+  String timeAgo(DateTime date) {
+    final diff = DateTime.now().difference(date);
+    if (diff.inSeconds < 60) return "Just now";
+    if (diff.inMinutes < 60) return "${diff.inMinutes} min ago";
+    if (diff.inHours < 24) return "${diff.inHours} hr ago";
+    return "${diff.inDays} days ago";
+  }
 
-//   Future<void> _loadVideo() async {
-//     try {
-//       // ✅ YouTube से video stream URL निकालना
-//       var manifest = await _yt.videos.streamsClient.getManifest(widget.videoId);
-//       var streamInfo = manifest.muxed.withHighestBitrate();
+  @override
+  void initState() {
+    super.initState();
+    _controller =
+        YoutubePlayerController(
+          initialVideoId: widget.videoId,
+          flags: const YoutubePlayerFlags(
+            autoPlay: true,
+            mute: false,
+            controlsVisibleAtStart: true,
+          ),
+        )..addListener(() {
+          if (_controller.value.isReady && !_controller.value.isPlaying) {
+            if (_controller.value.position >= _controller.metadata.duration) {
+              setState(() {
+                _isVideoCompleted = true;
+              });
+            }
+          }
+        });
 
-//       // ✅ VideoPlayerController बनाना
-//       _videoPlayerController = VideoPlayerController.networkUrl(
-//         Uri.parse(streamInfo.url.toString()),
-//       );
+    // Simulate loading time for smoother UX
+    Future.delayed(const Duration(seconds: 2), () {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    });
 
-//       await _videoPlayerController.initialize();
+    // Load existing comments
+    _loadComments();
+  }
 
-//       _chewieController = ChewieController(
-//         videoPlayerController: _videoPlayerController,
-//         autoPlay: true,
-//         looping: false,
-//         allowFullScreen: true,
-//         allowMuting: true,
-//         aspectRatio: 16 / 9,
-//         materialProgressColors: ChewieProgressColors(
-//           playedColor: Colors.red,
-//           handleColor: Colors.redAccent,
-//           backgroundColor: Colors.grey,
-//           //bufferedColor: Colors.lightGreen,
-//         ),
-//       );
+  Future<void> _loadComments() async {
+    final box = await Hive.openBox('commentsBox');
+    final storedComments =
+        box.get('comments_${widget.videoId}', defaultValue: []) as List;
+    final userBox = await Hive.openBox('userBox');
+    final username =
+        userBox.get('storeName', defaultValue: 'Anonymous') as String;
 
-//       setState(() {
-//         _isLoading = false;
-//       });
-//     } catch (e) {
-//       log("Error loading video: $e");
-//     }
-//   }
+    setState(() {
+      _comments = [];
+      for (var comment in storedComments) {
+        if (comment is String) {
+          // Migrate old string-based comments to new map-based format
+          _comments.add({
+            'username': username,
+            'comment': comment,
+            'timestamp': DateTime.now().toIso8601String(),
+          });
+        } else if (comment is Map) {
+          // Already in map format, add as is
+          _comments.add(Map<String, dynamic>.from(comment));
+        }
+      }
+      // Update Hive with migrated comments
+      box.put('comments_${widget.videoId}', _comments);
+    });
+  }
 
-//   @override
-//   void dispose() {
-//     _videoPlayerController.dispose();
-//     _chewieController?.dispose();
-//     _yt.close();
-//     super.dispose();
-//   }
+  Future<void> _addComment(String comment) async {
+    if (comment.trim().isNotEmpty) {
+      final userBox = await Hive.openBox('userBox');
+      final username =
+          userBox.get('storeName', defaultValue: 'Anonymous') as String;
+      final box = await Hive.openBox('commentsBox');
+      final newComment = {
+        'username': username,
+        'comment': comment,
+        'timestamp': DateTime.now().toIso8601String(),
+      };
+      final updatedComments = List<Map<String, dynamic>>.from(_comments)
+        ..add(newComment);
+      await box.put('comments_${widget.videoId}', updatedComments);
+      setState(() {
+        _comments = updatedComments;
+        _commentController.clear();
+      });
+    }
+  }
 
-//   @override
-//   Widget build(BuildContext context) {
-//     ScreenUtil.init(context);
+  @override
+  void dispose() {
+    _controller.dispose();
+    _commentController.dispose();
+    super.dispose();
+  }
 
-//     return Scaffold(
-//       backgroundColor: Colors.white,
-//       body: _isLoading
-//           ? CircularProgressIndicator()
-//           : Container(
-//               width: MediaQuery.of(context).size.width, // 👈 full width
-//               child: AspectRatio(
-//                 aspectRatio: 16 / 9, // ✅ YouTube जैसा 16:9
-//                 child: Chewie(controller: _chewieController!),
-//               ),
-//             ),
-//     );
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    var box = Hive.box('userBox');
+    var name = box.get('storeName', defaultValue: 'Anonymous');
+    return Scaffold(
+      backgroundColor: const Color(0xFFFFFFFF),
+      body: _isLoading
+          ? SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              child: const Center(child: CircularProgressIndicator()),
+            )
+          : Column(
+              children: [
+                YoutubePlayerBuilder(
+                  player: YoutubePlayer(
+                    controller: _controller,
+                    showVideoProgressIndicator: true,
+                    progressIndicatorColor: Colors.red,
+                  ),
+                  builder: (context, player) {
+                    return AspectRatio(aspectRatio: 16 / 9, child: player);
+                  },
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.all(16.w),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Comments',
+                          style: GoogleFonts.inter(
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.black87,
+                          ),
+                        ),
+                        SizedBox(height: 12.h),
+                        Expanded(
+                          child: _comments.isEmpty
+                              ? Center(
+                                  child: Text(
+                                    'No comments yet.',
+                                    style: GoogleFonts.inter(
+                                      fontSize: 15.sp,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.grey[600],
+                                    ),
+                                  ),
+                                )
+                              : ListView.builder(
+                                  padding: EdgeInsets.zero,
+                                  itemCount: _comments.length,
+                                  itemBuilder: (context, index) {
+                                    final comment = _comments[index];
+                                    final timestamp = DateTime.parse(
+                                      comment['timestamp'],
+                                    );
+                                    return Container(
+                                      margin: EdgeInsets.only(bottom: 12.h),
+                                      padding: EdgeInsets.all(12.w),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(
+                                          12.r,
+                                        ),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.2),
+                                            spreadRadius: 2,
+                                            blurRadius: 5,
+                                            offset: const Offset(0, 3),
+                                          ),
+                                        ],
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              CircleAvatar(
+                                                radius: 16.r,
+                                                backgroundColor: const Color(
+                                                  0xFF001E6C,
+                                                ),
+                                                child: Text(
+                                                  comment['username'][0]
+                                                      .toString()
+                                                      .toUpperCase(),
+                                                  style: GoogleFonts.inter(
+                                                    fontSize: 12.sp,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(width: 8.w),
+                                              Text(
+                                                comment['username'],
+                                                style: GoogleFonts.inter(
+                                                  fontSize: 14.sp,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Colors.black87,
+                                                ),
+                                              ),
+                                              const Spacer(),
+                                              Text(
+                                                timeAgo(timestamp),
+                                                style: GoogleFonts.inter(
+                                                  fontSize: 12.sp,
+                                                  color: Colors.grey[500],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(height: 8.h),
+                                          Text(
+                                            comment['comment'],
+                                            style: GoogleFonts.inter(
+                                              fontSize: 14.sp,
+                                              fontWeight: FontWeight.w400,
+                                              color: Colors.black87,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                ),
+                        ),
+                        SizedBox(height: 12.h),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(12.r),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.1),
+                                      spreadRadius: 1,
+                                      blurRadius: 3,
+                                      offset: const Offset(0, 2),
+                                    ),
+                                  ],
+                                ),
+                                child: TextField(
+                                  controller: _commentController,
+                                  decoration: InputDecoration(
+                                    hintText: 'Add a comment...',
+                                    hintStyle: GoogleFonts.inter(
+                                      fontSize: 14.sp,
+                                      color: Colors.grey[500],
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12.r),
+                                      borderSide: BorderSide(),
+                                    ),
+                                    contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 16.w,
+                                      vertical: 12.h,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 8.w),
+                            ElevatedButton(
+                              onPressed: () =>
+                                  _addComment(_commentController.text),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xFF001E6C),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12.r),
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 16.w,
+                                  vertical: 12.h,
+                                ),
+                              ),
+                              child: Text(
+                                'Comment',
+                                style: GoogleFonts.inter(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+    );
+  }
+}
 
 // ///// ye dusra package hai ok
 
@@ -182,291 +414,286 @@
 
 ////////////////////////////////////////////////////////// ye comment ke liye
 
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:hive/hive.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+// import 'package:flutter/material.dart';
+// import 'package:flutter_screenutil/flutter_screenutil.dart';
+// import 'package:google_fonts/google_fonts.dart';
+// import 'package:hive/hive.dart';
+// import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
-class VideoPage extends StatefulWidget {
-  final String videoId;
+// class VideoPage extends StatefulWidget {
+//   final String videoId;
 
-  const VideoPage({super.key, required this.videoId});
+//   const VideoPage({super.key, required this.videoId});
 
-  @override
-  State<VideoPage> createState() => _VideoPageState();
-}
+//   @override
+//   State<VideoPage> createState() => _VideoPageState();
+// }
 
-class _VideoPageState extends State<VideoPage> {
-  late YoutubePlayerController _controller;
-  bool _isLoading = true;
-  bool _isVideoCompleted = false;
-  final TextEditingController _commentController = TextEditingController();
-  List<String> _comments = [];
+// class _VideoPageState extends State<VideoPage> {
+//   late YoutubePlayerController _controller;
+//   bool _isLoading = true;
+//   bool _isVideoCompleted = false;
+//   final TextEditingController _commentController = TextEditingController();
+//   List<String> _comments = [];
 
-  @override
-  void initState() {
-    super.initState();
-    _controller =
-        YoutubePlayerController(
-          initialVideoId: widget.videoId,
-          flags: const YoutubePlayerFlags(
-            autoPlay: true,
-            mute: false,
-            controlsVisibleAtStart: true,
-          ),
-        )..addListener(() {
-          if (_controller.value.isReady && !_controller.value.isPlaying) {
-            if (_controller.value.position >= _controller.metadata.duration) {
-              setState(() {
-                _isVideoCompleted = true;
-              });
-              _updateLessonProgress(widget.videoId);
-            }
-          }
-        });
+//   @override
+//   void initState() {
+//     super.initState();
+//     _controller =
+//         YoutubePlayerController(
+//           initialVideoId: widget.videoId,
+//           flags: const YoutubePlayerFlags(
+//             autoPlay: true,
+//             mute: false,
+//             controlsVisibleAtStart: true,
+//           ),
+//         )..addListener(() {
+//           if (_controller.value.isReady && !_controller.value.isPlaying) {
+//             if (_controller.value.position >= _controller.metadata.duration) {
+//               setState(() {
+//                 _isVideoCompleted = true;
+//               });
+//               _updateLessonProgress(widget.videoId);
+//             }
+//           }
+//         });
 
-    // Simulate loading time for smoother UX
-    Future.delayed(const Duration(seconds: 2), () {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
-    });
+//     // Simulate loading time for smoother UX
+//     Future.delayed(const Duration(seconds: 2), () {
+//       if (mounted) {
+//         setState(() {
+//           _isLoading = false;
+//         });
+//       }
+//     });
 
-    // Load existing comments
-    _loadComments();
-  }
+//     // Load existing comments
+//     _loadComments();
+//   }
 
-  Future<void> _updateLessonProgress(String videoId) async {
-    final box = await Hive.openBox('userBox');
-    await box.put('lesson_$videoId', true);
-  }
+//   Future<void> _updateLessonProgress(String videoId) async {
+//     final box = await Hive.openBox('userBox');
+//     await box.put('lesson_$videoId', true);
+//   }
 
-  Future<void> _loadComments() async {
-    final box = await Hive.openBox('commentsBox');
-    setState(() {
-      _comments = List<String>.from(
-        box.get('comments_${widget.videoId}', defaultValue: []) as List,
-      );
-    });
-  }
+//   Future<void> _loadComments() async {
+//     final box = await Hive.openBox('commentsBox');
+//     setState(() {
+//       _comments = List<String>.from(
+//         box.get('comments_${widget.videoId}', defaultValue: []) as List,
+//       );
+//     });
+//   }
 
-  Future<void> _addComment(String comment) async {
-    if (comment.trim().isNotEmpty) {
-      final box = await Hive.openBox('commentsBox');
-      final updatedComments = List<String>.from(
-        box.get('comments_${widget.videoId}', defaultValue: []) as List,
-      )..add(comment);
-      await box.put('comments_${widget.videoId}', updatedComments);
-      setState(() {
-        _comments = updatedComments;
-        _commentController.clear();
-      });
-    }
-  }
+//   Future<void> _addComment(String comment) async {
+//     if (comment.trim().isNotEmpty) {
+//       final box = await Hive.openBox('commentsBox');
+//       final updatedComments = List<String>.from(
+//         box.get('comments_${widget.videoId}', defaultValue: []) as List,
+//       )..add(comment);
+//       await box.put('comments_${widget.videoId}', updatedComments);
+//       setState(() {
+//         _comments = updatedComments;
+//         _commentController.clear();
+//       });
+//     }
+//   }
 
-  @override
-  void dispose() {
-    _controller.dispose();
-    _commentController.dispose();
-    super.dispose();
-  }
+//   @override
+//   void dispose() {
+//     _controller.dispose();
+//     _commentController.dispose();
+//     super.dispose();
+//   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFFFFFFF),
-      body: _isLoading
-          ? SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              child: const Center(child: CircularProgressIndicator()),
-            )
-          : Column(
-              children: [
-                YoutubePlayerBuilder(
-                  player: YoutubePlayer(
-                    controller: _controller,
-                    showVideoProgressIndicator: true,
-                    progressIndicatorColor: Colors.red,
-                  ),
-                  builder: (context, player) {
-                    return AspectRatio(aspectRatio: 16 / 9, child: player);
-                  },
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.all(16.w),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Comments',
-                          style: GoogleFonts.inter(
-                            fontSize: 18.sp,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.black87,
-                          ),
-                        ),
-                        SizedBox(height: 12.h),
-                        Expanded(
-                          child: _comments.isEmpty
-                              ? Center(
-                                  child: Text(
-                                    'No comments yet. Be the first to comment!',
-                                    style: GoogleFonts.inter(
-                                      fontSize: 15.sp,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.grey[600],
-                                    ),
-                                  ),
-                                )
-                              : ListView.builder(
-                                  padding: EdgeInsets.zero,
-                                  itemCount: _comments.length,
-                                  itemBuilder: (context, index) {
-                                    return Container(
-                                      margin: EdgeInsets.only(bottom: 12.h),
-                                      padding: EdgeInsets.all(12.w),
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(
-                                          12.r,
-                                        ),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.grey.withOpacity(0.2),
-                                            spreadRadius: 2,
-                                            blurRadius: 5,
-                                            offset: const Offset(0, 3),
-                                          ),
-                                        ],
-                                      ),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              CircleAvatar(
-                                                radius: 16.r,
-                                                backgroundColor:
-                                                    Colors.grey[300],
-                                                child: Text(
-                                                  'U${index + 1}',
-                                                  style: GoogleFonts.inter(
-                                                    fontSize: 12.sp,
-                                                    color: Colors.black54,
-                                                  ),
-                                                ),
-                                              ),
-                                              SizedBox(width: 8.w),
-                                              Text(
-                                                'User ${index + 1}',
-                                                style: GoogleFonts.inter(
-                                                  fontSize: 14.sp,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: Colors.black87,
-                                                ),
-                                              ),
-                                              const Spacer(),
-                                              Text(
-                                                'Just now',
-                                                style: GoogleFonts.inter(
-                                                  fontSize: 12.sp,
-                                                  color: Colors.grey[500],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          SizedBox(height: 8.h),
-                                          Text(
-                                            _comments[index],
-                                            style: GoogleFonts.inter(
-                                              fontSize: 14.sp,
-                                              fontWeight: FontWeight.w400,
-                                              color: Colors.black87,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                ),
-                        ),
-                        SizedBox(height: 12.h),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(12.r),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.1),
-                                      spreadRadius: 1,
-                                      blurRadius: 3,
-                                      offset: const Offset(0, 2),
-                                    ),
-                                  ],
-                                ),
-                                child: TextField(
-                                  controller: _commentController,
-                                  decoration: InputDecoration(
-                                    hintText: 'Add a comment...',
-                                    hintStyle: GoogleFonts.inter(
-                                      fontSize: 14.sp,
-                                      color: Colors.grey[500],
-                                    ),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(12.r),
-                                      borderSide: BorderSide.none,
-                                    ),
-                                    contentPadding: EdgeInsets.symmetric(
-                                      horizontal: 16.w,
-                                      vertical: 12.h,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: 8.w),
-                            ElevatedButton(
-                              onPressed: () =>
-                                  _addComment(_commentController.text),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.red,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12.r),
-                                ),
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 16.w,
-                                  vertical: 12.h,
-                                ),
-                              ),
-                              child: Text(
-                                'Post',
-                                style: GoogleFonts.inter(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     var box = Hive.box("userBox");
+//     var name = box.get("storeName");
+//     return Scaffold(
+//       backgroundColor: const Color(0xFFFFFFFF),
+//       body: _isLoading
+//           ? SizedBox(
+//               width: MediaQuery.of(context).size.width,
+//               height: MediaQuery.of(context).size.height,
+//               child: const Center(child: CircularProgressIndicator()),
+//             )
+//           : Column(
+//               children: [
+//                 YoutubePlayerBuilder(
+//                   player: YoutubePlayer(
+//                     controller: _controller,
+//                     showVideoProgressIndicator: true,
+//                     progressIndicatorColor: Colors.red,
+//                   ),
+//                   builder: (context, player) {
+//                     return AspectRatio(aspectRatio: 16 / 9, child: player);
+//                   },
+//                 ),
+//                 Expanded(
+//                   child: Padding(
+//                     padding: EdgeInsets.all(16.w),
+//                     child: Column(
+//                       crossAxisAlignment: CrossAxisAlignment.start,
+//                       children: [
+//                         Text(
+//                           'Comments',
+//                           style: GoogleFonts.inter(
+//                             fontSize: 18.sp,
+//                             fontWeight: FontWeight.w700,
+//                             color: Colors.black87,
+//                           ),
+//                         ),
+//                         SizedBox(height: 12.h),
+//                         Expanded(
+//                           child: _comments.isEmpty
+//                               ? Center(
+//                                   child: Text(
+//                                     'No comments yet.',
+//                                     style: GoogleFonts.inter(
+//                                       fontSize: 15.sp,
+//                                       fontWeight: FontWeight.w500,
+//                                       color: Colors.grey[600],
+//                                     ),
+//                                   ),
+//                                 )
+//                               : ListView.builder(
+//                                   padding: EdgeInsets.zero,
+//                                   itemCount: _comments.length,
+//                                   itemBuilder: (context, index) {
+//                                     return Container(
+//                                       margin: EdgeInsets.only(bottom: 12.h),
+//                                       padding: EdgeInsets.all(12.w),
+//                                       decoration: BoxDecoration(
+//                                         color: Colors.white,
+//                                         borderRadius: BorderRadius.circular(
+//                                           12.r,
+//                                         ),
+//                                         boxShadow: [
+//                                           BoxShadow(
+//                                             color: Colors.grey.withOpacity(0.2),
+//                                             spreadRadius: 2,
+//                                             blurRadius: 5,
+//                                             offset: const Offset(0, 3),
+//                                           ),
+//                                         ],
+//                                       ),
+//                                       child: Column(
+//                                         crossAxisAlignment:
+//                                             CrossAxisAlignment.start,
+//                                         children: [
+//                                           Row(
+//                                             children: [
+//                                               CircleAvatar(
+//                                                 radius: 16.r,
+//                                                 backgroundColor: Color(
+//                                                   0xFF001E6C,
+//                                                 ),
+//                                                 child: Text(
+//                                                   name[0].toString(),
+//                                                   style: GoogleFonts.inter(
+//                                                     fontSize: 12.sp,
+//                                                     color: Colors.white,
+//                                                   ),
+//                                                 ),
+//                                               ),
+//                                               SizedBox(width: 8.w),
+//                                               Text(
+//                                                 name,
+//                                                 style: GoogleFonts.inter(
+//                                                   fontSize: 14.sp,
+//                                                   fontWeight: FontWeight.w600,
+//                                                   color: Colors.black87,
+//                                                 ),
+//                                               ),
+//                                             ],
+//                                           ),
+//                                           SizedBox(height: 8.h),
+//                                           Text(
+//                                             _comments[index],
+//                                             style: GoogleFonts.inter(
+//                                               fontSize: 14.sp,
+//                                               fontWeight: FontWeight.w400,
+//                                               color: Colors.black87,
+//                                             ),
+//                                           ),
+//                                         ],
+//                                       ),
+//                                     );
+//                                   },
+//                                 ),
+//                         ),
+//                         SizedBox(height: 12.h),
+//                         Row(
+//                           children: [
+//                             Expanded(
+//                               child: Container(
+//                                 decoration: BoxDecoration(
+//                                   color: Colors.white,
+//                                   borderRadius: BorderRadius.circular(12.r),
+//                                   boxShadow: [
+//                                     BoxShadow(
+//                                       color: Colors.grey.withOpacity(0.1),
+//                                       spreadRadius: 1,
+//                                       blurRadius: 3,
+//                                       offset: const Offset(0, 2),
+//                                     ),
+//                                   ],
+//                                 ),
+//                                 child: TextField(
+//                                   controller: _commentController,
+//                                   decoration: InputDecoration(
+//                                     hintText: 'Add a comment...',
+//                                     hintStyle: GoogleFonts.inter(
+//                                       fontSize: 14.sp,
+//                                       color: Colors.grey[500],
+//                                     ),
+//                                     border: OutlineInputBorder(
+//                                       borderRadius: BorderRadius.circular(12.r),
+//                                       borderSide: BorderSide(),
+//                                     ),
+//                                     contentPadding: EdgeInsets.symmetric(
+//                                       horizontal: 16.w,
+//                                       vertical: 12.h,
+//                                     ),
+//                                   ),
+//                                 ),
+//                               ),
+//                             ),
+//                             SizedBox(width: 8.w),
+//                             ElevatedButton(
+//                               onPressed: () =>
+//                                   _addComment(_commentController.text),
+//                               style: ElevatedButton.styleFrom(
+//                                 backgroundColor: Color(0xFF001E6C),
+//                                 shape: RoundedRectangleBorder(
+//                                   borderRadius: BorderRadius.circular(12.r),
+//                                 ),
+//                                 padding: EdgeInsets.symmetric(
+//                                   horizontal: 16.w,
+//                                   vertical: 12.h,
+//                                 ),
+//                               ),
+//                               child: Text(
+//                                 'Commnet',
+//                                 style: GoogleFonts.inter(
+//                                   fontSize: 14.sp,
+//                                   fontWeight: FontWeight.w600,
+//                                   color: Colors.white,
+//                                 ),
+//                               ),
+//                             ),
+//                           ],
+//                         ),
+//                       ],
+//                     ),
+//                   ),
+//                 ),
+//               ],
+//             ),
+//     );
+//   }
+// }
 
 
 

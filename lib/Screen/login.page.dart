@@ -199,6 +199,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           final service = APIStateNetwork(createDio());
                           final response = await service.login(body);
                           await box.put("storeName", response.storeName);
+                          await box.put("userNicename", response.userNicename);
                           await box.put("token", response.token);
                           await box.put("userEmail", response.userEmail);
                           await box.put("storeId", response.storeId);
