@@ -424,6 +424,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class ProductDetailsPage extends ConsumerStatefulWidget {
@@ -504,21 +505,45 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                       controller: _pageController,
                       itemCount: data.images.length,
                       itemBuilder: (context, index) {
-                        return Padding(
-                          padding: EdgeInsets.only(left: 10.w, right: 10.w),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(15.r),
-                            child: Image.network(
-                              data.images[index].medium,
-                              fit: BoxFit.cover,
-                              width: double.infinity,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Image.network(
-                                  "https://thumbs.dreamstime.com/b/no-image-vector-symbol-missing-available-icon-gallery-moment-placeholder-246411909.jpg",
-                                  fit: BoxFit.cover,
-                                  width: double.infinity,
+                        return InkWell(
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return Dialog(
+                                  backgroundColor: Colors.transparent,
+                                  insetPadding: EdgeInsets.zero,
+                                  child: PhotoView(
+                                    imageProvider: NetworkImage(
+                                      data.images[index].medium,
+                                    ),
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return Image.network(
+                                        "https://thumbs.dreamstime.com/b/no-image-vector-symbol-missing-available-icon-gallery-moment-placeholder-246411909.jpg",
+                                        fit: BoxFit.contain,
+                                      );
+                                    },
+                                  ),
                                 );
                               },
+                            );
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 10.w, right: 10.w),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(15.r),
+                              child: Image.network(
+                                data.images[index].medium,
+                                fit: BoxFit.cover,
+                                width: double.infinity,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Image.network(
+                                    "https://thumbs.dreamstime.com/b/no-image-vector-symbol-missing-available-icon-gallery-moment-placeholder-246411909.jpg",
+                                    fit: BoxFit.cover,
+                                    width: double.infinity,
+                                  );
+                                },
+                              ),
                             ),
                           ),
                         );
