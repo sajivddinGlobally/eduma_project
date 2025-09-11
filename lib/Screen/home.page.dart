@@ -70,11 +70,14 @@ class _HomePageState extends ConsumerState<HomePage> {
     final isLoading =
         popularCourseProvider.isLoading ||
         allCategoryProvider.isLoading ||
-        latestCourseProvider.isLoading;
+        latestCourseProvider.isLoading ||
+        productList.isLoading;
     if (isLoading) {
       return const ShimmerHomePage();
     }
-    if (popularCourseProvider.hasError || allCategoryProvider.hasError) {
+    if (popularCourseProvider.hasError ||
+        allCategoryProvider.hasError ||
+        productList.hasError) {
       return Scaffold(
         backgroundColor: Colors.white,
         body: Center(
@@ -285,13 +288,26 @@ class _HomePageState extends ConsumerState<HomePage> {
                               ),
                             );
                           },
-                          child: Icon(
-                            Icons.arrow_forward_ios,
-                            color: Color(0xFF001E6C),
-                            weight: 3,
-                            size: 23.sp,
+                          child: Row(
+                            children: [
+                              Text(
+                                "View all",
+                                style: GoogleFonts.inter(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Color(0xFF001E6C),
+                                ),
+                              ),
+                              Icon(
+                                Icons.arrow_forward_ios,
+                                color: Color(0xFF001E6C),
+                                weight: 3,
+                                size: 20.sp,
+                              ),
+                            ],
                           ),
                         ),
+
                         SizedBox(width: 20.w),
                       ],
                     ),
@@ -422,11 +438,23 @@ class _HomePageState extends ConsumerState<HomePage> {
                               ),
                             );
                           },
-                          child: Icon(
-                            Icons.arrow_forward_ios,
-                            color: Color(0xFF001E6C),
-                            weight: 3,
-                            size: 23.sp,
+                          child: Row(
+                            children: [
+                              Text(
+                                "View all",
+                                style: GoogleFonts.inter(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Color(0xFF001E6C),
+                                ),
+                              ),
+                              Icon(
+                                Icons.arrow_forward_ios,
+                                color: Color(0xFF001E6C),
+                                weight: 3,
+                                size: 20.sp,
+                              ),
+                            ],
                           ),
                         ),
                         SizedBox(width: 20.w),
@@ -485,11 +513,23 @@ class _HomePageState extends ConsumerState<HomePage> {
                               ),
                             );
                           },
-                          child: Icon(
-                            Icons.arrow_forward_ios,
-                            color: Color(0xFF001E6C),
-                            weight: 3,
-                            size: 23.sp,
+                          child: Row(
+                            children: [
+                              Text(
+                                "View all",
+                                style: GoogleFonts.inter(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Color(0xFF001E6C),
+                                ),
+                              ),
+                              Icon(
+                                Icons.arrow_forward_ios,
+                                color: Color(0xFF001E6C),
+                                weight: 3,
+                                size: 20.sp,
+                              ),
+                            ],
                           ),
                         ),
                         SizedBox(width: 20.w),
@@ -544,11 +584,23 @@ class _HomePageState extends ConsumerState<HomePage> {
                               ),
                             );
                           },
-                          child: Icon(
-                            Icons.arrow_forward_ios,
-                            color: Color(0xFF001E6C),
-                            weight: 3,
-                            size: 23.sp,
+                          child: Row(
+                            children: [
+                              Text(
+                                "View all",
+                                style: GoogleFonts.inter(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Color(0xFF001E6C),
+                                ),
+                              ),
+                              Icon(
+                                Icons.arrow_forward_ios,
+                                color: Color(0xFF001E6C),
+                                weight: 3,
+                                size: 20.sp,
+                              ),
+                            ],
                           ),
                         ),
                         SizedBox(width: 20.w),
@@ -556,7 +608,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                     ),
                     SizedBox(height: 20.h),
                     productList.when(
-                      data: (products) {  
+                      data: (products) {
                         return Container(
                           height: 200.h,
                           child: ListView.builder(
@@ -574,49 +626,59 @@ class _HomePageState extends ConsumerState<HomePage> {
                       },
                       error: (error, stackTrace) =>
                           Center(child: Text(error.toString())),
-                      loading: () => ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: 3,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: EdgeInsets.only(left: 20.w, right: 20.w),
-                            child: Shimmer.fromColors(
-                              baseColor: Colors.grey[300]!,
-                              highlightColor: Colors.grey[100]!,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    width: 295.w,
-                                    height: 165.h,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(16.r),
-                                      color: Colors.white,
+                      loading: () => Container(
+                        height: 220.h,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: 2,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: EdgeInsets.only(left: 20.w, right: 20.w),
+                              child: Shimmer.fromColors(
+                                baseColor: Colors.grey[300]!,
+                                highlightColor: Colors.grey[100]!,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Container(
+                                      width: 295.w,
+                                      height: 165.h,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(
+                                          16.r,
+                                        ),
+                                        color: Colors.white,
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(height: 10.h),
-                                  Container(
-                                    width: 280.w,
-                                    height: 14.h,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(16.r),
-                                      color: Colors.grey[400],
+                                    SizedBox(height: 10.h),
+                                    Container(
+                                      width: 280.w,
+                                      height: 14.h,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(
+                                          16.r,
+                                        ),
+                                        color: Colors.grey[400],
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(height: 10.h),
-                                  Container(
-                                    width: 200.w,
-                                    height: 14.h,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(16.r),
-                                      color: Colors.grey[400],
+                                    SizedBox(height: 10.h),
+                                    Container(
+                                      width: 200.w,
+                                      height: 14.h,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(
+                                          16.r,
+                                        ),
+                                        color: Colors.grey[400],
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                          );
-                        },
+                            );
+                          },
+                        ),
                       ),
                     ),
                     SizedBox(height: 15.h),
@@ -1096,49 +1158,52 @@ class _LearningBodyState extends ConsumerState<LearningBody> {
             ),
           ),
         ),
-        loading: () => ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: 3,
-          itemBuilder: (context, index) {
-            return Padding(
-              padding: EdgeInsets.only(left: 20.w, right: 20.w),
-              child: Shimmer.fromColors(
-                baseColor: Colors.grey[300]!,
-                highlightColor: Colors.grey[100]!,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: 295.w,
-                      height: 165.h,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16.r),
-                        color: Colors.white,
+        loading: () => SizedBox(
+          height: 265.h,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: 2,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: EdgeInsets.only(left: 20.w, right: 20.w),
+                child: Shimmer.fromColors(
+                  baseColor: Colors.grey[300]!,
+                  highlightColor: Colors.grey[100]!,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: 295.w,
+                        height: 165.h,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16.r),
+                          color: Colors.white,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 10.h),
-                    Container(
-                      width: 295.w,
-                      height: 14.h,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16.r),
-                        color: Colors.grey[400],
+                      SizedBox(height: 10.h),
+                      Container(
+                        width: 295.w,
+                        height: 14.h,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16.r),
+                          color: Colors.grey[400],
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 10.h),
-                    Container(
-                      width: 200.w,
-                      height: 14.h,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16.r),
-                        color: Colors.grey[400],
+                      SizedBox(height: 10.h),
+                      Container(
+                        width: 200.w,
+                        height: 14.h,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16.r),
+                          color: Colors.grey[400],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
       ),
     );
