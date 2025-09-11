@@ -5,6 +5,7 @@ import 'package:eduma_app/Screen/login.page.dart';
 import 'package:eduma_app/config/core/showFlushbar.dart';
 import 'package:eduma_app/config/network/api.state.dart';
 import 'package:eduma_app/config/utils/pretty.dio.dart';
+import 'package:eduma_app/data/Controller/enrolleCourseController.dart';
 import 'package:eduma_app/data/Controller/popularCourseController.dart';
 import 'package:eduma_app/data/Controller/wishlistControllerClass.dart';
 import 'package:eduma_app/data/Model/enrollBodyModel.dart';
@@ -840,6 +841,10 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                                 ),
                                               ),
                                               onPressed: () {
+                                                // ✅ pehle enrollCourseController ko refresh kar do
+                                                ref.refresh(
+                                                  enrollCourseController,
+                                                );
                                                 Navigator.pushAndRemoveUntil(
                                                   context,
                                                   CupertinoPageRoute(

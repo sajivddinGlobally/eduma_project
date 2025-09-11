@@ -18,6 +18,7 @@ import 'package:eduma_app/config/core/showFlushbar.dart';
 import 'package:eduma_app/data/Controller/allCategoryController.dart';
 import 'package:eduma_app/data/Controller/enrolleCourseController.dart';
 import 'package:eduma_app/data/Controller/latestCourseController.dart';
+import 'package:eduma_app/data/Controller/notificationController.dart';
 import 'package:eduma_app/data/Controller/popularCourseController.dart';
 import 'package:eduma_app/data/Controller/productListController.dart';
 import 'package:eduma_app/data/Controller/wishlistControllerClass.dart';
@@ -64,6 +65,12 @@ class _HomePageState extends ConsumerState<HomePage> {
   @override
   Widget build(BuildContext context) {
     var box = Hive.box("userBox");
+    var id = box.get("storeId");
+
+    final notificationProvider = ref.watch(
+      notifcationController(id.toString()),
+    );
+    final unreadCount = ref.watch(showNotification).unreadCount;
     final popularCourseProvider = ref.watch(popularCourseController);
     final allCategoryProvider = ref.watch(allCategoryController);
     final latestCourseProvider = ref.watch(latestCourseController);
@@ -111,68 +118,63 @@ class _HomePageState extends ConsumerState<HomePage> {
                   child: Image.asset("assets/logo.png"),
                 ),
                 actions: [
-                  Row(
-                    children: [
-                      // TextButton(
-                      //   onPressed: () {
-                      //     Navigator.push(
-                      //       context,
-                      //       CupertinoPageRoute(
-                      //         builder: (context) => LoginPage(),
-                      //       ),
-                      //     );
-                      //   },
-                      //   child: Text(
-                      //     "Login",
-                      //     style: GoogleFonts.roboto(
-                      //       fontSize: 16.sp,
-                      //       fontWeight: FontWeight.w600,
-                      //       color: Color(0xFF000000),
-                      //       letterSpacing: -0.4,
-                      //     ),
-                      //   ),
-                      // ),
-                      // Text(
-                      //   "|",
-                      //   style: GoogleFonts.roboto(
-                      //     fontSize: 16.sp,
-                      //     fontWeight: FontWeight.w600,
-                      //     color: Color(0xFF000000),
-                      //   ),
-                      // ),
-                      // TextButton(
-                      //   onPressed: () {
-                      //     Navigator.push(
-                      //       context,
-                      //       CupertinoPageRoute(
-                      //         builder: (context) => RegisterPage(),
-                      //       ),
-                      //     );
-                      //   },
-                      //   child: Text(
-                      //     "Register",
-                      //     style: GoogleFonts.roboto(
-                      //       fontSize: 16.sp,
-                      //       fontWeight: FontWeight.w600,
-                      //       color: Color(0xFF000000),
-                      //       letterSpacing: -0.4,
-                      //     ),
-                      //   ),
-                      // ),
-                      IconButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                              builder: (context) => NotificationPage(),
+                  notificationProvider.when(
+                    data: (data) {
+                      // 🔹 API से डेटा आने पर unreadCount अपडेट करें, लेकिन केवल तभी जब NotificationPage खुला न हो
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        ref
+                            .read(showNotification.notifier)
+                            .setUnread(data.length);
+                      });
+                      return Stack(
+                        children: [
+                          IconButton(
+                            icon: Icon(Icons.notifications_none, size: 35.sp),
+                            onPressed: () async {
+                              await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => const NotificationPage(),
+                                ),
+                              );
+                            },
+                          ),
+                          // if (count > 0)
+                          if (unreadCount > 0)
+                            Positioned(
+                              right: 8.w,
+                              top: 8.h,
+                              child: Container(
+                                padding: EdgeInsets.all(3.w),
+                                decoration: const BoxDecoration(
+                                  color: Colors.red,
+                                  shape: BoxShape.circle,
+                                ),
+                                constraints: const BoxConstraints(
+                                  minWidth: 18,
+                                  minHeight: 18,
+                                ),
+                                child: Text(
+                                  unreadCount > 9
+                                      ? "9+"
+                                      : unreadCount.toString(),
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
                             ),
-                          );
-                        },
-                        icon: Icon(Icons.notifications_none_outlined),
-                      ),
-                      SizedBox(width: 10.w),
-                    ],
+                        ],
+                      );
+                    },
+                    error: (err, _) => const SizedBox.shrink(),
+                    loading: () => const SizedBox.shrink(),
                   ),
+
+                  SizedBox(width: 10.w),
                 ],
               )
             : null,

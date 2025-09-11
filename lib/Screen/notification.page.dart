@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:eduma_app/data/Controller/notificationController.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +14,21 @@ class NotificationPage extends ConsumerStatefulWidget {
 }
 
 class _NotificationPageState extends ConsumerState<NotificationPage> {
+  @override
+  void initState() {
+    super.initState();
+    // ✅ Page open होने पर unread रीसेट करें
+    Future.microtask(() {
+      ref.read(showNotification.notifier).resetUnread();
+    });
+  }
+
+  // @override
+  // void dispose() {
+  //   ref.read(showNotification.notifier).leaveNotificationPage();
+  //   super.dispose();
+  // }
+
   @override
   Widget build(BuildContext context) {
     var box = Hive.box("userBox");
@@ -33,7 +47,10 @@ class _NotificationPageState extends ConsumerState<NotificationPage> {
             color: Colors.black87,
             size: 24,
           ),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            //  ref.read(showNotification.notifier).leaveNotificationPage();
+            Navigator.pop(context);
+          },
         ),
         title: Text(
           'Notifications',
