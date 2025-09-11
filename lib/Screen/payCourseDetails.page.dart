@@ -177,7 +177,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                                   : Icons.favorite_border,
                                               color: isWishlisted
                                                   ? Colors.red
-                                                  : Colors.white,
+                                                  : Colors.black,
                                               size: 25.sp,
                                             ),
                                     ),

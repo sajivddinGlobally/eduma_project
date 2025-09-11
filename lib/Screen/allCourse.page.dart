@@ -288,7 +288,7 @@ class _AllBodyState extends State<AllBody> {
                     key: ValueKey<bool>(
                       isWishlisted,
                     ), // 👈 ye key change hone se hi animation hoga
-                    color: isWishlisted ? Colors.red : Colors.white,
+                    color: isWishlisted ? Colors.red : Colors.black,
                     size: 25.sp,
                   ),
                 ),
