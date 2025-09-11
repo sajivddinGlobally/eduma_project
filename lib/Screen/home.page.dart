@@ -66,7 +66,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     final popularCourseProvider = ref.watch(popularCourseController);
     final allCategoryProvider = ref.watch(allCategoryController);
     final latestCourseProvider = ref.watch(latestCourseController);
-    final productState = ref.watch(productListController);
+    final productList = ref.watch(productListProvider);
     final isLoading =
         popularCourseProvider.isLoading ||
         allCategoryProvider.isLoading ||
@@ -555,21 +555,18 @@ class _HomePageState extends ConsumerState<HomePage> {
                       ],
                     ),
                     SizedBox(height: 20.h),
-                    productState.when(
-                      data: (productList) {
-                        final productsToShow = productList.length > 10
-                            ? productList.sublist(0, 10)
-                            : productList;
+                    productList.when(
+                      data: (products) {  
                         return Container(
                           height: 200.h,
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
                             padding: EdgeInsets.zero,
-                            itemCount: productsToShow.length,
+                            itemCount: products.length,
                             itemBuilder: (context, index) {
                               return Padding(
                                 padding: EdgeInsets.only(left: 20.w),
-                                child: allProduct(data: productsToShow[index]),
+                                child: allProduct(data: products[index]),
                               );
                             },
                           ),

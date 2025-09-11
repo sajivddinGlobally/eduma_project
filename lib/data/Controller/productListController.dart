@@ -4,6 +4,11 @@ import 'package:eduma_app/config/utils/pretty.dio.dart';
 import 'package:eduma_app/data/Model/productListModel.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+final productListProvider = FutureProvider<List<ProductListModel>>((ref) async {
+  final service = APIStateNetwork(createWooCommerceDio());
+  return await service.productList(page: 1,perPage: 10);
+});
+
 // class ProductListState {
 //   final List<ProductListModel> products;
 //   final bool isLoading;
@@ -67,13 +72,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 //   }
 // }
 
-
 final productListController =
-    StateNotifierProvider<ProductListNotifier, AsyncValue<List<ProductListModel>>>((ref) {
-  return ProductListNotifier(ref);
-});
+    StateNotifierProvider<
+      ProductListNotifier,
+      AsyncValue<List<ProductListModel>>
+    >((ref) {
+      return ProductListNotifier(ref);
+    });
 
-class ProductListNotifier extends StateNotifier<AsyncValue<List<ProductListModel>>> {
+class ProductListNotifier
+    extends StateNotifier<AsyncValue<List<ProductListModel>>> {
   ProductListNotifier(this.ref) : super(const AsyncValue.loading());
 
   final Ref ref;
