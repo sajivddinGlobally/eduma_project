@@ -471,18 +471,17 @@ class _HomePageState extends ConsumerState<HomePage> {
                     SizedBox(height: 20.h),
                     popularCourseProvider.when(
                       data: (course) {
-                        final limiteData = course.take(5).toList();
                         return Container(
                           height: 200.h,
                           //color: Colors.amber,
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
                             padding: EdgeInsets.zero,
-                            itemCount: limiteData.length,
+                            itemCount: course.length,
                             itemBuilder: (context, index) {
                               return Container(
                                 margin: EdgeInsets.only(left: 20.w),
-                                child: PopularCour(data: limiteData[index]),
+                                child: PopularCour(data: course[index]),
                               );
                             },
                           ),
