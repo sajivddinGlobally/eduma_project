@@ -7,3 +7,10 @@ final allCoursesController = FutureProvider<AllCoursesModel>((ref) async {
   final allCourseService = APIStateNetwork(createDio());
   return await allCourseService.allCourses();
 });
+
+
+
+
+
+class PopularCouserNotifier extends StateNotifier<AsyncValue<AllCoursesModel>> {
+  
