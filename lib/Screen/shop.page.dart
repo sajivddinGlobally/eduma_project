@@ -184,78 +184,6 @@ class _ShopPageState extends ConsumerState<ShopPage> {
                   ),
                 ),
                 SizedBox(height: 16.h),
-
-                // productListProvider.when(
-                //   data: (snap) {
-                //     final filteredProducts = snap.where((product) {
-                //       final title = product.name!.toLowerCase();
-                //       return title.contains(searchQuery);
-                //     }).toList();
-                //     if (filteredProducts.isEmpty) {
-                //       return Center(
-                //         child: Text(
-                //           "No products found",
-                //           style: GoogleFonts.roboto(
-                //             fontSize: 16.sp,
-                //             color: Colors.grey[600],
-                //           ),
-                //         ),
-                //       );
-                //     }
-                //     return Expanded(
-                //       child: Padding(
-                //         padding: EdgeInsets.only(
-                //           left: 20.w,
-                //           right: 20.w,
-                //           top: 20.h,
-                //         ),
-                //         child: MasonryGridView.count(
-                //           controller: _scrollController,
-                //           crossAxisCount: 2,
-                //           crossAxisSpacing: 20.w,
-                //           mainAxisSpacing: 15.h,
-                //           //itemCount: filteredProducts.length,
-                //           itemCount: products.length + (allowed ? 0 : 1),
-                //           itemBuilder: (context, index) {
-                //             if (index < products.length) {
-                //               final product = products[index];
-                //               final boxHeight = index.isEven ? 250.0 : 150.0;
-                //               return ProductCard(
-                //                 data: product,
-                //                 boxHeight: boxHeight,
-                //               );
-                //             } else {
-                //               return const Center(
-                //                 child: Padding(
-                //                   padding: EdgeInsets.all(8.0),
-                //                   child: CircularProgressIndicator(),
-                //                 ),
-                //               );
-                //             }
-                //           },
-                //         ),
-                //       ),
-                //     );
-                //   },
-                //   error: (error, stackTrace) =>
-                //       Center(child: Text(error.toString())),
-                //   loading: () => Center(
-                //     child: Column(
-                //       mainAxisAlignment: MainAxisAlignment.center,
-                //       children: [
-                //         CircularProgressIndicator(color: Color(0xFF001E6C)),
-                //         SizedBox(height: 16.h),
-                //         Text(
-                //           "Loading products...",
-                //           style: GoogleFonts.roboto(
-                //             fontSize: 16.sp,
-                //             fontWeight: FontWeight.w500,
-                //           ),
-                //         ),
-                //       ],
-                //     ),
-                //   ),
-                // ),
                 productState.when(
                   data: (products) {
                     final filtered = products.where((p) {
@@ -306,6 +234,13 @@ class _ShopPageState extends ConsumerState<ShopPage> {
                                 children: [
                                   SizedBox(height: 80.h),
                                   CircularProgressIndicator(),
+                                  Text(
+                                    "Loading products...",
+                                    style: GoogleFonts.roboto(
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
                                   SizedBox(height: 100.h),
                                 ],
                               );
@@ -319,57 +254,6 @@ class _ShopPageState extends ConsumerState<ShopPage> {
                       Center(child: Text(error.toString())),
                   loading: () => Center(child: CircularProgressIndicator()),
                 ),
-
-                // Expanded(
-                //   child: Padding(
-                //     padding: EdgeInsets.only(
-                //       left: 20.w,
-                //       right: 20.w,
-                //       top: 20.h,
-                //     ),
-                //     child: filteredProducts.isEmpty
-                //         ? Center(
-                //             child: Text(
-                //               "No products found",
-                //               style: GoogleFonts.roboto(
-                //                 fontSize: 16.sp,
-                //                 color: Colors.grey[600],
-                //               ),
-                //             ),
-                //           )
-                //         : MasonryGridView.count(
-                //             controller: _scrollController,
-                //             crossAxisCount: 2,
-                //             crossAxisSpacing: 20.w,
-                //             mainAxisSpacing: 15.h,
-                //             itemCount:
-                //                 filteredProducts.length +
-                //                 (productState.hasMore ? 1 : 0),
-                //             itemBuilder: (context, index) {
-                //               if (index < filteredProducts.length) {
-                //                 final product = filteredProducts[index];
-                //                 final boxHeight = index.isEven ? 250.0 : 150.0;
-                //                 return ProductCard(
-                //                   data: product,
-                //                   boxHeight: boxHeight,
-                //                 );
-                //               } else {
-                //                 return Center(
-                //                   child: Padding(
-                //                     padding: EdgeInsets.only(
-                //                       left: 10.w,
-                //                       right: 10.w,
-                //                       bottom: 40.h,
-                //                       top: 10.h,
-                //                     ),
-                //                     child: CircularProgressIndicator(),
-                //                   ),
-                //                 );
-                //               }
-                //             },
-                //           ),
-                //   ),
-                // ),
               ],
             ),
           ),
