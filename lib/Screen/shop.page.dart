@@ -300,16 +300,14 @@ class _ShopPageState extends ConsumerState<ShopPage> {
                                 boxHeight: boxHeight,
                               );
                             } else {
-                              return Center(
-                                child: Padding(
-                                  padding: EdgeInsets.only(
-                                    left: 10.w,
-                                    right: 10.w,
-                                    bottom: 40.h,
-                                    top: 10.h,
-                                  ),
-                                  child: CircularProgressIndicator(),
-                                ),
+                              return Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  SizedBox(height: 80.h),
+                                  CircularProgressIndicator(),
+                                  SizedBox(height: 100.h),
+                                ],
                               );
                             }
                           },
