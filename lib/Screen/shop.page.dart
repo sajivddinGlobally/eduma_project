@@ -261,9 +261,9 @@ class _ShopPageState extends ConsumerState<ShopPage> {
                           crossAxisCount: 2,
                           crossAxisSpacing: 20.w,
                           mainAxisSpacing: 15.h,
-                          childAspectRatio: 180 / 190,
+                          childAspectRatio: 175 / 200,
                         ),
-                        itemCount: 5,
+                        itemCount: 6,
                         itemBuilder: (context, index) {
                           return Shimmer.fromColors(
                             baseColor: Colors.grey[300]!,
@@ -272,7 +272,6 @@ class _ShopPageState extends ConsumerState<ShopPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Container(
-                                  margin: EdgeInsets.only(bottom: 15.h),
                                   width: 250.w,
                                   height: 150.h,
                                   decoration: BoxDecoration(
@@ -290,7 +289,7 @@ class _ShopPageState extends ConsumerState<ShopPage> {
                                   ),
                                 ),
                                 Container(
-                                  margin: EdgeInsets.only(top: 10.h),
+                                  margin: EdgeInsets.only(top: 14.h),
                                   width: 200.w,
                                   height: 40.h,
                                   decoration: BoxDecoration(
