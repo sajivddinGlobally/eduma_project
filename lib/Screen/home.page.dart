@@ -359,7 +359,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                                               errorBuilder:
                                                   (context, error, stackTrace) {
                                                     return Image.network(
-                                                      "https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg",
+                                                      "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/832px-No-Image-Placeholder.png",
                                                       width: 200.w,
                                                       height: 130.h,
                                                       fit: BoxFit.fill,
@@ -805,6 +805,14 @@ class _PopularCourState extends State<PopularCour> {
                   width: 190.w,
                   height: 125.h,
                   fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Image.network(
+                      "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/832px-No-Image-Placeholder.png",
+                      width: 190.w,
+                      height: 125.h,
+                      fit: BoxFit.fill,
+                    );
+                  },
                 ),
               ),
             ),
@@ -1252,6 +1260,14 @@ class _PopularBodyState extends State<PopularBody> {
                       width: 190.w,
                       height: 125.h,
                       fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Image.network(
+                          "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/832px-No-Image-Placeholder.png",
+                          width: 190.w,
+                          height: 125.h,
+                          fit: BoxFit.fill,
+                        );
+                      },
                     ),
                   ),
                 ),

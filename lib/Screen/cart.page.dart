@@ -283,6 +283,8 @@ class _CartPageState extends ConsumerState<CartPage> {
             loading: () => Padding(
               padding: EdgeInsets.all(20.w),
               child: ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
                 itemCount: 4,
                 itemBuilder: (context, index) {
                   return Shimmer.fromColors(

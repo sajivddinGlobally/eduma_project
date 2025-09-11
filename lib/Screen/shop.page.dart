@@ -16,6 +16,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:shimmer/shimmer.dart';
 
 class ShopPage extends ConsumerStatefulWidget {
   const ShopPage({super.key});
@@ -252,7 +253,58 @@ class _ShopPageState extends ConsumerState<ShopPage> {
                   },
                   error: (error, stackTrace) =>
                       Center(child: Text(error.toString())),
-                  loading: () => Center(child: CircularProgressIndicator()),
+                  loading: () => Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 20.w, right: 20.w),
+                      child: GridView.builder(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 20.w,
+                          mainAxisSpacing: 15.h,
+                          childAspectRatio: 180 / 190,
+                        ),
+                        itemCount: 5,
+                        itemBuilder: (context, index) {
+                          return Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  margin: EdgeInsets.only(bottom: 15.h),
+                                  width: 250.w,
+                                  height: 150.h,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(16.r),
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(top: 10.h),
+                                  width: 200.w,
+                                  height: 14.h,
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[400],
+                                    borderRadius: BorderRadius.circular(16.r),
+                                  ),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(top: 10.h),
+                                  width: 200.w,
+                                  height: 40.h,
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[400],
+                                    borderRadius: BorderRadius.circular(16.r),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),
