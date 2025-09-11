@@ -17,6 +17,7 @@ import 'package:eduma_app/data/Model/instructorModel.dart';
 import 'package:eduma_app/data/Model/latestCourseModel.dart';
 import 'package:eduma_app/data/Model/loginBodyModel.dart';
 import 'package:eduma_app/data/Model/loginResModel.dart';
+import 'package:eduma_app/data/Model/notificationModel.dart';
 import 'package:eduma_app/data/Model/orderDetailsModel.dart';
 import 'package:eduma_app/data/Model/orderListModel.dart';
 import 'package:eduma_app/data/Model/popularCourseDetailsModel.dart';
@@ -161,4 +162,7 @@ abstract class APIStateNetwork {
 
   @GET("/custom/v1/latest-courses")
   Future<LatestCourseModel> latestCourse();
+
+  @GET("/custom/v1/notifications/{id}")
+  Future<List<NotificationModel>> notification(@Path("id") String id);
 }
