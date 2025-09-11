@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:eduma_app/Screen/home.page.dart';
 import 'package:eduma_app/Screen/login.page.dart';
 import 'package:eduma_app/Screen/payCourseDetails.page.dart';
@@ -22,11 +24,39 @@ class AllCoursePage extends ConsumerStatefulWidget {
 
 class _AllCoursePageState extends ConsumerState<AllCoursePage> {
   final TextEditingController _searchController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
+
   String searchQuery = "";
+  @override
+  void initState() {
+    super.initState();
+
+    _scrollController.addListener(() {
+      // ✅ Scroll end ke pass pohchne par next page load
+      if (_scrollController.position.pixels >=
+          _scrollController.position.maxScrollExtent - 200) {
+        final state = ref.read(allCoursesProvider);
+        state.whenData((data) {
+          final pagination = data.pagination;
+          if (pagination.hasNextPage && pagination.nextPage != null) {
+            ref.read(allCoursesProvider.notifier).fetchCourses(loadMore: true);
+          }
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    _searchController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     // final popularCourseProvider = ref.watch(popularCourseController);
-    final allcourseProvider = ref.watch(allCoursesController);
+    final coursesState = ref.watch(allCoursesProvider);
     return Scaffold(
       backgroundColor: Color(0xFFFFFFFF),
       body: Stack(
@@ -104,16 +134,22 @@ class _AllCoursePageState extends ConsumerState<AllCoursePage> {
                   ),
                 ),
                 Expanded(
-                  child: allcourseProvider.when(
+                  child: coursesState.when(
                     data: (data) {
-                      final filterData = data.data.where((cours) {
-                        final title = cours.title.toLowerCase();
+                      final allData = data.data ?? [];
+                      final filterData = allData.where((cours) {
+                        final title = (cours.title ?? "").toLowerCase();
                         return title.contains(searchQuery);
                       }).toList();
 
                       if (filterData.isEmpty) {
-                        return Center(child: Text("No Course Available"));
+                        return const Center(child: Text("No Course Available"));
                       }
+
+                      final pagination = data.pagination;
+                      final showLoader =
+                          pagination.hasNextPage && pagination.nextPage != null;
+
                       return Padding(
                         padding: EdgeInsets.only(
                           left: 20.w,
@@ -121,7 +157,8 @@ class _AllCoursePageState extends ConsumerState<AllCoursePage> {
                           top: 20.h,
                         ),
                         child: GridView.builder(
-                          itemCount: filterData.length,
+                          controller: _scrollController,
+                          itemCount: filterData.length + (showLoader ? 1 : 0),
                           padding: EdgeInsets.zero,
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
@@ -131,13 +168,20 @@ class _AllCoursePageState extends ConsumerState<AllCoursePage> {
                                 childAspectRatio: 180 / 180,
                               ),
                           itemBuilder: (context, index) {
-                            return AllBody(data: filterData[index]);
+                            if (index < filterData.length) {
+                              return AllBody(data: filterData[index]);
+                            } else {
+                              // 🔹 bottom loader
+                              return Center(child: CircularProgressIndicator());
+                            }
                           },
                         ),
                       );
                     },
-                    error: (error, stackTrace) =>
-                        Center(child: Text(error.toString())),
+                    error: (error, stackTrace) {
+                      log(stackTrace.toString());
+                      return Center(child: Text(error.toString()));
+                    },
                     loading: () => Center(child: CircularProgressIndicator()),
                   ),
                 ),

@@ -72,7 +72,10 @@ abstract class APIStateNetwork {
   Future<PopularCourseDetailsModel> popularCourseDetails(@Path() String id);
   //courses
   @GET("/custom/v1/courses")
-  Future<AllCoursesModel> allCourses();
+  Future<AllCoursesModel> allCourses({
+    @Query("page") int page = 1,
+    @Query("per_page") int perPage = 10,
+  });
 
   @POST("/custom/v1/wishlist")
   Future<WishlistResModel> wishlist(@Body() WishlistBodyModel body);
