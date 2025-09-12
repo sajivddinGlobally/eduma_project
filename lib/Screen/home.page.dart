@@ -65,12 +65,12 @@ class _HomePageState extends ConsumerState<HomePage> {
   @override
   Widget build(BuildContext context) {
     var box = Hive.box("userBox");
-    var id = box.get("storeId");
+    // var id = box.get("storeId");
 
-    final notificationProvider = ref.watch(
-      notifcationController(id.toString()),
-    );
-    final unreadCount = ref.watch(showNotification).unreadCount;
+    // final notificationProvider = ref.watch(
+    //   notifcationController(id.toString()),
+    // );
+    // final unreadCount = ref.watch(showNotification).unreadCount;
     final popularCourseProvider = ref.watch(popularCourseController);
     final allCategoryProvider = ref.watch(allCategoryController);
     final latestCourseProvider = ref.watch(latestCourseController);
@@ -118,60 +118,71 @@ class _HomePageState extends ConsumerState<HomePage> {
                   child: Image.asset("assets/logo.png"),
                 ),
                 actions: [
-                  notificationProvider.when(
-                    data: (data) {
-                      // 🔹 API से डेटा आने पर unreadCount अपडेट करें, लेकिन केवल तभी जब NotificationPage खुला न हो
-                      WidgetsBinding.instance.addPostFrameCallback((_) {
-                        ref
-                            .read(showNotification.notifier)
-                            .setUnread(data.length);
-                      });
-                      return Stack(
-                        children: [
-                          IconButton(
-                            icon: Icon(Icons.notifications_none, size: 35.sp),
-                            onPressed: () async {
-                              await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => const NotificationPage(),
-                                ),
-                              );
-                            },
-                          ),
-                          // if (count > 0)
-                          if (unreadCount > 0)
-                            Positioned(
-                              right: 8.w,
-                              top: 8.h,
-                              child: Container(
-                                padding: EdgeInsets.all(3.w),
-                                decoration: const BoxDecoration(
-                                  color: Colors.red,
-                                  shape: BoxShape.circle,
-                                ),
-                                constraints: const BoxConstraints(
-                                  minWidth: 18,
-                                  minHeight: 18,
-                                ),
-                                child: Text(
-                                  unreadCount > 9
-                                      ? "9+"
-                                      : unreadCount.toString(),
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            ),
-                        ],
+                  // notificationProvider.when(
+                  //   data: (data) {
+                  //     // 🔹 API से डेटा आने पर unreadCount अपडेट करें, लेकिन केवल तभी जब NotificationPage खुला न हो
+                  //     WidgetsBinding.instance.addPostFrameCallback((_) {
+                  //       ref
+                  //           .read(showNotification.notifier)
+                  //           .setUnread(data.length);
+                  //     });
+                  //     return Stack(
+                  //       children: [
+                  //         IconButton(
+                  //           icon: Icon(Icons.notifications_none, size: 35.sp),
+                  //           onPressed: () async {
+                  //             await Navigator.push(
+                  //               context,
+                  //               MaterialPageRoute(
+                  //                 builder: (_) => const NotificationPage(),
+                  //               ),
+                  //             );
+                  //           },
+                  //         ),
+                  //         // if (count > 0)
+                  //         if (unreadCount > 0)
+                  //           Positioned(
+                  //             right: 8.w,
+                  //             top: 8.h,
+                  //             child: Container(
+                  //               padding: EdgeInsets.all(3.w),
+                  //               decoration: const BoxDecoration(
+                  //                 color: Colors.red,
+                  //                 shape: BoxShape.circle,
+                  //               ),
+                  //               constraints: const BoxConstraints(
+                  //                 minWidth: 18,
+                  //                 minHeight: 18,
+                  //               ),
+                  //               child: Text(
+                  //                 unreadCount > 9
+                  //                     ? "9+"
+                  //                     : unreadCount.toString(),
+                  //                 style: const TextStyle(
+                  //                   color: Colors.white,
+                  //                   fontSize: 11,
+                  //                   fontWeight: FontWeight.bold,
+                  //                 ),
+                  //                 textAlign: TextAlign.center,
+                  //               ),
+                  //             ),
+                  //           ),
+                  //       ],
+                  //     );
+                  //   },
+                  //   error: (err, _) => const SizedBox.shrink(),
+                  //   loading: () => const SizedBox.shrink(),
+                  // ),
+                  IconButton(
+                    icon: Icon(Icons.notifications_none, size: 35.sp),
+                    onPressed: () async {
+                      await Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (_) => const NotificationPage(),
+                        ),
                       );
                     },
-                    error: (err, _) => const SizedBox.shrink(),
-                    loading: () => const SizedBox.shrink(),
                   ),
 
                   SizedBox(width: 10.w),
@@ -1426,7 +1437,7 @@ class _allProductState extends State<allProduct> {
                 // ),
                 child: Image.network(
                   (widget.data.images != null && widget.data.images!.isNotEmpty)
-                      ? widget.data.images![0].medium ?? ""
+                      ? widget.data.images![0].src ?? ""
                       : "https://via.placeholder.com/190x125.png?text=No+Image", // fallback image
                   width: 190.w,
                   height: 125.h,
