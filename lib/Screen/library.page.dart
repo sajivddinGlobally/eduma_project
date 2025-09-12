@@ -317,14 +317,12 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
                     SizedBox(height: 20.h),
                     Expanded(
                       child: filter.isEmpty
-                          ? Center(
-                              child: Text(
-                                "No Course found",
-                                style: GoogleFonts.poppins(
-                                  fontSize: 18.sp,
-                                  fontWeight: FontWeight.w500,
-                                  color: Color(0xFF747474),
-                                ),
+                          ? Text(
+                              "No Course found",
+                              style: GoogleFonts.poppins(
+                                fontSize: 18.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xFF747474),
                               ),
                             )
                           : ListView.builder(

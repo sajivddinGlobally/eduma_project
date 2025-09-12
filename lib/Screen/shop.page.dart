@@ -120,7 +120,14 @@ class _ShopPageState extends ConsumerState<ShopPage> {
             child: Row(
               children: [
                 SizedBox(width: 20.w),
-                Image.asset("assets/eduimage.png"),
+                Padding(
+                  padding: EdgeInsets.only(left: 0.w),
+                  child: Image.asset(
+                    "assets/logo.png",
+                    width: 45.w,
+                    height: 45.h,
+                  ),
+                ),
                 SizedBox(width: 10.w),
                 Text(
                   "EDUCATION",
