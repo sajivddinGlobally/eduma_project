@@ -212,6 +212,8 @@ class LibraryPage extends ConsumerStatefulWidget {
 }
 
 class _LibraryPageState extends ConsumerState<LibraryPage> {
+  final searchController = TextEditingController();
+  String searchQuery = "";
   @override
   Widget build(BuildContext context) {
     final enrolleCourseProvider = ref.watch(enrollCourseController);
@@ -228,8 +230,14 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
               ),
             ),
           ),
+
           enrolleCourseProvider.when(
             data: (data) {
+              final filter = data.courses.where((search) {
+                final title = search.title?.toLowerCase() ?? "";
+                return title.contains(searchQuery);
+              }).toList();
+
               if (data.courses.isEmpty) {
                 return Center(
                   child: Column(
@@ -253,6 +261,7 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
                   ),
                 );
               }
+
               return Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
                 child: Column(
@@ -267,121 +276,174 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
                         color: Color(0xFF001E6C),
                       ),
                     ),
+                    SizedBox(height: 15.h),
+                    TextField(
+                      controller: searchController,
+                      onChanged: (value) {
+                        setState(() {
+                          searchQuery = value.toLowerCase();
+                        });
+                      },
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.only(
+                          left: 20.w,
+                          right: 20.w,
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30.r),
+                          borderSide: BorderSide(
+                            color: Color.fromARGB(153, 0, 0, 0),
+                            width: 2.w,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30.r),
+                          borderSide: BorderSide(
+                            color: Color.fromARGB(153, 0, 0, 0),
+                            width: 2.w,
+                          ),
+                        ),
+                        hint: Text(
+                          "Searching...",
+                          style: GoogleFonts.roboto(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xFF777474),
+                            letterSpacing: -0.2,
+                          ),
+                        ),
+                      ),
+                    ),
                     SizedBox(height: 20.h),
                     Expanded(
-                      child: ListView.builder(
-                        padding: EdgeInsets.zero,
-                        itemCount: data.courses.length,
-                        itemBuilder: (context, index) {
-                          final course = data.courses[index];
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                CupertinoPageRoute(
-                                  builder: (context) =>
-                                      EnrolledDourseDetailsPage(
-                                        id: course.id.toString(),
-                                      ),
+                      child: filter.isEmpty
+                          ? Center(
+                              child: Text(
+                                "No Course found",
+                                style: GoogleFonts.poppins(
+                                  fontSize: 18.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Color(0xFF747474),
                                 ),
-                              );
-                            },
-                            child: Container(
-                              margin: EdgeInsets.only(bottom: 16.h),
-                              padding: EdgeInsets.all(12.w),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(16.r),
-                                color: Colors.white,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black12,
-                                    blurRadius: 6,
-                                    offset: Offset(0, 2),
-                                  ),
-                                ],
                               ),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(12.r),
-                                    child: Image.network(
-                                      course.thumbnail,
-                                      width: 120.w,
-                                      height: 80.h,
-                                      fit: BoxFit.cover,
-                                      errorBuilder:
-                                          (context, error, stackTrace) {
-                                            return Container(
-                                              width: 120.w,
-                                              height: 80.h,
-                                              color: Colors.grey[200],
-                                              child: Icon(
-                                                Icons.image_not_supported,
-                                                color: Colors.grey[600],
-                                                size: 40.sp,
-                                              ),
-                                            );
-                                          },
+                            )
+                          : ListView.builder(
+                              padding: EdgeInsets.zero,
+                              itemCount: filter.length,
+                              itemBuilder: (context, index) {
+                                final filterData = filter[index];
+                                return GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      CupertinoPageRoute(
+                                        builder: (context) =>
+                                            EnrolledDourseDetailsPage(
+                                              id: filterData.id.toString(),
+                                            ),
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.only(bottom: 16.h),
+                                    padding: EdgeInsets.all(12.w),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(16.r),
+                                      color: Colors.white,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black12,
+                                          blurRadius: 6,
+                                          offset: Offset(0, 2),
+                                        ),
+                                      ],
                                     ),
-                                  ),
-                                  SizedBox(width: 12.w),
-                                  Expanded(
-                                    child: Column(
+                                    child: Row(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text(
-                                          course.title,
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: GoogleFonts.poppins(
-                                            fontSize: 16.sp,
-                                            fontWeight: FontWeight.w600,
-                                            color: Color(0xFF001E6C),
+                                        ClipRRect(
+                                          borderRadius: BorderRadius.circular(
+                                            12.r,
+                                          ),
+                                          child: Image.network(
+                                            filterData.thumbnail,
+                                            width: 120.w,
+                                            height: 80.h,
+                                            fit: BoxFit.cover,
+                                            errorBuilder:
+                                                (context, error, stackTrace) {
+                                                  return Container(
+                                                    width: 120.w,
+                                                    height: 80.h,
+                                                    color: Colors.grey[200],
+                                                    child: Icon(
+                                                      Icons.image_not_supported,
+                                                      color: Colors.grey[600],
+                                                      size: 40.sp,
+                                                    ),
+                                                  );
+                                                },
                                           ),
                                         ),
-                                        SizedBox(height: 6.h),
-                                        Text(
-                                          course.instructor.name,
-                                          style: GoogleFonts.poppins(
-                                            fontSize: 14.sp,
-                                            fontWeight: FontWeight.w400,
-                                            color: Color(0xFF747474),
-                                          ),
-                                        ),
-                                        SizedBox(height: 8.h),
-                                        Container(
-                                          padding: EdgeInsets.symmetric(
-                                            horizontal: 8.w,
-                                            vertical: 4.h,
-                                          ),
-                                          decoration: BoxDecoration(
-                                            color: Color(
-                                              0xFF001E6C,
-                                            ).withOpacity(0.1),
-                                            borderRadius: BorderRadius.circular(
-                                              8.r,
-                                            ),
-                                          ),
-                                          child: Text(
-                                            "Enrolled",
-                                            style: GoogleFonts.poppins(
-                                              fontSize: 12.sp,
-                                              fontWeight: FontWeight.w500,
-                                              color: Color(0xFF001E6C),
-                                            ),
+                                        SizedBox(width: 12.w),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                filterData.title,
+                                                maxLines: 2,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: GoogleFonts.poppins(
+                                                  fontSize: 16.sp,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Color(0xFF001E6C),
+                                                ),
+                                              ),
+                                              SizedBox(height: 6.h),
+                                              Text(
+                                                filterData.instructor.name,
+                                                style: GoogleFonts.poppins(
+                                                  fontSize: 14.sp,
+                                                  fontWeight: FontWeight.w400,
+                                                  color: Color(0xFF747474),
+                                                ),
+                                              ),
+                                              SizedBox(height: 8.h),
+                                              Container(
+                                                padding: EdgeInsets.symmetric(
+                                                  horizontal: 8.w,
+                                                  vertical: 4.h,
+                                                ),
+                                                decoration: BoxDecoration(
+                                                  color: Color(
+                                                    0xFF001E6C,
+                                                  ).withOpacity(0.1),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                        8.r,
+                                                      ),
+                                                ),
+                                                child: Text(
+                                                  "Enrolled",
+                                                  style: GoogleFonts.poppins(
+                                                    fontSize: 12.sp,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Color(0xFF001E6C),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ],
                                     ),
                                   ),
-                                ],
-                              ),
+                                );
+                              },
                             ),
-                          );
-                        },
-                      ),
                     ),
                   ],
                 ),
