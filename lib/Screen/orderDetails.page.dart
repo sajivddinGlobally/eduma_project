@@ -413,7 +413,7 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           minimumSize: Size(400.w, 58.h),
-                          backgroundColor: Color(0xFF001E6C),
+                          backgroundColor: Color(0xFF3e64de),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.r),
                           ),

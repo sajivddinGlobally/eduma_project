@@ -703,7 +703,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10.r),
                               ),
-                              backgroundColor: Color(0xFF001E6C),
+                              backgroundColor: Color(0xFF3e64de),
                             ),
                             onPressed: () async {
                               if (token == null) {
@@ -833,7 +833,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                             ElevatedButton(
                                               style: ElevatedButton.styleFrom(
                                                 backgroundColor: Color(
-                                                  0xFF001E6C,
+                                                  0xFF3e64de,
                                                 ),
                                                 shape: RoundedRectangleBorder(
                                                   borderRadius:
@@ -898,7 +898,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.r),
                         ),
-                        backgroundColor: Color(0xFF001E6C),
+                        backgroundColor: Color(0xFF3e64de),
                       ),
                       onPressed: () {},
                       child: Text(

@@ -530,7 +530,10 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                             builder: (context, i) {
                                               return PhotoViewGalleryPageOptions(
                                                 imageProvider: NetworkImage(
-                                                  data.images[i].medium,
+                                                  data.images[i].src ??
+                                                      data
+                                                          .images[i]
+                                                          .the2048X2048,
                                                 ),
                                                 minScale: PhotoViewComputedScale
                                                     .contained,
@@ -593,8 +596,9 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(15.r),
                               child: Image.network(
-                                data.images[index].medium,
-                                fit: BoxFit.cover,
+                                data.images[index].src ??
+                                    data.images[index].the2048X2048,
+                                fit: BoxFit.contain,
                                 width: double.infinity,
                                 errorBuilder: (context, error, stackTrace) {
                                   return Image.network(
@@ -618,7 +622,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                       effect: ExpandingDotsEffect(
                         dotHeight: 10.h,
                         dotWidth: 10.w,
-                        activeDotColor: Color(0xFF001E6C),
+                        activeDotColor: Color(0xFF3e64de),
                         dotColor: Colors.grey.shade300,
                         spacing: 6.w,
                       ),
@@ -650,7 +654,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                               height: 36.h,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10.r),
-                                color: Color(0xFF001E6C),
+                                color: Color(0xFF3e64de),
                               ),
                               child: TextButton(
                                 style: IconButton.styleFrom(
@@ -762,7 +766,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                               ElevatedButton(
                                                 style: ElevatedButton.styleFrom(
                                                   backgroundColor: Color(
-                                                    0xFF001E6C,
+                                                    0xFF3e64de,
                                                   ),
                                                   shape: RoundedRectangleBorder(
                                                     borderRadius:
@@ -1087,7 +1091,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
       ),
       bottomSheet: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: Color(0xFF001E6C),
+          backgroundColor: Color(0xFF3e64de),
           minimumSize: Size(400.w, 55.h),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12.r),

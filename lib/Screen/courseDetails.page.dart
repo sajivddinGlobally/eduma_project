@@ -367,7 +367,7 @@ class _CourseDetailsPageState extends ConsumerState<CourseDetailsPage> {
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 minimumSize: Size(400.w, 56.h),
-                                backgroundColor: Color(0xFF001E6C),
+                                backgroundColor: Color(0xFF3e64de),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(5.r),
                                 ),

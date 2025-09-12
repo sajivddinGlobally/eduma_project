@@ -292,7 +292,7 @@ class _PaymentDetailsPageState extends State<PaymentDetailsPage> {
                             children: [
                               CircleAvatar(
                                 radius: 18.r,
-                                backgroundColor: Color(0xFF001E6C),
+                                backgroundColor: Color(0xFF3e64de),
                                 child: Icon(
                                   Icons.attach_money,
                                   color: Colors.white,
@@ -328,7 +328,7 @@ class _PaymentDetailsPageState extends State<PaymentDetailsPage> {
                         padding: EdgeInsets.symmetric(horizontal: 20.w),
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xFF001E6C),
+                            backgroundColor: Color(0xFF3e64de),
                             minimumSize: Size(double.infinity, 50.h),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8.r),

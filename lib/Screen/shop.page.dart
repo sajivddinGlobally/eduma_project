@@ -354,7 +354,7 @@ class _ProductCardState extends State<ProductCard> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10.r),
                   child: Image.network(
-                    widget.data.images![0].medium.toString(),
+                    widget.data.images![0].src.toString(),
                     fit: BoxFit.fill,
                     errorBuilder: (context, error, stackTrace) {
                       return Image.network(
@@ -451,7 +451,8 @@ class _ProductCardState extends State<ProductCard> {
         ElevatedButton(
           style: ElevatedButton.styleFrom(
             minimumSize: Size(double.infinity, 45.h),
-            backgroundColor: Color(0xFF001E6C),
+            //backgroundColor: Color(0xFF001E6C),
+            backgroundColor: Color(0xFF3e64de),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10.r),
               side: BorderSide.none,

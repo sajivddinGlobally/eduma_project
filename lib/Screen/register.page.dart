@@ -429,7 +429,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage>
                   onPressed: isLoading ? null : () => registerCall(),
 
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF001E6C),
+                    backgroundColor: const Color(0xFF3e64de),
                     minimumSize: Size(400.w, 52.h),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(40.r),
@@ -466,7 +466,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage>
                           style: GoogleFonts.roboto(
                             fontSize: 18.sp,
                             fontWeight: FontWeight.w500,
-                            color: Color(0xFF001E6C),
+                            color: Color(0xFF3e64de),
                           ),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {

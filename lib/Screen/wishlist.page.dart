@@ -410,7 +410,7 @@ class _WishlistPageState extends ConsumerState<WishlistPage> {
                     style: ElevatedButton.styleFrom(
                       minimumSize: Size(190.w, 40.h),
                       backgroundColor: tab == 0
-                          ? Color(0xFF001E6C)
+                          ? Color(0xFF3e64de)
                           : Colors.white,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.only(
@@ -438,7 +438,7 @@ class _WishlistPageState extends ConsumerState<WishlistPage> {
                     style: ElevatedButton.styleFrom(
                       minimumSize: Size(190.w, 40.h),
                       backgroundColor: tab == 1
-                          ? Color(0xFF001E6C)
+                          ? Color(0xFF3e64de)
                           : Colors.white,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.only(

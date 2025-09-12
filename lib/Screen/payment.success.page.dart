@@ -123,7 +123,7 @@ class _PaymentSuccessPageState extends State<PaymentSuccessPage> {
                   height: 51.h,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Color(0xFF001E6C),
+                    color: Color(0xFF3e64de),
                   ),
                   child: Center(
                     child: Icon(Icons.done_all, color: Colors.white),
@@ -160,7 +160,7 @@ class _PaymentSuccessPageState extends State<PaymentSuccessPage> {
                 padding: EdgeInsets.symmetric(horizontal: 20.w),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF001E6C),
+                    backgroundColor: Color(0xFF3e64de),
                     minimumSize: Size(double.infinity, 50.h),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.r),

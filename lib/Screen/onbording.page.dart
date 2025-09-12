@@ -80,7 +80,7 @@ class _OnbordingPageState extends State<OnbordingPage> {
                 );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF001E6C),
+                backgroundColor: const Color(0xFF3e64de),
                 minimumSize: Size(400.w, 52.h),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(40.r),
