@@ -975,7 +975,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                   top: Radius.circular(12.r),
                                 ),
                                 child: Image.network(
-                                  data.images[index].medium,
+                                  data.images[index].src,
                                   height: 100.h,
                                   width: double.infinity,
                                   fit: BoxFit.cover,
@@ -984,7 +984,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                       "https://thumbs.dreamstime.com/b/no-image-vector-symbol-missing-available-icon-gallery-moment-placeholder-246411909.jpg",
                                       height: 100.h,
                                       width: double.infinity,
-                                      fit: BoxFit.cover,
+                                      fit: BoxFit.fill,
                                     );
                                   },
                                 ),
