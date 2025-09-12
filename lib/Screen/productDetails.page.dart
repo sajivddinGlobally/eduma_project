@@ -1005,7 +1005,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                     ),
                                     SizedBox(height: 4.h),
                                     Text(
-                                      "₹ 30k",
+                                      "₹ ${data.price.toString()}",
                                       style: GoogleFonts.roboto(
                                         fontSize: 14.sp,
                                         fontWeight: FontWeight.w600,
