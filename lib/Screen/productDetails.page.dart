@@ -530,10 +530,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                             builder: (context, i) {
                                               return PhotoViewGalleryPageOptions(
                                                 imageProvider: NetworkImage(
-                                                  data.images[i].src ??
-                                                      data
-                                                          .images[i]
-                                                          .the2048X2048,
+                                                  data.images[i].src,
                                                 ),
                                                 minScale: PhotoViewComputedScale
                                                     .contained,
@@ -598,7 +595,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                               child: Image.network(
                                 data.images[index].src ??
                                     data.images[index].the2048X2048,
-                                fit: BoxFit.contain,
+                                fit: BoxFit.fill,
                                 width: double.infinity,
                                 errorBuilder: (context, error, stackTrace) {
                                   return Image.network(
