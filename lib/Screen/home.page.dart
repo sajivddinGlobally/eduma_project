@@ -115,7 +115,12 @@ class _HomePageState extends ConsumerState<HomePage> {
                 backgroundColor: Color(0xFFFFFFFF),
                 leading: Padding(
                   padding: EdgeInsets.only(left: 20.w),
-                  child: Image.asset("assets/logo.png"),
+                  child: InkWell(
+                    onTap: () {
+                      _scaffoldKey.currentState?.openDrawer();
+                    },
+                    child: Image.asset("assets/logo.png"),
+                  ),
                 ),
                 actions: [
                   // notificationProvider.when(
