@@ -1,4 +1,6 @@
 import 'dart:developer';
+import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:eduma_app/Screen/enrolledCourseDetails.page.dart';
 import 'package:eduma_app/Screen/library.page.dart';
 import 'package:eduma_app/Screen/login.page.dart';
@@ -15,6 +17,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:open_filex/open_filex.dart';
+import 'package:path_provider/path_provider.dart';
 
 class PayCourseDetailsPage extends ConsumerStatefulWidget {
   final String id;
@@ -29,6 +33,26 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
   bool isLoading = false;
   bool isWishlisted = false;
   bool enrolled = false;
+
+  Future<String?> downloadPdf(String url, String fileName) async {
+    try {
+      // ✅ Android Downloads folder
+      final dir = Directory("/storage/emulated/0/Download");
+      if (!dir.existsSync()) {
+        dir.createSync(recursive: true);
+      }
+
+      final filePath = "${dir.path}/$fileName";
+
+      await Dio().download(url, filePath);
+
+      print("✅ File downloaded at: $filePath");
+      return filePath;
+    } catch (e) {
+      print("❌ Download error: $e");
+      return null;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -964,11 +988,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
         children: [
           InkWell(
             borderRadius: BorderRadius.circular(8.r),
-            onTap: () {
-              // ScaffoldMessenger.of(
-              //   context,
-              // ).showSnackBar(SnackBar(content: Text("Please buy the course")));
-            },
+            onTap: () {},
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
@@ -978,28 +998,6 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                 Row(
                   children: [
                     Icon(Icons.ondemand_video, size: 50.sp),
-                    // ClipRRect(
-                    //   borderRadius: BorderRadius.circular(10.r),
-                    //   child: Image.network(
-                    //     videoId.isNotEmpty
-                    //         ? "https://img.youtube.com/vi/$videoId/0.jpg"
-                    //         : "https://via.placeholder.com/120x90.png?text=No+Video",
-                    //     width: 120.w,
-                    //     height: 70.h,
-                    //     fit: BoxFit.cover,
-                    //     errorBuilder: (context, error, stackTrace) {
-                    //       return ClipRRect(
-                    //         borderRadius: BorderRadius.circular(10.r),
-                    //         child: Image.network(
-                    //           "https://t4.ftcdn.net/jpg/05/97/47/95/360_F_597479556_7bbQ7t4Z8k3xbAloHFHVdZIizWK1PdOo.jpg",
-                    //           width: 120.w,
-                    //           height: 70.h,
-                    //           fit: BoxFit.cover,
-                    //         ),
-                    //       );
-                    //     },
-                    //   ),
-                    // ),
                     SizedBox(width: 12.w),
                     Expanded(
                       child: Text(
@@ -1013,6 +1011,27 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                         ),
                       ),
                     ),
+                    if (title.toLowerCase().contains("pdf"))
+                      IconButton(
+                        icon: Icon(Icons.downloading_sharp, size: 25.sp),
+                        onPressed: () async {
+                          final filePath = await downloadPdf(
+                            videoUrl,
+                            "my_file.pdf",
+                          );
+
+                          if (filePath != null) {
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text("PDF Downloaded at: $filePath"),
+                                ),
+                              );
+                            }
+                            await OpenFilex.open(filePath);
+                          }
+                        },
+                      ),
                   ],
                 ),
               ],

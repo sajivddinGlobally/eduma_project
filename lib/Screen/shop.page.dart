@@ -28,6 +28,7 @@ class ShopPage extends ConsumerStatefulWidget {
 class _ShopPageState extends ConsumerState<ShopPage> {
   final TextEditingController _searchController = TextEditingController();
   String searchQuery = '';
+  int tab = 0;
   List<Map<String, dynamic>> shopList = [
     {
       "image": "assets/reading2.png",
@@ -70,6 +71,13 @@ class _ShopPageState extends ConsumerState<ShopPage> {
       "name": "Create an LMS Website With LearnPress",
     },
   ];
+
+  bool hasCategory(product, String categoryName) {
+    return product.categories.any(
+      (cat) => cat.name.toLowerCase() == categoryName.toLowerCase(),
+    );
+  }
+
   bool isWishlisted = false;
 
   List<ProductListModel> products = [];
@@ -99,13 +107,7 @@ class _ShopPageState extends ConsumerState<ShopPage> {
 
   @override
   Widget build(BuildContext context) {
-    //final productListProvider = ref.watch(productListController);
     final productState = ref.watch(productListController);
-
-    // final filteredProducts = productState..where((product) {
-    //   final title = product.name?.toLowerCase() ?? "";
-    //   return title.contains(searchQuery.toLowerCase());
-    // }).toList();
 
     return Scaffold(
       backgroundColor: Color(0xFFFFFFFF),
@@ -141,15 +143,6 @@ class _ShopPageState extends ConsumerState<ShopPage> {
               ],
             ),
           ),
-          // Positioned(
-          //   right: 20.w,
-          //   top: 64.h,
-          //   child: Icon(
-          //     Icons.notifications_none_outlined,
-          //     color: Color(0xFF000000),
-          //     size: 30.sp,
-          //   ),
-          // ),
           Positioned(
             top: 85.h,
             left: 0,
@@ -166,50 +159,130 @@ class _ShopPageState extends ConsumerState<ShopPage> {
                     letterSpacing: -1,
                   ),
                 ),
-                SizedBox(height: 16.h),
+
                 Padding(
                   padding: EdgeInsets.only(left: 20.w, right: 20.w),
-                  child: TextField(
-                    controller: _searchController,
-                    decoration: InputDecoration(
-                      hintText: "Search products...",
-                      hintStyle: GoogleFonts.roboto(
-                        fontSize: 14.sp,
-                        color: Colors.grey[500],
+                  child: Column(
+                    children: [
+                      SizedBox(height: 16.h),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                minimumSize: Size(double.infinity, 45.h),
+                                //backgroundColor: Color(0xFF001E6C),
+                                backgroundColor: tab == 0
+                                    ? Color(0xFF3e64de)
+                                    : Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.r),
+                                  side: BorderSide.none,
+                                ),
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  tab = 0;
+                                });
+                              },
+                              child: Text(
+                                "Book",
+                                style: GoogleFonts.roboto(
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: tab == 0 ? Colors.white : Colors.black,
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 10.w),
+                          Expanded(
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                minimumSize: Size(double.infinity, 45.h),
+                                //backgroundColor: Color(0xFF001E6C),
+                                backgroundColor: tab == 1
+                                    ? Color(0xFF3e64de)
+                                    : Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.r),
+                                  side: BorderSide.none,
+                                ),
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  tab = 1;
+                                });
+                              },
+                              child: Text(
+                                "Instruments",
+                                style: GoogleFonts.roboto(
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: tab == 1 ? Colors.white : Colors.black,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                      prefixIcon: Icon(Icons.search, color: Colors.grey[500]),
-                      filled: true,
-                      fillColor: Colors.grey[100],
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12.r),
-                        borderSide: BorderSide.none,
+                      SizedBox(height: 10.h),
+                      TextField(
+                        controller: _searchController,
+                        decoration: InputDecoration(
+                          hintText: "Search products...",
+                          hintStyle: GoogleFonts.roboto(
+                            fontSize: 14.sp,
+                            color: Colors.grey[500],
+                          ),
+                          prefixIcon: Icon(
+                            Icons.search,
+                            color: Colors.grey[500],
+                          ),
+                          filled: true,
+                          fillColor: Colors.grey[100],
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12.r),
+                            borderSide: BorderSide.none,
+                          ),
+                          contentPadding: EdgeInsets.symmetric(vertical: 12.h),
+                        ),
+                        onChanged: (value) {
+                          setState(() => searchQuery = value.toLowerCase());
+                        },
                       ),
-                      contentPadding: EdgeInsets.symmetric(vertical: 12.h),
-                    ),
-                    onChanged: (value) {
-                      setState(() => searchQuery = value.toLowerCase());
-                    },
+                    ],
                   ),
                 ),
                 SizedBox(height: 16.h),
                 productState.when(
                   data: (products) {
-                    final filtered = products.where((p) {
-                      final title = p.name?.toLowerCase() ?? "";
-                      return title.contains(searchQuery.toLowerCase());
-                    }).toList();
+                    // final filtered = products.where((p) {
+                    //   final title = p.name?.toLowerCase() ?? "";
+                    //   return title.contains(searchQuery.toLowerCase());
+                    // }).toList();
 
-                    if (filtered.isEmpty) {
-                      return Center(
-                        child: Text(
-                          "No products found",
-                          style: GoogleFonts.roboto(
-                            fontSize: 16.sp,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                      );
-                    }
+                    // if (filtered.isEmpty) {
+                    //   return Center(
+                    //     child: Text(
+                    //       "No products found",
+                    //       style: GoogleFonts.roboto(
+                    //         fontSize: 16.sp,
+                    //         color: Colors.grey[600],
+                    //       ),
+                    //     ),
+                    //   );
+                    // }
+
+                    // Filtered list based on tab
+                    final filteredProducts = tab == 0
+                        ? products
+                              .where((p) => hasCategory(p, "ASPEUS Books"))
+                              .toList()
+                        : products
+                              .where((p) => hasCategory(p, "Instruments"))
+                              .toList();
+
                     return Expanded(
                       child: Padding(
                         padding: EdgeInsets.only(
@@ -223,13 +296,13 @@ class _ShopPageState extends ConsumerState<ShopPage> {
                           crossAxisSpacing: 20.w,
                           mainAxisSpacing: 15.h,
                           itemCount:
-                              filtered.length +
+                              filteredProducts.length +
                               (ref.read(productListController.notifier).hasMore
                                   ? 1
                                   : 0),
                           itemBuilder: (context, index) {
-                            if (index < filtered.length) {
-                              final product = filtered[index];
+                            if (index < filteredProducts.length) {
+                              final product = filteredProducts[index];
                               final boxHeight = index.isEven ? 250.0 : 150.0;
                               return ProductCard(
                                 data: product,
