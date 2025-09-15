@@ -226,7 +226,7 @@ class _CourseDetailsPageState extends ConsumerState<CourseDetailsPage> {
                                 style: GoogleFonts.roboto(
                                   fontSize: 16.sp,
                                   fontWeight: FontWeight.w400,
-                                  color: Color(0xFF000000),
+                                  color: Colors.black,
                                 ),
                               ),
                               SizedBox(width: 20.w),

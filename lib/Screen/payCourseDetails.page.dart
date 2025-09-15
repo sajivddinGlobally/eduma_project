@@ -220,7 +220,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                   ),
                                   Spacer(),
                                   Text(
-                                    "₹ ${(courseDetails.price == null || courseDetails.price.toString().isEmpty) ? "0" : courseDetails.price}",
+                                    "${(courseDetails.price == null || courseDetails.price.toString().isEmpty) ? "0" : courseDetails.price}",
                                     style: GoogleFonts.roboto(
                                       fontSize: 18.sp,
                                       fontWeight: FontWeight.w400,
