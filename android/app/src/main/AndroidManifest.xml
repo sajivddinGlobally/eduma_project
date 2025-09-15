@@ -5,7 +5,7 @@
     android:maxSdkVersion="32"/>
 
     <application
-        android:label="Eduma App"
+        android:label="ATATC Courses Surat"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:enableOnBackInvokedCallback="true"
