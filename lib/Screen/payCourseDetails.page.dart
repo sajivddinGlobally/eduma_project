@@ -878,7 +878,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                               }
                             },
                             child: Text(
-                              enrolled ? "Continue" : "Free to Get",
+                              enrolled ? "Continue" : "Get for free",
                               style: GoogleFonts.roboto(
                                 fontSize: 16.sp,
                                 fontWeight: FontWeight.w500,
