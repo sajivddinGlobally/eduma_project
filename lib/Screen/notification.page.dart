@@ -33,6 +33,36 @@ class _NotificationPageState extends ConsumerState<NotificationPage> {
   Widget build(BuildContext context) {
     var box = Hive.box("userBox");
     var id = box.get("storeId");
+
+    // ✅ Agar login nahi hai
+    if (id == null) {
+      return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios, color: Colors.black87),
+            onPressed: () => Navigator.pop(context),
+          ),
+          title: Text(
+            'Notifications',
+            style: TextStyle(
+              fontSize: 20.sp,
+              fontWeight: FontWeight.w600,
+              color: Colors.black87,
+            ),
+          ),
+          centerTitle: true,
+        ),
+        body: Center(
+          child: Text(
+            "No Notification",
+            style: TextStyle(fontSize: 16.sp, color: Colors.grey),
+          ),
+        ),
+      );
+    }
+
     final notificationProvider = ref.watch(
       notifcationController(id.toString()),
     );

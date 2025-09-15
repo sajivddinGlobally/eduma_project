@@ -238,8 +238,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 ),
                 child: isLoading
                     ? Center(
-                        child: CircularProgressIndicator(
-                          color: Color(0xFF001E6C),
+                        child: SizedBox(
+                          width: 30.w,
+                          height: 30.h,
+                          child: CircularProgressIndicator(
+                            color: Color(0xFF001E6C),
+                            strokeWidth: 4,
+                          ),
                         ),
                       )
                     : Text(
