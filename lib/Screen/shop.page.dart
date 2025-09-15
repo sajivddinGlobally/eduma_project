@@ -141,15 +141,15 @@ class _ShopPageState extends ConsumerState<ShopPage> {
               ],
             ),
           ),
-          Positioned(
-            right: 20.w,
-            top: 64.h,
-            child: Icon(
-              Icons.notifications_none_outlined,
-              color: Color(0xFF000000),
-              size: 30.sp,
-            ),
-          ),
+          // Positioned(
+          //   right: 20.w,
+          //   top: 64.h,
+          //   child: Icon(
+          //     Icons.notifications_none_outlined,
+          //     color: Color(0xFF000000),
+          //     size: 30.sp,
+          //   ),
+          // ),
           Positioned(
             top: 85.h,
             left: 0,
