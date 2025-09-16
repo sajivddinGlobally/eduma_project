@@ -485,17 +485,17 @@ class Status {
 class Thumbnail {
   String medium;
   String large;
-  String alt;
+  // String alt;
 
-  Thumbnail({required this.medium, required this.large, required this.alt});
+  Thumbnail({required this.medium, required this.large, });
 
   factory Thumbnail.fromJson(Map<String, dynamic> json) =>
-      Thumbnail(medium: json["medium"], large: json["large"], alt: json["alt"]);
+      Thumbnail(medium: json["medium"], large: json["large"],);
 
   Map<String, dynamic> toJson() => {
     "medium": medium,
     "large": large,
-    "alt": alt,
+   // "alt": alt,
   };
 }
 

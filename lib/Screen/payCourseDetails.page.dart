@@ -149,10 +149,19 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                     borderRadius: BorderRadius.circular(10.r),
                                     child: Image.network(
                                       courseDetails.thumbnail ??
-                                          'https://www.google.com/url?sa=i&url=https%3A%2F%2Fcommons.wikimedia.org%2Fwiki%2FFile%3ANo-Image-Placeholder.svg&psig=AOvVaw1MZ0Y-EQnAjmnyZjr5zMZ3&ust=1755926612664000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCPiV9cHWnY8DFQAAAAAdAAAAABAE',
+                                          'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/832px-No-Image-Placeholder.png',
                                       width: 400.w,
                                       height: 254.h,
-                                      fit: BoxFit.cover,
+                                      fit: BoxFit.fill,
+                                      errorBuilder: (context, error, stackTrace) {
+                                        return Image.network(
+                                          "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/832px-No-Image-Placeholder.png",
+
+                                          width: 400.w,
+                                          height: 254.h,
+                                          fit: BoxFit.cover,
+                                        );
+                                      },
                                     ),
                                   ),
                                   Align(

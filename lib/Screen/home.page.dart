@@ -65,12 +65,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   @override
   Widget build(BuildContext context) {
     var box = Hive.box("userBox");
-    // var id = box.get("storeId");
 
-    // final notificationProvider = ref.watch(
-    //   notifcationController(id.toString()),
-    // );
-    // final unreadCount = ref.watch(showNotification).unreadCount;
     final popularCourseProvider = ref.watch(popularCourseController);
     final allCategoryProvider = ref.watch(allCategoryController);
     final latestCourseProvider = ref.watch(latestCourseController);
@@ -123,61 +118,6 @@ class _HomePageState extends ConsumerState<HomePage> {
                   ),
                 ),
                 actions: [
-                  // notificationProvider.when(
-                  //   data: (data) {
-                  //     // 🔹 API से डेटा आने पर unreadCount अपडेट करें, लेकिन केवल तभी जब NotificationPage खुला न हो
-                  //     WidgetsBinding.instance.addPostFrameCallback((_) {
-                  //       ref
-                  //           .read(showNotification.notifier)
-                  //           .setUnread(data.length);
-                  //     });
-                  //     return Stack(
-                  //       children: [
-                  //         IconButton(
-                  //           icon: Icon(Icons.notifications_none, size: 35.sp),
-                  //           onPressed: () async {
-                  //             await Navigator.push(
-                  //               context,
-                  //               MaterialPageRoute(
-                  //                 builder: (_) => const NotificationPage(),
-                  //               ),
-                  //             );
-                  //           },
-                  //         ),
-                  //         // if (count > 0)
-                  //         if (unreadCount > 0)
-                  //           Positioned(
-                  //             right: 8.w,
-                  //             top: 8.h,
-                  //             child: Container(
-                  //               padding: EdgeInsets.all(3.w),
-                  //               decoration: const BoxDecoration(
-                  //                 color: Colors.red,
-                  //                 shape: BoxShape.circle,
-                  //               ),
-                  //               constraints: const BoxConstraints(
-                  //                 minWidth: 18,
-                  //                 minHeight: 18,
-                  //               ),
-                  //               child: Text(
-                  //                 unreadCount > 9
-                  //                     ? "9+"
-                  //                     : unreadCount.toString(),
-                  //                 style: const TextStyle(
-                  //                   color: Colors.white,
-                  //                   fontSize: 11,
-                  //                   fontWeight: FontWeight.bold,
-                  //                 ),
-                  //                 textAlign: TextAlign.center,
-                  //               ),
-                  //             ),
-                  //           ),
-                  //       ],
-                  //     );
-                  //   },
-                  //   error: (err, _) => const SizedBox.shrink(),
-                  //   loading: () => const SizedBox.shrink(),
-                  // ),
                   IconButton(
                     icon: Icon(Icons.notifications_none, size: 35.sp),
                     onPressed: () async {
@@ -430,8 +370,11 @@ class _HomePageState extends ConsumerState<HomePage> {
                           ),
                         );
                       },
-                      error: (error, stackTrace) =>
-                          Center(child: Text(error.toString())),
+                      error: (error, stackTrace) {
+                        log(stackTrace.toString());
+                        return Center(child: Text(error.toString()));
+                      },
+
                       loading: () => Center(child: CircularProgressIndicator()),
                     ),
                     SizedBox(height: 20.h),
@@ -505,8 +448,11 @@ class _HomePageState extends ConsumerState<HomePage> {
                           ),
                         );
                       },
-                      error: (error, stackTrace) =>
-                          Center(child: Text(error.toString())),
+                      error: (error, stackTrace) {
+                        log(stackTrace.toString());
+                        return Center(child: Text(error.toString()));
+                      },
+
                       loading: () => Center(
                         child: CircularProgressIndicator(
                           color: Color(0xFF001E6C),
@@ -576,8 +522,11 @@ class _HomePageState extends ConsumerState<HomePage> {
                           ),
                         );
                       },
-                      error: (error, stackTrace) =>
-                          Center(child: Text(error.toString())),
+                      error: (error, stackTrace) {
+                        log(stackTrace.toString());
+                        return Center(child: Text(error.toString()));
+                      },
+
                       loading: () => Center(child: CircularProgressIndicator()),
                     ),
                     SizedBox(height: 10.h),
