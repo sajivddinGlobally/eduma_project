@@ -1,7 +1,8 @@
 import 'dart:developer';
 import 'dart:io';
 import 'package:dio/dio.dart';
-import 'package:eduma_app/Screen/enrolledCourseDetails.page.dart';
+import 'package:eduma_app/Screen/enrolledCourseDetails.page.dart'
+    hide Attachment;
 import 'package:eduma_app/Screen/library.page.dart';
 import 'package:eduma_app/Screen/login.page.dart';
 import 'package:eduma_app/config/core/showFlushbar.dart';
@@ -11,7 +12,6 @@ import 'package:eduma_app/data/Controller/enrolleCourseController.dart';
 import 'package:eduma_app/data/Controller/popularCourseController.dart';
 import 'package:eduma_app/data/Controller/wishlistControllerClass.dart';
 import 'package:eduma_app/data/Model/enrollBodyModel.dart';
-import 'package:eduma_app/data/Model/enrollCourseStudentModel.dart';
 import 'package:eduma_app/data/Model/popularCourseDetailsModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -36,25 +36,6 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
   bool isLoading = false;
   bool isWishlisted = false;
   bool enrolled = false;
-
-  Future<String?> downloadPdf(String url, String fileName) async {
-    try {
-      final dir = Directory("/storage/emulated/0/Download");
-      if (!dir.existsSync()) {
-        dir.createSync(recursive: true);
-      }
-
-      final filePath = "${dir.path}/$fileName";
-
-      await Dio().download(url, filePath);
-
-      log("✅ File downloaded at: $filePath");
-      return filePath;
-    } catch (e) {
-      log("❌ Download error: $e");
-      return null;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -1258,7 +1239,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
     // ✅ Pdf attachment filter
     final pdfAttachment = attachments?.firstWhere(
       (attachment) => attachment.type?.toLowerCase() == "application/pdf",
-      orElse: () => Attachment(), // return null instead of empty obj
+      orElse: () => Attachment(),
     );
 
     final isPdfAvailable =
@@ -1399,25 +1380,6 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
     Match? match = regExp.firstMatch(url);
     return match != null && match.group(7)!.length == 11 ? match.group(7)! : '';
   }
-
-  // Future<String?> newdownloadPdf(String url, String fileName) async {
-  //   try {
-  //     final dir = Directory("/storage/emulated/0/Download");
-  //     if (!dir.existsSync()) {
-  //       dir.createSync(recursive: true);
-  //     }
-
-  //     final filePath = "${dir.path}/$fileName";
-
-  //     await Dio().download(url, filePath);
-
-  //     log("✅ PDF डाउनलोड हो गया: $filePath");
-  //     return filePath;
-  //   } catch (e) {
-  //     log("❌ डाउनलोड त्रुटि: $e");
-  //     return null;
-  //   }
-  // }
 
   Future<String?> newdownloadPdf(String url, String fileName) async {
     try {

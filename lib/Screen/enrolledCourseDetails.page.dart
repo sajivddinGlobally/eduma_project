@@ -246,12 +246,19 @@
 //   }
 // }
 
+import 'dart:developer';
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:eduma_app/Screen/video.page.dart';
 import 'package:eduma_app/data/Controller/popularCourseController.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:open_filex/open_filex.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class EnrolledDourseDetailsPage extends ConsumerStatefulWidget {
   final String id;
@@ -465,5 +472,264 @@ class _EnrolledDourseDetailsPageState
     );
     final match = regExp.firstMatch(url);
     return match != null && match.group(7)!.length == 11 ? match.group(7)! : "";
+  }
+}
+
+// ----------------- Attachment model -----------------
+class Attachment {
+  String? url;
+  String? title;
+  String? type;
+
+  Attachment({this.url, this.title, this.type});
+}
+
+// ----------------- ModuleCard Widget -----------------
+class ModuleCard extends StatefulWidget {
+  final String title;
+  final String videoUrl;
+  final List<Attachment>? attachments;
+
+  const ModuleCard({
+    Key? key,
+    required this.title,
+    required this.videoUrl,
+    this.attachments,
+  }) : super(key: key);
+
+  @override
+  State<ModuleCard> createState() => _ModuleCardState();
+}
+
+class _ModuleCardState extends State<ModuleCard> {
+  double downloadProgress = 0.0;
+  bool isDownloading = false;
+  bool downloadDone = false;
+  String? localFilePath;
+
+  // ----------------- YouTube ID extractor -----------------
+  String extractYouTubeId(String url) {
+    RegExp regExp = RegExp(
+      r'^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?v=))([^#\&\?]*).*',
+      caseSensitive: false,
+    );
+    Match? match = regExp.firstMatch(url);
+    return match != null && match.group(7)!.length == 11 ? match.group(7)! : '';
+  }
+
+  // ----------------- PDF download -----------------
+  Future<void> downloadPdf(String url, String fileName) async {
+    try {
+      setState(() {
+        isDownloading = true;
+        downloadProgress = 0.0;
+      });
+
+      if (Platform.isAndroid) {
+        if (!await Permission.storage.isGranted) {
+          await Permission.storage.request();
+        }
+        if (await Permission.manageExternalStorage.isDenied) {
+          await Permission.manageExternalStorage.request();
+        }
+      }
+
+      Directory? dir;
+      if (Platform.isAndroid) {
+        dir = await getExternalStorageDirectory();
+      } else {
+        dir = await getApplicationDocumentsDirectory();
+      }
+
+      if (dir == null) throw Exception("Storage directory not found");
+
+      if (!dir.existsSync()) {
+        dir.createSync(recursive: true);
+      }
+
+      final filePath = "${dir.path}/$fileName";
+      final dio = Dio();
+
+      await dio.download(
+        url,
+        filePath,
+        onReceiveProgress: (received, total) {
+          if (total != -1 && mounted) {
+            setState(() {
+              downloadProgress = received / total;
+            });
+          }
+        },
+      );
+
+      setState(() {
+        isDownloading = false;
+        downloadDone = true;
+        localFilePath = filePath;
+      });
+
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("PDF डाउनलोड हो गया: $filePath")));
+
+      await OpenFilex.open(filePath);
+    } catch (e) {
+      log("❌ डाउनलोड त्रुटि: $e");
+      setState(() {
+        isDownloading = false;
+        downloadDone = false;
+      });
+
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("Download failed")));
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final videoId = extractYouTubeId(widget.videoUrl);
+
+    final Attachment? pdfAttachment = widget.attachments?.firstWhere(
+      (a) => (a.type ?? '').toLowerCase() == 'application/pdf',
+      orElse: () => Attachment(),
+    );
+
+    final bool isPdfAvailable =
+        pdfAttachment != null && (pdfAttachment.url?.isNotEmpty ?? false);
+    final bool isVideoAvailable = videoId.isNotEmpty;
+
+    return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      elevation: 2,
+      child: ExpansionTile(
+        tilePadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        childrenPadding: const EdgeInsets.only(left: 16, right: 16, bottom: 12),
+        collapsedShape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              widget.title,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: GoogleFonts.roboto(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: Colors.black,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              isVideoAvailable && isPdfAvailable
+                  ? "Video and PDF Available"
+                  : isVideoAvailable
+                  ? "1 Video"
+                  : isPdfAvailable
+                  ? "1 PDF"
+                  : "No Video and PDF Available",
+              style: GoogleFonts.roboto(
+                fontSize: 13,
+                fontWeight: FontWeight.w400,
+                color: Colors.grey[600],
+              ),
+            ),
+          ],
+        ),
+        children: [
+          const Divider(color: Color(0xFFBFBFBF), thickness: 0.90),
+          const SizedBox(height: 10),
+
+          // PDF Row
+          if (isPdfAvailable)
+            Row(
+              children: [
+                const Icon(Icons.picture_as_pdf, size: 50, color: Colors.red),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    "${pdfAttachment!.title ?? widget.title} (PDF)",
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: GoogleFonts.roboto(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black87,
+                    ),
+                  ),
+                ),
+                if (isDownloading)
+                  SizedBox(
+                    width: 28,
+                    height: 28,
+                    child: CircularProgressIndicator(
+                      value: downloadProgress,
+                      strokeWidth: 3,
+                    ),
+                  )
+                else if (downloadDone)
+                  IconButton(
+                    icon: const Icon(Icons.check_circle, color: Colors.green),
+                    onPressed: () async {
+                      if (localFilePath != null) {
+                        await OpenFilex.open(localFilePath!);
+                      }
+                    },
+                  )
+                else
+                  IconButton(
+                    icon: const Icon(Icons.downloading_sharp),
+                    onPressed: () {
+                      if (pdfAttachment.url != null) {
+                        downloadPdf(
+                          pdfAttachment.url!,
+                          pdfAttachment.title ?? "${widget.title}.pdf",
+                        );
+                      }
+                    },
+                  ),
+              ],
+            ),
+
+          // Video Row
+          if (isVideoAvailable)
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: InkWell(
+                onTap: () {
+                  log("Play video with id: $videoId");
+                  // You can open youtube player or use url_launcher
+                },
+                child: Row(
+                  children: [
+                    const Icon(
+                      Icons.ondemand_video,
+                      size: 50,
+                      color: Colors.blue,
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Text(
+                        widget.title,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: GoogleFonts.roboto(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black87,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
   }
 }
