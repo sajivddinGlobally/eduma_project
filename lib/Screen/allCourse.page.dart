@@ -167,12 +167,33 @@ class _AllCoursePageState extends ConsumerState<AllCoursePage> {
                                 mainAxisSpacing: 15.h,
                                 childAspectRatio: 180.w / 195.h,
                               ),
+                          // itemBuilder: (context, index) {
+                          //   if (index < filterData.length) {
+                          //     return AllBody(data: filterData[index]);
+                          //   } else {
+                          //     // 🔹 bottom loader
+                          //     return Center(child: CircularProgressIndicator());
+                          //   }
+                          // },
                           itemBuilder: (context, index) {
                             if (index < filterData.length) {
                               return AllBody(data: filterData[index]);
                             } else {
-                              // 🔹 bottom loader
-                              return Center(child: CircularProgressIndicator());
+                              // 🔹 Agar aur pages bache hain to loader dikhao
+                              if (pagination.hasNextPage &&
+                                  pagination.nextPage != null) {
+                                return Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              } else {
+                                Future.delayed(Durations.short1, () {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text("No more data")),
+                                  );
+                                });
+
+                                return SizedBox.shrink();
+                              }
                             }
                           },
                         ),
