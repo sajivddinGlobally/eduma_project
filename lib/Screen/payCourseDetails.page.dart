@@ -11,6 +11,8 @@ import 'package:eduma_app/data/Controller/enrolleCourseController.dart';
 import 'package:eduma_app/data/Controller/popularCourseController.dart';
 import 'package:eduma_app/data/Controller/wishlistControllerClass.dart';
 import 'package:eduma_app/data/Model/enrollBodyModel.dart';
+import 'package:eduma_app/data/Model/enrollCourseStudentModel.dart';
+import 'package:eduma_app/data/Model/popularCourseDetailsModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -19,6 +21,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class PayCourseDetailsPage extends ConsumerStatefulWidget {
   final String id;
@@ -36,7 +39,6 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
 
   Future<String?> downloadPdf(String url, String fileName) async {
     try {
-      // ✅ Android Downloads folder
       final dir = Directory("/storage/emulated/0/Download");
       if (!dir.existsSync()) {
         dir.createSync(recursive: true);
@@ -46,10 +48,10 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
 
       await Dio().download(url, filePath);
 
-      print("✅ File downloaded at: $filePath");
+      log("✅ File downloaded at: $filePath");
       return filePath;
     } catch (e) {
-      print("❌ Download error: $e");
+      log("❌ Download error: $e");
       return null;
     }
   }
@@ -562,14 +564,27 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                     //               ?.toString() ??
                                     //           "",
                                     //     ),
+                                    // ...courseDetails.topics!.expand(
+                                    //   (topic) => topic.lessons!.map(
+                                    //     (lesson) => modules(
+                                    //       lesson.lessonTitle ??
+                                    //           "Untitled Lesson",
+                                    //       lesson.lessonMeta?.video
+                                    //               ?.toString() ??
+                                    //           "",
+                                    //     ),
+                                    //   ),
+                                    // ),
                                     ...courseDetails.topics!.expand(
                                       (topic) => topic.lessons!.map(
-                                        (lesson) => modules(
+                                        (lesson) => newmodules(
                                           lesson.lessonTitle ??
-                                              "Untitled Lesson",
-                                          lesson.lessonMeta?.video
+                                              "बिना शीर्षक का पाठ",
+                                          lesson.lessonMeta?.video?.firstOrNull
                                                   ?.toString() ??
                                               "",
+                                          attachments: lesson
+                                              .attachments, // Lesson से attachments पास करें
                                         ),
                                       ),
                                     ),
@@ -952,104 +967,101 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
     );
   }
 
-  Widget modules(String title, String videoUrl) {
-    final videoId = _extractYouTubeId(videoUrl);
-    final displayTitle = videoId.isNotEmpty ? title : "No Video";
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
-      margin: EdgeInsets.symmetric(vertical: 8.h),
-      elevation: 2,
-      child: ExpansionTile(
-        tilePadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-        childrenPadding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 12.h),
-        collapsedShape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.r),
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.r),
-        ),
-        backgroundColor: Colors.white,
-        collapsedBackgroundColor: Colors.white,
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              title,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: GoogleFonts.roboto(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.w600,
-                color: const Color.fromARGB(255, 1, 1, 1),
-              ),
-            ),
-            SizedBox(height: 4.h),
-            Text(
-              videoId.isNotEmpty ? "1 Video" : "No Video Available",
-              style: GoogleFonts.roboto(
-                fontSize: 13.sp,
-                fontWeight: FontWeight.w400,
-                color: Colors.grey[600],
-              ),
-            ),
-          ],
-        ),
-        children: [
-          InkWell(
-            borderRadius: BorderRadius.circular(8.r),
-            onTap: () {},
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Divider(color: Color(0xFFBFBFBF), thickness: 0.90.w),
-                SizedBox(height: 10.h),
-                Row(
-                  children: [
-                    Icon(Icons.ondemand_video, size: 50.sp),
-                    SizedBox(width: 12.w),
-                    Expanded(
-                      child: Text(
-                        displayTitle,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: GoogleFonts.roboto(
-                          fontSize: 15.sp,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black87,
-                        ),
-                      ),
-                    ),
-                    if (title.toLowerCase().contains("pdf"))
-                      IconButton(
-                        icon: Icon(Icons.downloading_sharp, size: 25.sp),
-                        onPressed: () async {
-                          final filePath = await downloadPdf(
-                            videoUrl,
-                            "my_file.pdf",
-                          );
+  // Widget modules(String title, String videoUrl, {String? pdfUrl}) {
+  //   final videoId = _extractYouTubeId(videoUrl);
+  //   final displayTitle = videoId.isNotEmpty ? title : "No Video";
+  //   return Card(
+  //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+  //     margin: EdgeInsets.symmetric(vertical: 8.h),
+  //     elevation: 2,
+  //     child: ExpansionTile(
+  //       tilePadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+  //       childrenPadding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 12.h),
+  //       collapsedShape: RoundedRectangleBorder(
+  //         borderRadius: BorderRadius.circular(12.r),
+  //       ),
+  //       shape: RoundedRectangleBorder(
+  //         borderRadius: BorderRadius.circular(12.r),
+  //       ),
+  //       backgroundColor: Colors.white,
+  //       collapsedBackgroundColor: Colors.white,
+  //       title: Column(
+  //         crossAxisAlignment: CrossAxisAlignment.start,
+  //         children: [
+  //           Text(
+  //             title,
+  //             maxLines: 1,
+  //             overflow: TextOverflow.ellipsis,
+  //             style: GoogleFonts.roboto(
+  //               fontSize: 16.sp,
+  //               fontWeight: FontWeight.w600,
+  //               color: const Color.fromARGB(255, 1, 1, 1),
+  //             ),
+  //           ),
+  //           SizedBox(height: 4.h),
+  //           Text(
+  //             videoId.isNotEmpty ? "1 Video" : "No Video Available",
+  //             style: GoogleFonts.roboto(
+  //               fontSize: 13.sp,
+  //               fontWeight: FontWeight.w400,
+  //               color: Colors.grey[600],
+  //             ),
+  //           ),
+  //         ],
+  //       ),
+  //       children: [
+  //         InkWell(
+  //           borderRadius: BorderRadius.circular(8.r),
+  //           onTap: () {},
+  //           child: Column(
+  //             crossAxisAlignment: CrossAxisAlignment.start,
+  //             mainAxisAlignment: MainAxisAlignment.start,
+  //             children: [
+  //               Divider(color: Color(0xFFBFBFBF), thickness: 0.90.w),
+  //               SizedBox(height: 10.h),
+  //               Row(
+  //                 children: [
+  //                   Icon(Icons.ondemand_video, size: 50.sp),
+  //                   SizedBox(width: 12.w),
+  //                   Expanded(
+  //                     child: Text(
+  //                       displayTitle,
+  //                       maxLines: 2,
+  //                       overflow: TextOverflow.ellipsis,
+  //                       style: GoogleFonts.roboto(
+  //                         fontSize: 15.sp,
+  //                         fontWeight: FontWeight.w500,
+  //                         color: Colors.black87,
+  //                       ),
+  //                     ),
+  //                   ),
+  //                   if (title.toLowerCase().contains("pdf"))
+  //                     IconButton(
+  //                       icon: Icon(Icons.downloading_sharp, size: 25.sp),
+  //                       onPressed: () async {
+  //                         final filePath = await downloadPdf();
 
-                          if (filePath != null) {
-                            if (context.mounted) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text("PDF Downloaded at: $filePath"),
-                                ),
-                              );
-                            }
-                            await OpenFilex.open(filePath);
-                          }
-                        },
-                      ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  //                         if (filePath != null) {
+  //                           if (context.mounted) {
+  //                             ScaffoldMessenger.of(context).showSnackBar(
+  //                               SnackBar(
+  //                                 content: Text("PDF Downloaded at: $filePath"),
+  //                               ),
+  //                             );
+  //                           }
+  //                           await OpenFilex.open(filePath);
+  //                         }
+  //                       },
+  //                     ),
+  //                 ],
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   String _extractYouTubeId(String url) {
     // Extract YouTube video ID from URL
@@ -1108,5 +1120,344 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
         ),
       ],
     );
+  }
+
+  // ////////////////////////////  new
+  // Widget newmodules(
+  //   String title,
+  //   String videoUrl, {
+  //   List<Attachment>? attachments,
+  // }) {
+  //   final videoId = newextractYouTubeId(videoUrl);
+  //   final displayTitle = videoId.isNotEmpty ? title : "No video available";
+  //   final pdfAttachment = attachments?.firstWhere(
+  //     (attachment) => attachment.type?.toLowerCase() == "application/pdf",
+  //     orElse: () => Attachment(),
+  //   );
+  //   final isPdfAvailable =
+  //       pdfAttachment?.url != null && pdfAttachment!.url!.isNotEmpty;
+
+  //   return Card(
+  //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+  //     margin: EdgeInsets.symmetric(vertical: 8.h),
+  //     elevation: 2,
+  //     child: ExpansionTile(
+  //       tilePadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+  //       childrenPadding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 12.h),
+  //       collapsedShape: RoundedRectangleBorder(
+  //         borderRadius: BorderRadius.circular(12.r),
+  //       ),
+  //       shape: RoundedRectangleBorder(
+  //         borderRadius: BorderRadius.circular(12.r),
+  //       ),
+  //       backgroundColor: Colors.white,
+  //       collapsedBackgroundColor: Colors.white,
+  //       title: Column(
+  //         crossAxisAlignment: CrossAxisAlignment.start,
+  //         children: [
+  //           Text(
+  //             title,
+  //             maxLines: 1,
+  //             overflow: TextOverflow.ellipsis,
+  //             style: GoogleFonts.roboto(
+  //               fontSize: 16.sp,
+  //               fontWeight: FontWeight.w600,
+  //               color: const Color.fromARGB(255, 1, 1, 1),
+  //             ),
+  //           ),
+  //           SizedBox(height: 4.h),
+  //           Text(
+  //             videoId.isNotEmpty && isPdfAvailable
+  //                 ? "Video and pdf Available"
+  //                 : videoId.isNotEmpty
+  //                 ? "1 Video"
+  //                 : isPdfAvailable
+  //                 ? "1 PDF"
+  //                 : "No Video and pdf Available",
+  //             style: GoogleFonts.roboto(
+  //               fontSize: 13.sp,
+  //               fontWeight: FontWeight.w400,
+  //               color: Colors.grey[600],
+  //             ),
+  //           ),
+  //         ],
+  //       ),
+  //       children: [
+  //         InkWell(
+  //           borderRadius: BorderRadius.circular(8.r),
+  //           onTap: () {},
+  //           child: Column(
+  //             crossAxisAlignment: CrossAxisAlignment.start,
+  //             mainAxisAlignment: MainAxisAlignment.start,
+  //             children: [
+  //               Divider(color: Color(0xFFBFBFBF), thickness: 0.90.w),
+  //               SizedBox(height: 10.h),
+  //               Row(
+  //                 children: [
+  //                   Icon(
+  //                     isPdfAvailable
+  //                         ? Icons.picture_as_pdf
+  //                         : Icons.ondemand_video,
+  //                     size: 50.sp,
+  //                     color: isPdfAvailable ? Colors.red : Colors.blue,
+  //                   ),
+  //                   SizedBox(width: 12.w),
+  //                   Expanded(
+  //                     child: Text(
+  //                       isPdfAvailable ? "$displayTitle (PDF)" : displayTitle,
+  //                       maxLines: 2,
+  //                       overflow: TextOverflow.ellipsis,
+  //                       style: GoogleFonts.roboto(
+  //                         fontSize: 15.sp,
+  //                         fontWeight: FontWeight.w500,
+  //                         color: Colors.black87,
+  //                       ),
+  //                     ),
+  //                   ),
+  //                   if (isPdfAvailable)
+  //                     IconButton(
+  //                       icon: Icon(Icons.downloading_sharp, size: 25.sp),
+  //                       onPressed: () async {
+  //                         final filePath = await newdownloadPdf(
+  //                           pdfAttachment!.url!,
+  //                           pdfAttachment.title ?? "$title.pdf",
+  //                         );
+
+  //                         // ignore: use_build_context_synchronously
+  //                         if (filePath != null && context.mounted) {
+  //                           ScaffoldMessenger.of(context).showSnackBar(
+  //                             SnackBar(
+  //                               content: Text("PDF डाउनलोड हो गया: $filePath"),
+  //                             ),
+  //                           );
+  //                           await OpenFilex.open(filePath);
+  //                         } else if (context.mounted) {
+  //                           ScaffoldMessenger.of(context).showSnackBar(
+  //                             SnackBar(content: Text("download failed")),
+  //                           );
+  //                         }
+  //                       },
+  //                     ),
+  //                 ],
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
+
+  Widget newmodules(
+    String title,
+    String videoUrl, {
+    List<Attachment>? attachments,
+  }) {
+    final videoId = newextractYouTubeId(videoUrl);
+
+    // ✅ Pdf attachment filter
+    final pdfAttachment = attachments?.firstWhere(
+      (attachment) => attachment.type?.toLowerCase() == "application/pdf",
+      orElse: () => Attachment(), // return null instead of empty obj
+    );
+
+    final isPdfAvailable =
+        pdfAttachment != null &&
+        pdfAttachment.url != null &&
+        pdfAttachment.url!.isNotEmpty;
+
+    final isVideoAvailable = videoId.isNotEmpty;
+
+    return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+      margin: EdgeInsets.symmetric(vertical: 8.h),
+      elevation: 2,
+      child: ExpansionTile(
+        tilePadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+        childrenPadding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 12.h),
+        collapsedShape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.r),
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.r),
+        ),
+        backgroundColor: Colors.white,
+        collapsedBackgroundColor: Colors.white,
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: GoogleFonts.roboto(
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w600,
+                color: Colors.black,
+              ),
+            ),
+            SizedBox(height: 4.h),
+            Text(
+              isVideoAvailable && isPdfAvailable
+                  ? "Video and PDF Available"
+                  : isVideoAvailable
+                  ? "1 Video"
+                  : isPdfAvailable
+                  ? "1 PDF"
+                  : "No Video and PDF Available",
+              style: GoogleFonts.roboto(
+                fontSize: 13.sp,
+                fontWeight: FontWeight.w400,
+                color: Colors.grey[600],
+              ),
+            ),
+          ],
+        ),
+        children: [
+          Divider(color: Color(0xFFBFBFBF), thickness: 0.90.w),
+          SizedBox(height: 10.h),
+
+          // ✅ If PDF Available
+          if (isPdfAvailable)
+            Row(
+              children: [
+                Icon(Icons.picture_as_pdf, size: 50.sp, color: Colors.red),
+                SizedBox(width: 12.w),
+                Expanded(
+                  child: Text(
+                    "${pdfAttachment!.title ?? title} (PDF)",
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: GoogleFonts.roboto(
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black87,
+                    ),
+                  ),
+                ),
+                IconButton(
+                  icon: Icon(Icons.downloading_sharp, size: 25.sp),
+                  onPressed: () async {
+                    final filePath = await newdownloadPdf(
+                      pdfAttachment.url!,
+                      pdfAttachment.title ?? "$title.pdf",
+                    );
+
+                    if (filePath != null && context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text("PDF डाउनलोड हो गया: $filePath"),
+                        ),
+                      );
+                      await OpenFilex.open(filePath);
+                    } else if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text("Download failed")),
+                      );
+                    }
+                  },
+                ),
+              ],
+            ),
+
+          // ✅ If Video Available
+          if (isVideoAvailable)
+            InkWell(
+              onTap: () {
+                // yahan apna video player open karna
+                log("Play video with id: $videoId");
+              },
+              child: Row(
+                children: [
+                  Icon(Icons.ondemand_video, size: 50.sp, color: Colors.blue),
+                  SizedBox(width: 12.w),
+                  Expanded(
+                    child: Text(
+                      title,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: GoogleFonts.roboto(
+                        fontSize: 15.sp,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black87,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  String newextractYouTubeId(String url) {
+    RegExp regExp = RegExp(
+      r'^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?v=))([^#\&\?]*).*',
+      caseSensitive: false,
+    );
+    Match? match = regExp.firstMatch(url);
+    return match != null && match.group(7)!.length == 11 ? match.group(7)! : '';
+  }
+
+  // Future<String?> newdownloadPdf(String url, String fileName) async {
+  //   try {
+  //     final dir = Directory("/storage/emulated/0/Download");
+  //     if (!dir.existsSync()) {
+  //       dir.createSync(recursive: true);
+  //     }
+
+  //     final filePath = "${dir.path}/$fileName";
+
+  //     await Dio().download(url, filePath);
+
+  //     log("✅ PDF डाउनलोड हो गया: $filePath");
+  //     return filePath;
+  //   } catch (e) {
+  //     log("❌ डाउनलोड त्रुटि: $e");
+  //     return null;
+  //   }
+  // }
+
+  Future<String?> newdownloadPdf(String url, String fileName) async {
+    try {
+      // ✅ Step 1: Permission check
+      if (Platform.isAndroid) {
+        if (!await Permission.storage.isGranted) {
+          await Permission.storage.request();
+        }
+        if (await Permission.manageExternalStorage.isDenied) {
+          await Permission.manageExternalStorage.request();
+        }
+      }
+
+      Directory? dir;
+
+      // ✅ Step 2: Safe Downloads folder
+      if (Platform.isAndroid) {
+        dir = await getExternalStorageDirectory(); // App specific folder
+        // Agar tu chahta hai system Downloads:
+        // dir = Directory("/storage/emulated/0/Download");
+      } else {
+        dir = await getApplicationDocumentsDirectory();
+      }
+
+      if (dir == null) throw Exception("Storage directory not found");
+
+      if (!dir.existsSync()) {
+        dir.createSync(recursive: true);
+      }
+
+      final filePath = "${dir.path}/$fileName";
+
+      // ✅ Step 3: Download with Dio
+      await Dio().download(url, filePath);
+
+      log("✅ PDF डाउनलोड हो गया: $filePath");
+      return filePath;
+    } catch (e) {
+      log("❌ डाउनलोड त्रुटि: $e");
+      return null;
+    }
   }
 }
