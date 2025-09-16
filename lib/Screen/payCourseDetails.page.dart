@@ -556,6 +556,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                     //     ),
                                     //   ),
                                     // ),
+                                    ///////////////////////////////////////////
                                     ...courseDetails.topics!.expand(
                                       (topic) => topic.lessons!.map(
                                         (lesson) => newmodules(
@@ -1038,7 +1039,6 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
   // }
 
   String _extractYouTubeId(String url) {
-    // Extract YouTube video ID from URL
     RegExp regExp = RegExp(
       r'^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?v=))([^#\&\?]*).*',
       caseSensitive: false,
@@ -1097,6 +1097,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
     );
   }
 
+  //////////  ye use ho rha hia
   Widget newmodules(
     String title,
     String videoUrl, {
@@ -1148,13 +1149,6 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
             ),
             SizedBox(height: 4.h),
             Text(
-              // isVideoAvailable && isPdfAvailable
-              //     ? "Video and PDF Available"
-              //     : isVideoAvailable
-              //     ? "1 Video"
-              //     : isPdfAvailable
-              //     ? "1 PDF"
-              //     : "No PDF Available",
               isPdfTitle
                   ? (isPdfAvailable ? "1 PDF" : "No PDF Available")
                   : (isVideoAvailable ? "1 Video" : "No Video Available"),
@@ -1167,7 +1161,6 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
           ],
         ),
         children: [
-          //  if (isPdfAvailable)
           if (isPdfTitle && isPdfAvailable)
             Row(
               children: [

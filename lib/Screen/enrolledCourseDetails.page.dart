@@ -524,71 +524,39 @@ class _ModuleCardState extends State<ModuleCard> {
   }
 
   // ----------------- PDF download -----------------
-  Future<void> downloadPdf(String url, String fileName) async {
+  Future<String?> downloadPdf(String url, String fileName) async {
     try {
-      setState(() {
-        isDownloading = true;
-        downloadProgress = 0.0;
-      });
-
       if (Platform.isAndroid) {
         if (!await Permission.storage.isGranted) {
           await Permission.storage.request();
         }
-        if (await Permission.manageExternalStorage.isDenied) {
-          await Permission.manageExternalStorage.request();
-        }
       }
 
-      Directory? dir;
-      if (Platform.isAndroid) {
-        dir = await getExternalStorageDirectory();
-      } else {
-        dir = await getApplicationDocumentsDirectory();
-      }
+      Directory dir =
+          await getExternalStorageDirectory() ??
+          await getApplicationDocumentsDirectory();
 
-      if (dir == null) throw Exception("Storage directory not found");
+      if (!dir.existsSync()) dir.createSync(recursive: true);
 
-      if (!dir.existsSync()) {
-        dir.createSync(recursive: true);
-      }
+      fileName = fileName.replaceAll(RegExp(r'[\\/:*?"<>|]'), '_');
 
       final filePath = "${dir.path}/$fileName";
-      final dio = Dio();
 
-      await dio.download(
+      await Dio().download(
         url,
         filePath,
-        onReceiveProgress: (received, total) {
-          if (total != -1 && mounted) {
-            setState(() {
-              downloadProgress = received / total;
-            });
-          }
-        },
+        options: Options(
+          followRedirects: true,
+          responseType: ResponseType.bytes,
+          headers: {"Accept": "application/pdf"},
+          validateStatus: (status) => status != null && status < 500,
+        ),
       );
-
-      setState(() {
-        isDownloading = false;
-        downloadDone = true;
-        localFilePath = filePath;
-      });
-
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text("PDF डाउनलोड हो गया: $filePath")));
-
-      await OpenFilex.open(filePath);
+      log("✅ PDF download complete: $filePath");
+      return filePath;
     } catch (e) {
-      log("❌ डाउनलोड त्रुटि: $e");
-      setState(() {
-        isDownloading = false;
-        downloadDone = false;
-      });
-
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text("Download failed")));
+      log("Error: $e");
+      return null;
     }
   }
 
@@ -601,9 +569,19 @@ class _ModuleCardState extends State<ModuleCard> {
       orElse: () => Attachment(),
     );
 
-    final bool isPdfAvailable =
-        pdfAttachment != null && (pdfAttachment.url?.isNotEmpty ?? false);
-    final bool isVideoAvailable = videoId.isNotEmpty;
+    // final bool isPdfAvailable =
+    //     pdfAttachment != null && (pdfAttachment.url?.isNotEmpty ?? false);
+
+    // final bool isVideoAvailable = videoId.isNotEmpty;
+
+    final isPdfAvailable =
+        pdfAttachment != null &&
+        pdfAttachment.url != null &&
+        pdfAttachment.url!.isNotEmpty;
+
+    final isVideoAvailable = videoId.isNotEmpty;
+    // ✅ check if title me "pdf" hai
+    final bool isPdfTitle = widget.title.toLowerCase().contains("pdf");
 
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -631,13 +609,16 @@ class _ModuleCardState extends State<ModuleCard> {
             ),
             SizedBox(height: 4.h),
             Text(
-              isVideoAvailable && isPdfAvailable
-                  ? "Video and PDF Available"
-                  : isVideoAvailable
-                  ? "1 Video"
-                  : isPdfAvailable
-                  ? "1 PDF"
-                  : "No Video and PDF Available",
+              // isVideoAvailable && isPdfAvailable
+              //     ? "Video and PDF Available"
+              //     : isVideoAvailable
+              //     ? "1 Video"
+              //     : isPdfAvailable
+              //     ? "1 PDF"
+              //     : "No Video and PDF Available",
+              isPdfTitle
+                  ? (isPdfAvailable ? "1 PDF" : "No PDF Available")
+                  : (isVideoAvailable ? "1 Video" : "No Video Available"),
               style: GoogleFonts.roboto(
                 fontSize: 13.sp,
                 fontWeight: FontWeight.w400,
@@ -647,7 +628,8 @@ class _ModuleCardState extends State<ModuleCard> {
           ],
         ),
         children: [
-          if (isPdfAvailable)
+          // if (isPdfAvailable)
+          if (isPdfTitle && isPdfAvailable)
             Row(
               children: [
                 const Icon(Icons.picture_as_pdf, size: 50, color: Colors.red),
@@ -677,8 +659,22 @@ class _ModuleCardState extends State<ModuleCard> {
                   IconButton(
                     icon: const Icon(Icons.check_circle, color: Colors.green),
                     onPressed: () async {
-                      if (localFilePath != null) {
-                        await OpenFilex.open(localFilePath!);
+                      final filePath = await downloadPdf(
+                        pdfAttachment.url!,
+                        pdfAttachment.title ?? "${widget.title}.pdf",
+                      );
+
+                      if (filePath != null && context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text("PDF download complete: $filePath"),
+                          ),
+                        );
+                        await OpenFilex.open(filePath, type: "application/pdf");
+                      } else if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text("Download failed")),
+                        );
                       }
                     },
                   )
