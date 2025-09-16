@@ -1079,8 +1079,9 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            SizedBox(
-              width: MediaQuery.of(context).size.width / 1.26,
+            Container(
+              //color: Colors.amber,
+              width: MediaQuery.of(context).size.width / 1.2,
               child: Text(
                 answer,
                 style: GoogleFonts.roboto(
@@ -1096,132 +1097,6 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
     );
   }
 
-  // ////////////////////////////  new
-  // Widget newmodules(
-  //   String title,
-  //   String videoUrl, {
-  //   List<Attachment>? attachments,
-  // }) {
-  //   final videoId = newextractYouTubeId(videoUrl);
-  //   final displayTitle = videoId.isNotEmpty ? title : "No video available";
-  //   final pdfAttachment = attachments?.firstWhere(
-  //     (attachment) => attachment.type?.toLowerCase() == "application/pdf",
-  //     orElse: () => Attachment(),
-  //   );
-  //   final isPdfAvailable =
-  //       pdfAttachment?.url != null && pdfAttachment!.url!.isNotEmpty;
-
-  //   return Card(
-  //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
-  //     margin: EdgeInsets.symmetric(vertical: 8.h),
-  //     elevation: 2,
-  //     child: ExpansionTile(
-  //       tilePadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-  //       childrenPadding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 12.h),
-  //       collapsedShape: RoundedRectangleBorder(
-  //         borderRadius: BorderRadius.circular(12.r),
-  //       ),
-  //       shape: RoundedRectangleBorder(
-  //         borderRadius: BorderRadius.circular(12.r),
-  //       ),
-  //       backgroundColor: Colors.white,
-  //       collapsedBackgroundColor: Colors.white,
-  //       title: Column(
-  //         crossAxisAlignment: CrossAxisAlignment.start,
-  //         children: [
-  //           Text(
-  //             title,
-  //             maxLines: 1,
-  //             overflow: TextOverflow.ellipsis,
-  //             style: GoogleFonts.roboto(
-  //               fontSize: 16.sp,
-  //               fontWeight: FontWeight.w600,
-  //               color: const Color.fromARGB(255, 1, 1, 1),
-  //             ),
-  //           ),
-  //           SizedBox(height: 4.h),
-  //           Text(
-  //             videoId.isNotEmpty && isPdfAvailable
-  //                 ? "Video and pdf Available"
-  //                 : videoId.isNotEmpty
-  //                 ? "1 Video"
-  //                 : isPdfAvailable
-  //                 ? "1 PDF"
-  //                 : "No Video and pdf Available",
-  //             style: GoogleFonts.roboto(
-  //               fontSize: 13.sp,
-  //               fontWeight: FontWeight.w400,
-  //               color: Colors.grey[600],
-  //             ),
-  //           ),
-  //         ],
-  //       ),
-  //       children: [
-  //         InkWell(
-  //           borderRadius: BorderRadius.circular(8.r),
-  //           onTap: () {},
-  //           child: Column(
-  //             crossAxisAlignment: CrossAxisAlignment.start,
-  //             mainAxisAlignment: MainAxisAlignment.start,
-  //             children: [
-  //               Divider(color: Color(0xFFBFBFBF), thickness: 0.90.w),
-  //               SizedBox(height: 10.h),
-  //               Row(
-  //                 children: [
-  //                   Icon(
-  //                     isPdfAvailable
-  //                         ? Icons.picture_as_pdf
-  //                         : Icons.ondemand_video,
-  //                     size: 50.sp,
-  //                     color: isPdfAvailable ? Colors.red : Colors.blue,
-  //                   ),
-  //                   SizedBox(width: 12.w),
-  //                   Expanded(
-  //                     child: Text(
-  //                       isPdfAvailable ? "$displayTitle (PDF)" : displayTitle,
-  //                       maxLines: 2,
-  //                       overflow: TextOverflow.ellipsis,
-  //                       style: GoogleFonts.roboto(
-  //                         fontSize: 15.sp,
-  //                         fontWeight: FontWeight.w500,
-  //                         color: Colors.black87,
-  //                       ),
-  //                     ),
-  //                   ),
-  //                   if (isPdfAvailable)
-  //                     IconButton(
-  //                       icon: Icon(Icons.downloading_sharp, size: 25.sp),
-  //                       onPressed: () async {
-  //                         final filePath = await newdownloadPdf(
-  //                           pdfAttachment!.url!,
-  //                           pdfAttachment.title ?? "$title.pdf",
-  //                         );
-
-  //                         // ignore: use_build_context_synchronously
-  //                         if (filePath != null && context.mounted) {
-  //                           ScaffoldMessenger.of(context).showSnackBar(
-  //                             SnackBar(
-  //                               content: Text("PDF डाउनलोड हो गया: $filePath"),
-  //                             ),
-  //                           );
-  //                           await OpenFilex.open(filePath);
-  //                         } else if (context.mounted) {
-  //                           ScaffoldMessenger.of(context).showSnackBar(
-  //                             SnackBar(content: Text("download failed")),
-  //                           );
-  //                         }
-  //                       },
-  //                     ),
-  //                 ],
-  //               ),
-  //             ],
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
-
   Widget newmodules(
     String title,
     String videoUrl, {
@@ -1229,7 +1104,6 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
   }) {
     final videoId = newextractYouTubeId(videoUrl);
 
-    // ✅ PDF attachment filter
     final pdfAttachment = attachments?.firstWhere(
       (attachment) => attachment.type?.toLowerCase() == "application/pdf",
       orElse: () => Attachment(),
@@ -1241,6 +1115,8 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
         pdfAttachment.url!.isNotEmpty;
 
     final isVideoAvailable = videoId.isNotEmpty;
+    // ✅ check if title me "pdf" hai
+    final bool isPdfTitle = title.toLowerCase().contains("pdf");
 
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
@@ -1272,13 +1148,16 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
             ),
             SizedBox(height: 4.h),
             Text(
-              isVideoAvailable && isPdfAvailable
-                  ? "Video and PDF Available"
-                  : isVideoAvailable
-                  ? "1 Video"
-                  : isPdfAvailable
-                  ? "1 PDF"
-                  : "No Video and PDF Available",
+              // isVideoAvailable && isPdfAvailable
+              //     ? "Video and PDF Available"
+              //     : isVideoAvailable
+              //     ? "1 Video"
+              //     : isPdfAvailable
+              //     ? "1 PDF"
+              //     : "No PDF Available",
+              isPdfTitle
+                  ? (isPdfAvailable ? "1 PDF" : "No PDF Available")
+                  : (isVideoAvailable ? "1 Video" : "No Video Available"),
               style: GoogleFonts.roboto(
                 fontSize: 13.sp,
                 fontWeight: FontWeight.w400,
@@ -1288,8 +1167,8 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
           ],
         ),
         children: [
-          // ✅ If PDF Available
-          if (isPdfAvailable)
+          //  if (isPdfAvailable)
+          if (isPdfTitle && isPdfAvailable)
             Row(
               children: [
                 Icon(Icons.picture_as_pdf, size: 50.sp, color: Colors.red),
@@ -1310,8 +1189,8 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                   icon: Icon(Icons.downloading_sharp, size: 25.sp),
                   onPressed: () async {
                     final filePath = await newdownloadPdf(
-                      pdfAttachment.url!, // ✅ yahi URL use hoga
-                      pdfAttachment.title ?? "$title.pdf", // file name
+                      pdfAttachment.url!,
+                      pdfAttachment.title ?? "$title.pdf",
                     );
 
                     if (filePath != null && context.mounted) {
@@ -1331,8 +1210,8 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
               ],
             ),
 
-          // ✅ If Video Available
-          if (isVideoAvailable)
+          //  if (isVideoAvailable)
+          if (!isPdfTitle && isVideoAvailable)
             InkWell(
               onTap: () {
                 // yahan apna video player open karna
@@ -1378,19 +1257,17 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
           await Permission.storage.request();
         }
       }
-      // Directory
+
       Directory dir =
           await getExternalStorageDirectory() ??
           await getApplicationDocumentsDirectory();
 
       if (!dir.existsSync()) dir.createSync(recursive: true);
 
-      // Clean file name
       fileName = fileName.replaceAll(RegExp(r'[\\/:*?"<>|]'), '_');
 
       final filePath = "${dir.path}/$fileName";
 
-      // ✅ Use Dio.download (best for files)
       await Dio().download(
         url,
         filePath,
@@ -1401,11 +1278,10 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
           validateStatus: (status) => status != null && status < 500,
         ),
       );
-
-      log("✅ PDF download हो गया: $filePath");
+      log("✅ PDF download complete: $filePath");
       return filePath;
     } catch (e) {
-      log("❌ डाउनलोड त्रुटि: $e");
+      log("Error: $e");
       return null;
     }
   }
