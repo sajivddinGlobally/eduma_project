@@ -323,10 +323,16 @@ class _EnrolledDourseDetailsPageState
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            // ...topic.lessons!.map(
+                            //   (lesson) => _lessonTile(
+                            //     lesson.lessonTitle ?? "Untitled Lesson",
+                            //     lesson.lessonMeta!.video.toString(),
+                            //   ),
+                            // ),
                             ...topic.lessons!.map(
-                              (lesson) => _lessonTile(
-                                lesson.lessonTitle ?? "Untitled Lesson",
-                                lesson.lessonMeta!.video.toString(),
+                              (e) => ModuleCard(
+                                title: e.lessonTitle ?? "Untitled Lesson",
+                                videoUrl: e.lessonMeta!.video.toString(),
                               ),
                             ),
                           ],
@@ -618,12 +624,12 @@ class _ModuleCardState extends State<ModuleCard> {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: GoogleFonts.roboto(
-                fontSize: 16,
+                fontSize: 16.sp,
                 fontWeight: FontWeight.w600,
                 color: Colors.black,
               ),
             ),
-            const SizedBox(height: 4),
+            SizedBox(height: 4.h),
             Text(
               isVideoAvailable && isPdfAvailable
                   ? "Video and PDF Available"
@@ -633,7 +639,7 @@ class _ModuleCardState extends State<ModuleCard> {
                   ? "1 PDF"
                   : "No Video and PDF Available",
               style: GoogleFonts.roboto(
-                fontSize: 13,
+                fontSize: 13.sp,
                 fontWeight: FontWeight.w400,
                 color: Colors.grey[600],
               ),
@@ -641,10 +647,6 @@ class _ModuleCardState extends State<ModuleCard> {
           ],
         ),
         children: [
-          const Divider(color: Color(0xFFBFBFBF), thickness: 0.90),
-          const SizedBox(height: 10),
-
-          // PDF Row
           if (isPdfAvailable)
             Row(
               children: [
@@ -656,7 +658,7 @@ class _ModuleCardState extends State<ModuleCard> {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: GoogleFonts.roboto(
-                      fontSize: 15,
+                      fontSize: 15.sp,
                       fontWeight: FontWeight.w500,
                       color: Colors.black87,
                     ),
@@ -701,28 +703,60 @@ class _ModuleCardState extends State<ModuleCard> {
               padding: const EdgeInsets.only(top: 8.0),
               child: InkWell(
                 onTap: () {
-                  log("Play video with id: $videoId");
-                  // You can open youtube player or use url_launcher
+                  if (videoId.isNotEmpty) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => VideoPage(videoId: videoId),
+                      ),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("No Video Available")),
+                    );
+                  }
                 },
                 child: Row(
                   children: [
-                    const Icon(
-                      Icons.ondemand_video,
-                      size: 50,
-                      color: Colors.blue,
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(10.r),
+                      child: Image.network(
+                        videoId.isNotEmpty
+                            ? "https://img.youtube.com/vi/$videoId/0.jpg"
+                            : "https://via.placeholder.com/120x90.png?text=No+Video",
+                        width: 120.w,
+                        height: 70.h,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return ClipRRect(
+                            borderRadius: BorderRadius.circular(10.r),
+                            child: Image.network(
+                              "https://t4.ftcdn.net/jpg/05/97/47/95/360_F_597479556_7bbQ7t4Z8k3xbAloHFHVdZIizWK1PdOo.jpg",
+                              width: 120.w,
+                              height: 70.h,
+                              fit: BoxFit.cover,
+                            ),
+                          );
+                        },
+                      ),
                     ),
-                    const SizedBox(width: 12),
+                    SizedBox(width: 12.w),
                     Expanded(
                       child: Text(
                         widget.title,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: GoogleFonts.roboto(
-                          fontSize: 15,
+                          fontSize: 15.sp,
                           fontWeight: FontWeight.w500,
                           color: Colors.black87,
                         ),
                       ),
+                    ),
+                    Icon(
+                      Icons.ondemand_video_rounded,
+                      size: 28.sp,
+                      color: Colors.redAccent,
                     ),
                   ],
                 ),

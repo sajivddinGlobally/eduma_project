@@ -165,7 +165,7 @@ class _AllCoursePageState extends ConsumerState<AllCoursePage> {
                                 crossAxisCount: 2,
                                 crossAxisSpacing: 20.w,
                                 mainAxisSpacing: 15.h,
-                                childAspectRatio: 180 / 180,
+                                childAspectRatio: 180.w / 195.h,
                               ),
                           itemBuilder: (context, index) {
                             if (index < filterData.length) {
@@ -338,11 +338,11 @@ class _AllBodyState extends State<AllBody> {
             ),
           ),
         ),
-        SizedBox(height: 10.h),
+        SizedBox(height: 8.h),
         Text(
           //"₹ 45.00",
           //shopList[index]['paid'].toString(),
-          "₹ ${widget.data.pricing.salePrice ?? "No price"}",
+          "₹ ${widget.data.pricing.price}",
           style: GoogleFonts.roboto(
             fontSize: 15.sp,
             fontWeight: FontWeight.w500,

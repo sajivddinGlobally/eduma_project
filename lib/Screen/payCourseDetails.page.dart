@@ -559,8 +559,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                     ...courseDetails.topics!.expand(
                                       (topic) => topic.lessons!.map(
                                         (lesson) => newmodules(
-                                          lesson.lessonTitle ??
-                                              "बिना शीर्षक का पाठ",
+                                          lesson.lessonTitle ?? "",
                                           lesson.lessonMeta?.video?.firstOrNull
                                                   ?.toString() ??
                                               "",
@@ -1236,7 +1235,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
   }) {
     final videoId = newextractYouTubeId(videoUrl);
 
-    // ✅ Pdf attachment filter
+    // ✅ PDF attachment filter
     final pdfAttachment = attachments?.firstWhere(
       (attachment) => attachment.type?.toLowerCase() == "application/pdf",
       orElse: () => Attachment(),
@@ -1295,9 +1294,6 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
           ],
         ),
         children: [
-          Divider(color: Color(0xFFBFBFBF), thickness: 0.90.w),
-          SizedBox(height: 10.h),
-
           // ✅ If PDF Available
           if (isPdfAvailable)
             Row(
@@ -1320,17 +1316,17 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                   icon: Icon(Icons.downloading_sharp, size: 25.sp),
                   onPressed: () async {
                     final filePath = await newdownloadPdf(
-                      pdfAttachment.url!,
-                      pdfAttachment.title ?? "$title.pdf",
+                      pdfAttachment.url!, // ✅ yahi URL use hoga
+                      pdfAttachment.title ?? "$title.pdf", // file name
                     );
 
                     if (filePath != null && context.mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text("PDF डाउनलोड हो गया: $filePath"),
+                          content: Text("PDF download complete: $filePath"),
                         ),
                       );
-                      await OpenFilex.open(filePath);
+                      await OpenFilex.open(filePath, type: "application/pdf");
                     } else if (context.mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text("Download failed")),
@@ -1383,39 +1379,37 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
 
   Future<String?> newdownloadPdf(String url, String fileName) async {
     try {
-      // ✅ Step 1: Permission check
       if (Platform.isAndroid) {
         if (!await Permission.storage.isGranted) {
           await Permission.storage.request();
         }
-        if (await Permission.manageExternalStorage.isDenied) {
-          await Permission.manageExternalStorage.request();
-        }
       }
 
-      Directory? dir;
+      // Directory
+      Directory dir =
+          await getExternalStorageDirectory() ??
+          await getApplicationDocumentsDirectory();
 
-      // ✅ Step 2: Safe Downloads folder
-      if (Platform.isAndroid) {
-        dir = await getExternalStorageDirectory(); // App specific folder
-        // Agar tu chahta hai system Downloads:
-        // dir = Directory("/storage/emulated/0/Download");
-      } else {
-        dir = await getApplicationDocumentsDirectory();
-      }
+      if (!dir.existsSync()) dir.createSync(recursive: true);
 
-      if (dir == null) throw Exception("Storage directory not found");
-
-      if (!dir.existsSync()) {
-        dir.createSync(recursive: true);
-      }
+      // Clean file name
+      fileName = fileName.replaceAll(RegExp(r'[\\/:*?"<>|]'), '_');
 
       final filePath = "${dir.path}/$fileName";
 
-      // ✅ Step 3: Download with Dio
-      await Dio().download(url, filePath);
+      // ✅ Use Dio.download (best for files)
+      await Dio().download(
+        url,
+        filePath,
+        options: Options(
+          followRedirects: true,
+          responseType: ResponseType.bytes,
+          headers: {"Accept": "application/pdf"},
+          validateStatus: (status) => status != null && status < 500,
+        ),
+      );
 
-      log("✅ PDF डाउनलोड हो गया: $filePath");
+      log("✅ PDF download हो गया: $filePath");
       return filePath;
     } catch (e) {
       log("❌ डाउनलोड त्रुटि: $e");

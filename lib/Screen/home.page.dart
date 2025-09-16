@@ -1328,6 +1328,8 @@ class _PopularBodyState extends State<PopularBody> {
               width: 190.w,
               child: Text(
                 //  "Introduction learn Press - LMS Plugin",
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
                 widget.data.title,
                 style: GoogleFonts.roboto(
                   fontSize: 16.sp,

@@ -543,7 +543,7 @@ class _WishlistPageState extends ConsumerState<WishlistPage> {
                                             wishlist.items[index].thumbnail,
                                             width: double.infinity,
                                             height: 180.h,
-                                            fit: BoxFit.cover,
+                                            fit: BoxFit.contain,
                                             errorBuilder:
                                                 (
                                                   context,
@@ -801,7 +801,7 @@ class _WishlistPageState extends ConsumerState<WishlistPage> {
                                             productwishlist.data[index].image,
                                             width: double.infinity,
                                             height: 180.h,
-                                            fit: BoxFit.cover,
+                                            fit: BoxFit.contain,
                                             errorBuilder:
                                                 (
                                                   context,

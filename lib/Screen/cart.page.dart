@@ -690,7 +690,7 @@ class _CartBodyState extends ConsumerState<CartBody> {
                 widget.data.thumbnail,
                 width: 90.w,
                 height: 90.h,
-                fit: BoxFit.cover,
+                fit: BoxFit.fill,
                 errorBuilder: (context, error, stackTrace) {
                   return Container(
                     width: 90.w,
