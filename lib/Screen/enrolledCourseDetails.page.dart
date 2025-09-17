@@ -247,11 +247,12 @@
 // }
 
 import 'dart:developer';
-import 'dart:io';
+import 'dart:io' show Directory, Platform;
 
 import 'package:dio/dio.dart';
 import 'package:eduma_app/Screen/video.page.dart';
 import 'package:eduma_app/data/Controller/popularCourseController.dart';
+import 'package:eduma_app/data/Model/popularCourseDetailsModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -329,10 +330,16 @@ class _EnrolledDourseDetailsPageState
                             //     lesson.lessonMeta!.video.toString(),
                             //   ),
                             // ),
+
+                            // ✅ Lessons ko MyLession widget ke through map karo
                             ...topic.lessons!.map(
-                              (e) => ModuleCard(
-                                title: e.lessonTitle ?? "Untitled Lesson",
-                                videoUrl: e.lessonMeta!.video.toString(),
+                              (lesson) => MyLession(
+                                title: lesson.lessonTitle ?? "Untitled Lesson",
+                                videoUrl:
+                                    lesson.lessonMeta?.video?.firstOrNull
+                                        ?.toString() ??
+                                    "",
+                                attachments: lesson.attachments,
                               ),
                             ),
                           ],
@@ -457,7 +464,7 @@ class _EnrolledDourseDetailsPageState
                     ),
 
                     Icon(
-                      Icons.play_circle_fill,
+                      Icons.play_circle_outlined,
                       size: 28.sp,
                       color: Colors.redAccent,
                     ),
@@ -481,39 +488,25 @@ class _EnrolledDourseDetailsPageState
   }
 }
 
-// ----------------- Attachment model -----------------
-class Attachment {
-  String? url;
-  String? title;
-  String? type;
-
-  Attachment({this.url, this.title, this.type});
-}
-
-// ----------------- ModuleCard Widget -----------------
-class ModuleCard extends StatefulWidget {
+class MyLession extends StatefulWidget {
   final String title;
   final String videoUrl;
   final List<Attachment>? attachments;
 
-  const ModuleCard({
-    Key? key,
+  const MyLession({
+    super.key,
     required this.title,
     required this.videoUrl,
     this.attachments,
-  }) : super(key: key);
+  });
 
   @override
-  State<ModuleCard> createState() => _ModuleCardState();
+  State<MyLession> createState() => _MyLessionState();
 }
 
-class _ModuleCardState extends State<ModuleCard> {
-  double downloadProgress = 0.0;
+class _MyLessionState extends State<MyLession> {
   bool isDownloading = false;
-  bool downloadDone = false;
-  String? localFilePath;
 
-  // ----------------- YouTube ID extractor -----------------
   String extractYouTubeId(String url) {
     RegExp regExp = RegExp(
       r'^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?v=))([^#\&\?]*).*',
@@ -523,7 +516,6 @@ class _ModuleCardState extends State<ModuleCard> {
     return match != null && match.group(7)!.length == 11 ? match.group(7)! : '';
   }
 
-  // ----------------- PDF download -----------------
   Future<String?> downloadPdf(String url, String fileName) async {
     try {
       if (Platform.isAndroid) {
@@ -555,7 +547,7 @@ class _ModuleCardState extends State<ModuleCard> {
       log("✅ PDF download complete: $filePath");
       return filePath;
     } catch (e) {
-      log("Error: $e");
+      log("❌ Error: $e");
       return null;
     }
   }
@@ -564,15 +556,10 @@ class _ModuleCardState extends State<ModuleCard> {
   Widget build(BuildContext context) {
     final videoId = extractYouTubeId(widget.videoUrl);
 
-    final Attachment? pdfAttachment = widget.attachments?.firstWhere(
-      (a) => (a.type ?? '').toLowerCase() == 'application/pdf',
+    final pdfAttachment = widget.attachments?.firstWhere(
+      (attachment) => attachment.type?.toLowerCase() == "application/pdf",
       orElse: () => Attachment(),
     );
-
-    // final bool isPdfAvailable =
-    //     pdfAttachment != null && (pdfAttachment.url?.isNotEmpty ?? false);
-
-    // final bool isVideoAvailable = videoId.isNotEmpty;
 
     final isPdfAvailable =
         pdfAttachment != null &&
@@ -580,20 +567,24 @@ class _ModuleCardState extends State<ModuleCard> {
         pdfAttachment.url!.isNotEmpty;
 
     final isVideoAvailable = videoId.isNotEmpty;
-    // ✅ check if title me "pdf" hai
+
     final bool isPdfTitle = widget.title.toLowerCase().contains("pdf");
 
     return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      margin: const EdgeInsets.symmetric(vertical: 8),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+      margin: EdgeInsets.symmetric(vertical: 8.h),
       elevation: 2,
       child: ExpansionTile(
-        tilePadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        childrenPadding: const EdgeInsets.only(left: 16, right: 16, bottom: 12),
+        tilePadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+        childrenPadding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 12.h),
         collapsedShape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(12.r),
         ),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.r),
+        ),
+        backgroundColor: Colors.white,
+        collapsedBackgroundColor: Colors.white,
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -609,13 +600,6 @@ class _ModuleCardState extends State<ModuleCard> {
             ),
             SizedBox(height: 4.h),
             Text(
-              // isVideoAvailable && isPdfAvailable
-              //     ? "Video and PDF Available"
-              //     : isVideoAvailable
-              //     ? "1 Video"
-              //     : isPdfAvailable
-              //     ? "1 PDF"
-              //     : "No Video and PDF Available",
               isPdfTitle
                   ? (isPdfAvailable ? "1 PDF" : "No PDF Available")
                   : (isVideoAvailable ? "1 Video" : "No Video Available"),
@@ -628,12 +612,11 @@ class _ModuleCardState extends State<ModuleCard> {
           ],
         ),
         children: [
-          // if (isPdfAvailable)
           if (isPdfTitle && isPdfAvailable)
             Row(
               children: [
-                const Icon(Icons.picture_as_pdf, size: 50, color: Colors.red),
-                const SizedBox(width: 12),
+                Icon(Icons.picture_as_pdf, size: 50.sp, color: Colors.red),
+                SizedBox(width: 12.w),
                 Expanded(
                   child: Text(
                     "${pdfAttachment!.title ?? widget.title} (PDF)",
@@ -646,116 +629,109 @@ class _ModuleCardState extends State<ModuleCard> {
                     ),
                   ),
                 ),
-                if (isDownloading)
-                  SizedBox(
-                    width: 28,
-                    height: 28,
-                    child: CircularProgressIndicator(
-                      value: downloadProgress,
-                      strokeWidth: 3,
-                    ),
-                  )
-                else if (downloadDone)
-                  IconButton(
-                    icon: const Icon(Icons.check_circle, color: Colors.green),
-                    onPressed: () async {
-                      final filePath = await downloadPdf(
-                        pdfAttachment.url!,
-                        pdfAttachment.title ?? "${widget.title}.pdf",
-                      );
-
-                      if (filePath != null && context.mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text("PDF download complete: $filePath"),
-                          ),
-                        );
-                        await OpenFilex.open(filePath, type: "application/pdf");
-                      } else if (context.mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text("Download failed")),
-                        );
-                      }
-                    },
-                  )
-                else
-                  IconButton(
-                    icon: const Icon(Icons.downloading_sharp),
-                    onPressed: () {
-                      if (pdfAttachment.url != null) {
-                        downloadPdf(
-                          pdfAttachment.url!,
-                          pdfAttachment.title ?? "${widget.title}.pdf",
-                        );
-                      }
-                    },
-                  ),
-              ],
-            ),
-
-          // Video Row
-          if (isVideoAvailable)
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: InkWell(
-                onTap: () {
-                  if (videoId.isNotEmpty) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => VideoPage(videoId: videoId),
-                      ),
-                    );
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("No Video Available")),
-                    );
-                  }
-                },
-                child: Row(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(10.r),
-                      child: Image.network(
-                        videoId.isNotEmpty
-                            ? "https://img.youtube.com/vi/$videoId/0.jpg"
-                            : "https://via.placeholder.com/120x90.png?text=No+Video",
-                        width: 120.w,
-                        height: 70.h,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return ClipRRect(
-                            borderRadius: BorderRadius.circular(10.r),
-                            child: Image.network(
-                              "https://t4.ftcdn.net/jpg/05/97/47/95/360_F_597479556_7bbQ7t4Z8k3xbAloHFHVdZIizWK1PdOo.jpg",
-                              width: 120.w,
-                              height: 70.h,
-                              fit: BoxFit.cover,
-                            ),
+                isDownloading
+                    ? SizedBox(
+                        height: 24.w,
+                        width: 24.w,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : IconButton(
+                        icon: Icon(Icons.downloading_sharp, size: 25.sp),
+                        onPressed: () async {
+                          setState(() {
+                            isDownloading = true;
+                          });
+                          final filePath = await downloadPdf(
+                            pdfAttachment.url!,
+                            pdfAttachment.title ?? "${widget.title}.pdf",
                           );
+
+                          if (filePath != null && context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  "PDF download complete: $filePath",
+                                ),
+                              ),
+                            );
+                            await OpenFilex.open(
+                              filePath,
+                              type: "application/pdf",
+                            );
+                          } else if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text("Download failed")),
+                            );
+                          }
+                          if (mounted) {
+                            setState(() {
+                              isDownloading = false;
+                            });
+                          }
                         },
                       ),
+              ],
+            ),
+          if (!isPdfTitle && isVideoAvailable)
+            InkWell(
+              onTap: () {
+                if (videoId.isNotEmpty) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => VideoPage(videoId: videoId),
                     ),
-                    SizedBox(width: 12.w),
-                    Expanded(
-                      child: Text(
-                        widget.title,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: GoogleFonts.roboto(
-                          fontSize: 15.sp,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black87,
-                        ),
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("No Video Available")),
+                  );
+                }
+              },
+              child: Row(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(10.r),
+                    child: Image.network(
+                      videoId.isNotEmpty
+                          ? "https://img.youtube.com/vi/$videoId/0.jpg"
+                          : "https://via.placeholder.com/120x90.png?text=No+Video",
+                      width: 120.w,
+                      height: 70.h,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return ClipRRect(
+                          borderRadius: BorderRadius.circular(10.r),
+                          child: Image.network(
+                            "https://t4.ftcdn.net/jpg/05/97/47/95/360_F_597479556_7bbQ7t4Z8k3xbAloHFHVdZIizWK1PdOo.jpg",
+                            width: 120.w,
+                            height: 70.h,
+                            fit: BoxFit.cover,
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  SizedBox(width: 12.w),
+                  Expanded(
+                    child: Text(
+                      widget.title,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: GoogleFonts.roboto(
+                        fontSize: 15.sp,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black87,
                       ),
                     ),
-                    Icon(
-                      Icons.ondemand_video_rounded,
-                      size: 28.sp,
-                      color: Colors.redAccent,
-                    ),
-                  ],
-                ),
+                  ),
+
+                  Icon(
+                    Icons.play_circle_fill,
+                    size: 28.sp,
+                    color: Colors.redAccent,
+                  ),
+                ],
               ),
             ),
         ],
