@@ -51,7 +51,13 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
           bool isFree =
               courseDetails.price == null ||
               courseDetails.price.toString().isEmpty ||
-              courseDetails.price.toString() == "0";
+              (courseDetails.price is num && courseDetails.price == 0) ||
+              courseDetails.price.toString() == "0" ||
+              courseDetails.price.toString() == "0.0" ||
+              courseDetails.price.toString().toLowerCase() == "free";
+
+          log("Is Free: $isFree");
+
           return Scaffold(
             body: Stack(
               children: [
@@ -914,24 +920,44 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                     ),
                   )
                 : Container(
-                    margin: EdgeInsets.only(left: 20.w, right: 20.w),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: Size(60.w, 50.h),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.r),
+                    margin: EdgeInsets.only(
+                      left: 20.w,
+                      right: 20.w,
+                      top: 10.h,
+                      bottom: 10.h,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          courseDetails.price != null
+                              ? "${courseDetails.price.toString()}"
+                              : "N/A",
+                          style: GoogleFonts.roboto(
+                            fontSize: 20.sp,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black87,
+                          ),
                         ),
-                        backgroundColor: Color(0xFF3e64de),
-                      ),
-                      onPressed: () {},
-                      child: Text(
-                        "Buy Now",
-                        style: GoogleFonts.roboto(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white,
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: Size(60.w, 50.h),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.r),
+                            ),
+                            backgroundColor: Color(0xFF3e64de),
+                          ),
+                          onPressed: () {},
+                          child: Text(
+                            "Buy Now",
+                            style: GoogleFonts.roboto(
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white,
+                            ),
+                          ),
                         ),
-                      ),
+                      ],
                     ),
                   ),
           );
