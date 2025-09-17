@@ -23,6 +23,7 @@ import 'package:eduma_app/data/Controller/popularCourseController.dart';
 import 'package:eduma_app/data/Controller/productListController.dart';
 import 'package:eduma_app/data/Controller/wishlistControllerClass.dart';
 import 'package:eduma_app/data/Model/popularCourseModel.dart';
+import 'package:eduma_app/data/Model/productBooksModel.dart';
 import 'package:eduma_app/data/Model/productListModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -48,39 +49,25 @@ class _HomePageState extends ConsumerState<HomePage> {
   bool isWishlisted = false;
 
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    @override
-    void initState() {
-      super.initState();
-      // Pehle 10 products load karne ke liye
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        ref.read(productListController.notifier).loadMore();
-        log("LoadMore called from initState ✅");
-      });
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
     var box = Hive.box("userBox");
 
     final popularCourseProvider = ref.watch(popularCourseController);
     final allCategoryProvider = ref.watch(allCategoryController);
     final latestCourseProvider = ref.watch(latestCourseController);
-    final productList = ref.watch(productListProvider);
+    final productListBooksProvider = ref.watch(productListBooksController);
     final isLoading =
         popularCourseProvider.isLoading ||
         allCategoryProvider.isLoading ||
         latestCourseProvider.isLoading ||
-        productList.isLoading;
+        productListBooksProvider.isLoading;
+
     if (isLoading) {
       return const ShimmerHomePage();
     }
     if (popularCourseProvider.hasError ||
         allCategoryProvider.hasError ||
-        productList.hasError) {
+        productListBooksProvider.hasError) {
       return Scaffold(
         backgroundColor: Colors.white,
         body: Center(
@@ -581,18 +568,18 @@ class _HomePageState extends ConsumerState<HomePage> {
                       ],
                     ),
                     SizedBox(height: 20.h),
-                    productList.when(
-                      data: (products) {
+                    productListBooksProvider.when(
+                      data: (books) {
                         return Container(
                           height: 200.h,
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
                             padding: EdgeInsets.zero,
-                            itemCount: products.length,
+                            itemCount: books.length,
                             itemBuilder: (context, index) {
                               return Padding(
                                 padding: EdgeInsets.only(left: 20.w),
-                                child: allProduct(data: products[index]),
+                                child: allProduct(data: books[index]),
                               );
                             },
                           ),
@@ -1353,7 +1340,7 @@ String truncateString(String input, int maxLength) {
 }
 
 class allProduct extends StatefulWidget {
-  final ProductListModel data;
+  final ProductBookModel data;
   const allProduct({super.key, required this.data});
 
   @override
@@ -1392,8 +1379,8 @@ class _allProductState extends State<allProduct> {
                 //   fit: BoxFit.cover,
                 // ),
                 child: Image.network(
-                  (widget.data.images != null && widget.data.images!.isNotEmpty)
-                      ? widget.data.images![0].src ?? ""
+                  (widget.data.image != null && widget.data.image!.isNotEmpty)
+                      ? widget.data.image
                       : "https://via.placeholder.com/190x125.png?text=No+Image", // fallback image
                   width: 190.w,
                   height: 125.h,
@@ -1481,6 +1468,8 @@ class _allProductState extends State<allProduct> {
           width: 190.w,
           child: Text(
             // "Introduction learn Press - LMS Plugin",
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
             widget.data.name ?? "",
             style: GoogleFonts.roboto(
               fontSize: 16.sp,

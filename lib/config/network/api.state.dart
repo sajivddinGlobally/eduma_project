@@ -22,9 +22,11 @@ import 'package:eduma_app/data/Model/orderDetailsModel.dart';
 import 'package:eduma_app/data/Model/orderListModel.dart';
 import 'package:eduma_app/data/Model/popularCourseDetailsModel.dart';
 import 'package:eduma_app/data/Model/popularCourseModel.dart';
+import 'package:eduma_app/data/Model/productBooksModel.dart';
 import 'package:eduma_app/data/Model/productDeleteBodyModel.dart';
 import 'package:eduma_app/data/Model/productDeleteResModel.dart';
 import 'package:eduma_app/data/Model/productDetailsModel.dart';
+import 'package:eduma_app/data/Model/productInstrumentModel.dart';
 import 'package:eduma_app/data/Model/productListModel.dart';
 import 'package:eduma_app/data/Model/productWishlistBodyModel.dart';
 import 'package:eduma_app/data/Model/productWishlistModel.dart';
@@ -116,14 +118,14 @@ abstract class APIStateNetwork {
   @GET("/custom/v1/enrolled-courses")
   Future<EnrolleCourseStudentModel> enrolledCourse();
 
-  @GET("/wc/v3/products")
-  Future<List<ProductListModel>> productList({
-    @Query("page") int page = 1,
-    @Query("per_page") int perPage = 10,
-  });
-
   @GET("/wc/v3/products/{id}")
   Future<ProductDetailsModel> productDetails(@Path() String id);
+
+  @GET("/custom-api/v1/aspeus-books")
+  Future<List<ProductBookModel>> fetchProductBooks();
+
+  @GET("/custom-api/v1/instruments")
+  Future<List<ProductInstrumentModel>> fetchProductInstrument();
 
   @POST("/wc/v3/wishlist")
   Future<ProductWishlistReModel> productWishlist(

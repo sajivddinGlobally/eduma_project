@@ -8,7 +8,7 @@ import 'package:eduma_app/config/utils/pretty.dio.dart';
 import 'package:eduma_app/data/Controller/productListController.dart';
 import 'package:eduma_app/data/Controller/wishlistControllerClass.dart';
 import 'package:eduma_app/data/Model/addCartBodyModel.dart';
-import 'package:eduma_app/data/Model/productListModel.dart';
+import 'package:eduma_app/data/Model/productBooksModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -29,85 +29,13 @@ class _ShopPageState extends ConsumerState<ShopPage> {
   final TextEditingController _searchController = TextEditingController();
   String searchQuery = '';
   int tab = 0;
-  List<Map<String, dynamic>> shopList = [
-    {
-      "image": "assets/reading2.png",
-      "paid": "₹ 45.00",
-      "name": "Introduction learn Press - LMS Plugin",
-    },
-    {
-      "image": "assets/shop1.png",
-      "paid": "Free",
-      "name": "Create an LMS Website With LearnPress",
-    },
-    {
-      "image": "assets/reading2.png",
-      "paid": "₹ 45.00",
-      "name": "Introduction learn Press - LMS Plugin",
-    },
-    {
-      "image": "assets/shop1.png",
-      "paid": "Free",
-      "name": "Create an LMS Website With LearnPress",
-    },
-    {
-      "image": "assets/reading2.png",
-      "paid": "₹ 45.00",
-      "name": "Introduction learn Press - LMS Plugin",
-    },
-    {
-      "image": "assets/shop1.png",
-      "paid": "Free",
-      "name": "Create an LMS Website With LearnPress",
-    },
-    {
-      "image": "assets/reading2.png",
-      "paid": "₹ 45.00",
-      "name": "Introduction learn Press - LMS Plugin",
-    },
-    {
-      "image": "assets/shop1.png",
-      "paid": "Free",
-      "name": "Create an LMS Website With LearnPress",
-    },
-  ];
-
-  bool hasCategory(product, String categoryName) {
-    return product.categories.any(
-      (cat) => cat.name.toLowerCase() == categoryName.toLowerCase(),
-    );
-  }
-
-  bool isWishlisted = false;
-
-  List<ProductListModel> products = [];
-  int page = 0;
-  int limit = 10;
-  bool isloading = false;
-  bool allowed = false;
-  final ScrollController _scrollController = ScrollController();
-  @override
-  void initState() {
-    super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(productListController.notifier).loadMore(refresh: true);
-    });
-
-    _scrollController.addListener(() {
-      final notifier = ref.read(productListController.notifier);
-      if (_scrollController.position.pixels >=
-              _scrollController.position.maxScrollExtent &&
-          !notifier.isLoading &&
-          notifier.hasMore) {
-        notifier.loadMore();
-      }
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
-    final productState = ref.watch(productListController);
+    final productListBooksProvider = ref.watch(productListBooksController);
+    final productListInstrumentsProvider = ref.watch(
+      productListInstrumentController,
+    );
 
     return Scaffold(
       backgroundColor: Color(0xFFFFFFFF),
@@ -255,136 +183,112 @@ class _ShopPageState extends ConsumerState<ShopPage> {
                   ),
                 ),
                 SizedBox(height: 16.h),
-                productState.when(
-                  data: (products) {
-                    // final filtered = products.where((p) {
-                    //   final title = p.name?.toLowerCase() ?? "";
-                    //   return title.contains(searchQuery.toLowerCase());
-                    // }).toList();
-
-                    // if (filtered.isEmpty) {
-                    //   return Center(
-                    //     child: Text(
-                    //       "No products found",
-                    //       style: GoogleFonts.roboto(
-                    //         fontSize: 16.sp,
-                    //         color: Colors.grey[600],
-                    //       ),
-                    //     ),
-                    //   );
-                    // }
-
-                    // Filtered list based on tab
-                    final filteredProducts = tab == 0
-                        ? products
-                              .where((p) => hasCategory(p, "ASPEUS Books"))
-                              .toList()
-                        : products
-                              .where((p) => hasCategory(p, "Instruments"))
+                tab == 0
+                    ? productListBooksProvider.when(
+                        data: (books) {
+                          final filteredBooks = books
+                              .where(
+                                (book) => book.name.toLowerCase().contains(
+                                  searchQuery,
+                                ),
+                              )
                               .toList();
 
-                    return Expanded(
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                          left: 20.w,
-                          right: 20.w,
-                          top: 20.h,
-                        ),
-                        child: MasonryGridView.count(
-                          controller: _scrollController,
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 20.w,
-                          mainAxisSpacing: 15.h,
-                          itemCount:
-                              filteredProducts.length +
-                              (ref.read(productListController.notifier).hasMore
-                                  ? 1
-                                  : 0),
-                          itemBuilder: (context, index) {
-                            if (index < filteredProducts.length) {
-                              final product = filteredProducts[index];
-                              final boxHeight = index.isEven ? 250.0 : 150.0;
-                              return ProductCard(
-                                data: product,
-                                boxHeight: boxHeight,
-                              );
-                            } else {
-                              return Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  SizedBox(height: 80.h),
-                                  CircularProgressIndicator(),
-                                  Text(
-                                    "Loading products...",
-                                    style: GoogleFonts.roboto(
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w500,
+                          return Expanded(
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                left: 20.w,
+                                right: 20.w,
+                                top: 20.h,
+                              ),
+                              child: filteredBooks.isEmpty
+                                  ? Text(
+                                      "No Product available",
+                                      style: GoogleFonts.inter(
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.grey[600],
+                                      ),
+                                    )
+                                  : MasonryGridView.count(
+                                      crossAxisCount: 2,
+                                      crossAxisSpacing: 20.w,
+                                      mainAxisSpacing: 15.h,
+                                      itemCount: filteredBooks.length,
+                                      itemBuilder: (context, index) {
+                                        if (index < filteredBooks.length) {
+                                          final product = filteredBooks[index];
+                                          final boxHeight = index.isEven
+                                              ? 250.0
+                                              : 150.0;
+                                          return ProductCard(
+                                            data: product,
+                                            boxHeight: boxHeight,
+                                          );
+                                        }
+                                        return SizedBox.shrink();
+                                      },
                                     ),
-                                  ),
-                                  SizedBox(height: 100.h),
-                                ],
-                              );
-                            }
-                          },
-                        ),
-                      ),
-                    );
-                  },
-                  error: (error, stackTrace) =>
-                      Center(child: Text(error.toString())),
-                  loading: () => Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 20.w, right: 20.w),
-                      child: GridView.builder(
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 20.w,
-                          mainAxisSpacing: 15.h,
-                          childAspectRatio: 175 / 200,
-                        ),
-                        itemCount: 6,
-                        itemBuilder: (context, index) {
-                          return Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  width: 250.w,
-                                  height: 150.h,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(16.r),
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(top: 10.h),
-                                  width: 200.w,
-                                  height: 14.h,
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey[400],
-                                    borderRadius: BorderRadius.circular(16.r),
-                                  ),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(top: 14.h),
-                                  width: 200.w,
-                                  height: 40.h,
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey[400],
-                                    borderRadius: BorderRadius.circular(16.r),
-                                  ),
-                                ),
-                              ],
                             ),
                           );
                         },
+                        error: (error, stackTrace) =>
+                            Center(child: Text(error.toString())),
+                        loading: () => _buildShimmerGrid(),
+                      )
+                    : productListInstrumentsProvider.when(
+                        data: (instruments) {
+                          final filteredInstruments = instruments
+                              .where(
+                                (instrument) => instrument.name
+                                    .toLowerCase()
+                                    .contains(searchQuery),
+                              )
+                              .toList();
+                          return Expanded(
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                left: 20.w,
+                                right: 20.w,
+                                top: 20.h,
+                              ),
+                              child: filteredInstruments.isEmpty
+                                  ? Text(
+                                      "No Product available",
+                                      style: GoogleFonts.inter(
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.grey[600],
+                                      ),
+                                    )
+                                  : MasonryGridView.count(
+                                      crossAxisCount: 2,
+                                      crossAxisSpacing: 20.w,
+                                      mainAxisSpacing: 15.h,
+                                      itemCount: filteredInstruments.length,
+                                      itemBuilder: (context, index) {
+                                        if (index <
+                                            filteredInstruments.length) {
+                                          final product =
+                                              filteredInstruments[index];
+                                          final boxHeight = index.isEven
+                                              ? 250.0
+                                              : 150.0;
+                                          return ProductBoth(
+                                            data: product,
+                                            boxHeight: boxHeight,
+                                          );
+                                        }
+                                        return SizedBox.shrink();
+                                      },
+                                    ),
+                            ),
+                          );
+                        },
+                        error: (error, stackTrace) =>
+                            Center(child: Text(error.toString())),
+                        loading: () => _buildShimmerGrid(),
                       ),
-                    ),
-                  ),
-                ),
               ],
             ),
           ),
@@ -392,10 +296,64 @@ class _ShopPageState extends ConsumerState<ShopPage> {
       ),
     );
   }
+
+  Widget _buildShimmerGrid() {
+    return Expanded(
+      child: Padding(
+        padding: EdgeInsets.only(left: 20.w, right: 20.w),
+        child: GridView.builder(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 20.w,
+            mainAxisSpacing: 15.h,
+            childAspectRatio: 175 / 200,
+          ),
+          itemCount: 6,
+          itemBuilder: (context, index) {
+            return Shimmer.fromColors(
+              baseColor: Colors.grey[300]!,
+              highlightColor: Colors.grey[100]!,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: 250.w,
+                    height: 150.h,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16.r),
+                      color: Colors.white,
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 10.h),
+                    width: 200.w,
+                    height: 14.h,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[400],
+                      borderRadius: BorderRadius.circular(16.r),
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 14.h),
+                    width: 200.w,
+                    height: 40.h,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[400],
+                      borderRadius: BorderRadius.circular(16.r),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
 }
 
 class ProductCard extends StatefulWidget {
-  final ProductListModel data;
+  final ProductBookModel data;
   final double boxHeight;
   const ProductCard({super.key, required this.data, required this.boxHeight});
 
@@ -434,7 +392,7 @@ class _ProductCardState extends State<ProductCard> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10.r),
                   child: Image.network(
-                    widget.data.images![0].src.toString(),
+                    widget.data.image,
                     fit: BoxFit.fill,
                     errorBuilder: (context, error, stackTrace) {
                       return Image.network(
@@ -564,7 +522,6 @@ class _ProductCardState extends State<ProductCard> {
                 setState(() {
                   isLoading = false;
                 });
-
                 await showDialog(
                   context: context,
                   builder: (context) {
@@ -628,7 +585,300 @@ class _ProductCardState extends State<ProductCard> {
                         ),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xFF001E6C),
+                            backgroundColor: Color(0xFF3e64de),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          onPressed: () {
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              CupertinoPageRoute(
+                                builder: (_) => const CartPage(),
+                                settings: const RouteSettings(name: "CartPage"),
+                              ),
+                              (route) => route.isFirst,
+                            );
+                          },
+                          child: Text(
+                            "Go to Cart",
+                            style: GoogleFonts.roboto(
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              } else {
+                setState(() {
+                  isLoading = false;
+                });
+              }
+            } catch (e) {
+              setState(() {
+                isLoading = false;
+              });
+              log(e.toString());
+            }
+          },
+          child: isLoading
+              ? SizedBox(
+                  width: 30.w,
+                  height: 30.h,
+                  child: CircularProgressIndicator(
+                    color: Colors.white,
+                    strokeWidth: 1.5,
+                  ),
+                )
+              : Text(
+                  "Add To Cart",
+                  style: GoogleFonts.roboto(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white,
+                  ),
+                ),
+        ),
+      ],
+    );
+  }
+}
+
+// Update ProductCard to handle both types
+class ProductBoth extends StatefulWidget {
+  final dynamic
+  data; // Use dynamic to accept both ProductBookModel and ProductInstrumentModel
+  final double boxHeight;
+
+  const ProductBoth({super.key, required this.data, required this.boxHeight});
+
+  @override
+  State<ProductBoth> createState() => _ProductBothState();
+}
+
+class _ProductBothState extends State<ProductBoth> {
+  bool isWishlisted = false;
+  bool isLoading = false;
+
+  @override
+  Widget build(BuildContext context) {
+    var box = Hive.box("userBox");
+    var token = box.get("token");
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Stack(
+          children: [
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                    builder: (context) =>
+                        ProductDetailsPage(id: widget.data.id.toString()),
+                  ),
+                );
+              },
+              child: Container(
+                width: 190.w,
+                height: widget.boxHeight,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10.r),
+                  child: Image.network(
+                    widget.data.image,
+                    fit: BoxFit.fill,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Image.network(
+                        "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png",
+                        width: 190.w,
+                        height: widget.boxHeight,
+                        fit: BoxFit.fill,
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ),
+            Align(
+              alignment: Alignment.topRight,
+              child: Container(
+                margin: EdgeInsets.only(top: 8.h, right: 13.w),
+                child: IconButton(
+                  style: IconButton.styleFrom(
+                    minimumSize: Size(0, 0),
+                    padding: EdgeInsets.zero,
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  ),
+                  onPressed: () async {
+                    if (token == null) {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute(builder: (context) => LoginPage()),
+                      );
+                      showSuccessMessage(context, "please login first");
+                      return;
+                    }
+                    final result =
+                        await ProductWishlistController.productWishlist(
+                          context: context,
+                          productId: widget.data.id!,
+                          currentStatus: isWishlisted,
+                        );
+                    setState(() {
+                      isWishlisted = result;
+                    });
+                  },
+                  icon: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 500),
+                    transitionBuilder: (child, animation) {
+                      return ScaleTransition(
+                        scale: CurvedAnimation(
+                          parent: animation,
+                          curve: Curves.easeInOutBack,
+                        ),
+                        child: child,
+                      );
+                    },
+                    child: Icon(
+                      isWishlisted ? Icons.favorite : Icons.favorite_border,
+                      key: ValueKey<bool>(isWishlisted),
+                      color: isWishlisted ? Colors.red : Colors.black,
+                      size: 25.sp,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 13.h),
+        Text(
+          overflow: TextOverflow.ellipsis,
+          maxLines: 2,
+          widget.data.name.toString(),
+          style: GoogleFonts.roboto(
+            fontSize: 16.sp,
+            fontWeight: FontWeight.w500,
+            color: Color(0xFF000000),
+            height: 1.3,
+          ),
+        ),
+        SizedBox(height: 6.h),
+        Text(
+          "₹${widget.data.price.toString()}",
+          style: GoogleFonts.roboto(
+            fontSize: 15.sp,
+            fontWeight: FontWeight.w500,
+            color: Color(0xFF001E6C),
+          ),
+        ),
+        SizedBox(height: 10.h),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            minimumSize: Size(double.infinity, 45.h),
+            backgroundColor: Color(0xFF3e64de),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.r),
+              side: BorderSide.none,
+            ),
+          ),
+          onPressed: () async {
+            if (token == null) {
+              Navigator.push(
+                context,
+                CupertinoPageRoute(builder: (context) => LoginPage()),
+              );
+              showSuccessMessage(context, "please login first");
+              return;
+            }
+            final body = ProductAddCartBodyModel(
+              productId: widget.data.id!,
+              quantity: 1,
+            );
+
+            setState(() {
+              isLoading = true;
+            });
+
+            try {
+              final service = APIStateNetwork(createDio());
+              final response = await service.addToCart(body);
+
+              if (response.success == true) {
+                setState(() {
+                  isLoading = false;
+                });
+                await showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      title: Row(
+                        children: [
+                          Icon(
+                            Icons.check_circle,
+                            color: Colors.green,
+                            size: 28,
+                          ),
+                          SizedBox(width: 8),
+                          Text(
+                            "Success",
+                            style: GoogleFonts.roboto(
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black87,
+                            ),
+                          ),
+                        ],
+                      ),
+                      content: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            response.message,
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.roboto(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black54,
+                            ),
+                          ),
+                          SizedBox(height: 12),
+                          Icon(
+                            Icons.shopping_cart,
+                            color: Color(0xFF001E6C),
+                            size: 40,
+                          ),
+                        ],
+                      ),
+                      actionsAlignment: MainAxisAlignment.spaceBetween,
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          style: TextButton.styleFrom(
+                            foregroundColor: Colors.redAccent,
+                          ),
+                          child: Text(
+                            "Close",
+                            style: GoogleFonts.roboto(
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xFF3e64de),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
                             ),
