@@ -1583,8 +1583,7 @@ class _ModuleWidgetState extends State<ModuleWidget> {
                 log("▶️ Play video with id: $videoId");
               },
               child: Row(
-                children: [
-                 
+                children: [ 
                   Image.asset("assets/vi.png"),
                   SizedBox(width: 12.w),
                   Expanded(
