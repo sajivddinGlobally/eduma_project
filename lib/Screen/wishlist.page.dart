@@ -417,7 +417,7 @@ class _WishlistPageState extends ConsumerState<WishlistPage> {
                           topLeft: Radius.circular(10.r),
                           bottomLeft: Radius.circular(10.r),
                         ),
-                        side: BorderSide(color: Colors.black),
+                        side: BorderSide.none,
                       ),
                     ),
                     onPressed: () {
@@ -445,7 +445,7 @@ class _WishlistPageState extends ConsumerState<WishlistPage> {
                           topRight: Radius.circular(10.r),
                           bottomRight: Radius.circular(10.r),
                         ),
-                        side: BorderSide(color: Colors.black),
+                        side: BorderSide.none,
                       ),
                     ),
                     onPressed: () {
@@ -910,15 +910,15 @@ class _WishlistPageState extends ConsumerState<WishlistPage> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text(
-                                          productwishlist.data[index].inStock
-                                              .toString(),
-                                          style: GoogleFonts.roboto(
-                                            fontSize: 16.sp,
-                                            fontWeight: FontWeight.w400,
-                                            color: Colors.grey[600],
-                                          ),
-                                        ),
+                                        // Text(
+                                        //   productwishlist.data[index].inStock
+                                        //       .toString(),
+                                        //   style: GoogleFonts.roboto(
+                                        //     fontSize: 16.sp,
+                                        //     fontWeight: FontWeight.w400,
+                                        //     color: Colors.grey[600],
+                                        //   ),
+                                        // ),
                                         SizedBox(height: 6.h),
                                         Text(
                                           productwishlist.data[index].name,
