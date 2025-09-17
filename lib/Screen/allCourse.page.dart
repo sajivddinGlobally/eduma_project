@@ -361,9 +361,12 @@ class _AllBodyState extends State<AllBody> {
         ),
         SizedBox(height: 8.h),
         Text(
-          //"₹ 45.00",
-          //shopList[index]['paid'].toString(),
-          "₹ ${widget.data.pricing.price}",
+          (widget.data.pricing.price == null ||
+                  widget.data.pricing.price == 0 ||
+                  widget.data.pricing.price.isEmpty)
+              ? widget.data.pricing.priceLabel.name
+              : "₹ ${widget.data.pricing.price}",
+          //"₹ ${widget.data.pricing.price}",
           style: GoogleFonts.roboto(
             fontSize: 15.sp,
             fontWeight: FontWeight.w500,
