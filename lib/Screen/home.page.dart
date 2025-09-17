@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:eduma_app/Screen/allCategory.page.dart';
 import 'package:eduma_app/Screen/allCourse.page.dart';
 import 'package:eduma_app/Screen/apiCall/api.register.dart';
@@ -8,7 +7,6 @@ import 'package:eduma_app/Screen/customProfileDrawer.dart';
 import 'package:eduma_app/Screen/enrolledCourseDetails.page.dart';
 import 'package:eduma_app/Screen/library.page.dart';
 import 'package:eduma_app/Screen/login.page.dart';
-import 'package:eduma_app/Screen/networkErrorPage.dart';
 import 'package:eduma_app/Screen/notification.page.dart';
 import 'package:eduma_app/Screen/payCourseDetails.page.dart';
 import 'package:eduma_app/Screen/productDetails.page.dart';
@@ -18,13 +16,11 @@ import 'package:eduma_app/config/core/showFlushbar.dart';
 import 'package:eduma_app/data/Controller/allCategoryController.dart';
 import 'package:eduma_app/data/Controller/enrolleCourseController.dart';
 import 'package:eduma_app/data/Controller/latestCourseController.dart';
-import 'package:eduma_app/data/Controller/notificationController.dart';
 import 'package:eduma_app/data/Controller/popularCourseController.dart';
 import 'package:eduma_app/data/Controller/productListController.dart';
 import 'package:eduma_app/data/Controller/wishlistControllerClass.dart';
 import 'package:eduma_app/data/Model/popularCourseModel.dart';
 import 'package:eduma_app/data/Model/productBooksModel.dart';
-import 'package:eduma_app/data/Model/productListModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
