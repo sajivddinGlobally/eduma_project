@@ -1584,7 +1584,8 @@ class _ModuleWidgetState extends State<ModuleWidget> {
               },
               child: Row(
                 children: [
-                  Icon(Icons.ondemand_video, size: 50.sp, color: Colors.blue),
+                 
+                  Image.asset("assets/vi.png"),
                   SizedBox(width: 12.w),
                   Expanded(
                     child: Text(
