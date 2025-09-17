@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:eduma_app/Screen/payCourseDetails.page.dart';
 import 'package:eduma_app/data/Controller/categoryByCourseContorller.dart';
 import 'package:flutter/cupertino.dart';
@@ -186,6 +188,15 @@ class _CoursePageState extends ConsumerState<CoursePage> {
                                             width: 400.w,
                                             height: 263.h,
                                             fit: BoxFit.cover,
+                                            errorBuilder:
+                                                (context, error, stackTrace) {
+                                                  return Image.network(
+                                                    "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/832px-No-Image-Placeholder.png",
+                                                    width: 400.w,
+                                                    height: 263.h,
+                                                    fit: BoxFit.fill,
+                                                  );
+                                                },
                                           ),
                                         ),
                                       ),
@@ -284,7 +295,10 @@ class _CoursePageState extends ConsumerState<CoursePage> {
                 ),
               );
             },
-            error: (error, stackTrace) => Center(child: Text(error.toString())),
+            error: (error, stackTrace) {
+              log(stackTrace.toString());
+              return Center(child: Text(error.toString()));
+            },
             loading: () => SizedBox(
               height: MediaQuery.of(context).size.height / 2,
               child: Center(child: CircularProgressIndicator()),

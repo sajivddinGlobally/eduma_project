@@ -80,7 +80,7 @@ class Course {
     id: json["id"] ?? 0,
     title: json["title"] ?? '',
     excerpt: json["excerpt"] ?? '',
-    thumbnail: json["thumbnail"] ?? '',
+    thumbnail: json["thumbnail"].toString() ?? '',
     link: json["link"] ?? '',
     price: json["price"] ?? 'Free', // default value दिया
     enrolled: json["enrolled"],
