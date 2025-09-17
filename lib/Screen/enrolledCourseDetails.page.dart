@@ -506,6 +506,8 @@ class MyLession extends StatefulWidget {
 
 class _MyLessionState extends State<MyLession> {
   bool isDownloading = false;
+  double downloadProgress = 0.0;
+  bool isDownloadComplete = false;
 
   String extractYouTubeId(String url) {
     RegExp regExp = RegExp(
@@ -543,11 +545,27 @@ class _MyLessionState extends State<MyLession> {
           headers: {"Accept": "application/pdf"},
           validateStatus: (status) => status != null && status < 500,
         ),
+        onReceiveProgress: (receive, total) {
+          if (total != -1 && mounted) {
+            setState(() {
+              downloadProgress = (receive / total * 100).clamp(0, 100);
+            });
+          }
+        },
       );
       log("✅ PDF download complete: $filePath");
+      if (mounted) {
+        setState(() {
+          isDownloadComplete = true;
+        });
+      }
       return filePath;
     } catch (e) {
       log("❌ Error: $e");
+      if (mounted) {
+        isDownloadComplete = false;
+        downloadProgress = 0.0;
+      }
       return null;
     }
   }
@@ -630,45 +648,76 @@ class _MyLessionState extends State<MyLession> {
                   ),
                 ),
                 isDownloading
-                    ? SizedBox(
-                        height: 24.w,
-                        width: 24.w,
-                        child: CircularProgressIndicator(strokeWidth: 2),
+                    ? Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          SizedBox(
+                            height: 28.w,
+                            width: 28.w,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              value: downloadProgress / 100,
+                              color: Color(0xFF3e64de),
+                            ),
+                          ),
+                          Text(
+                            "${downloadProgress.toStringAsFixed(0)}%",
+                            style: GoogleFonts.roboto(
+                              fontSize: 10.sp,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black87,
+                            ),
+                          ),
+                        ],
                       )
                     : IconButton(
-                        icon: Icon(Icons.downloading_sharp, size: 25.sp),
-                        onPressed: () async {
-                          setState(() {
-                            isDownloading = true;
-                          });
-                          final filePath = await downloadPdf(
-                            pdfAttachment.url!,
-                            pdfAttachment.title ?? "${widget.title}.pdf",
-                          );
+                        icon: Icon(
+                          isDownloadComplete
+                              ? Icons.check_circle
+                              : Icons.downloading_sharp,
+                          size: 28.sp,
+                          color: isDownloadComplete
+                              ? Colors.green
+                              : Colors.black,
+                        ),
+                        onPressed: isDownloadComplete
+                            ? null
+                            : () async {
+                                setState(() {
+                                  isDownloading = true;
+                                  downloadProgress = 0.0;
+                                  isDownloadComplete = false;
+                                });
+                                final filePath = await downloadPdf(
+                                  pdfAttachment.url!,
+                                  pdfAttachment.title ?? "${widget.title}.pdf",
+                                );
 
-                          if (filePath != null && context.mounted) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  "PDF download complete: $filePath",
-                                ),
-                              ),
-                            );
-                            await OpenFilex.open(
-                              filePath,
-                              type: "application/pdf",
-                            );
-                          } else if (context.mounted) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text("Download failed")),
-                            );
-                          }
-                          if (mounted) {
-                            setState(() {
-                              isDownloading = false;
-                            });
-                          }
-                        },
+                                if (filePath != null && context.mounted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        "PDF download complete: $filePath",
+                                      ),
+                                    ),
+                                  );
+                                  await OpenFilex.open(
+                                    filePath,
+                                    type: "application/pdf",
+                                  );
+                                } else if (context.mounted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text("Download failed"),
+                                    ),
+                                  );
+                                }
+                                if (mounted) {
+                                  setState(() {
+                                    isDownloading = false;
+                                  });
+                                }
+                              },
                       ),
               ],
             ),

@@ -582,6 +582,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                                     ?.firstOrNull ??
                                                 "",
                                             attachments: lesson.attachments,
+                                            isFree: isFree,
                                           ),
                                         ),
                                       )
@@ -1132,7 +1133,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
     );
   }
 
-  //////////  
+  //////////
   Widget newmodules(
     String title,
     String videoUrl, {
@@ -1333,12 +1334,13 @@ class ModuleWidget extends StatefulWidget {
   final String title;
   final String videoUrl;
   final List<Attachment>? attachments;
-
+  final bool isFree;
   const ModuleWidget({
     super.key,
     required this.title,
     required this.videoUrl,
     this.attachments,
+    required this.isFree,
   });
 
   @override
@@ -1347,6 +1349,8 @@ class ModuleWidget extends StatefulWidget {
 
 class _ModuleWidgetState extends State<ModuleWidget> {
   bool isDownloading = false;
+  double downloadProgress = 0.0;
+  bool isDownloadComplete = false;
 
   String extractYouTubeId(String url) {
     RegExp regExp = RegExp(
@@ -1384,11 +1388,30 @@ class _ModuleWidgetState extends State<ModuleWidget> {
           headers: {"Accept": "application/pdf"},
           validateStatus: (status) => status != null && status < 500,
         ),
+
+        onReceiveProgress: (received, total) {
+          if (total != -1 && mounted) {
+            setState(() {
+              downloadProgress = (received / total * 100).clamp(0, 100);
+            });
+          }
+        },
       );
       log("✅ PDF download complete: $filePath");
+      if (mounted) {
+        setState(() {
+          isDownloadComplete = true;
+        });
+      }
       return filePath;
     } catch (e) {
       log("❌ Error: $e");
+      if (mounted) {
+        setState(() {
+          isDownloading = false;
+          downloadProgress = 0.0;
+        });
+      }
       return null;
     }
   }
@@ -1456,7 +1479,11 @@ class _ModuleWidgetState extends State<ModuleWidget> {
           if (isPdfTitle && isPdfAvailable)
             Row(
               children: [
-                Icon(Icons.picture_as_pdf, size: 50.sp, color: Colors.red),
+                Icon(
+                  Icons.picture_as_pdf,
+                  size: 50.sp,
+                  color: Color(0xFF3e64de),
+                ),
                 SizedBox(width: 12.w),
                 Expanded(
                   child: Text(
@@ -1470,47 +1497,84 @@ class _ModuleWidgetState extends State<ModuleWidget> {
                     ),
                   ),
                 ),
-                isDownloading
-                    ? SizedBox(
-                        height: 24.w,
-                        width: 24.w,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      )
-                    : IconButton(
-                        icon: Icon(Icons.downloading_sharp, size: 25.sp),
-                        onPressed: () async {
-                          setState(() {
-                            isDownloading = true;
-                          });
-                          final filePath = await downloadPdf(
-                            pdfAttachment.url!,
-                            pdfAttachment.title ?? "${widget.title}.pdf",
-                          );
-
-                          if (filePath != null && context.mounted) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  "PDF download complete: $filePath",
+                widget.isFree
+                    ? isDownloading
+                          ? Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                SizedBox(
+                                  height: 28.w,
+                                  width: 28.w,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    value: downloadProgress / 100,
+                                    color: Color(0xFF3e64de),
+                                  ),
                                 ),
+                                Text(
+                                  "${downloadProgress.toStringAsFixed(0)}%",
+                                  style: GoogleFonts.roboto(
+                                    fontSize: 10.sp,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black87,
+                                  ),
+                                ),
+                              ],
+                            )
+                          : IconButton(
+                              icon: Icon(
+                                isDownloadComplete
+                                    ? Icons.check_circle
+                                    : Icons.downloading_sharp,
+                                size: 28.sp,
+                                color: isDownloadComplete
+                                    ? Colors.green
+                                    : Colors.black,
                               ),
-                            );
-                            await OpenFilex.open(
-                              filePath,
-                              type: "application/pdf",
-                            );
-                          } else if (context.mounted) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text("Download failed")),
-                            );
-                          }
-                          if (mounted) {
-                            setState(() {
-                              isDownloading = false;
-                            });
-                          }
-                        },
-                      ),
+                              onPressed: isDownloadComplete
+                                  ? null // Disable button after download is complete
+                                  : () async {
+                                      setState(() {
+                                        isDownloading = true;
+                                        downloadProgress = 0.0;
+                                        isDownloadComplete = false;
+                                      });
+                                      final filePath = await downloadPdf(
+                                        pdfAttachment.url!,
+                                        pdfAttachment.title ??
+                                            "${widget.title}.pdf",
+                                      );
+                                      if (filePath != null && context.mounted) {
+                                        ScaffoldMessenger.of(
+                                          context,
+                                        ).showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                              "PDF download complete: $filePath",
+                                            ),
+                                          ),
+                                        );
+                                        await OpenFilex.open(
+                                          filePath,
+                                          type: "application/pdf",
+                                        );
+                                      } else if (context.mounted) {
+                                        ScaffoldMessenger.of(
+                                          context,
+                                        ).showSnackBar(
+                                          const SnackBar(
+                                            content: Text("Download failed"),
+                                          ),
+                                        );
+                                      }
+                                      if (mounted) {
+                                        setState(() {
+                                          isDownloading = false;
+                                        });
+                                      }
+                                    },
+                            )
+                    : SizedBox.shrink(),
               ],
             ),
           if (!isPdfTitle && isVideoAvailable)

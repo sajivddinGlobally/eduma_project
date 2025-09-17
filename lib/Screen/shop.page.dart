@@ -647,6 +647,7 @@ class _ProductCardState extends State<ProductCard> {
   }
 }
 
+
 // Update ProductCard to handle both types
 class ProductBoth extends StatefulWidget {
   final dynamic
