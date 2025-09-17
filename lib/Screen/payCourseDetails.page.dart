@@ -5,6 +5,7 @@ import 'package:eduma_app/Screen/enrolledCourseDetails.page.dart'
     hide Attachment;
 import 'package:eduma_app/Screen/library.page.dart';
 import 'package:eduma_app/Screen/login.page.dart';
+import 'package:eduma_app/Screen/video.page.dart';
 import 'package:eduma_app/config/core/showFlushbar.dart';
 import 'package:eduma_app/config/network/api.state.dart';
 import 'package:eduma_app/config/utils/pretty.dio.dart';
@@ -525,57 +526,66 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                     color: Color.fromARGB(63, 0, 0, 0),
                                   ),
                                 ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    // ...courseDetails.topics!.map(
-                                    //   (lesson) => modules(
-                                    //     lesson.lessons!
-                                    //         .map((e) => e.lessonTitle)
-                                    //         .toString(),
-                                    //     lesson.lessons!
-                                    //         .map(
-                                    //           (e) => e.lessonMeta!.video
-                                    //               .toString(),
-                                    //         )
-                                    //         .toString(),
-                                    //   ),
-                                    // ),
+                                // child: Column(
+                                //   crossAxisAlignment: CrossAxisAlignment.start,
+                                //   children: [
+                                //     // ...courseDetails.topics!.map(
+                                //     //   (lesson) => modules(
+                                //     //     lesson.lessons!
+                                //     //         .map((e) => e.lessonTitle)
+                                //     //         .toString(),
+                                //     //     lesson.lessons!
+                                //     //         .map(
+                                //     //           (e) => e.lessonMeta!.video
+                                //     //               .toString(),
+                                //     //         )
+                                //     //         .toString(),
+                                //     //   ),
+                                //     // ),
 
-                                    // for (var topic in courseDetails.topics!)
-                                    //   for (var lesson in topic.lessons!)
-                                    //     modules(
-                                    //       lesson.lessonTitle ??
-                                    //           "Untitled Lesson",
-                                    //       lesson.lessonMeta?.video
-                                    //               ?.toString() ??
-                                    //           "",
-                                    //     ),
-                                    // ...courseDetails.topics!.expand(
-                                    //   (topic) => topic.lessons!.map(
-                                    //     (lesson) => modules(
-                                    //       lesson.lessonTitle ??
-                                    //           "Untitled Lesson",
-                                    //       lesson.lessonMeta?.video
-                                    //               ?.toString() ??
-                                    //           "",
-                                    //     ),
-                                    //   ),
-                                    // ),
-                                    ///////////////////////////////////////////
-                                    ...courseDetails.topics!.expand(
-                                      (topic) => topic.lessons!.map(
-                                        (lesson) => newmodules(
-                                          lesson.lessonTitle ?? "",
-                                          lesson.lessonMeta?.video?.firstOrNull
-                                                  ?.toString() ??
-                                              "",
-                                          attachments: lesson
-                                              .attachments, // Lesson से attachments पास करें
+                                //     // ...courseDetails.topics!.expand(
+                                //     //   (topic) => topic.lessons!.map(
+                                //     //     (lesson) => modules(
+                                //     //       lesson.lessonTitle ??
+                                //     //           "Untitled Lesson",
+                                //     //       lesson.lessonMeta?.video
+                                //     //               ?.toString() ??
+                                //     //           "",
+                                //     //     ),
+                                //     //   ),
+                                //     // ),
+                                //     ///////////////////////////////////////////
+                                //     ...courseDetails.topics!.expand(
+                                //       (topic) => topic.lessons!.map(
+                                //         (lesson) => newmodules(
+                                //           lesson.lessonTitle ?? "",
+                                //           lesson.lessonMeta?.video?.firstOrNull
+                                //                   ?.toString() ??
+                                //               "",
+                                //           attachments: lesson
+                                //               .attachments, // Lesson से attachments पास करें
+                                //         ),
+                                //       ),
+                                //     ),
+                                //   ],
+                                // ),
+                                child: Column(
+                                  children: courseDetails.topics!
+                                      .expand(
+                                        (topic) => topic.lessons!.map(
+                                          (lesson) => ModuleWidget(
+                                            title: lesson.lessonTitle ?? "",
+                                            videoUrl:
+                                                lesson
+                                                    .lessonMeta
+                                                    ?.video
+                                                    ?.firstOrNull ??
+                                                "",
+                                            attachments: lesson.attachments,
+                                          ),
                                         ),
-                                      ),
-                                    ),
-                                  ],
+                                      )
+                                      .toList(),
                                 ),
                               ),
                               SizedBox(height: 15.h),
@@ -707,7 +717,6 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                 ),
               ],
             ),
-
             bottomNavigationBar: isFree
                 ? Container(
                     decoration: BoxDecoration(
@@ -1123,11 +1132,12 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
     );
   }
 
-  //////////  ye use ho rha hia
+  //////////  
   Widget newmodules(
     String title,
     String videoUrl, {
     List<Attachment>? attachments,
+    bool isdownloading = false,
   }) {
     final videoId = newextractYouTubeId(videoUrl);
 
@@ -1204,28 +1214,38 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                     ),
                   ),
                 ),
-                IconButton(
-                  icon: Icon(Icons.downloading_sharp, size: 25.sp),
-                  onPressed: () async {
-                    final filePath = await newdownloadPdf(
-                      pdfAttachment.url!,
-                      pdfAttachment.title ?? "$title.pdf",
-                    );
+                isdownloading
+                    ? CircularProgressIndicator()
+                    : IconButton(
+                        icon: Icon(Icons.downloading_sharp, size: 25.sp),
+                        onPressed: () async {
+                          setState(() {
+                            isdownloading = true;
+                          });
+                          final filePath = await newdownloadPdf(
+                            pdfAttachment.url!,
+                            pdfAttachment.title ?? "$title.pdf",
+                          );
 
-                    if (filePath != null && context.mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text("PDF download complete: $filePath"),
-                        ),
-                      );
-                      await OpenFilex.open(filePath, type: "application/pdf");
-                    } else if (context.mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text("Download failed")),
-                      );
-                    }
-                  },
-                ),
+                          if (filePath != null && context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  "PDF download complete: $filePath",
+                                ),
+                              ),
+                            );
+                            await OpenFilex.open(
+                              filePath,
+                              type: "application/pdf",
+                            );
+                          } else if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text("Download failed")),
+                            );
+                          }
+                        },
+                      ),
               ],
             ),
 
@@ -1303,5 +1323,222 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
       log("Error: $e");
       return null;
     }
+  }
+}
+
+////////////////////////////////////////////////
+/////////////////////////////////////
+
+class ModuleWidget extends StatefulWidget {
+  final String title;
+  final String videoUrl;
+  final List<Attachment>? attachments;
+
+  const ModuleWidget({
+    super.key,
+    required this.title,
+    required this.videoUrl,
+    this.attachments,
+  });
+
+  @override
+  State<ModuleWidget> createState() => _ModuleWidgetState();
+}
+
+class _ModuleWidgetState extends State<ModuleWidget> {
+  bool isDownloading = false;
+
+  String extractYouTubeId(String url) {
+    RegExp regExp = RegExp(
+      r'^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?v=))([^#\&\?]*).*',
+      caseSensitive: false,
+    );
+    Match? match = regExp.firstMatch(url);
+    return match != null && match.group(7)!.length == 11 ? match.group(7)! : '';
+  }
+
+  Future<String?> downloadPdf(String url, String fileName) async {
+    try {
+      if (Platform.isAndroid) {
+        if (!await Permission.storage.isGranted) {
+          await Permission.storage.request();
+        }
+      }
+
+      Directory dir =
+          await getExternalStorageDirectory() ??
+          await getApplicationDocumentsDirectory();
+
+      if (!dir.existsSync()) dir.createSync(recursive: true);
+
+      fileName = fileName.replaceAll(RegExp(r'[\\/:*?"<>|]'), '_');
+
+      final filePath = "${dir.path}/$fileName";
+
+      await Dio().download(
+        url,
+        filePath,
+        options: Options(
+          followRedirects: true,
+          responseType: ResponseType.bytes,
+          headers: {"Accept": "application/pdf"},
+          validateStatus: (status) => status != null && status < 500,
+        ),
+      );
+      log("✅ PDF download complete: $filePath");
+      return filePath;
+    } catch (e) {
+      log("❌ Error: $e");
+      return null;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final videoId = extractYouTubeId(widget.videoUrl);
+
+    final pdfAttachment = widget.attachments?.firstWhere(
+      (attachment) => attachment.type?.toLowerCase() == "application/pdf",
+      orElse: () => Attachment(),
+    );
+
+    final isPdfAvailable =
+        pdfAttachment != null &&
+        pdfAttachment.url != null &&
+        pdfAttachment.url!.isNotEmpty;
+
+    final isVideoAvailable = videoId.isNotEmpty;
+
+    final bool isPdfTitle = widget.title.toLowerCase().contains("pdf");
+
+    return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+      margin: EdgeInsets.symmetric(vertical: 8.h),
+      elevation: 2,
+      child: ExpansionTile(
+        tilePadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+        childrenPadding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 12.h),
+        collapsedShape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.r),
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.r),
+        ),
+        backgroundColor: Colors.white,
+        collapsedBackgroundColor: Colors.white,
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              widget.title,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: GoogleFonts.roboto(
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w600,
+                color: Colors.black,
+              ),
+            ),
+            SizedBox(height: 4.h),
+            Text(
+              isPdfTitle
+                  ? (isPdfAvailable ? "1 PDF" : "No PDF Available")
+                  : (isVideoAvailable ? "1 Video" : "No Video Available"),
+              style: GoogleFonts.roboto(
+                fontSize: 13.sp,
+                fontWeight: FontWeight.w400,
+                color: Colors.grey[600],
+              ),
+            ),
+          ],
+        ),
+        children: [
+          if (isPdfTitle && isPdfAvailable)
+            Row(
+              children: [
+                Icon(Icons.picture_as_pdf, size: 50.sp, color: Colors.red),
+                SizedBox(width: 12.w),
+                Expanded(
+                  child: Text(
+                    "${pdfAttachment!.title ?? widget.title} (PDF)",
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: GoogleFonts.roboto(
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black87,
+                    ),
+                  ),
+                ),
+                isDownloading
+                    ? SizedBox(
+                        height: 24.w,
+                        width: 24.w,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : IconButton(
+                        icon: Icon(Icons.downloading_sharp, size: 25.sp),
+                        onPressed: () async {
+                          setState(() {
+                            isDownloading = true;
+                          });
+                          final filePath = await downloadPdf(
+                            pdfAttachment.url!,
+                            pdfAttachment.title ?? "${widget.title}.pdf",
+                          );
+
+                          if (filePath != null && context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  "PDF download complete: $filePath",
+                                ),
+                              ),
+                            );
+                            await OpenFilex.open(
+                              filePath,
+                              type: "application/pdf",
+                            );
+                          } else if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text("Download failed")),
+                            );
+                          }
+                          if (mounted) {
+                            setState(() {
+                              isDownloading = false;
+                            });
+                          }
+                        },
+                      ),
+              ],
+            ),
+          if (!isPdfTitle && isVideoAvailable)
+            InkWell(
+              onTap: () {
+                log("▶️ Play video with id: $videoId");
+              },
+              child: Row(
+                children: [
+                  Icon(Icons.ondemand_video, size: 50.sp, color: Colors.blue),
+                  SizedBox(width: 12.w),
+                  Expanded(
+                    child: Text(
+                      widget.title,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: GoogleFonts.roboto(
+                        fontSize: 15.sp,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black87,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+        ],
+      ),
+    );
   }
 }
