@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:eduma_app/Screen/editProfile.page.dart';
 import 'package:eduma_app/Screen/productDetails.page.dart';
+import 'package:eduma_app/Screen/razorpay.page.dart';
 import 'package:eduma_app/config/network/api.state.dart';
 import 'package:eduma_app/config/utils/pretty.dio.dart';
 import 'package:eduma_app/data/Controller/cartController.dart';
@@ -251,6 +252,12 @@ class _CartPageState extends ConsumerState<CartPage> {
                                     ),
                                     duration: Duration(seconds: 2),
                                     backgroundColor: Color(0xFF001E6C),
+                                  ),
+                                );
+                                Navigator.push(
+                                  context,
+                                  CupertinoPageRoute(
+                                    builder: (context) => RazorpayPage(),
                                   ),
                                 );
                               },

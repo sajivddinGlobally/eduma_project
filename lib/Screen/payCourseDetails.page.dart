@@ -5,6 +5,7 @@ import 'package:eduma_app/Screen/enrolledCourseDetails.page.dart'
     hide Attachment;
 import 'package:eduma_app/Screen/library.page.dart';
 import 'package:eduma_app/Screen/login.page.dart';
+import 'package:eduma_app/Screen/razorpay.page.dart';
 import 'package:eduma_app/Screen/video.page.dart';
 import 'package:eduma_app/config/core/showFlushbar.dart';
 import 'package:eduma_app/config/network/api.state.dart';
@@ -49,7 +50,6 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
     var box = Hive.box("userBox");
     var token = box.get("token");
 
-    // Check local Hive cache first for quick response
     List<String> enrolledCourses = box.get(
       "enrolledCourses",
       defaultValue: <String>[],
@@ -61,16 +61,12 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
       });
       return;
     }
-
-    // If token exists, check server for enrollment status
     if (token != null) {
       try {
-        // Fetch enrolled courses using enrollCourseController
         final enrolledCoursesData = await ref.read(
           enrollCourseController.future,
         );
-        // Assuming EnrolleCourseStudentModel has a list of courses or course IDs
-        // Adjust based on your EnrolleCourseStudentModel structure
+
         final isEnrolled =
             enrolledCoursesData.courses?.any(
               (course) => course.id == widget.id,
@@ -82,14 +78,13 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
           isCheckingEnrollment = false;
         });
 
-        // Update Hive cache if enrolled
         if (isEnrolled && !enrolledCourses.contains(widget.id)) {
           enrolledCourses.add(widget.id);
           box.put("enrolledCourses", enrolledCourses);
         }
       } catch (e) {
         log("Error checking enrollment status: $e");
-        // Fallback to Hive cache or default to not enrolled
+
         setState(() {
           isCheckingEnrollment = false;
         });
@@ -1046,7 +1041,14 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                             ),
                             backgroundColor: Color(0xFF3e64de),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                builder: (context) => RazorpayPage(),
+                              ),
+                            );
+                          },
                           child: Text(
                             "Buy Now",
                             style: GoogleFonts.roboto(

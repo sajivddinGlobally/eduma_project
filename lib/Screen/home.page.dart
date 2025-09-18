@@ -936,33 +936,33 @@ class _LearningBodyState extends ConsumerState<LearningBody> {
               ),
             ),
             SizedBox(height: 15.h),
-            Row(
-              children: [
-                Container(
-                  width: 180.w,
-                  height: 10.h,
-                  child: StepProgressIndicator(
-                    totalSteps: 10,
-                    currentStep: 0,
-                    size: 8.h,
-                    padding: 0,
-                    selectedColor: const Color(0xFF001E6C),
-                    unselectedColor: Colors.grey,
-                    roundedEdges: Radius.circular(10.r),
-                  ),
-                ),
-                SizedBox(width: 8.w),
-                Text(
-                  "0 % Complete",
-                  style: GoogleFonts.roboto(
-                    fontSize: 17.sp,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.grey,
-                    letterSpacing: -0.4,
-                  ),
-                ),
-              ],
-            ),
+            // Row(
+            //   children: [
+            //     Container(
+            //       width: 180.w,
+            //       height: 10.h,
+            //       child: StepProgressIndicator(
+            //         totalSteps: 10,
+            //         currentStep: 0,
+            //         size: 8.h,
+            //         padding: 0,
+            //         selectedColor: const Color(0xFF001E6C),
+            //         unselectedColor: Colors.grey,
+            //         roundedEdges: Radius.circular(10.r),
+            //       ),
+            //     ),
+            //     SizedBox(width: 8.w),
+            //     Text(
+            //       "0 % Complete",
+            //       style: GoogleFonts.roboto(
+            //         fontSize: 17.sp,
+            //         fontWeight: FontWeight.w600,
+            //         color: Colors.grey,
+            //         letterSpacing: -0.4,
+            //       ),
+            //     ),
+            //   ],
+            // ),
           ],
         ),
       );
@@ -1047,37 +1047,37 @@ class _LearningBodyState extends ConsumerState<LearningBody> {
                                   ),
                             ),
                           ),
-                          Positioned(
-                            left: 10.w,
-                            right: 10.w,
-                            bottom: 20.h,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Container(
-                                  width: 180.w,
-                                  child: StepProgressIndicator(
-                                    totalSteps: getTotalSteps(course),
-                                    currentStep: getCurrentStep(course),
-                                    size: 8.h,
-                                    padding: 0,
-                                    selectedColor: const Color(0xFF001E6C),
-                                    unselectedColor: Colors.white,
-                                    roundedEdges: Radius.circular(10.r),
-                                  ),
-                                ),
-                                Text(
-                                  "${percent.toInt()}% Complete",
-                                  style: GoogleFonts.roboto(
-                                    fontSize: 15.sp,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white,
-                                    letterSpacing: -0.4,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                          // Positioned(
+                          //   left: 10.w,
+                          //   right: 10.w,
+                          //   bottom: 20.h,
+                          //   child: Row(
+                          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //     children: [
+                          //       Container(
+                          //         width: 180.w,
+                          //         child: StepProgressIndicator(
+                          //           totalSteps: getTotalSteps(course),
+                          //           currentStep: getCurrentStep(course),
+                          //           size: 8.h,
+                          //           padding: 0,
+                          //           selectedColor: const Color(0xFF001E6C),
+                          //           unselectedColor: Colors.white,
+                          //           roundedEdges: Radius.circular(10.r),
+                          //         ),
+                          //       ),
+                          //       Text(
+                          //         "${percent.toInt()}% Complete",
+                          //         style: GoogleFonts.roboto(
+                          //           fontSize: 15.sp,
+                          //           fontWeight: FontWeight.w600,
+                          //           color: Colors.white,
+                          //           letterSpacing: -0.4,
+                          //         ),
+                          //       ),
+                          //     ],
+                          //   ),
+                          // ),
                         ],
                       ),
                       SizedBox(height: 5.h),
