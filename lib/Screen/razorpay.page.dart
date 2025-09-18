@@ -25,24 +25,6 @@ class _RazorpayPageState extends ConsumerState<RazorpayPage> {
     _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
     _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
     _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
-
-    // // 🔹 Listen to orderCreateController changes
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   ref.listen<AsyncValue<OrderCreateModel>>(orderCreateController, (
-    //     previous,
-    //     next,
-    //   ) {
-    //     next.whenOrNull(
-    //       data: (order) {
-    //         _opneCheckout(order);
-    //       },
-    //       error: (err, stack) {
-    //         debugPrint("❌ Order create failed: $err");
-    //         showSuccessMessage(context, "Order create failed: $err");
-    //       },
-    //     );
-    //   });
-    // });
   }
 
   @override
@@ -107,10 +89,6 @@ class _RazorpayPageState extends ConsumerState<RazorpayPage> {
         data: (_) => const Center(child: Text("Opening Razorpay...")),
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (err, _) => Center(child: Text("Error: $err")),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: Icon(Icons.payment),
       ),
     );
   }

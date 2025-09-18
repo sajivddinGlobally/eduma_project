@@ -1042,12 +1042,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                             backgroundColor: Color(0xFF3e64de),
                           ),
                           onPressed: () {
-                            Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                builder: (context) => RazorpayPage(),
-                              ),
-                            );
+                            
                           },
                           child: Text(
                             "Buy Now",

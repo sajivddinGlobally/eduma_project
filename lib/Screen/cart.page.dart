@@ -244,16 +244,7 @@ class _CartPageState extends ConsumerState<CartPage> {
                                 elevation: 2,
                               ),
                               onPressed: () {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                      "Proceeding to checkout",
-                                      style: GoogleFonts.poppins(),
-                                    ),
-                                    duration: Duration(seconds: 2),
-                                    backgroundColor: Color(0xFF001E6C),
-                                  ),
-                                );
+                               
                                 Navigator.push(
                                   context,
                                   CupertinoPageRoute(
