@@ -1030,7 +1030,7 @@ class _LearningBodyState extends ConsumerState<LearningBody> {
                           ClipRRect(
                             borderRadius: BorderRadius.circular(10.r),
                             child: Image.network(
-                              course.thumbnail ?? '',
+                              course.thumbnail.toString(),
                               width: 295.w,
                               height: 165.h,
                               fit: BoxFit.cover,
@@ -1113,16 +1113,19 @@ class _LearningBodyState extends ConsumerState<LearningBody> {
             },
           );
         },
-        error: (error, stackTrace) => Center(
-          child: Text(
-            error.toString(),
-            style: GoogleFonts.poppins(
-              fontSize: 16.sp,
-              fontWeight: FontWeight.w500,
-              color: Colors.red,
+        error: (error, stackTrace) {
+          log(stackTrace.toString());
+          return Center(
+            child: Text(
+              error.toString(),
+              style: GoogleFonts.poppins(
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w500,
+                color: Colors.red,
+              ),
             ),
-          ),
-        ),
+          );
+        },
         loading: () => SizedBox(
           height: 265.h,
           child: ListView.builder(

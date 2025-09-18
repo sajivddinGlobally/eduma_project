@@ -167,7 +167,7 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
                                             12.r,
                                           ),
                                           child: Image.network(
-                                            filterData.thumbnail,
+                                            filterData.thumbnail.toString(),
                                             width: 120.w,
                                             height: 80.h,
                                             fit: BoxFit.cover,
