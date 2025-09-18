@@ -37,6 +37,75 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
   bool isLoading = false;
   bool isWishlisted = false;
   bool enrolled = false;
+  bool isCheckingEnrollment = true; // New flag to handle loading state
+
+  @override
+  void initState() {
+    super.initState();
+    _checkEnrollmentStatus();
+  }
+
+  Future<void> _checkEnrollmentStatus() async {
+    var box = Hive.box("userBox");
+    var token = box.get("token");
+
+    // Check local Hive cache first for quick response
+    List<String> enrolledCourses = box.get(
+      "enrolledCourses",
+      defaultValue: <String>[],
+    );
+    if (enrolledCourses.contains(widget.id)) {
+      setState(() {
+        enrolled = true;
+        isCheckingEnrollment = false;
+      });
+      return;
+    }
+
+    // If token exists, check server for enrollment status
+    if (token != null) {
+      try {
+        // Fetch enrolled courses using enrollCourseController
+        final enrolledCoursesData = await ref.read(
+          enrollCourseController.future,
+        );
+        // Assuming EnrolleCourseStudentModel has a list of courses or course IDs
+        // Adjust based on your EnrolleCourseStudentModel structure
+        final isEnrolled =
+            enrolledCoursesData.courses?.any(
+              (course) => course.id == widget.id,
+            ) ??
+            false;
+
+        setState(() {
+          enrolled = isEnrolled;
+          isCheckingEnrollment = false;
+        });
+
+        // Update Hive cache if enrolled
+        if (isEnrolled && !enrolledCourses.contains(widget.id)) {
+          enrolledCourses.add(widget.id);
+          box.put("enrolledCourses", enrolledCourses);
+        }
+      } catch (e) {
+        log("Error checking enrollment status: $e");
+        // Fallback to Hive cache or default to not enrolled
+        setState(() {
+          isCheckingEnrollment = false;
+        });
+        if (context.mounted) {
+          showSuccessMessage(
+            context,
+            "Failed to check enrollment status. Please try again.",
+          );
+        }
+      }
+    } else {
+      setState(() {
+        isCheckingEnrollment = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -810,6 +879,26 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                     setState(() {
                                       enrolled = true;
                                     });
+                                    // Store in Hive
+                                    var box = Hive.box("userBox");
+                                    List<String> enrolledCourses = box.get(
+                                      "enrolledCourses",
+                                      defaultValue: <String>[],
+                                    );
+                                    if (!enrolledCourses.contains(
+                                      courseDetails.id.toString(),
+                                    )) {
+                                      enrolledCourses.add(
+                                        courseDetails.id.toString(),
+                                      );
+                                      box.put(
+                                        "enrolledCourses",
+                                        enrolledCourses,
+                                      );
+                                    }
+
+                                    // Invalidate provider to refresh enrolled courses
+                                    ref.invalidate(enrollCourseController);
                                     await showDialog(
                                       context: context,
                                       builder: (context) {
@@ -1583,7 +1672,7 @@ class _ModuleWidgetState extends State<ModuleWidget> {
                 log("▶️ Play video with id: $videoId");
               },
               child: Row(
-                children: [ 
+                children: [
                   Image.asset("assets/vi.png"),
                   SizedBox(width: 12.w),
                   Expanded(
