@@ -63,7 +63,7 @@ class _RazorpayPageState extends ConsumerState<RazorpayPage> {
 
   void _handlePaymentError(PaymentFailureResponse response) {
     log("Payment Failed : ${response.message}");
-    showSuccessMessage(context, "Payment Failed : ${response.message}");
+    showErrorMessage("Payment Failed : ${response.message}");
   }
 
   void _handleExternalWallet(ExternalWalletResponse response) {
