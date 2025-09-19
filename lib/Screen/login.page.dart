@@ -291,7 +291,39 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   ),
                 ),
               ),
-              SizedBox(height: 10.h),
+              SizedBox(height: 25.h),
+              InkWell(
+                onTap: () {
+                  
+                },
+                child: Center(
+                  child: Container(
+                    width: 375.w,
+                    height: 52.h,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(40.r),
+                      border: Border.all(color: Color(0xFF3e64de)),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset("assets/g10.png", width: 30.w, height: 30.h),
+                        SizedBox(width: 10.w),
+                        Text(
+                          "Sign in with Google",
+                          style: GoogleFonts.roboto(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFF3e64de),
+                            //color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 20.h),
             ],
           ),
         ),
