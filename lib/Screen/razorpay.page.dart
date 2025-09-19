@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:eduma_app/Screen/home.page.dart';
 import 'package:eduma_app/config/core/showFlushbar.dart';
 import 'package:eduma_app/data/Controller/orderCreateController.dart';
 import 'package:eduma_app/data/Model/orderCreateModel.dart';
@@ -33,7 +34,7 @@ class _RazorpayPageState extends ConsumerState<RazorpayPage> {
     super.dispose();
   }
 
-  void _opneCheckout(OrderCreateModel order) {
+  void _openCheckout(OrderCreateModel order) {
     final options = {
       "order_id": order.orderId,
       "amount": order.amount * 100,
@@ -53,6 +54,11 @@ class _RazorpayPageState extends ConsumerState<RazorpayPage> {
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
     log("Payment Success : ${response.paymentId}");
     showSuccessMessage(context, "Payment Successful");
+    Navigator.pushAndRemoveUntil(
+      context,
+      CupertinoPageRoute(builder: (context) => HomePage()),
+      (route) => false,
+    );
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
@@ -74,7 +80,7 @@ class _RazorpayPageState extends ConsumerState<RazorpayPage> {
     ) {
       next.whenOrNull(
         data: (order) {
-          _opneCheckout(order);
+          _openCheckout(order);
         },
         error: (err, stack) {
           ScaffoldMessenger.of(
