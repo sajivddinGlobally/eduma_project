@@ -60,7 +60,7 @@ class _ShopPageState extends ConsumerState<ShopPage> {
                 ),
                 SizedBox(width: 10.w),
                 Text(
-                  "EDUCATION",
+                  "Shop",
                   style: GoogleFonts.inter(
                     fontSize: 24.sp,
                     fontWeight: FontWeight.w600,
@@ -78,18 +78,17 @@ class _ShopPageState extends ConsumerState<ShopPage> {
             bottom: 0,
             child: Column(
               children: [
-                Text(
-                  "Shop",
-                  style: GoogleFonts.inter(
-                    fontSize: 26.sp,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xFF001E6C),
-                    letterSpacing: -1,
-                  ),
-                ),
-
+                // Text(
+                //   "Shop",
+                //   style: GoogleFonts.inter(
+                //     fontSize: 26.sp,
+                //     fontWeight: FontWeight.w600,
+                //     color: Color(0xFF001E6C),
+                //     letterSpacing: -1,
+                //   ),
+                // ),
                 Padding(
-                  padding: EdgeInsets.only(left: 20.w, right: 20.w),
+                  padding: EdgeInsets.only(left: 20.w, right: 20.w, top: 20.h),
                   child: Column(
                     children: [
                       SizedBox(height: 16.h),
@@ -646,7 +645,6 @@ class _ProductCardState extends State<ProductCard> {
     );
   }
 }
-
 
 // Update ProductCard to handle both types
 class ProductBoth extends StatefulWidget {
