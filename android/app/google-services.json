@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "798764963681",
+    "project_id": "atatc-surat",
+    "storage_bucket": "atatc-surat.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:798764963681:android:6f3c674c69c744bf801720",
+        "android_client_info": {
+          "package_name": "com.eduma.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "798764963681-r65mq79qqu1rfsefprppo62d8uldei4r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPyUznhrikWOcGpoamNEdvolUa-G8ArY4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "798764963681-r65mq79qqu1rfsefprppo62d8uldei4r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
