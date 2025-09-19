@@ -25,6 +25,7 @@ class CartPage extends ConsumerStatefulWidget {
 
 class _CartPageState extends ConsumerState<CartPage> {
   bool isUpdating = false;
+  bool isLoading = false;
   Future<void> updateCartQuantity(
     int productId,
     int quantity,
@@ -103,6 +104,7 @@ class _CartPageState extends ConsumerState<CartPage> {
                 (sum, item) => sum + (item.price * item.quantity),
               );
               return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
                     padding: EdgeInsets.only(
@@ -149,16 +151,60 @@ class _CartPageState extends ConsumerState<CartPage> {
                   SizedBox(height: 20.h),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20.w),
-                    child: Text(
-                      "Review Your Order",
-                      style: GoogleFonts.poppins(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xFF001E6C).withOpacity(0.8),
-                      ),
+                    child: Row(
+                      children: [
+                        Text(
+                          "Review Your Order",
+                          style: GoogleFonts.poppins(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFF001E6C).withOpacity(0.8),
+                          ),
+                        ),
+                        Spacer(),
+                        TextButton(
+                          onPressed: () async {
+                            setState(() {
+                              isLoading = true;
+                            });
+                            final service = APIStateNetwork(createDio());
+                            final response = await service.clearAll();
+
+                            if (response != null) {
+                              setState(() {
+                                isLoading = false;
+                              });
+                              showSuccessMessage(context, response.message);
+                              ref.refresh(cartController);
+                            } else {
+                              setState(() {
+                                isLoading = false;
+                              });
+                            }
+                          },
+                          child: isLoading
+                              ? SizedBox(
+                                  width: 20.w,
+                                  height: 20.h,
+                                  child: Center(
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 1.5,
+                                    ),
+                                  ),
+                                )
+                              : Text(
+                                  "Clear All",
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w500,
+                                    color: Color(0xFF001E6C),
+                                  ),
+                                ),
+                        ),
+                      ],
                     ),
                   ),
-                  SizedBox(height: 15.h),
+                  SizedBox(height: 6.h),
                   Expanded(
                     child: data.items.isEmpty
                         ? Center(
@@ -244,7 +290,6 @@ class _CartPageState extends ConsumerState<CartPage> {
                                 elevation: 2,
                               ),
                               onPressed: () {
-                               
                                 Navigator.push(
                                   context,
                                   CupertinoPageRoute(

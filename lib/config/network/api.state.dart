@@ -8,6 +8,7 @@ import 'package:eduma_app/data/Model/avtarResModel.dart';
 import 'package:eduma_app/data/Model/cartModel.dart';
 import 'package:eduma_app/data/Model/cartRemoveBodyModel.dart';
 import 'package:eduma_app/data/Model/categoryByCourseIdModel.dart';
+import 'package:eduma_app/data/Model/clearAllResModel.dart';
 import 'package:eduma_app/data/Model/deleteWishlistResModel.dart';
 import 'package:eduma_app/data/Model/enrollBodyModel.dart';
 import 'package:eduma_app/data/Model/enrollCourseStudentModel.dart';
@@ -156,6 +157,9 @@ abstract class APIStateNetwork {
   Future<RemoveCartQuantityResModel> removerQuantiry(
     @Body() RemoveCartQuantityBodyModel body,
   );
+
+  @POST("/custom/v1/cart/clear")
+  Future<ClearAllResModel> clearAll();
 
   @GET("/wc/v3/orders")
   Future<List<OrderListModel>> order();
