@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:eduma_app/Screen/enrolledCourseDetails.page.dart'
     hide Attachment;
+import 'package:eduma_app/Screen/home.page.dart';
 import 'package:eduma_app/Screen/library.page.dart';
 import 'package:eduma_app/Screen/login.page.dart';
 import 'package:eduma_app/Screen/razorpay.page.dart';
@@ -11,8 +12,10 @@ import 'package:eduma_app/config/core/showFlushbar.dart';
 import 'package:eduma_app/config/network/api.state.dart';
 import 'package:eduma_app/config/utils/pretty.dio.dart';
 import 'package:eduma_app/data/Controller/enrolleCourseController.dart';
+import 'package:eduma_app/data/Controller/orderCreateController.dart';
 import 'package:eduma_app/data/Controller/popularCourseController.dart';
 import 'package:eduma_app/data/Controller/wishlistControllerClass.dart';
+import 'package:eduma_app/data/Model/createOrderBodyModel.dart';
 import 'package:eduma_app/data/Model/enrollBodyModel.dart';
 import 'package:eduma_app/data/Model/popularCourseDetailsModel.dart';
 import 'package:flutter/cupertino.dart';
@@ -24,6 +27,7 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 class PayCourseDetailsPage extends ConsumerStatefulWidget {
   final String id;
@@ -37,8 +41,15 @@ class PayCourseDetailsPage extends ConsumerStatefulWidget {
 class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
   bool isLoading = false;
   bool isWishlisted = false;
+  bool isCheck = false;
   bool enrolled = false;
-  bool isCheckingEnrollment = true; // New flag to handle loading state
+  bool isCheckingEnrollment = true;
+
+  int parseAmountInRupees(String price) {
+    // remove ₹ , commas, and spaces
+    final cleaned = price.replaceAll(RegExp(r'[^0-9.]'), '');
+    return int.tryParse(cleaned.split(".").first) ?? 0;
+  }
 
   @override
   void initState() {
@@ -1041,17 +1052,106 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                             ),
                             backgroundColor: Color(0xFF3e64de),
                           ),
-                          onPressed: () {
-                            
+                          onPressed: () async {
+                            setState(() {
+                              isCheck = true;
+                            });
+                            try {
+                              final body = CreateOrderCourseBodyModel(
+                                courseId: courseDetails.id.toString(),
+                                price: parseAmountInRupees(
+                                  courseDetails.price.toString(),
+                                ).toString(),
+                              );
+
+                              final sevice = APIStateNetwork(createDio());
+                              final respnse = await sevice.courseCreateOrder(
+                                body,
+                              );
+
+                              if (respnse == null) {
+                                showErrorMessage(
+                                  "Order create failed, please try again",
+                                );
+                                setState(() => isCheck = false);
+                                return;
+                              }
+
+                              final razorpay = Razorpay();
+
+                              final options = {
+                                "order_id": respnse.orderId,
+                                "amount": respnse.amount,
+                                "currency": respnse.currency,
+                                "receipt": respnse.receipt,
+                                "key": respnse.razorpayKey,
+                                "tutor_order_id": 8,
+                                "user": {
+                                  "name": respnse.user.name,
+                                  "email": respnse.user.email,
+                                  "contact": respnse.user.contact,
+                                },
+                                "course_id": respnse.courseId,
+                              };
+
+                              razorpay.open(options);
+
+                              razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, (
+                                PaymentSuccessResponse response,
+                              ) {
+                                log("Payment Success : ${response.paymentId}");
+                                showSuccessMessage(
+                                  context,
+                                  "Payment Successful",
+                                );
+                                Navigator.pushAndRemoveUntil(
+                                  context,
+                                  CupertinoPageRoute(
+                                    builder: (context) => HomePage(),
+                                  ),
+                                  (route) => false,
+                                );
+                              });
+
+                              razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, (
+                                PaymentFailureResponse response,
+                              ) {
+                                log("Payment Failed : ${response.message}");
+                                showErrorMessage(
+                                  "Payment Failed : ${response.message}",
+                                );
+                              });
+
+                              razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, (
+                                ExternalWalletResponse response,
+                              ) {
+                                log("External Wallet : ${response.walletName}");
+                              });
+                            } catch (e) {
+                              showErrorMessage("Something went wrong: $e");
+                              log(e.toString());
+                            } finally {
+                              setState(() => isCheck = false);
+                            }
                           },
-                          child: Text(
-                            "Buy Now",
-                            style: GoogleFonts.roboto(
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.white,
-                            ),
-                          ),
+                          child: isCheck
+                              ? SizedBox(
+                                  height: 22,
+                                  width: 22,
+                                  child: Center(
+                                    child: CircularProgressIndicator(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                )
+                              : Text(
+                                  "Buy Now",
+                                  style: GoogleFonts.roboto(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.white,
+                                  ),
+                                ),
                         ),
                       ],
                     ),
