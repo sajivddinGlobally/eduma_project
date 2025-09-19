@@ -213,33 +213,21 @@ class _CustomProfileDrawerState extends ConsumerState<CustomProfileDrawer> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                              builder: (context) => PaymentOverfiewPage(),
-                            ),
-                          );
-                        },
-                        child: tileBuild("assets/pay.png", "Payment Method"),
-                      ),
+                      // InkWell(
+                      //   onTap: () {
+                      //     Navigator.push(
+                      //       context,
+                      //       CupertinoPageRoute(
+                      //         builder: (context) => PaymentOverfiewPage(),
+                      //       ),
+                      //     );
+                      //   },
+                      //   child: tileBuild("assets/pay.png", "Payment Method"),
+                      // ),
                       // SizedBox(height: 20.h),
                       // tileBuild("assets/help.png", "Help Centerd"),
                       // SizedBox(height: 20.h),
                       // tileBuild("assets/invite.png", "Invite Friend"),
-                      SizedBox(height: 20.h),
-                      InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                              builder: (context) => OrderListPage(),
-                            ),
-                          );
-                        },
-                        child: tileBuild("assets/or.png", "Order List"),
-                      ),
                       SizedBox(height: 20.h),
                       InkWell(
                         onTap: () {
@@ -252,7 +240,7 @@ class _CustomProfileDrawerState extends ConsumerState<CustomProfileDrawer> {
                         },
                         child: tileBuild("assets/ca.png", "Cart"),
                       ),
-                      SizedBox(height: 20.h),
+                      SizedBox(height: 30.h),
                       InkWell(
                         onTap: () {
                           Navigator.push(
@@ -263,6 +251,18 @@ class _CustomProfileDrawerState extends ConsumerState<CustomProfileDrawer> {
                           );
                         },
                         child: tileBuild("assets/wishlist.png", "Wishlist"),
+                      ),
+                      SizedBox(height: 30.h),
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                              builder: (context) => OrderListPage(),
+                            ),
+                          );
+                        },
+                        child: tileBuild("assets/or.png", "Order List"),
                       ),
                       SizedBox(height: 20.h),
                       // Row(
