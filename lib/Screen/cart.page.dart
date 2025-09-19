@@ -390,7 +390,6 @@ class _CartPageState extends ConsumerState<CartPage> {
                                       setState(() => isCheck = true);
 
                                       try {
-                                        // 🔹 Refresh FutureProvider and wait for response
                                         final data = await ref.refresh(
                                           orderCreateController.future,
                                         );
