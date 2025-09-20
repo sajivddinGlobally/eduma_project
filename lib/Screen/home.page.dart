@@ -21,11 +21,13 @@ import 'package:eduma_app/data/Controller/productListController.dart';
 import 'package:eduma_app/data/Controller/wishlistControllerClass.dart';
 import 'package:eduma_app/data/Model/popularCourseModel.dart';
 import 'package:eduma_app/data/Model/productBooksModel.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
@@ -43,6 +45,30 @@ class _HomePageState extends ConsumerState<HomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int selectIndex = 0;
   bool isWishlisted = false;
+
+  String? token;
+
+  @override
+  void initState() {
+    super.initState();
+    _getToken();
+  }
+
+  Future<void> _getToken() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      String? idToken = await user.getIdToken();
+      final googleUser = await GoogleSignIn().signInSilently();
+      final googleAuth = await googleUser?.authentication;
+
+      setState(() {
+        token = idToken;
+      });
+
+      log("Firebase ID Token: $idToken");
+      log("Google Access Token: ${googleAuth?.accessToken}");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

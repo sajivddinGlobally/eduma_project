@@ -2,9 +2,11 @@ import 'dart:developer';
 import 'package:eduma_app/Screen/forgorPassword.page.dart';
 import 'package:eduma_app/Screen/home.page.dart';
 import 'package:eduma_app/Screen/register.page.dart';
+import 'package:eduma_app/config/auth/firebaseAuth.auth.dart';
 import 'package:eduma_app/config/core/showFlushbar.dart';
 import 'package:eduma_app/config/network/api.state.dart';
 import 'package:eduma_app/config/utils/pretty.dio.dart';
+import 'package:eduma_app/data/Model/createOrderCourseModel.dart';
 import 'package:eduma_app/data/Model/loginBodyModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
@@ -12,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hive_flutter/adapters.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
@@ -26,6 +29,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   final userName = TextEditingController();
   final passwordController = TextEditingController();
   bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     var box = Hive.box("userBox");
@@ -293,12 +297,31 @@ class _LoginPageState extends ConsumerState<LoginPage> {
               ),
               SizedBox(height: 25.h),
               InkWell(
-                onTap: () {
-                  
+                onTap: () async {
+                  final user = await AuthService().signInWithGoogle();
+                  if (user != null) {
+                    String? idToken = await user.getIdToken();
+                    log("Firebase ID Token: $idToken");
+
+                    final googleUser = await GoogleSignIn().signInSilently();
+                    final googleAuth = await googleUser?.authentication;
+                    log("Google Access Token: ${googleAuth?.accessToken}");
+
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => HomePage()),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("Google Sign-In failed or cancelled"),
+                      ),
+                    );
+                  }
                 },
                 child: Center(
                   child: Container(
-                    width: 375.w,
+                    width: 370.w,
                     height: 52.h,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(40.r),
@@ -307,7 +330,11 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Image.asset("assets/g10.png", width: 30.w, height: 30.h),
+                        Image.asset(
+                          "assets/g10.png",
+                          width: 30.w,
+                          height: 30.h,
+                        ),
                         SizedBox(width: 10.w),
                         Text(
                           "Sign in with Google",
