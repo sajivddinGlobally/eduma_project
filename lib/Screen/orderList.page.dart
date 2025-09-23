@@ -312,87 +312,79 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
                         itemCount: orderList.length,
                         itemBuilder: (context, index) {
                           final order = orderList[index];
-                          return Padding(
-                            padding: EdgeInsets.only(bottom: 12.h),
-                            child: Card(
-                              elevation: 2,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12.r),
-                              ),
-                              child: InkWell(
-                                borderRadius: BorderRadius.circular(12.r),
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    CupertinoPageRoute(
-                                      builder: (context) => OrderDetailsPage(
-                                        id: order.id.toString(),
+                          return Card(
+                            margin: EdgeInsets.only(bottom: 12.h),
+                            color: Colors.white,
+                            elevation: 2,
+
+                            child: InkWell(
+                              borderRadius: BorderRadius.circular(12.r),
+                              onTap: () {
+                                // Navigator.push(
+                                //   context,
+                                //   CupertinoPageRoute(
+                                //     builder: (context) => OrderDetailsPage(
+                                //       id: order.id.toString(),
+                                //     ),
+                                //   ),
+                                // );
+                              },
+                              child: Padding(
+                                padding: EdgeInsets.all(12.w),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.r),
+                                      child: Image.network(
+                                        order.lineItems[0].image.src.toString(),
+                                        width: 80.w,
+                                        height: 80.h,
+                                        //fit: BoxFit.cover,
+                                        errorBuilder: (context, error, stackTrace) {
+                                          return Image.network(
+                                            "https://t4.ftcdn.net/jpg/05/97/47/95/360_F_597479556_7bbQ7t4Z8k3xbAloHFHVdZIizWK1PdOo.jpg",
+                                            width: 80.w,
+                                            height: 80.h,
+                                            fit: BoxFit.fill,
+                                          );
+                                        },
                                       ),
                                     ),
-                                  );
-                                },
-                                child: Padding(
-                                  padding: EdgeInsets.all(12.w),
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      ClipRRect(
-                                        borderRadius: BorderRadius.circular(
-                                          8.r,
-                                        ),
-                                        child: Image.network(
-                                          order.lineItems[0].image.src
-                                              .toString(),
-                                          width: 80.w,
-                                          height: 80.h,
-                                          fit: BoxFit.cover,
-                                          errorBuilder:
-                                              (context, error, stackTrace) {
-                                                return Image.network(
-                                                  "https://t4.ftcdn.net/jpg/05/97/47/95/360_F_597479556_7bbQ7t4Z8k3xbAloHFHVdZIizWK1PdOo.jpg",
-                                                  width: 80.w,
-                                                  height: 80.h,
-                                                  fit: BoxFit.cover,
-                                                );
-                                              },
-                                        ),
-                                      ),
-                                      SizedBox(width: 12.w),
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              order.lineItems.first.name,
-                                              style: GoogleFonts.roboto(
-                                                fontSize: 16.sp,
-                                                fontWeight: FontWeight.w500,
-                                                color: Color(0xFF1B1B1B),
-                                              ),
-                                              maxLines: 2,
-                                              overflow: TextOverflow.ellipsis,
+                                    SizedBox(width: 12.w),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            order.lineItems.first.name,
+                                            style: GoogleFonts.roboto(
+                                              fontSize: 16.sp,
+                                              fontWeight: FontWeight.w500,
+                                              color: Color(0xFF1B1B1B),
                                             ),
-                                            SizedBox(height: 4.h),
-                                            Text(
-                                              order.lineItems.first.total,
-                                              style: GoogleFonts.roboto(
-                                                fontSize: 14.sp,
-                                                fontWeight: FontWeight.w600,
-                                                color: Color(0xFF001E6C),
-                                              ),
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          SizedBox(height: 4.h),
+                                          Text(
+                                            order.lineItems.first.total,
+                                            style: GoogleFonts.roboto(
+                                              fontSize: 14.sp,
+                                              fontWeight: FontWeight.w600,
+                                              color: Color(0xFF001E6C),
                                             ),
-                                          ],
-                                        ),
+                                          ),
+                                        ],
                                       ),
-                                      Icon(
-                                        Icons.add_shopping_cart,
-                                        color: Color(0xFF001E6C),
-                                        size: 24.sp,
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+                                    Icon(
+                                      Icons.add_shopping_cart,
+                                      color: Color(0xFF001E6C),
+                                      size: 24.sp,
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
