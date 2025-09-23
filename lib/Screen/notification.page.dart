@@ -94,8 +94,18 @@ class _NotificationPageState extends ConsumerState<NotificationPage> {
       ),
       body: notificationProvider.when(
         data: (data) {
-          if (data.isEmpty) {
-            return Center(child: Text("No Notification"));
+          // Agar data null ya empty
+          if (data == null || data.isEmpty) {
+            return Center(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                child: Text(
+                  "You have not enrolled in any course yet.",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 16.sp, color: Colors.grey),
+                ),
+              ),
+            );
           }
           return ListView.builder(
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
@@ -112,10 +122,15 @@ class _NotificationPageState extends ConsumerState<NotificationPage> {
         },
         error: (error, stackTrace) {
           log(stackTrace.toString());
+          // Friendly error message
           return Center(
-            child: Text(
-              error.toString(),
-              style: const TextStyle(color: Colors.red, fontSize: 16),
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              child: Text(
+                "You have not enrolled in any course yet.",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 16.sp, color: Colors.grey),
+              ),
             ),
           );
         },

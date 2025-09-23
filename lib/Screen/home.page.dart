@@ -1059,7 +1059,7 @@ class _LearningBodyState extends ConsumerState<LearningBody> {
                               course.thumbnail.toString(),
                               width: 295.w,
                               height: 165.h,
-                              fit: BoxFit.cover,
+                              fit: BoxFit.fill,
                               errorBuilder: (context, error, stackTrace) =>
                                   Container(
                                     width: 295.w,

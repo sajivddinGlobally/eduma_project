@@ -249,7 +249,7 @@ class _AllBodyState extends State<AllBody> {
                 borderRadius: BorderRadius.circular(10.r),
                 child: Image.network(
                   // "assets/learning1.png",
-                  widget.data.thumbnail.medium,
+                  widget.data.thumbnail.large,
                   width: 190.w,
                   height: 125.h,
                   fit: BoxFit.cover,

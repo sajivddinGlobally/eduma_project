@@ -45,7 +45,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 100.h),
+                  SizedBox(height: 50.h),
                   Center(
                     child: Image.asset(
                       "assets/logo.png",
@@ -53,7 +53,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       height: 284.h,
                     ),
                   ),
-                  SizedBox(height: 45.h),
+                  SizedBox(height: 35.h),
                   Divider(color: Colors.black12, thickness: 1),
                   SizedBox(height: 10.h),
                   Center(
