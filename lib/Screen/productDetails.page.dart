@@ -177,7 +177,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                               child: Image.network(
                                 data.images[index].src ??
                                     data.images[index].the2048X2048,
-                                fit: BoxFit.fill,
+                                fit: BoxFit.cover,
                                 width: double.infinity,
                                 errorBuilder: (context, error, stackTrace) {
                                   return Image.network(

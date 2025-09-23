@@ -223,6 +223,7 @@
 
 import 'package:eduma_app/Screen/apiCall/api.register.dart';
 import 'package:eduma_app/Screen/orderDetails.page.dart';
+import 'package:eduma_app/Screen/productDetails.page.dart';
 import 'package:eduma_app/data/Controller/orderListController.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -320,14 +321,14 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
                             child: InkWell(
                               borderRadius: BorderRadius.circular(12.r),
                               onTap: () {
-                                // Navigator.push(
-                                //   context,
-                                //   CupertinoPageRoute(
-                                //     builder: (context) => OrderDetailsPage(
-                                //       id: order.id.toString(),
-                                //     ),
-                                //   ),
-                                // );
+                                Navigator.push(
+                                  context,
+                                  CupertinoPageRoute(
+                                    builder: (context) => ProductDetailsPage(
+                                      id: order.id.toString(),
+                                    ),
+                                  ),
+                                );
                               },
                               child: Padding(
                                 padding: EdgeInsets.all(12.w),

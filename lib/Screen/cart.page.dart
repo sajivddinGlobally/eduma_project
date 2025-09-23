@@ -275,7 +275,7 @@ class _CartPageState extends ConsumerState<CartPage> {
                                 "₹${data.subtotal.toStringAsFixed(2)}",
                                 // "₹${data.subtotal.toString()}",
                                 style: GoogleFonts.poppins(
-                                  fontSize: 18.sp,
+                                fontSize: 18.sp,
                                   fontWeight: FontWeight.w600,
                                   color: Color(0xFF001E6C),
                                 ),
