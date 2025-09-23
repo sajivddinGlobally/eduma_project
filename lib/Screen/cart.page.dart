@@ -275,7 +275,7 @@ class _CartPageState extends ConsumerState<CartPage> {
                                 "₹${data.subtotal.toStringAsFixed(2)}",
                                 // "₹${data.subtotal.toString()}",
                                 style: GoogleFonts.poppins(
-                                fontSize: 18.sp,
+                                  fontSize: 18.sp,
                                   fontWeight: FontWeight.w600,
                                   color: Color(0xFF001E6C),
                                 ),
@@ -283,7 +283,6 @@ class _CartPageState extends ConsumerState<CartPage> {
                             ],
                           ),
                           SizedBox(height: 15.h),
-
                           // SizedBox(
                           //   width: double.infinity,
                           //   height: 50.h,
@@ -457,10 +456,13 @@ class _CartPageState extends ConsumerState<CartPage> {
                                             );
                                           },
                                         );
-                                      } catch (e) {
+                                      } catch (e, st) {
                                         showErrorMessage(
                                           "Something went wrong: $e",
                                         );
+                                        log("Error: $e");
+                                        log("StackTrace: $st");
+                                        log(e.toString());
                                       } finally {
                                         setState(() => isCheck = false);
                                       }
