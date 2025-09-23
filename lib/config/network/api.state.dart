@@ -16,6 +16,8 @@ import 'package:eduma_app/data/Model/enrollBodyModel.dart';
 import 'package:eduma_app/data/Model/enrollCourseStudentModel.dart';
 import 'package:eduma_app/data/Model/enrollResModel.dart';
 import 'package:eduma_app/data/Model/getWishlistModel.dart';
+import 'package:eduma_app/data/Model/googleLoginBodyModel.dart';
+import 'package:eduma_app/data/Model/googleLoginResModel.dart';
 import 'package:eduma_app/data/Model/instructorModel.dart';
 import 'package:eduma_app/data/Model/latestCourseModel.dart';
 import 'package:eduma_app/data/Model/loginBodyModel.dart';
@@ -182,4 +184,7 @@ abstract class APIStateNetwork {
   Future<CreateOrderCourseResModel> courseCreateOrder(
     @Body() CreateOrderCourseBodyModel body,
   );
+
+  @POST("/custom/v1/google-login")
+  Future<LoginResModel> googleLoing(@Body() Map<String, dynamic> body);
 }

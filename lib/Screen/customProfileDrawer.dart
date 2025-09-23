@@ -4,6 +4,7 @@ import 'package:eduma_app/Screen/login.page.dart';
 import 'package:eduma_app/Screen/orderList.page.dart';
 import 'package:eduma_app/Screen/paymentOverfiew.page.dart';
 import 'package:eduma_app/Screen/wishlist.page.dart';
+import 'package:eduma_app/config/auth/firebaseAuth.auth.dart';
 import 'package:eduma_app/data/Controller/profileController.dart';
 import 'package:eduma_app/data/Controller/themeModeController.dart';
 import 'package:flutter/cupertino.dart';
@@ -29,6 +30,7 @@ class _CustomProfileDrawerState extends ConsumerState<CustomProfileDrawer> {
     var box = Hive.box("userBox");
     final profileProvider = ref.watch(profileController);
     final themeMode = ref.watch(themeNotifierProvider);
+    // final authService = AuthService();
     return Padding(
       padding: EdgeInsets.all(15),
       child: Container(
@@ -41,6 +43,8 @@ class _CustomProfileDrawerState extends ConsumerState<CustomProfileDrawer> {
         ),
         child: profileProvider.when(
           data: (profile) {
+            bool name =
+                profile.displayName.isEmpty || profile.displayName == null;
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -182,7 +186,11 @@ class _CustomProfileDrawerState extends ConsumerState<CustomProfileDrawer> {
                         child: Text(
                           // "Annu Agarwal",
                           // box.get("storeName").toString(),
-                          profile.displayName.toString(),
+                          // profile..toString() ?? ,
+                          profile.displayName.isEmpty ||
+                                  profile.displayName == null
+                              ? box.get("storeName")
+                              : box.get("userNicename"),
                           style: GoogleFonts.roboto(
                             fontSize: 16.sp,
                             fontWeight: FontWeight.w400,
@@ -265,112 +273,19 @@ class _CustomProfileDrawerState extends ConsumerState<CustomProfileDrawer> {
                         child: tileBuild("assets/or.png", "Order List"),
                       ),
                       SizedBox(height: 20.h),
-                      // Row(
-                      //   children: [
-                      //     Image.asset("assets/lan.png"),
-                      //     SizedBox(width: 10.w),
-                      //     Text(
-                      //       "Language",
-                      //       style: GoogleFonts.roboto(
-                      //         fontSize: 16.sp,
-                      //         fontWeight: FontWeight.w500,
-                      //         color: Color(0xFF001E6C),
-                      //       ),
-                      //     ),
-                      //     Spacer(),
-                      //     Text(
-                      //       "English",
-                      //       style: GoogleFonts.roboto(
-                      //         fontSize: 12.sp,
-                      //         fontWeight: FontWeight.w500,
-                      //         color: Color.fromARGB(150, 0, 30, 108),
-                      //       ),
-                      //     ),
-                      //   ],
-                      // ),
-                      // SizedBox(height: 20.h),
-                      // Row(
-                      //   children: [
-                      //     Icon(
-                      //       Icons.notifications_none,
-                      //       color: Color(0xFF001E6C),
-                      //       size: 24.sp,
-                      //     ),
-                      //     SizedBox(width: 10.w),
-                      //     Text(
-                      //       "Notification",
-                      //       style: GoogleFonts.roboto(
-                      //         fontSize: 16.sp,
-                      //         fontWeight: FontWeight.w500,
-                      //         color: Color(0xFF001E6C),
-                      //       ),
-                      //     ),
-                      //   ],
-                      // ),
-                      // SizedBox(height: 20.h),
-                      // Row(
-                      //   children: [
-                      //     Icon(
-                      //       Icons.dark_mode_outlined,
-                      //       color: Color(0xFF001E6C),
-                      //       size: 24.sp,
-                      //     ),
-                      //     SizedBox(width: 10.w),
-                      //     Text(
-                      //       "Dark Mode",
-                      //       style: GoogleFonts.roboto(
-                      //         fontSize: 16.sp,
-                      //         fontWeight: FontWeight.w500,
-                      //         color: Color(0xFF001E6C),
-                      //       ),
-                      //     ),
-                      //     Spacer(),
-                      //     SizedBox(
-                      //       height: 28.h,
-                      //       child: Transform.scale(
-                      //         scale: 0.7,
-                      //         child: Switch(
-                      //           value: themeMode == ThemeMode.dark,
-                      //           onChanged: (value) {
-                      //             ref
-                      //                 .read(themeNotifierProvider.notifier)
-                      //                 .toggleTheme();
-                      //           },
-                      //         ),
-                      //       ),
-                      //     ),
-                      //   ],
-                      // ),
-                      // SizedBox(height: 20.h),
-                      // Row(
-                      //   children: [
-                      //     Icon(
-                      //       Icons.settings,
-                      //       color: Color(0xFF001E6C),
-                      //       size: 24.sp,
-                      //     ),
-                      //     SizedBox(width: 10.w),
-                      //     Text(
-                      //       "Setting",
-                      //       style: GoogleFonts.roboto(
-                      //         fontSize: 16.sp,
-                      //         fontWeight: FontWeight.w500,
-                      //         color: Color(0xFF001E6C),
-                      //       ),
-                      //     ),
-                      //   ],
-                      // ),
                     ],
                   ),
                 ),
                 Spacer(),
                 Divider(),
                 InkWell(
-                  onTap: () {
+                  onTap: () async {
+                    await AuthRepository().signOut();
                     box.clear();
                     Navigator.pop(context);
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
+                        duration: Duration(seconds: 2),
                         content: Text("Logout Successfull"),
                         backgroundColor: Colors.red,
                       ),

@@ -65,8 +65,8 @@ class _HomePageState extends ConsumerState<HomePage> {
         token = idToken;
       });
 
-      log("Firebase ID Token: $idToken");
-      log("Google Access Token: ${googleAuth?.accessToken}");
+      log("Firebase ID Token:- $idToken");
+      log("Google Access Token:- ${googleAuth?.accessToken}");
     }
   }
 
@@ -155,7 +155,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "Welcome Back, ${box.get("storeName") ?? "Name"}",
+                            "Welcome Back, ${box.get("userNicename") ?? "Name"}",
                             style: GoogleFonts.roboto(
                               fontSize: 16.sp,
                               fontWeight: FontWeight.w600,
