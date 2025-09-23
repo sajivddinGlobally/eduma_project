@@ -1,11 +1,9 @@
 import 'dart:developer';
-
 import 'package:eduma_app/Screen/home.page.dart';
 import 'package:eduma_app/Screen/login.page.dart';
 import 'package:eduma_app/Screen/payCourseDetails.page.dart';
 import 'package:eduma_app/config/core/showFlushbar.dart';
 import 'package:eduma_app/data/Controller/allCoursesController.dart';
-import 'package:eduma_app/data/Controller/popularCourseController.dart';
 import 'package:eduma_app/data/Controller/wishlistControllerClass.dart';
 import 'package:eduma_app/data/Model/allCoursesModel.dart';
 import 'package:flutter/cupertino.dart';

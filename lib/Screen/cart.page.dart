@@ -2,7 +2,6 @@ import 'dart:developer';
 import 'package:eduma_app/Screen/editProfile.page.dart';
 import 'package:eduma_app/Screen/home.page.dart';
 import 'package:eduma_app/Screen/productDetails.page.dart';
-import 'package:eduma_app/Screen/razorpay.page.dart';
 import 'package:eduma_app/config/core/showFlushbar.dart'
     hide showSuccessMessage;
 import 'package:eduma_app/config/network/api.state.dart';
@@ -12,7 +11,6 @@ import 'package:eduma_app/data/Controller/orderCreateController.dart';
 import 'package:eduma_app/data/Model/addCartBodyModel.dart';
 import 'package:eduma_app/data/Model/cartModel.dart';
 import 'package:eduma_app/data/Model/cartRemoveBodyModel.dart';
-import 'package:eduma_app/data/Model/orderCreateModel.dart';
 import 'package:eduma_app/data/Model/removerCartQuanityrBodModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

@@ -2,7 +2,6 @@ import 'package:eduma_app/Screen/cart.page.dart';
 import 'package:eduma_app/Screen/editProfile.page.dart';
 import 'package:eduma_app/Screen/login.page.dart';
 import 'package:eduma_app/Screen/orderList.page.dart';
-import 'package:eduma_app/Screen/paymentOverfiew.page.dart';
 import 'package:eduma_app/Screen/wishlist.page.dart';
 import 'package:eduma_app/config/auth/firebaseAuth.auth.dart';
 import 'package:eduma_app/data/Controller/profileController.dart';

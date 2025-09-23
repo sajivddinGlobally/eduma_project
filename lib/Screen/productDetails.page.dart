@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'package:eduma_app/Screen/cart.page.dart';
 import 'package:eduma_app/Screen/login.page.dart';
-import 'package:eduma_app/Screen/razorpay.page.dart';
 import 'package:eduma_app/config/core/showFlushbar.dart';
 import 'package:eduma_app/config/network/api.state.dart';
 import 'package:eduma_app/config/utils/pretty.dio.dart';

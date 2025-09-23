@@ -30,7 +30,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:step_progress_indicator/step_progress_indicator.dart';
 
 import '../data/Model/latestCourseModel.dart';
 
