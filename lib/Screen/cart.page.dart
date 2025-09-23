@@ -443,9 +443,9 @@ class _CartPageState extends ConsumerState<CartPage> {
                                           log(
                                             "Payment Failed : ${response.message}",
                                           );
-                                          showErrorMessage(
-                                            "Payment Failed : ${response.message}",
-                                          );
+                                          // showErrorMessage(
+                                          //   "Payment Failed : ${response.message}",
+                                          // );
                                         });
 
                                         razorpay.on(
