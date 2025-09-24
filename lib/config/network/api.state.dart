@@ -163,8 +163,9 @@ abstract class APIStateNetwork {
   @POST("/custom/v1/cart/clear")
   Future<ClearAllResModel> clearAll();
 
-  @GET("/wc/v3/orders")
-  Future<List<OrderListModel>> order();
+  // @GET("/wc/v3/orders")
+  @GET("/wc/v3/orders?customer={id}")
+  Future<List<OrderListModel>> order(@Path("id")String id);
 
   @GET("/wc/v3/orders/{id}")
   Future<OrderDetailsModel> orderDetails(@Path() String id);

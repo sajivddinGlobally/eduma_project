@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hive_flutter/adapters.dart';
 
 class OrderListPage extends ConsumerStatefulWidget {
   const OrderListPage({super.key});
@@ -19,7 +20,9 @@ class OrderListPage extends ConsumerStatefulWidget {
 class _OrderListPageState extends ConsumerState<OrderListPage> {
   @override
   Widget build(BuildContext context) {
-    final orderListProvider = ref.watch(orderListController);
+    var box = Hive.box("userBox");
+    var id = box.get("storeId");
+    final orderListProvider = ref.watch(orderListController(id.toString()));
     return Scaffold(
       backgroundColor: Color(0xFFF5F7FA),
       appBar: AppBar(
@@ -72,7 +75,34 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
           orderListProvider.when(
             data: (orderList) {
               if (orderList.isEmpty) {
-                return Center(child: Text("No History Available"));
+                return Center(
+                  child: Column(
+                    children: [
+                      Text(
+                        "No Orders Yet",
+                        style: GoogleFonts.roboto(
+                          fontSize: 20.sp,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xFF001E6C),
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 8.h),
+
+                      // 🔹 Subtitle
+                      Text(
+                        "Looks like you haven't purchased anything yet.\nStart shopping to see your orders here.",
+                        style: GoogleFonts.roboto(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.grey[600],
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 24.h),
+                    ],
+                  ),
+                );
               }
               return Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
@@ -104,18 +134,6 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
                               child: InkWell(
                                 borderRadius: BorderRadius.circular(12.r),
                                 onTap: () {
-                                  // Navigator.push(
-                                  //   context,
-                                  //   CupertinoPageRoute(
-                                  //     builder: (context) => ProductDetailsPage(
-                                  //       id: orderList[index]
-                                  //           .lineItems
-                                  //           .first
-                                  //           .productId
-                                  //           .toString(),
-                                  //     ),
-                                  //   ),
-                                  // );
                                   final lineItems = orderList[index].lineItems;
                                   if (lineItems.isNotEmpty) {
                                     Navigator.push(

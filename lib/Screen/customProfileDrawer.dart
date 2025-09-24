@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:eduma_app/Screen/cart.page.dart';
 import 'package:eduma_app/Screen/editProfile.page.dart';
 import 'package:eduma_app/Screen/login.page.dart';
@@ -322,6 +324,7 @@ class _CustomProfileDrawerState extends ConsumerState<CustomProfileDrawer> {
             );
           },
           error: (error, stackTrace) {
+            log(stackTrace.toString());
             return Center(child: Text(error.toString()));
           },
           loading: () => Center(child: CircularProgressIndicator()),

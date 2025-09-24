@@ -889,7 +889,7 @@ class _APIStateNetwork implements APIStateNetwork {
   }
 
   @override
-  Future<List<OrderListModel>> order() async {
+  Future<List<OrderListModel>> order(String id) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -898,7 +898,7 @@ class _APIStateNetwork implements APIStateNetwork {
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/wc/v3/orders',
+            '/wc/v3/orders?customer=${id}',
             queryParameters: queryParameters,
             data: _data,
           )
