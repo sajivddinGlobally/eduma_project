@@ -37,6 +37,7 @@ import 'package:eduma_app/data/Model/productWishlistReModel.dart';
 import 'package:eduma_app/data/Model/profileModel.dart';
 import 'package:eduma_app/data/Model/registerBodyCustomeModel.dart';
 import 'package:eduma_app/data/Model/registerResCustomeModel.dart';
+import 'package:eduma_app/data/Model/relatedProductModel.dart';
 import 'package:eduma_app/data/Model/removeCartQuantityResModel.dart';
 import 'package:eduma_app/data/Model/removerCartQuanityrBodModel.dart';
 import 'package:eduma_app/data/Model/resetPassBodyModel.dart';
@@ -184,4 +185,7 @@ abstract class APIStateNetwork {
 
   @POST("/custom/v1/google-login")
   Future<LoginResModel> googleLoing(@Body() Map<String, dynamic> body);
+
+  @GET("/custom/v1/related-products/{id}")
+  Future<List<RelatedProductModel>> relatedProdut(@Path("id") String id);
 }
