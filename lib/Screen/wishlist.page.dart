@@ -535,28 +535,30 @@ class _WishlistPageState extends ConsumerState<WishlistPage> {
                                         borderRadius: BorderRadius.vertical(
                                           top: Radius.circular(16.r),
                                         ),
-                                        child: ClipRRect(
-                                          borderRadius: BorderRadius.vertical(
-                                            top: Radius.circular(16.r),
-                                          ),
-                                          child: Image.network(
-                                            wishlist.items[index].thumbnail,
-                                            width: double.infinity,
-                                            height: 180.h,
-                                            fit: BoxFit.contain,
-                                            errorBuilder:
-                                                (
-                                                  context,
-                                                  error,
-                                                  stackTrace,
-                                                ) => Container(
-                                                  height: 180.h,
-                                                  color: Colors.grey[200],
-                                                  child: Icon(
-                                                    Icons.image_not_supported,
-                                                    size: 50.sp,
+                                        child: Center(
+                                          child: ClipRRect(
+                                            borderRadius: BorderRadius.vertical(
+                                              top: Radius.circular(16.r),
+                                            ),
+                                            child: Image.network(
+                                              wishlist.items[index].thumbnail,
+                                              // width: 400.w,
+                                              // height: 180.h,
+                                              // fit: BoxFit.fill,
+                                              errorBuilder:
+                                                  (
+                                                    context,
+                                                    error,
+                                                    stackTrace,
+                                                  ) => Container(
+                                                    height: 180.h,
+                                                    color: Colors.grey[200],
+                                                    child: Icon(
+                                                      Icons.image_not_supported,
+                                                      size: 50.sp,
+                                                    ),
                                                   ),
-                                                ),
+                                            ),
                                           ),
                                         ),
                                       ),
