@@ -15,6 +15,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class ProductDetailsPage extends ConsumerStatefulWidget {
@@ -229,7 +230,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                 ),
                               ),
                             ),
-                            Spacer(),
+                            //Spacer(),
                             // Container(
                             //   width: 80.w,
                             //   height: 36.h,
@@ -595,14 +596,17 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          Text(
-                                            "Related Product ${index + 1}",
-                                            style: GoogleFonts.roboto(
-                                              fontSize: 14.sp,
-                                              fontWeight: FontWeight.w500,
+                                          SizedBox(
+                                            width: 160.w,
+                                            child: Text(
+                                              data[index].name,
+                                              style: GoogleFonts.roboto(
+                                                fontSize: 14.sp,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
                                             ),
-                                            maxLines: 2,
-                                            overflow: TextOverflow.ellipsis,
                                           ),
                                           SizedBox(height: 4.h),
                                           Text(
@@ -628,7 +632,47 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                       log(stackTrace.toString());
                       return Center(child: Text(error.toString()));
                     },
-                    loading: () => Center(child: CircularProgressIndicator()),
+                    loading: () => SizedBox(
+                      height: 190.h,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: 3,
+                        itemBuilder: (context, index) {
+                          return Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              width: 160.w,
+                              height: 160.h,
+                              margin: EdgeInsets.only(bottom: 15.h),
+                              padding: EdgeInsets.all(12.w),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(16.r),
+                                color: Colors.white,
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    width: 120.w,
+                                    height: 30.h,
+                                    color: Colors.grey[400],
+                                  ),
+                                  SizedBox(width: 12.w),
+                                  Container(
+                                    width: 100.w,
+                                    height: 16.h,
+                                    color: Colors.grey[400],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
                   ),
                   SizedBox(height: 60.h),
                 ],
@@ -636,48 +680,51 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
             ),
           ],
         ),
-        error: (error, stackTrace) => Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.error_outline, color: Colors.red, size: 48.sp),
-              SizedBox(height: 16.h),
-              Text(
-                "Failed to load product details",
-                style: GoogleFonts.roboto(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              SizedBox(height: 8.h),
-              Text(
-                error.toString(),
-                style: GoogleFonts.roboto(
-                  fontSize: 14.sp,
-                  color: Colors.grey[600],
-                ),
-              ),
-              SizedBox(height: 16.h),
-              ElevatedButton(
-                onPressed: () =>
-                    ref.refresh(productDetailsController(widget.id)),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFF001E6C),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.r),
+        error: (error, stackTrace) {
+          log(stackTrace.toString());
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.error_outline, color: Colors.red, size: 48.sp),
+                SizedBox(height: 16.h),
+                Text(
+                  "Failed to load product details",
+                  style: GoogleFonts.roboto(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
-                child: Text(
-                  "Retry",
+                SizedBox(height: 8.h),
+                Text(
+                  error.toString(),
                   style: GoogleFonts.roboto(
                     fontSize: 14.sp,
-                    color: Colors.white,
+                    color: Colors.grey[600],
                   ),
                 ),
-              ),
-            ],
-          ),
-        ),
+                SizedBox(height: 16.h),
+                ElevatedButton(
+                  onPressed: () =>
+                      ref.refresh(productDetailsController(widget.id)),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFF001E6C),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                  ),
+                  child: Text(
+                    "Retry",
+                    style: GoogleFonts.roboto(
+                      fontSize: 14.sp,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
         loading: () => Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

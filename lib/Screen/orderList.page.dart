@@ -1,5 +1,7 @@
+import 'dart:developer';
+
 import 'package:eduma_app/Screen/apiCall/api.register.dart';
-  import 'package:eduma_app/Screen/productDetails.page.dart';
+import 'package:eduma_app/Screen/productDetails.page.dart';
 import 'package:eduma_app/data/Controller/orderListController.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -104,7 +106,7 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
                                   context,
                                   CupertinoPageRoute(
                                     builder: (context) => ProductDetailsPage(
-                                      id: order.id.toString(),
+                                      id: orderList[index].parentId.toString(),
                                     ),
                                   ),
                                 );
@@ -177,6 +179,7 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
               );
             },
             error: (error, stackTrace) {
+              log(stackTrace.toString());
               return Center(
                 child: Text(
                   "Error: $error",
