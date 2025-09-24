@@ -98,18 +98,41 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
                             margin: EdgeInsets.only(bottom: 12.h),
                             color: Colors.white,
                             elevation: 2,
-
                             child: InkWell(
                               borderRadius: BorderRadius.circular(12.r),
                               onTap: () {
-                                Navigator.push(
-                                  context,
-                                  CupertinoPageRoute(
-                                    builder: (context) => ProductDetailsPage(
-                                      id: orderList[index].parentId.toString(),
+                                // Navigator.push(
+                                //   context,
+                                //   CupertinoPageRoute(
+                                //     builder: (context) => ProductDetailsPage(
+                                //       id: orderList[index]
+                                //           .lineItems
+                                //           .first
+                                //           .productId
+                                //           .toString(),
+                                //     ),
+                                //   ),
+                                // );
+                                final lineItems = orderList[index].lineItems;
+                                if (lineItems.isNotEmpty) {
+                                  Navigator.push(
+                                    context,
+                                    CupertinoPageRoute(
+                                      builder: (context) => ProductDetailsPage(
+                                        id: lineItems.first.productId
+                                            .toString(),
+                                      ),
                                     ),
-                                  ),
-                                );
+                                  );
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        "No product found in this order",
+                                      ),
+                                    ),
+                                  );
+                                }
                               },
                               child: Padding(
                                 padding: EdgeInsets.all(12.w),
@@ -194,21 +217,6 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
           ),
         ],
       ),
-      // floatingActionButton: FloatingActionButton.extended(
-      //   onPressed: () {
-      //     // Implement add entire list to cart functionality
-      //   },
-      //   backgroundColor: Color(0xFF001E6C),
-      //   label: Text(
-      //     "Add All to Cart",
-      //     style: GoogleFonts.roboto(
-      //       fontSize: 16.sp,
-      //       fontWeight: FontWeight.w500,
-      //       color: Colors.white,
-      //     ),
-      //   ),
-      //   icon: Icon(Icons.add_shopping_cart, color: Colors.white),
-      // ),
     );
   }
 }
