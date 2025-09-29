@@ -1616,8 +1616,6 @@ class _ModuleWidgetState extends State<ModuleWidget> {
 
     final isVideoAvailable = widget.videoUrl.isNotEmpty;
 
-
-
     final bool isPdfTitle = widget.title.toLowerCase().contains("pdf");
 
     return Card(
