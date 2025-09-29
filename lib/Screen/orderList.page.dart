@@ -88,8 +88,6 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
                         textAlign: TextAlign.center,
                       ),
                       SizedBox(height: 8.h),
-
-                      // 🔹 Subtitle
                       Text(
                         "Looks like you haven't purchased anything yet.\nStart shopping to see your orders here.",
                         style: GoogleFonts.roboto(

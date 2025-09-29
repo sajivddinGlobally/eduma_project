@@ -44,8 +44,7 @@ class _CustomProfileDrawerState extends ConsumerState<CustomProfileDrawer> {
         ),
         child: profileProvider.when(
           data: (profile) {
-            bool name =
-                profile.displayName.isEmpty || profile.displayName == null;
+            
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

@@ -195,7 +195,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                               );
                               return;
                             }
-
                             setState(() {
                               isLoading = true;
                             });

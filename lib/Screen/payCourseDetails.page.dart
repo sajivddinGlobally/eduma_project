@@ -6,13 +6,10 @@ import 'package:eduma_app/Screen/enrolledCourseDetails.page.dart'
 import 'package:eduma_app/Screen/home.page.dart';
 import 'package:eduma_app/Screen/library.page.dart';
 import 'package:eduma_app/Screen/login.page.dart';
-import 'package:eduma_app/Screen/razorpay.page.dart';
-import 'package:eduma_app/Screen/video.page.dart';
 import 'package:eduma_app/config/core/showFlushbar.dart';
 import 'package:eduma_app/config/network/api.state.dart';
 import 'package:eduma_app/config/utils/pretty.dio.dart';
 import 'package:eduma_app/data/Controller/enrolleCourseController.dart';
-import 'package:eduma_app/data/Controller/orderCreateController.dart';
 import 'package:eduma_app/data/Controller/popularCourseController.dart';
 import 'package:eduma_app/data/Controller/wishlistControllerClass.dart';
 import 'package:eduma_app/data/Model/createOrderBodyModel.dart';
@@ -318,7 +315,8 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                   ),
                                   Spacer(),
                                   Text(
-                                    "${(courseDetails.price == null || courseDetails.price.toString().isEmpty) ? "0" : courseDetails.price}",
+                                    // "${(courseDetails.price == null || courseDetails.price.toString().isEmpty) ? "0" : courseDetails.price}",
+                                    courseDetails.price.toString(),
                                     style: GoogleFonts.roboto(
                                       fontSize: 18.sp,
                                       fontWeight: FontWeight.w400,
@@ -1616,7 +1614,9 @@ class _ModuleWidgetState extends State<ModuleWidget> {
         pdfAttachment.url != null &&
         pdfAttachment.url!.isNotEmpty;
 
-    final isVideoAvailable = videoId.isNotEmpty;
+    final isVideoAvailable = widget.videoUrl.isNotEmpty;
+
+
 
     final bool isPdfTitle = widget.title.toLowerCase().contains("pdf");
 

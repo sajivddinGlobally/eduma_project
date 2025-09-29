@@ -218,8 +218,7 @@ class _CoursePageState extends ConsumerState<CoursePage> {
                                           child: Text(
                                             // courseList[index]['paid']
                                             //     .toString(),
-                                            snap.courses[index].price
-                                                .toString(),
+                                           snap.courses[index].price,
                                             style: GoogleFonts.roboto(
                                               fontSize: 18.sp,
                                               fontWeight: FontWeight.w500,

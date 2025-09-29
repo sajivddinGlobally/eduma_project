@@ -1323,7 +1323,13 @@ class _PopularBodyState extends State<PopularBody> {
                     ),
                     child: Text(
                       // "₹ 45.00",
-                      widget.data.price.priceType.name,
+                      widget.data.price.priceType == "free"
+                          ? "Free"
+                          : widget.data.price.salePrice > 0
+                          ? widget.data.price.salePrice.toString()
+                          : widget.data.price.regularPrice > 0
+                          ? widget.data.price.regularPrice.toString()
+                          : "Free",
                       style: GoogleFonts.roboto(
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w500,

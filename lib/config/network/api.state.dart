@@ -16,7 +16,6 @@ import 'package:eduma_app/data/Model/enrollBodyModel.dart';
 import 'package:eduma_app/data/Model/enrollCourseStudentModel.dart';
 import 'package:eduma_app/data/Model/enrollResModel.dart';
 import 'package:eduma_app/data/Model/getWishlistModel.dart';
-import 'package:eduma_app/data/Model/instructorModel.dart';
 import 'package:eduma_app/data/Model/latestCourseModel.dart';
 import 'package:eduma_app/data/Model/loginBodyModel.dart';
 import 'package:eduma_app/data/Model/loginResModel.dart';
@@ -93,14 +92,21 @@ abstract class APIStateNetwork {
   @DELETE("/custom/v1/wishlist")
   Future<DeletewishlistResModel> deleteWishlist(@Body() WishlistBodyModel body);
 
-  @GET("/custom/v1/instructors")
-  Future<List<InstructorModel>> instructor();
+  // @GET("/custom/v1/instructors")
+  // Future<List<InstructorModel>> instructor();
 
   @GET("/custom/v1/categories")
   Future<AllCategoryModel> allCategory();
 
-  @GET("/custom/v1/courses-category?category={id}")
-  Future<CorurseByCategoryIdModel> categoryByCourseId(@Path() String id);
+  // @GET("/custom/v1/courses-category?category={id}")
+  // Future<CorurseByCategoryIdModel> categoryByCourseId(@Path() String id);
+
+  @GET("/custom/v1/courses-category")
+  Future<CorurseByCategoryIdModel> categoryByCourseId(
+    @Query("category") String id,
+    @Query("per_page") int perPage, // optional
+    @Query("page") int page, // optional
+  );
 
   @GET("/custom/v1/profile")
   Future<ProfileModel> profile();
@@ -165,7 +171,7 @@ abstract class APIStateNetwork {
 
   // @GET("/wc/v3/orders")
   @GET("/wc/v3/orders?customer={id}")
-  Future<List<OrderListModel>> order(@Path("id")String id);
+  Future<List<OrderListModel>> order(@Path("id") String id);
 
   @GET("/wc/v3/orders/{id}")
   Future<OrderDetailsModel> orderDetails(@Path() String id);

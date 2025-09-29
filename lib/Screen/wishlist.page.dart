@@ -542,9 +542,9 @@ class _WishlistPageState extends ConsumerState<WishlistPage> {
                                             ),
                                             child: Image.network(
                                               wishlist.items[index].thumbnail,
-                                              // width: 400.w,
-                                              // height: 180.h,
-                                              // fit: BoxFit.fill,
+                                              width: double.infinity,
+                                              height: 180.h,
+                                              fit: BoxFit.contain,
                                               errorBuilder:
                                                   (
                                                     context,

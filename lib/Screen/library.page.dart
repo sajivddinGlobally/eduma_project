@@ -32,14 +32,12 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
               ),
             ),
           ),
-
           enrolleCourseProvider.when(
             data: (data) {
               final filter = data.courses.where((search) {
                 final title = search.title?.toLowerCase() ?? "";
                 return title.contains(searchQuery);
               }).toList();
-
               if (data.courses.isEmpty) {
                 return Center(
                   child: Column(
@@ -63,7 +61,6 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
                   ),
                 );
               }
-
               return Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
                 child: Column(
