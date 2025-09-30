@@ -330,6 +330,14 @@ class _AllBodyState extends State<AllBody> {
                 child: Text(
                   //"₹ 45.00",
                   widget.data.pricing.priceLabel.name,
+                  // widget.data.pricing.isFree == true
+                  //     ? "Free"
+                  //     : (double.tryParse(widget.data.pricing.salePrice) ?? 0) >
+                  //           0
+                  //     ? "₹${widget.data.pricing.salePrice}"
+                  //     : (double.tryParse(widget.data.pricing.price) ?? 0) > 0
+                  //     ? "₹${widget.data.pricing.price}"
+                  //     : "Free",
                   style: GoogleFonts.roboto(
                     fontSize: 12.sp,
                     fontWeight: FontWeight.w500,
@@ -358,19 +366,21 @@ class _AllBodyState extends State<AllBody> {
           ),
         ),
         SizedBox(height: 8.h),
-        Text(
-          (widget.data.pricing.price == null ||
-                  widget.data.pricing.price == 0 ||
-                  widget.data.pricing.price.isEmpty)
-              ? widget.data.pricing.priceLabel.name
-              : "₹ ${widget.data.pricing.price}",
-          //"₹ ${widget.data.pricing.price}",
-          style: GoogleFonts.roboto(
-            fontSize: 15.sp,
-            fontWeight: FontWeight.w500,
-            color: Color(0xFF001E6C),
-          ),
-        ),
+        // Text(
+        //   widget.data.pricing.isFree == true
+        //       ? "Free"
+        //       : (double.tryParse(widget.data.pricing.salePrice) ?? 0) > 0
+        //       ? "₹${widget.data.pricing.salePrice}"
+        //       : (double.tryParse(widget.data.pricing.price) ?? 0) > 0
+        //       ? "₹${widget.data.pricing.price}"
+        //       : "Free",
+        //   //"₹ ${widget.data.pricing.price}",
+        //   style: GoogleFonts.roboto(
+        //     fontSize: 15.sp,
+        //     fontWeight: FontWeight.w500,
+        //     color: Color(0xFF001E6C),
+        //   ),
+        // ),
       ],
     );
   }
