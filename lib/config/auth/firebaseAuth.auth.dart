@@ -36,6 +36,7 @@ class AuthRepository {
       await box.put("token", response.token);
       await box.put("userEmail", response.userEmail);
       await box.put("storeId", response.storeId);
+      await box.put("userDisplayName", response.userDisplayName);
 
       //log("API Response: ${response.toJson()}");
 

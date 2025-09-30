@@ -154,7 +154,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "Welcome Back, ${box.get("userNicename") ?? "Name"}",
+                            "Welcome Back, ${box.get("storeName") ?? "Name"}",
                             style: GoogleFonts.roboto(
                               fontSize: 16.sp,
                               fontWeight: FontWeight.w600,
@@ -1323,12 +1323,19 @@ class _PopularBodyState extends State<PopularBody> {
                     ),
                     child: Text(
                       // "₹ 45.00",
+                      // widget.data.price.priceType == "free"
+                      //     ? "Free"
+                      //     : widget.data.price.salePrice > 0
+                      //     ? widget.data.price.salePrice.toString()
+                      //     : widget.data.price.regularPrice > 0
+                      //     ? widget.data.price.regularPrice.toString()
+                      //     : "Free",
                       widget.data.price.priceType == "free"
                           ? "Free"
                           : widget.data.price.salePrice > 0
-                          ? widget.data.price.salePrice.toString()
+                          ? "₹${widget.data.price.salePrice}"
                           : widget.data.price.regularPrice > 0
-                          ? widget.data.price.regularPrice.toString()
+                          ? "₹${widget.data.price.regularPrice}"
                           : "Free",
                       style: GoogleFonts.roboto(
                         fontSize: 12.sp,

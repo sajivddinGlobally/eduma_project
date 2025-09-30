@@ -358,133 +358,6 @@ class _EnrolledDourseDetailsPageState
       ),
     );
   }
-
-  Widget _lessonTile(String title, String videoUrl) {
-    final videoId = _extractYouTubeId(videoUrl);
-    final displayTitle = videoId.isNotEmpty ? title : "No Video";
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
-      margin: EdgeInsets.symmetric(vertical: 8.h),
-      elevation: 2,
-      child: ExpansionTile(
-        tilePadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-        childrenPadding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 12.h),
-        collapsedShape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.r),
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.r),
-        ),
-        backgroundColor: Colors.white,
-        collapsedBackgroundColor: Colors.white,
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              title,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: GoogleFonts.roboto(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.w600,
-                color: Colors.black,
-              ),
-            ),
-            SizedBox(height: 4.h),
-            Text(
-              videoId.isNotEmpty ? "1 Video" : "No Video Available",
-              style: GoogleFonts.roboto(
-                fontSize: 13.sp,
-                fontWeight: FontWeight.w400,
-                color: Colors.grey[600],
-              ),
-            ),
-          ],
-        ),
-        children: [
-          InkWell(
-            borderRadius: BorderRadius.circular(8.r),
-            onTap: () {
-              if (videoId.isNotEmpty) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => VideoPage(videoId: videoId),
-                  ),
-                );
-              } else {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text("No Video Available")),
-                );
-              }
-            },
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Divider(color: Color(0xFFBFBFBF), thickness: 0.90.w),
-                SizedBox(height: 10.h),
-                Row(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(10.r),
-                      child: Image.network(
-                        videoId.isNotEmpty
-                            ? "https://img.youtube.com/vi/$videoId/0.jpg"
-                            : "https://via.placeholder.com/120x90.png?text=No+Video",
-                        width: 120.w,
-                        height: 70.h,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return ClipRRect(
-                            borderRadius: BorderRadius.circular(10.r),
-                            child: Image.network(
-                              "https://t4.ftcdn.net/jpg/05/97/47/95/360_F_597479556_7bbQ7t4Z8k3xbAloHFHVdZIizWK1PdOo.jpg",
-                              width: 120.w,
-                              height: 70.h,
-                              fit: BoxFit.cover,
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                    SizedBox(width: 12.w),
-                    Expanded(
-                      child: Text(
-                        displayTitle,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: GoogleFonts.roboto(
-                          fontSize: 15.sp,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black87,
-                        ),
-                      ),
-                    ),
-
-                    Icon(
-                      Icons.play_circle_outlined,
-                      size: 28.sp,
-                      color: Colors.redAccent,
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  String _extractYouTubeId(String url) {
-    final regExp = RegExp(
-      r'^.*((youtu.be/)|(v/)|(u/\w/)|(embed/)|(watch\?v=))([^#&?]*).*',
-      caseSensitive: false,
-    );
-    final match = regExp.firstMatch(url);
-    return match != null && match.group(7)!.length == 11 ? match.group(7)! : "";
-  }
 }
 
 class MyLession extends StatefulWidget {
@@ -787,3 +660,132 @@ class _MyLessionState extends State<MyLession> {
     );
   }
 }
+
+
+
+
+///////////////////////////////////////////////////////
+// Widget _lessonTile(String title, String videoUrl) {
+  //   final videoId = _extractYouTubeId(videoUrl);
+  //   final displayTitle = videoId.isNotEmpty ? title : "No Video";
+  //   return Card(
+  //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+  //     margin: EdgeInsets.symmetric(vertical: 8.h),
+  //     elevation: 2,
+  //     child: ExpansionTile(
+  //       tilePadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+  //       childrenPadding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 12.h),
+  //       collapsedShape: RoundedRectangleBorder(
+  //         borderRadius: BorderRadius.circular(12.r),
+  //       ),
+  //       shape: RoundedRectangleBorder(
+  //         borderRadius: BorderRadius.circular(12.r),
+  //       ),
+  //       backgroundColor: Colors.white,
+  //       collapsedBackgroundColor: Colors.white,
+  //       title: Column(
+  //         crossAxisAlignment: CrossAxisAlignment.start,
+  //         children: [
+  //           Text(
+  //             title,
+  //             maxLines: 1,
+  //             overflow: TextOverflow.ellipsis,
+  //             style: GoogleFonts.roboto(
+  //               fontSize: 16.sp,
+  //               fontWeight: FontWeight.w600,
+  //               color: Colors.black,
+  //             ),
+  //           ),
+  //           SizedBox(height: 4.h),
+  //           Text(
+  //             videoId.isNotEmpty ? "1 Video" : "No Video Available",
+  //             style: GoogleFonts.roboto(
+  //               fontSize: 13.sp,
+  //               fontWeight: FontWeight.w400,
+  //               color: Colors.grey[600],
+  //             ),
+  //           ),
+  //         ],
+  //       ),
+  //       children: [
+  //         InkWell(
+  //           borderRadius: BorderRadius.circular(8.r),
+  //           onTap: () {
+  //             if (videoId.isNotEmpty) {
+  //               Navigator.push(
+  //                 context,
+  //                 MaterialPageRoute(
+  //                   builder: (_) => VideoPage(videoId: videoId),
+  //                 ),
+  //               );
+  //             } else {
+  //               ScaffoldMessenger.of(context).showSnackBar(
+  //                 const SnackBar(content: Text("No Video Available")),
+  //               );
+  //             }
+  //           },
+  //           child: Column(
+  //             crossAxisAlignment: CrossAxisAlignment.start,
+  //             mainAxisAlignment: MainAxisAlignment.start,
+  //             children: [
+  //               Divider(color: Color(0xFFBFBFBF), thickness: 0.90.w),
+  //               SizedBox(height: 10.h),
+  //               Row(
+  //                 children: [
+  //                   ClipRRect(
+  //                     borderRadius: BorderRadius.circular(10.r),
+  //                     child: Image.network(
+  //                       videoId.isNotEmpty
+  //                           ? "https://img.youtube.com/vi/$videoId/0.jpg"
+  //                           : "https://via.placeholder.com/120x90.png?text=No+Video",
+  //                       width: 120.w,
+  //                       height: 70.h,
+  //                       fit: BoxFit.cover,
+  //                       errorBuilder: (context, error, stackTrace) {
+  //                         return ClipRRect(
+  //                           borderRadius: BorderRadius.circular(10.r),
+  //                           child: Image.network(
+  //                             "https://t4.ftcdn.net/jpg/05/97/47/95/360_F_597479556_7bbQ7t4Z8k3xbAloHFHVdZIizWK1PdOo.jpg",
+  //                             width: 120.w,
+  //                             height: 70.h,
+  //                             fit: BoxFit.cover,
+  //                           ),
+  //                         );
+  //                       },
+  //                     ),
+  //                   ),
+  //                   SizedBox(width: 12.w),
+  //                   Expanded(
+  //                     child: Text(
+  //                       displayTitle,
+  //                       maxLines: 2,
+  //                       overflow: TextOverflow.ellipsis,
+  //                       style: GoogleFonts.roboto(
+  //                         fontSize: 15.sp,
+  //                         fontWeight: FontWeight.w500,
+  //                         color: Colors.black87,
+  //                       ),
+  //                     ),
+  //                   ),
+  //                   Icon(
+  //                     Icons.play_circle_outlined,
+  //                     size: 28.sp,
+  //                     color: Colors.redAccent,
+  //                   ),
+  //                 ],
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
+  // String _extractYouTubeId(String url) {
+  //   final regExp = RegExp(
+  //     r'^.*((youtu.be/)|(v/)|(u/\w/)|(embed/)|(watch\?v=))([^#&?]*).*',
+  //     caseSensitive: false,
+  //   );
+  //   final match = regExp.firstMatch(url);
+  //   return match != null && match.group(7)!.length == 11 ? match.group(7)! : "";
+  // }

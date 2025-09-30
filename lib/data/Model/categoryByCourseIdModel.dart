@@ -83,7 +83,7 @@ class Course {
     thumbnail: json["thumbnail"].toString() ?? '',
     link: json["link"] ?? '',
     price: json["price"] ?? 'Free', // default value दिया
-    enrolled: json["enrolled"],
+    enrolled: json["enrolled"].toString(),
   );
 
   Map<String, dynamic> toJson() => {

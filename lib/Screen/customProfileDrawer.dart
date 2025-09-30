@@ -44,7 +44,6 @@ class _CustomProfileDrawerState extends ConsumerState<CustomProfileDrawer> {
         ),
         child: profileProvider.when(
           data: (profile) {
-            
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -187,10 +186,11 @@ class _CustomProfileDrawerState extends ConsumerState<CustomProfileDrawer> {
                           // "Annu Agarwal",
                           // box.get("storeName").toString(),
                           // profile..toString() ?? ,
-                          profile.displayName.isEmpty ||
-                                  profile.displayName == null
-                              ? box.get("storeName")
-                              : box.get("userNicename"),
+                          // profile.displayName.isEmpty ||
+                          //         profile.displayName == null
+                          //     ? box.get("storeName")
+                          //     : box.get("userNicename"),
+                          profile.displayName,
                           style: GoogleFonts.roboto(
                             fontSize: 16.sp,
                             fontWeight: FontWeight.w400,
