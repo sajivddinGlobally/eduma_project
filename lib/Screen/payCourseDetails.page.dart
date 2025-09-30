@@ -290,7 +290,8 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                   ),
                                   SizedBox(width: 8.w),
                                   Text(
-                                    "10 week",
+                                    // "10 week",
+                                    "${courseDetails.direction?.hours ?? 0}h ${courseDetails.direction?.minutes ?? 0}m",
                                     style: GoogleFonts.roboto(
                                       fontSize: 16.sp,
                                       fontWeight: FontWeight.w400,
@@ -306,7 +307,8 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                   ),
                                   SizedBox(width: 8.w),
                                   Text(
-                                    "332",
+                                    // "332",
+                                    courseDetails.enrollCount.toString(),
                                     style: GoogleFonts.roboto(
                                       fontSize: 16.sp,
                                       fontWeight: FontWeight.w400,
@@ -388,7 +390,12 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                               ),
                               SizedBox(height: 12.h),
                               Text(
-                                courseDetails.excerpt ?? "",
+                                (courseDetails.courseOverview != null &&
+                                        courseDetails
+                                            .courseOverview!
+                                            .isNotEmpty)
+                                    ? courseDetails.courseOverview!.first
+                                    : "No overview available", // fallback text
                                 style: GoogleFonts.roboto(
                                   fontSize: 16.sp,
                                   fontWeight: FontWeight.w400,

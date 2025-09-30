@@ -20,7 +20,9 @@ class PopularCourseDetailsModel {
   Author? author;
   Map<String, List<String>>? meta;
   List<Topic>? topics;
-
+  Direction? direction; // 🔹 Direction object add kiya
+  List<String>? courseOverview;
+  
   PopularCourseDetailsModel({
     this.id,
     this.title,
@@ -35,6 +37,8 @@ class PopularCourseDetailsModel {
     this.author,
     this.meta,
     this.topics,
+    this.direction,
+     this.courseOverview,
   });
 
   factory PopularCourseDetailsModel.fromJson(
@@ -66,6 +70,13 @@ class PopularCourseDetailsModel {
             (json?["topics"] as List).map((x) => Topic.fromJson(x)),
           )
         : [],
+    direction:
+        (json?["direction"] is Map) // 🔹 parse direction
+        ? Direction.fromJson(json?["direction"])
+        : null,
+        courseOverview: json!['course_overview'] != null
+          ? List<String>.from(json['course_overview'])
+          : [], // 👈 safe list banayi
   );
 
   Map<String, dynamic> toJson() => {
@@ -91,7 +102,23 @@ class PopularCourseDetailsModel {
     "topics": topics != null
         ? List<dynamic>.from(topics!.map((x) => x.toJson()))
         : [],
+    "direction": direction?.toJson(), // 🔹 add in json
+    'course_overview': courseOverview ?? [],
   };
+}
+
+class Direction {
+  int? hours;
+  int? minutes;
+
+  Direction({this.hours, this.minutes});
+
+  factory Direction.fromJson(Map<String, dynamic>? json) => Direction(
+    hours: _toInt(json?["hours"]),
+    minutes: _toInt(json?["minutes"]),
+  );
+
+  Map<String, dynamic> toJson() => {"hours": hours, "minutes": minutes};
 }
 
 class Author {
