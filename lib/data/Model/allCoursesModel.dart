@@ -360,12 +360,12 @@ class Meta {
 }
 
 class Pricing {
-  String price;
-  String salePrice;
+  int price;
+  int salePrice;
   bool isFree;
-  PriceLabel priceLabel;
-  Currency currency;
-  Symbol symbol;
+  PriceLabel? priceLabel;
+  Currency? currency;
+  Symbol? symbol;
 
   Pricing({
     required this.price,
@@ -373,24 +373,30 @@ class Pricing {
     required this.isFree,
     required this.priceLabel,
     required this.currency,
-    required this.symbol,
+    this.symbol,
   });
 
   factory Pricing.fromJson(Map<String, dynamic> json) => Pricing(
     price: json["price"],
     salePrice: json["sale_price"],
     isFree: json["is_free"],
-    priceLabel: priceLabelValues.map[json["price_label"]]!,
-    currency: currencyValues.map[json["currency"]]!,
-    symbol: symbolValues.map[json["symbol"]]!,
+    // priceLabel: priceLabelValues.map[json["price_label"]]!,
+    // currency: currencyValues.map[json["currency"]]!,
+    priceLabel: priceLabelValues.map[json["price_label"]],
+    currency: currencyValues.map[json["currency"]],
+    symbol: symbolValues.map[json["symbol"]],
   );
 
   Map<String, dynamic> toJson() => {
     "price": price,
     "sale_price": salePrice,
     "is_free": isFree,
-    "price_label": priceLabelValues.reverse[priceLabel],
-    "currency": currencyValues.reverse[currency],
+    // "price_label": priceLabelValues.reverse[priceLabel],
+    // "currency": currencyValues.reverse[currency],
+    "price_label": priceLabel != null
+        ? priceLabelValues.reverse[priceLabel!]
+        : null,
+    "currency": currency != null ? currencyValues.reverse[currency!] : null,
     "symbol": symbolValues.reverse[symbol],
   };
 }
@@ -487,15 +493,15 @@ class Thumbnail {
   String large;
   // String alt;
 
-  Thumbnail({required this.medium, required this.large, });
+  Thumbnail({required this.medium, required this.large});
 
   factory Thumbnail.fromJson(Map<String, dynamic> json) =>
-      Thumbnail(medium: json["medium"], large: json["large"],);
+      Thumbnail(medium: json["medium"], large: json["large"]);
 
   Map<String, dynamic> toJson() => {
     "medium": medium,
     "large": large,
-   // "alt": alt,
+    // "alt": alt,
   };
 }
 

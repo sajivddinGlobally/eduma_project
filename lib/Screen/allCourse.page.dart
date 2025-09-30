@@ -329,15 +329,14 @@ class _AllBodyState extends State<AllBody> {
                 ),
                 child: Text(
                   //"₹ 45.00",
-                  widget.data.pricing.priceLabel.name,
-                  // widget.data.pricing.isFree == true
-                  //     ? "Free"
-                  //     : (double.tryParse(widget.data.pricing.salePrice) ?? 0) >
-                  //           0
-                  //     ? "₹${widget.data.pricing.salePrice}"
-                  //     : (double.tryParse(widget.data.pricing.price) ?? 0) > 0
-                  //     ? "₹${widget.data.pricing.price}"
-                  //     : "Free",
+                  //widget.data.pricing.salePrice.toString(),
+                  widget.data.pricing.isFree == true
+                      ? "Free"
+                      : widget.data.pricing.salePrice > 0
+                      ? "₹${widget.data.pricing.salePrice}"
+                      : widget.data.pricing.price > 0
+                      ? "₹${widget.data.pricing.price}"
+                      : "Free",
                   style: GoogleFonts.roboto(
                     fontSize: 12.sp,
                     fontWeight: FontWeight.w500,
