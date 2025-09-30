@@ -270,7 +270,7 @@ class _CustomProfileDrawerState extends ConsumerState<CustomProfileDrawer> {
                             ),
                           );
                         },
-                        child: tileBuild("assets/or.png", "Order History"),
+                        child: tileBuild("assets/or.png", "My Orders"),
                       ),
                       SizedBox(height: 20.h),
                     ],

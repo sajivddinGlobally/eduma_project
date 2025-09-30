@@ -40,7 +40,6 @@ Dio createDio() {
         final errorMessage = errorData is Map
             ? errorData["message"]?.toString() ?? "Something went wrong"
             : "Something went wrong";
-
         // HTML tags clean karne ka code
         final cleanedMessage = errorMessage
             .replaceAll(RegExp(r'<[^>]*>'), '')
