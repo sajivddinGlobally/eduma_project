@@ -260,6 +260,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:path/path.dart' as path;
 
 class EnrolledDourseDetailsPage extends ConsumerStatefulWidget {
   final String id;
@@ -384,7 +385,7 @@ class ModuleLessionWidget extends StatefulWidget {
   final String title;
   final String? videoUrl;
   final List<Attachment>? attachments;
-  final String? lessonContent; // Added to handle pdf-embedder
+  final String? lessonContent;
 
   const ModuleLessionWidget({
     super.key,
@@ -403,22 +404,12 @@ class _ModuleLessionWidgetState extends State<ModuleLessionWidget> {
   double downloadProgress = 0.0;
   bool isDownloadComplete = false;
 
-  // String extractYouTubeId(String url) {
-  //   RegExp regExp = RegExp(
-  //     r'^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?v=))([^#\&\?]*).*',
-  //     caseSensitive: false,
-  //   );
-  //   Match? match = regExp.firstMatch(url);
-  //   return match != null && match.group(7)!.length == 11 ? match.group(7)! : '';
-  // }
   String extractYouTubeId(String url) {
     if (url.contains("youtu")) {
-      // Normal video
       final regExp = RegExp(r'(?:v=|\/)([0-9A-Za-z_-]{11}).*');
       final match = regExp.firstMatch(url);
       if (match != null) return match.group(1)!;
 
-      // Live video: take last path segment
       final uri = Uri.tryParse(url);
       if (uri != null && uri.pathSegments.contains("live")) {
         return uri.pathSegments.last;
@@ -437,18 +428,30 @@ class _ModuleLessionWidgetState extends State<ModuleLessionWidget> {
   Future<String?> downloadPdf(String url, String fileName) async {
     try {
       if (Platform.isAndroid) {
-        if (!await Permission.storage.isGranted) {
+        if (await Permission.storage.isDenied) {
           await Permission.storage.request();
+        }
+        if (await Permission.manageExternalStorage.isDenied &&
+            Platform.isAndroid) {
+          await Permission.manageExternalStorage.request();
         }
       }
 
-      Directory dir =
-          await getExternalStorageDirectory() ??
-          await getApplicationDocumentsDirectory();
-      if (!dir.existsSync()) dir.createSync(recursive: true);
-
       fileName = fileName.replaceAll(RegExp(r'[\\/:*?"<>|]'), '_');
-      final filePath = "${dir.path}/$fileName";
+
+      String? filePath;
+      if (Platform.isAndroid &&
+          await Permission.manageExternalStorage.isGranted) {
+        final downloadsDir = Directory('/storage/emulated/0/Download');
+        if (!downloadsDir.existsSync()) {
+          downloadsDir.createSync(recursive: true);
+        }
+        filePath = path.join(downloadsDir.path, fileName);
+      } else {
+        final dir = await getApplicationDocumentsDirectory();
+        if (!dir.existsSync()) dir.createSync(recursive: true);
+        filePath = path.join(dir.path, fileName);
+      }
 
       await Dio().download(
         url,
@@ -467,69 +470,49 @@ class _ModuleLessionWidgetState extends State<ModuleLessionWidget> {
           }
         },
       );
+
       log("✅ PDF download complete: $filePath");
       if (mounted) {
         setState(() {
           isDownloadComplete = true;
+          isDownloading = false;
         });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("PDF download complete: $filePath"),
+            duration: Duration(seconds: 3),
+          ),
+        );
       }
       return filePath;
     } catch (e) {
-      log("❌ Error downloading PDF: $e");
+      log("❌ PDF download error: $e");
       if (mounted) {
         setState(() {
           isDownloading = false;
           downloadProgress = 0.0;
         });
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text("download failed $e")));
       }
       return null;
     }
   }
 
-  // String? parseVideoUrl(String? videoData) {
-  //   if (videoData == null || videoData.isEmpty) return null;
-  //   try {
-  //     // Extract source_youtube URL using RegExp
-  //     final youtubeRegExp = RegExp(
-  //       r'"source_youtube";s:\d+:"(https?://(?:www\.)?youtu(?:be\.com|\.be)/[^"]+)"',
-  //       multiLine: true,
-  //     );
-  //     final youtubeMatch = youtubeRegExp.firstMatch(videoData);
-  //     if (youtubeMatch != null) {
-  //       return youtubeMatch.group(1);
-  //     }
-  //     // Extract source_external_url if source_youtube is not found
-  //     final externalRegExp = RegExp(
-  //       r'"source_external_url";s:\d+:"(https?://[^"]+)"',
-  //       multiLine: true,
-  //     );
-  //     final externalMatch = externalRegExp.firstMatch(videoData);
-  //     if (externalMatch != null) {
-  //       return externalMatch.group(1);
-  //     }
-  //     log("❌ No valid video URL found in: $videoData");
-  //     return null;
-  //   } catch (e) {
-  //     log("❌ Error parsing video URL: $e");
-  //     return null;
-  //   }
-  // }
-
   String? parseVideoUrl(String? videoData) {
     if (videoData == null || videoData.isEmpty) return null;
 
     try {
-      // Extract source_external_url
       final externalUrlRegex = RegExp(
         r'source_external_url";s:\d+:"(https?://[^"]+)"',
         multiLine: true,
       );
       final match = externalUrlRegex.firstMatch(videoData);
       if (match != null) {
-        return match.group(1); // ✅ returns the full URL
+        return match.group(1);
       }
 
-      // Fallback: any YouTube URL
       final youtubeRegex = RegExp(
         r'(https?:\/\/(?:www\.)?youtu(?:be\.com|\.be)/[^\s"]+)',
         multiLine: true,
@@ -592,9 +575,9 @@ class _ModuleLessionWidgetState extends State<ModuleLessionWidget> {
             ),
             SizedBox(height: 4.h),
             Text(
-              isPdfAvailable
-                  ? "PDF Available"
-                  : (isVideoAvailable ? "1 Video" : "No pdf Available"),
+              isPdfTitle
+                  ? (isPdfAvailable ? "1 PDF" : "No PDF Available")
+                  : (isVideoAvailable ? "1 Video" : "No Video Available"),
               style: GoogleFonts.roboto(
                 fontSize: 13.sp,
                 fontWeight: FontWeight.w400,
@@ -615,7 +598,7 @@ class _ModuleLessionWidgetState extends State<ModuleLessionWidget> {
                 SizedBox(width: 12.w),
                 Expanded(
                   child: Text(
-                    "${pdfAttachment?.title ?? widget.title} (PDF)",
+                    "${pdfAttachment!.title ?? widget.title} (PDF)",
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: GoogleFonts.roboto(
@@ -666,34 +649,10 @@ class _ModuleLessionWidgetState extends State<ModuleLessionWidget> {
                                   downloadProgress = 0.0;
                                   isDownloadComplete = false;
                                 });
-                                final filePath = await downloadPdf(
+                                await downloadPdf(
                                   pdfAttachment?.url ?? pdfUrlFromContent!,
                                   pdfAttachment?.title ?? "${widget.title}.pdf",
                                 );
-                                if (filePath != null && context.mounted) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        "PDF download complete: $filePath",
-                                      ),
-                                    ),
-                                  );
-                                  await OpenFilex.open(
-                                    filePath,
-                                    type: "application/pdf",
-                                  );
-                                } else if (context.mounted) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text("Download failed"),
-                                    ),
-                                  );
-                                }
-                                if (mounted) {
-                                  setState(() {
-                                    isDownloading = false;
-                                  });
-                                }
                               },
                       ),
               ],
@@ -724,7 +683,7 @@ class _ModuleLessionWidgetState extends State<ModuleLessionWidget> {
               child: Row(
                 children: [
                   ClipRRect(
-                    borderRadius: BorderRadius.circular(10.r),
+                    borderRadius: BorderRadius.circular(10),
                     child: Image.network(
                       videoId.isNotEmpty
                           ? "https://img.youtube.com/vi/$videoId/0.jpg"
