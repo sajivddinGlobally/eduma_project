@@ -1187,6 +1187,28 @@ class _NewModuleLessionWidgetState extends State<NewModuleLessionWidget> {
     }
   }
 
+  Future<void> _deleteFile() async {
+    if (computedFilePath != null) {
+      try {
+        await File(computedFilePath!).delete();
+        if (mounted) {
+          setState(() {
+            isDownloadComplete = false;
+            computedFilePath = null;
+          });
+        }
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("PDF deleted successfully")),
+        );
+      } catch (e) {
+        log("❌ Error deleting file: $e");
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text("Failed to delete PDF")));
+      }
+    }
+  }
+
   String extractYouTubeId(String url) {
     if (url.contains("youtu")) {
       final regExp = RegExp(r'(?:v=|\/)([0-9A-Za-z_-]{11}).*');
@@ -1392,14 +1414,46 @@ class _NewModuleLessionWidgetState extends State<NewModuleLessionWidget> {
                       )
                     : isDownloadComplete
                     ? InkWell(
-                        onTap: () async {
-                          if (computedFilePath != null) {
-                            await _openFile(computedFilePath!);
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text("File not found")),
-                            );
-                          }
+                        onTap: () {
+                          showModalBottomSheet(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return SafeArea(
+                                child: Padding(
+                                  padding: EdgeInsets.all(16.w),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      ListTile(
+                                        leading: Icon(
+                                          Icons.file_open,
+                                          color: Colors.green,
+                                        ),
+                                        title: Text("Open PDF"),
+                                        onTap: () async {
+                                          Navigator.pop(context);
+                                          if (computedFilePath != null) {
+                                            await _openFile(computedFilePath!);
+                                          }
+                                        },
+                                      ),
+                                      ListTile(
+                                        leading: Icon(
+                                          Icons.delete,
+                                          color: Colors.red,
+                                        ),
+                                        title: Text("Delete PDF"),
+                                        onTap: () async {
+                                          Navigator.pop(context);
+                                          await _deleteFile();
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          );
                         },
                         child: Container(
                           padding: EdgeInsets.symmetric(
