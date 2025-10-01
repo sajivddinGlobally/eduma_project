@@ -1391,13 +1391,8 @@ class _NewModuleLessionWidgetState extends State<NewModuleLessionWidget> {
                         ],
                       )
                     : isDownloadComplete
-                    ? IconButton(
-                        icon: Icon(
-                          Icons.check_circle,
-                          size: 28.sp,
-                          color: Colors.green,
-                        ),
-                        onPressed: () async {
+                    ? InkWell(
+                        onTap: () async {
                           if (computedFilePath != null) {
                             await _openFile(computedFilePath!);
                           } else {
@@ -1406,6 +1401,36 @@ class _NewModuleLessionWidgetState extends State<NewModuleLessionWidget> {
                             );
                           }
                         },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 8.w,
+                            vertical: 4.h,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.green.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(16.r),
+                            border: Border.all(color: Colors.green, width: 1),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                Icons.file_open,
+                                size: 16.sp,
+                                color: Colors.green,
+                              ),
+                              SizedBox(width: 4.w),
+                              Text(
+                                "Open",
+                                style: GoogleFonts.roboto(
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.green,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       )
                     : IconButton(
                         icon: Icon(
