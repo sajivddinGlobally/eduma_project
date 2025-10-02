@@ -9,8 +9,10 @@ import 'package:eduma_app/data/Model/cartModel.dart';
 import 'package:eduma_app/data/Model/cartRemoveBodyModel.dart';
 import 'package:eduma_app/data/Model/categoryByCourseIdModel.dart';
 import 'package:eduma_app/data/Model/clearAllResModel.dart';
+import 'package:eduma_app/data/Model/createBodyModel.dart';
 import 'package:eduma_app/data/Model/createOrderBodyModel.dart';
 import 'package:eduma_app/data/Model/createOrderCourseModel.dart';
+import 'package:eduma_app/data/Model/createResModel.dart';
 import 'package:eduma_app/data/Model/deleteWishlistResModel.dart';
 import 'package:eduma_app/data/Model/enrollBodyModel.dart';
 import 'package:eduma_app/data/Model/enrollCourseStudentModel.dart';
@@ -195,4 +197,7 @@ abstract class APIStateNetwork {
 
   @GET("/custom/v1/related-products/{id}")
   Future<List<RelatedProductModel>> relatedProdut(@Path("id") String id);
+
+  @POST("/cwcc/v1/create-order")
+  Future<CreateResModel> create(@Body() CreateBodyModel body);
 }

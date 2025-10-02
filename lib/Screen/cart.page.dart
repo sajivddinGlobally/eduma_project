@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:eduma_app/Screen/editProfile.page.dart';
+import 'package:eduma_app/Screen/fillAdress.page.dart';
 import 'package:eduma_app/Screen/home.page.dart';
 import 'package:eduma_app/Screen/productDetails.page.dart';
 import 'package:eduma_app/config/core/showFlushbar.dart'
@@ -283,99 +284,12 @@ class _CartPageState extends ConsumerState<CartPage> {
                             ],
                           ),
                           SizedBox(height: 15.h),
-                          // SizedBox(
-                          //   width: double.infinity,
-                          //   height: 50.h,
-                          //   child: ElevatedButton(
-                          //     style: ElevatedButton.styleFrom(
-                          //       backgroundColor: const Color(0xFF001E6C),
-                          //       shape: RoundedRectangleBorder(
-                          //         borderRadius: BorderRadius.circular(12.r),
-                          //       ),
-                          //       elevation: 2,
-                          //     ),
-                          //     onPressed: () async {
-                          //       // final data =  ref
-                          //       //     .watch(orderCreateController)
-                          //       //     .value;
-
-                          //       final data = await ref.refresh(
-                          //         orderCreateController.future,
-                          //       );
-
-                          //       if (data == null) {
-                          //         showErrorMessage(
-                          //           "Order create failed, please try again",
-                          //         );
-                          //         return;
-                          //       }
-
-                          //       final razorpay = Razorpay();
-
-                          //       final options = {
-                          //         "order_id": data!.orderId,
-                          //         "amount": data.amount * 100,
-                          //         "currency": "INR",
-                          //         "receipt": data.receipt,
-                          //         "key": "rzp_test_RIeIwZBZ2NZi6w",
-                          //         "wc_order_id": data.wcOrderId,
-                          //         "prefill": {
-                          //           "name": data.user.name,
-                          //           "email": data.user.email,
-                          //           "contact": data.user.contact,
-                          //         },
-                          //       };
-                          //       razorpay.open(options);
-                          //       razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, (
-                          //         PaymentSuccessResponse response,
-                          //       ) {
-                          //         log(
-                          //           "Payment Success : ${response.paymentId}",
-                          //         );
-                          //         showSuccessMessage(
-                          //           context,
-                          //           "Payment Successful",
-                          //         );
-                          //         Navigator.pushAndRemoveUntil(
-                          //           context,
-                          //           CupertinoPageRoute(
-                          //             builder: (context) => HomePage(),
-                          //           ),
-                          //           (route) => false,
-                          //         );
-                          //       });
-                          //       razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, (
-                          //         PaymentFailureResponse response,
-                          //       ) {
-                          //         log("Payment Failed : ${response.message}");
-                          //         showErrorMessage(
-                          //           "Payment Failed : ${response.message}",
-                          //         );
-                          //       });
-                          //       razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, (
-                          //         ExternalWalletResponse response,
-                          //       ) {
-                          //         log(
-                          //           "External Wallet : ${response.walletName}",
-                          //         );
-                          //       });
-                          //     },
-                          //     child: Text(
-                          //       "Proceed to Checkout",
-                          //       style: GoogleFonts.poppins(
-                          //         fontSize: 16.sp,
-                          //         fontWeight: FontWeight.w600,
-                          //         color: Colors.white,
-                          //       ),
-                          //     ),
-                          //   ),
-                          // ),
                           SizedBox(
                             width: double.infinity,
                             height: 50.h,
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFF001E6C),
+                                backgroundColor: const Color(0xff007AFF),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12.r),
                                 ),
@@ -384,88 +298,99 @@ class _CartPageState extends ConsumerState<CartPage> {
                               onPressed: isLoading
                                   ? null
                                   : () async {
-                                      setState(() => isCheck = true);
+                                      Navigator.push(
+                                        context,
+                                        CupertinoPageRoute(
+                                          builder: (context) => FillAddressPage(
+                                            productId: data.items[0].productId
+                                                .toString(),
+                                                quantity: data.count.toString(),
+                                          ),
+                                          fullscreenDialog: true,
+                                        ),
+                                      );
+                                      // setState(() => isCheck = true);
 
-                                      try {
-                                        final data = await ref.refresh(
-                                          orderCreateController.future,
-                                        );
+                                      // try {
+                                      //   final data = await ref.refresh(
+                                      //     orderCreateController.future,
+                                      //   );
 
-                                        if (data == null) {
-                                          showErrorMessage(
-                                            "Order create failed, please try again",
-                                          );
-                                          setState(() => isCheck = false);
-                                          return;
-                                        }
+                                      //   if (data == null) {
+                                      //     showErrorMessage(
+                                      //       "Order create failed, please try again",
+                                      //     );
+                                      //     setState(() => isCheck = false);
+                                      //     return;
+                                      //   }
 
-                                        final razorpay = Razorpay();
-                                        final options = {
-                                          "order_id": data.orderId,
-                                          "amount": data.amount * 100,
-                                          "currency": "INR",
-                                          "receipt": data.receipt,
-                                          "key": "rzp_test_RIeIwZBZ2NZi6w",
-                                          "wc_order_id": data.wcOrderId,
-                                          "prefill": {
-                                            "name": data.user.name,
-                                            "email": data.user.email,
-                                            "contact": data.user.contact,
-                                          },
-                                        };
+                                      //   final razorpay = Razorpay();
+                                      //   final options = {
+                                      //     "order_id": data.orderId,
+                                      //     "amount": data.amount * 100,
+                                      //     "currency": "INR",
+                                      //     "receipt": data.receipt,
+                                      //     "key": "rzp_test_RIeIwZBZ2NZi6w",
+                                      //     "wc_order_id": data.wcOrderId,
+                                      //     "prefill": {
+                                      //       "name": data.user.name,
+                                      //       "email": data.user.email,
+                                      //       "contact": data.user.contact,
+                                      //     },
+                                      //   };
 
-                                        razorpay.open(options);
+                                      //   razorpay.open(options);
 
-                                        razorpay.on(
-                                          Razorpay.EVENT_PAYMENT_SUCCESS,
-                                          (PaymentSuccessResponse response) {
-                                            log(
-                                              "Payment Success : ${response.paymentId}",
-                                            );
-                                            showSuccessMessage(
-                                              context,
-                                              "Payment Successful",
-                                            );
-                                            Navigator.pushAndRemoveUntil(
-                                              context,
-                                              CupertinoPageRoute(
-                                                builder: (context) =>
-                                                    HomePage(),
-                                              ),
-                                              (route) => false,
-                                            );
-                                          },
-                                        );
+                                      //   razorpay.on(
+                                      //     Razorpay.EVENT_PAYMENT_SUCCESS,
+                                      //     (PaymentSuccessResponse response) {
+                                      //       log(
+                                      //         "Payment Success : ${response.paymentId}",
+                                      //       );
+                                      //       showSuccessMessage(
+                                      //         context,
+                                      //         "Payment Successful",
+                                      //       );
+                                      //       Navigator.pushAndRemoveUntil(
+                                      //         context,
+                                      //         CupertinoPageRoute(
+                                      //           builder: (context) =>
+                                      //               HomePage(),
+                                      //         ),
+                                      //         (route) => false,
+                                      //       );
+                                      //     },
+                                      //   );
 
-                                        razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, (
-                                          PaymentFailureResponse response,
-                                        ) {
-                                          log(
-                                            "Payment Failed : ${response.message}",
-                                          );
-                                          // showErrorMessage(
-                                          //   "Payment Failed : ${response.message}",
-                                          // );
-                                        });
+                                      //   razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, (
+                                      //     PaymentFailureResponse response,
+                                      //   ) {
+                                      //     log(
+                                      //       "Payment Failed : ${response.message}",
+                                      //     );
+                                      //     // showErrorMessage(
+                                      //     //   "Payment Failed : ${response.message}",
+                                      //     // );
+                                      //   });
 
-                                        razorpay.on(
-                                          Razorpay.EVENT_EXTERNAL_WALLET,
-                                          (ExternalWalletResponse response) {
-                                            log(
-                                              "External Wallet : ${response.walletName}",
-                                            );
-                                          },
-                                        );
-                                      } catch (e, st) {
-                                        showErrorMessage(
-                                          "Something went wrong: $e",
-                                        );
-                                        log("Error: $e");
-                                        log("StackTrace: $st");
-                                        log(e.toString());
-                                      } finally {
-                                        setState(() => isCheck = false);
-                                      }
+                                      //   razorpay.on(
+                                      //     Razorpay.EVENT_EXTERNAL_WALLET,
+                                      //     (ExternalWalletResponse response) {
+                                      //       log(
+                                      //         "External Wallet : ${response.walletName}",
+                                      //       );
+                                      //     },
+                                      //   );
+                                      // } catch (e, st) {
+                                      //   showErrorMessage(
+                                      //     "Something went wrong: $e",
+                                      //   );
+                                      //   log("Error: $e");
+                                      //   log("StackTrace: $st");
+                                      //   log(e.toString());
+                                      // } finally {
+                                      //   setState(() => isCheck = false);
+                                      // }
                                     },
                               child: isCheck
                                   ? const CircularProgressIndicator(

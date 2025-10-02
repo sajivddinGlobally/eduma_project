@@ -1,7 +1,9 @@
 import 'package:eduma_app/config/network/api.state.dart';
 import 'package:eduma_app/config/utils/pretty.dio.dart';
+import 'package:eduma_app/data/Model/createBodyModel.dart';
 import 'package:eduma_app/data/Model/createOrderBodyModel.dart';
 import 'package:eduma_app/data/Model/createOrderCourseModel.dart';
+import 'package:eduma_app/data/Model/createResModel.dart';
 import 'package:eduma_app/data/Model/orderCreateModel.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -31,4 +33,10 @@ final courseCreateOrderController =
     >((ref, body) async {
       final service = APIStateNetwork(createDio());
       return await service.courseCreateOrder(body);
+    });
+
+final finalDataControlelr =
+    FutureProvider.family<CreateResModel, CreateBodyModel>((ref, body) async {
+      final service = APIStateNetwork(createDio());
+      return await service.create(body);
     });
