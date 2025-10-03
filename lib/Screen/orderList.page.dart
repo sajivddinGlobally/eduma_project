@@ -261,7 +261,7 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
                                               ? Colors.orange
                                               : (order.status == 'completed'
                                                     ? Colors.green
-                                                    : Colors.grey),
+                                                    : Colors.red),
                                           borderRadius: BorderRadius.circular(
                                             20.r,
                                           ),
@@ -289,7 +289,7 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
                                           color: Color(0xFF001E6C),
                                         ),
                                       ),
-                                      if (order.status != "complete")
+                                      if (order.status == "pending")
                                         OutlinedButton(
                                           style: OutlinedButton.styleFrom(
                                             shape: RoundedRectangleBorder(

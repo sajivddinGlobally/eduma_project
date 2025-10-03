@@ -9,6 +9,7 @@ import 'package:eduma_app/data/Controller/relatedProductController.dart';
 import 'package:eduma_app/data/Model/addCartBodyModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -471,16 +472,27 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                           ),
                         ),
                         SizedBox(height: 8.h),
-                        Text(
-                          data.description.toString(),
-                          style: GoogleFonts.roboto(
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.grey[800],
-                            height: 1.5,
-                          ),
+                        Html(
+                          data: data.description.toString(),
+                          style: {
+                            "body": Style(
+                              fontSize: FontSize(14.sp),
+                              fontWeight: FontWeight.w400,
+                              color: Colors.grey[800],
+                              lineHeight: LineHeight(1.5),
+                              fontFamily: GoogleFonts.roboto().fontFamily,
+                            ),
+                          },
                         ),
-
+                        // Text(
+                        //   data.description.toString(),
+                        //   style: GoogleFonts.roboto(
+                        //     fontSize: 14.sp,
+                        //     fontWeight: FontWeight.w400,
+                        //     color: Colors.grey[800],
+                        //     height: 1.5,
+                        //   ),
+                        // ),
                         SizedBox(height: 20.h),
                         Text(
                           "Category",
@@ -509,14 +521,18 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                           ),
                         ),
                         SizedBox(height: 8.h),
-                        Text(
-                          data.wcfmProductPolicyData.shippingPolicy.toString(),
-                          style: GoogleFonts.roboto(
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.grey[800],
-                            height: 1.5,
-                          ),
+                        Html(
+                          data: data.wcfmProductPolicyData.shippingPolicy
+                              .toString(),
+                          style: {
+                            "body": Style(
+                              fontSize: FontSize(14.sp),
+                              fontWeight: FontWeight.w400,
+                              color: Colors.grey[800],
+                              lineHeight: LineHeight(1.5),
+                              fontFamily: GoogleFonts.roboto().fontFamily,
+                            ),
+                          },
                         ),
                         SizedBox(height: 24.h),
                         Text(

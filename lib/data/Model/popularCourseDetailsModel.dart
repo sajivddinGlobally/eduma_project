@@ -22,7 +22,9 @@ class PopularCourseDetailsModel {
   List<Topic>? topics;
   Direction? direction; // 🔹 Direction object add kiya
   List<String>? courseOverview;
-  
+  bool? protected; // 👈 new field
+  String? password; // 👈 new field
+
   PopularCourseDetailsModel({
     this.id,
     this.title,
@@ -38,7 +40,9 @@ class PopularCourseDetailsModel {
     this.meta,
     this.topics,
     this.direction,
-     this.courseOverview,
+    this.courseOverview,
+    this.protected, // 👈 constructor
+    this.password, // 👈 constructor
   });
 
   factory PopularCourseDetailsModel.fromJson(
@@ -74,9 +78,11 @@ class PopularCourseDetailsModel {
         (json?["direction"] is Map) // 🔹 parse direction
         ? Direction.fromJson(json?["direction"])
         : null,
-        courseOverview: json!['course_overview'] != null
-          ? List<String>.from(json['course_overview'])
-          : [], // 👈 safe list banayi
+    courseOverview: json!['course_overview'] != null
+        ? List<String>.from(json['course_overview'])
+        : [],
+    protected: json?["protected"] == true, // 👈 new
+    password: json["password"], // 👈 new
   );
 
   Map<String, dynamic> toJson() => {
@@ -104,6 +110,8 @@ class PopularCourseDetailsModel {
         : [],
     "direction": direction?.toJson(), // 🔹 add in json
     'course_overview': courseOverview ?? [],
+    "protected": protected, // 👈 new
+    "password": password,
   };
 }
 

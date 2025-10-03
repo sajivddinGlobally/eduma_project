@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+import 'dart:ui';
 import 'package:dio/dio.dart';
 import 'package:eduma_app/Screen/enrolledCourseDetails.page.dart'
     hide Attachment;
@@ -18,6 +19,7 @@ import 'package:eduma_app/data/Model/enrollBodyModel.dart';
 import 'package:eduma_app/data/Model/popularCourseDetailsModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -111,6 +113,238 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
     }
   }
 
+  // Future<void> showPasswordDialog(BuildContext context, String password) async {
+  //   final TextEditingController passwordController = TextEditingController();
+  //   final ValueNotifier<bool> isFilled = ValueNotifier(false);
+  //   return showDialog(
+  //     context: context,
+  //     barrierDismissible: false,
+  //     barrierColor: Colors.black.withOpacity(0.85),
+  //     builder: (BuildContext context) {
+  //       return Dialog(
+  //         backgroundColor: Colors.transparent,
+  //         shape: RoundedRectangleBorder(
+  //           borderRadius: BorderRadius.circular(20),
+  //         ),
+  //         child: Container(
+  //           padding: EdgeInsets.all(20),
+  //           decoration: BoxDecoration(
+  //             color: Colors.white,
+  //             borderRadius: BorderRadius.circular(20),
+  //           ),
+  //           child: Column(
+  //             mainAxisSize: MainAxisSize.min,
+  //             children: [
+  //               Row(
+  //                 children: [
+  //                   Expanded(
+  //                     child: Text(
+  //                       "Course Password Protect",
+  //                       style: GoogleFonts.roboto(
+  //                         fontSize: 20,
+  //                         fontWeight: FontWeight.bold,
+  //                         color: Colors.black,
+  //                       ),
+  //                       textAlign: TextAlign.center,
+  //                     ),
+  //                   ),
+  //                   IconButton(
+  //                     onPressed: () {
+  //                       Navigator.pop(context);
+  //                       Navigator.of(context).maybePop();
+  //                     },
+  //                     icon: Icon(Icons.close, size: 25.sp),
+  //                   ),
+  //                 ],
+  //               ),
+  //               SizedBox(height: 20.h),
+  //               // Password Field
+  //               TextField(
+  //                 controller: passwordController,
+  //                 obscureText: true,
+  //                 onChanged: (value) {
+  //                   isFilled.value = value.trim().isNotEmpty;
+  //                 },
+  //                 decoration: InputDecoration(
+  //                   hintText: "Enter Password",
+  //                   hintStyle: TextStyle(color: Colors.grey.shade400),
+  //                   filled: true,
+  //                   fillColor: Colors.blue.shade50,
+  //                   border: OutlineInputBorder(
+  //                     borderRadius: BorderRadius.circular(15),
+  //                     borderSide: BorderSide.none,
+  //                   ),
+  //                   prefixIcon: Icon(Icons.lock, color: Colors.blue.shade600),
+  //                 ),
+  //               ),
+  //               const SizedBox(height: 25),
+  //               // Submit Button Only (Cancel removed)
+  //               ValueListenableBuilder<bool>(
+  //                 valueListenable: isFilled,
+  //                 builder: (context, filled, _) {
+  //                   return ElevatedButton(
+  //                     style: ElevatedButton.styleFrom(
+  //                       backgroundColor: filled
+  //                           ? Colors.blue.shade600
+  //                           : Colors.grey.shade400,
+  //                       foregroundColor: Colors.white,
+  //                       minimumSize: const Size(double.infinity, 48),
+  //                       shape: RoundedRectangleBorder(
+  //                         borderRadius: BorderRadius.circular(12),
+  //                       ),
+  //                     ),
+  //                     onPressed: filled
+  //                         ? () {
+  //                             if (passwordController.text == password) {
+  //                             } else {
+  //                               ScaffoldMessenger.of(context).showSnackBar(
+  //                                 SnackBar(
+  //                                   content: Text("Invallid Password"),
+  //                                   backgroundColor: Colors.red,
+  //                                 ),
+  //                               );
+  //                             }
+  //                           }
+  //                         : null, // disable jab tak empty
+  //                     child: const Text("Submit"),
+  //                   );
+  //                 },
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
+
+  Future<bool?> showPasswordDialog(
+    BuildContext context,
+    String correctPassword,
+  ) async {
+    final TextEditingController passwordController = TextEditingController();
+    final ValueNotifier<bool> isFilled = ValueNotifier(false);
+
+    return showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      barrierColor: Colors.black.withOpacity(0.7),
+      builder: (BuildContext context) {
+        return Stack(
+          children: [
+            BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+              child: SizedBox(width: double.infinity, height: double.infinity),
+            ),
+            Center(
+              child: Dialog(
+                backgroundColor: Colors.transparent,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Container(
+                  padding: EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              "Course Password Protect",
+                              style: GoogleFonts.roboto(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              Navigator.of(
+                                context,
+                              ).pop(false); // false return karega
+                            },
+                            icon: Icon(Icons.close, size: 25.sp),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 20.h),
+                      TextField(
+                        controller: passwordController,
+                        obscureText: true,
+                        onChanged: (value) {
+                          isFilled.value = value.trim().isNotEmpty;
+                        },
+                        decoration: InputDecoration(
+                          hintText: "Enter Password",
+                          hintStyle: TextStyle(color: Colors.grey.shade400),
+                          filled: true,
+                          fillColor: Colors.blue.shade50,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            borderSide: BorderSide.none,
+                          ),
+                          prefixIcon: Icon(
+                            Icons.lock,
+                            color: Colors.blue.shade600,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 25),
+                      ValueListenableBuilder<bool>(
+                        valueListenable: isFilled,
+                        builder: (context, filled, _) {
+                          return ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: filled
+                                  ? Colors.blue.shade600
+                                  : Colors.grey.shade400,
+                              foregroundColor: Colors.white,
+                              minimumSize: const Size(double.infinity, 48),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                            onPressed: filled
+                                ? () {
+                                    if (passwordController.text.trim() ==
+                                        correctPassword) {
+                                      Navigator.of(
+                                        context,
+                                      ).pop(true); // password match
+                                    } else {
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        const SnackBar(
+                                          content: Text("Invalid Password"),
+                                          backgroundColor: Colors.red,
+                                        ),
+                                      );
+                                    }
+                                  }
+                                : null,
+                            child: const Text("Submit"),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     var box = Hive.box("userBox");
@@ -132,6 +366,18 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
 
           log("Is Free: $isFree");
 
+          if (courseDetails.protected == true) {
+            Future.microtask(() async {
+              final isCorrect = await showPasswordDialog(
+                context,
+                courseDetails.password.toString(),
+              );
+
+              if (isCorrect != true) {
+                Navigator.of(context).maybePop();
+              }
+            });
+          }
           return Scaffold(
             body: Stack(
               children: [
@@ -1143,6 +1389,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                   ),
           );
         },
+
         error: (error, stackTrace) => Center(child: Text(error.toString())),
         loading: () => Center(child: CircularProgressIndicator()),
       ),
