@@ -184,8 +184,8 @@ abstract class APIStateNetwork {
   @GET("/custom/v1/notifications/{id}")
   Future<List<NotificationModel>> notification(@Path("id") String id);
 
-  @POST("/cwcc/v1/create-order")
-  Future<OrderCreateModel> createOrder(@Body() Map<String, dynamic> body);
+  // @POST("/cwcc/v1/create-order")
+  // Future<OrderCreateModel> createOrder(@Body() Map<String, dynamic> body);
 
   @POST("/custom/v1/create-order-course")
   Future<CreateOrderCourseResModel> courseCreateOrder(

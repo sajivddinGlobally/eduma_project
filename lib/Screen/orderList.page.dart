@@ -125,39 +125,46 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
                     //       final order = orderList[index];
                     //       if (order.lineItems.isEmpty) {
                     //         return Center(child: Text("No data available"));
-                    //       } else {
-                    //         return Card(
-                    //           margin: EdgeInsets.only(bottom: 12.h),
-                    //           color: Colors.white,
-                    //           elevation: 2,
-                    //           child: InkWell(
-                    //             borderRadius: BorderRadius.circular(12.r),
-                    //             onTap: () {
-                    //               final lineItems = orderList[index].lineItems;
-                    //               if (lineItems.isNotEmpty) {
-                    //                 Navigator.push(
-                    //                   context,
-                    //                   CupertinoPageRoute(
-                    //                     builder: (context) =>
-                    //                         ProductDetailsPage(
-                    //                           id: lineItems.first.productId
-                    //                               .toString(),
-                    //                         ),
-                    //                   ),
-                    //                 );
-                    //               } else {
-                    //                 ScaffoldMessenger.of(context).showSnackBar(
-                    //                   SnackBar(
-                    //                     content: Text(
-                    //                       "No product found in this order",
+                    //       }
+
+                    //       final lineItem = order.lineItems.first;
+
+                    //       return Card(
+                    //         margin: EdgeInsets.only(bottom: 12.h),
+                    //         color: Colors.white,
+                    //         elevation: 2,
+                    //         shape: RoundedRectangleBorder(
+                    //           borderRadius: BorderRadius.circular(12.r),
+                    //         ),
+                    //         child: Padding(
+                    //           padding: EdgeInsets.all(12.w),
+                    //           child: Column(
+                    //             crossAxisAlignment: CrossAxisAlignment.start,
+                    //             children: [
+                    //               Row(
+                    //                 mainAxisAlignment:
+                    //                     MainAxisAlignment.spaceBetween,
+                    //                 children: [
+                    //                   Text(
+                    //                     "Order ID: #${order.id}",
+                    //                     style: GoogleFonts.roboto(
+                    //                       fontSize: 15.sp,
+                    //                       fontWeight: FontWeight.w500,
+                    //                       color: Colors.grey[700],
                     //                     ),
                     //                   ),
-                    //                 );
-                    //               }
-                    //             },
-                    //             child: Padding(
-                    //               padding: EdgeInsets.all(12.w),
-                    //               child: Row(
+                    //                   Text(
+                    //                     "Ordered on ${order.dateCreated?.toString().substring(0, 10) ?? ''}",
+                    //                     style: GoogleFonts.roboto(
+                    //                       fontSize: 14.sp,
+                    //                       color: Colors.grey,
+                    //                       fontWeight: FontWeight.w500,
+                    //                     ),
+                    //                   ),
+                    //                 ],
+                    //               ),
+                    //               Divider(),
+                    //               Row(
                     //                 crossAxisAlignment:
                     //                     CrossAxisAlignment.start,
                     //                 children: [
@@ -166,20 +173,10 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
                     //                       8.r,
                     //                     ),
                     //                     child: Image.network(
-                    //                       order.lineItems[0].image.src
-                    //                           .toString(),
+                    //                       lineItem.image.src.toString(),
                     //                       width: 80.w,
                     //                       height: 80.h,
-                    //                       //fit: BoxFit.cover,
-                    //                       errorBuilder:
-                    //                           (context, error, stackTrace) {
-                    //                             return Image.network(
-                    //                               "https://t4.ftcdn.net/jpg/05/97/47/95/360_F_597479556_7bbQ7t4Z8k3xbAloHFHVdZIizWK1PdOo.jpg",
-                    //                               width: 80.w,
-                    //                               height: 80.h,
-                    //                               fit: BoxFit.fill,
-                    //                             );
-                    //                           },
+                    //                       fit: BoxFit.cover,
                     //                     ),
                     //                   ),
                     //                   SizedBox(width: 12.w),
@@ -189,38 +186,98 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
                     //                           CrossAxisAlignment.start,
                     //                       children: [
                     //                         Text(
-                    //                           order.lineItems.first.name,
+                    //                           lineItem.name,
                     //                           style: GoogleFonts.roboto(
                     //                             fontSize: 16.sp,
                     //                             fontWeight: FontWeight.w500,
-                    //                             color: Color(0xFF1B1B1B),
                     //                           ),
                     //                           maxLines: 2,
                     //                           overflow: TextOverflow.ellipsis,
                     //                         ),
                     //                         SizedBox(height: 4.h),
                     //                         Text(
-                    //                           "₹${order.lineItems.first.total}",
+                    //                           "₹${lineItem.total}",
+                    //                           style: GoogleFonts.roboto(
+                    //                             fontSize: 15.sp,
+                    //                             fontWeight: FontWeight.bold,
+                    //                             color: Color(0xFF001E6C),
+                    //                           ),
+                    //                         ),
+                    //                         SizedBox(height: 6.h),
+                    //                         Text(
+                    //                           "Delivered on ${order.dateCreated?.toString().substring(0, 10) ?? ''}",
                     //                           style: GoogleFonts.roboto(
                     //                             fontSize: 14.sp,
-                    //                             fontWeight: FontWeight.w600,
-                    //                             color: Color(0xFF001E6C),
+                    //                             fontWeight: FontWeight.w500,
+                    //                             color: Colors.green,
                     //                           ),
                     //                         ),
                     //                       ],
                     //                     ),
                     //                   ),
-                    //                   Icon(
-                    //                     Icons.add_shopping_cart,
-                    //                     color: Color(0xFF001E6C),
-                    //                     size: 24.sp,
+                    //                 ],
+                    //               ),
+                    //               SizedBox(height: 8.h),
+                    //               Text(
+                    //                 "Delivery Address:",
+                    //                 style: GoogleFonts.roboto(
+                    //                   fontSize: 16.sp,
+                    //                   fontWeight: FontWeight.w600,
+                    //                   color: Colors.black,
+                    //                 ),
+                    //               ),
+                    //               Text(
+                    //                 "${order.billing.firstName} ${order.billing.lastName}, "
+                    //                 "${order.billing.address1}, "
+                    //                 "${order.billing.city}, "
+                    //                 "${order.billing.postcode}\n"
+                    //                 "Phone: ${order.billing.phone}",
+                    //                 style: GoogleFonts.roboto(
+                    //                   fontSize: 15.sp,
+                    //                   color: Colors.black87,
+                    //                 ),
+                    //               ),
+                    //               SizedBox(height: 8.h),
+                    //               Row(
+                    //                 mainAxisAlignment:
+                    //                     MainAxisAlignment.spaceBetween,
+                    //                 children: [
+                    //                   Text(
+                    //                     "Payment: ${order.paymentMethod ?? "COD"}",
+                    //                     style: GoogleFonts.roboto(
+                    //                       fontSize: 13.sp,
+                    //                       color: Colors.grey[800],
+                    //                     ),
+                    //                   ),
+                    //                   Text(
+                    //                     "Total: ₹${order.total}",
+                    //                     style: GoogleFonts.roboto(
+                    //                       fontSize: 14.sp,
+                    //                       fontWeight: FontWeight.bold,
+                    //                       color: Color(0xFF001E6C),
+                    //                     ),
                     //                   ),
                     //                 ],
                     //               ),
-                    //             ),
+                    //               SizedBox(height: 10.h),
+                    //               Row(
+                    //                 mainAxisAlignment: MainAxisAlignment.end,
+                    //                 children: [
+                    //                   OutlinedButton(
+                    //                     onPressed: () {},
+                    //                     child: Text("Track Order"),
+                    //                   ),
+                    //                   SizedBox(width: 8.w),
+                    //                   ElevatedButton(
+                    //                     onPressed: () {},
+                    //                     child: Text("Buy Again"),
+                    //                   ),
+                    //                 ],
+                    //               ),
+                    //             ],
                     //           ),
-                    //         );
-                    //       }
+                    //         ),
+                    //       );
                     //     },
                     //   ),
                     // ),
@@ -234,8 +291,6 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
                             return Center(child: Text("No data available"));
                           }
 
-                          final lineItem = order.lineItems.first;
-
                           return Card(
                             margin: EdgeInsets.only(bottom: 12.h),
                             color: Colors.white,
@@ -248,6 +303,7 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
+                                  // ऑर्डर आईडी और डेट
                                   Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -271,60 +327,83 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
                                     ],
                                   ),
                                   Divider(),
-                                  Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      ClipRRect(
-                                        borderRadius: BorderRadius.circular(
-                                          8.r,
-                                        ),
-                                        child: Image.network(
-                                          lineItem.image.src.toString(),
-                                          width: 80.w,
-                                          height: 80.h,
-                                          fit: BoxFit.cover,
-                                        ),
+
+                                  // प्रोडक्ट्स की लिस्ट (एक से ज्यादा प्रोडक्ट्स के लिए)
+                                  ...order.lineItems.map<Widget>((lineItem) {
+                                    return Padding(
+                                      padding: EdgeInsets.only(bottom: 8.h),
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          ClipRRect(
+                                            borderRadius: BorderRadius.circular(
+                                              8.r,
+                                            ),
+                                            child: Image.network(
+                                              lineItem.image.src.toString(),
+                                              width: 80.w,
+                                              height: 80.h,
+                                              fit: BoxFit.cover,
+                                              errorBuilder:
+                                                  (context, error, stackTrace) {
+                                                    return Container(
+                                                      width: 80.w,
+                                                      height: 80.h,
+                                                      color: Colors.grey[300],
+                                                      child: Icon(
+                                                        Icons
+                                                            .image_not_supported,
+                                                      ),
+                                                    );
+                                                  },
+                                            ),
+                                          ),
+                                          SizedBox(width: 12.w),
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  lineItem.name,
+                                                  style: GoogleFonts.roboto(
+                                                    fontSize: 16.sp,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                  maxLines: 2,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
+                                                SizedBox(height: 4.h),
+                                                Text(
+                                                  "₹${lineItem.total}", // प्रत्येक प्रोडक्ट का टोटल
+                                                  style: GoogleFonts.roboto(
+                                                    fontSize: 15.sp,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Color(0xFF001E6C),
+                                                  ),
+                                                ),
+                                                SizedBox(height: 6.h),
+                                                Text(
+                                                  "Delivered on: ${order.dateCreated?.toString().substring(0, 10) ?? ''}",
+                                                  style: GoogleFonts.roboto(
+                                                    fontSize: 14.sp,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Colors.green,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                      SizedBox(width: 12.w),
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              lineItem.name,
-                                              style: GoogleFonts.roboto(
-                                                fontSize: 16.sp,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                              maxLines: 2,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                            SizedBox(height: 4.h),
-                                            Text(
-                                              "₹${lineItem.total}",
-                                              style: GoogleFonts.roboto(
-                                                fontSize: 15.sp,
-                                                fontWeight: FontWeight.bold,
-                                                color: Color(0xFF001E6C),
-                                              ),
-                                            ),
-                                            SizedBox(height: 6.h),
-                                            Text(
-                                              "Delivered on ${order.dateCreated?.toString().substring(0, 10) ?? ''}",
-                                              style: GoogleFonts.roboto(
-                                                fontSize: 14.sp,
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.green,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 8.h),
+                                    );
+                                  }).toList(),
+
+                                  Divider(),
+
+                                  // डिलीवरी एड्रेस
                                   Text(
                                     "Delivery Address:",
                                     style: GoogleFonts.roboto(
@@ -345,6 +424,8 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
                                     ),
                                   ),
                                   SizedBox(height: 8.h),
+
+                                  // पेमेंट और टोटल
                                   Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -357,7 +438,7 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
                                         ),
                                       ),
                                       Text(
-                                        "Total: ₹${order.total}",
+                                        "Total: ₹${order.total}", // पूरा ऑर्डर का टोटल
                                         style: GoogleFonts.roboto(
                                           fontSize: 14.sp,
                                           fontWeight: FontWeight.bold,
@@ -367,6 +448,8 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
                                     ],
                                   ),
                                   SizedBox(height: 10.h),
+
+                                  // बटन्स
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [

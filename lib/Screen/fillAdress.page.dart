@@ -50,6 +50,8 @@ class _FillAddressPageState extends State<FillAddressPage> {
     super.dispose();
   }
 
+  bool isCheck = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -105,19 +107,6 @@ class _FillAddressPageState extends State<FillAddressPage> {
                   return null;
                 },
                 icon: Icons.person_outline,
-              ),
-              SizedBox(height: 20.h),
-              _buildTextField(
-                label: "Country",
-                controller: countryController,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Country is required";
-                  }
-
-                  return null;
-                },
-                icon: Icons.public,
               ),
               SizedBox(height: 20.h),
               _buildTextField(
@@ -242,6 +231,7 @@ class _FillAddressPageState extends State<FillAddressPage> {
                         ),
                       );
                       try {
+                        setState(() => isCheck = true);
                         final service = APIStateNetwork(createDio());
                         final response = await service.create(body);
                         if (response != null) {
@@ -265,7 +255,7 @@ class _FillAddressPageState extends State<FillAddressPage> {
                             PaymentSuccessResponse response,
                           ) {
                             log("Payment Success : ${response.paymentId}");
-                            showSuccessMessage(context, "Payment Successful");
+
                             Navigator.pushAndRemoveUntil(
                               context,
                               CupertinoPageRoute(
@@ -273,14 +263,16 @@ class _FillAddressPageState extends State<FillAddressPage> {
                               ),
                               (route) => false,
                             );
+                            showSuccessMessage(context, "Payment Successful");
+                            setState(() => isCheck = false);
                           });
                           razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, (
                             PaymentFailureResponse response,
                           ) {
                             log("Payment Failed : ${response.message}");
-                            // showErrorMessage(
-                            //   "Payment Failed : ${response.message}",
-                            // );
+                            showErrorMessage(
+                              "Payment Failed : ${response.message}",
+                            );
                           });
 
                           razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, (
@@ -289,9 +281,11 @@ class _FillAddressPageState extends State<FillAddressPage> {
                             log("External Wallet : ${response.walletName}");
                           });
                         } else {
+                          setState(() => isCheck = false);
                           log("Unknow Error");
                         }
                       } catch (e, st) {
+                        setState(() => isCheck = false);
                         //showErrorMessage("Something went wrong: $e");
                         log("Error: $e");
                         log("StackTrace: $st");
@@ -305,14 +299,16 @@ class _FillAddressPageState extends State<FillAddressPage> {
                       borderRadius: BorderRadius.circular(15.r),
                     ),
                   ),
-                  child: Text(
-                    "Save Address",
-                    style: GoogleFonts.roboto(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
-                    ),
-                  ),
+                  child: isCheck
+                      ? const CircularProgressIndicator(color: Colors.white)
+                      : Text(
+                          "Save Address",
+                          style: GoogleFonts.roboto(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
+                        ),
                 ),
               ),
               SizedBox(height: 20.h),

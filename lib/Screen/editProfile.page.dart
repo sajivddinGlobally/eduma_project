@@ -188,7 +188,7 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage>
               ),
               SizedBox(height: 30.h),
               Container(
-                height: MediaQuery.of(context).size.height * 2 / 1.5,
+                // height: MediaQuery.of(context).size.height * 2 / 1.2,
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
@@ -376,6 +376,7 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage>
                                 ),
                               ),
                       ),
+                      SizedBox(height: 10.h,)
                     ],
                   ),
                 ),
