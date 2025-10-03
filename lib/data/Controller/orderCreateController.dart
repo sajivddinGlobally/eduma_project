@@ -4,7 +4,6 @@ import 'package:eduma_app/data/Model/createBodyModel.dart';
 import 'package:eduma_app/data/Model/createOrderBodyModel.dart';
 import 'package:eduma_app/data/Model/createOrderCourseModel.dart';
 import 'package:eduma_app/data/Model/createResModel.dart';
-import 'package:eduma_app/data/Model/orderCreateModel.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // final orderCreateController = FutureProvider.autoDispose<OrderCreateModel>((
