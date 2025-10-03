@@ -239,10 +239,15 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
             Center(
               child: Dialog(
                 backgroundColor: Colors.transparent,
+                insetPadding: EdgeInsets.symmetric(
+                  horizontal: 20.w,
+                  vertical: 40.h,
+                ),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Container(
+                  width: double.maxFinite,
                   padding: EdgeInsets.all(20),
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -253,22 +258,19 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                     children: [
                       Row(
                         children: [
-                          Expanded(
-                            child: Text(
-                              "Course Password Protect",
-                              style: GoogleFonts.roboto(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              ),
-                              textAlign: TextAlign.center,
+                          Text(
+                            "Course Password Protect",
+                            style: GoogleFonts.roboto(
+                              fontSize: 20.sp,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
                             ),
+                            textAlign: TextAlign.center,
                           ),
+                          Spacer(),
                           IconButton(
                             onPressed: () {
-                              Navigator.of(
-                                context,
-                              ).pop(false); // false return karega
+                              Navigator.of(context).pop(false);
                             },
                             icon: Icon(Icons.close, size: 25.sp),
                           ),
