@@ -113,110 +113,8 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
     }
   }
 
-  // Future<void> showPasswordDialog(BuildContext context, String password) async {
-  //   final TextEditingController passwordController = TextEditingController();
-  //   final ValueNotifier<bool> isFilled = ValueNotifier(false);
-  //   return showDialog(
-  //     context: context,
-  //     barrierDismissible: false,
-  //     barrierColor: Colors.black.withOpacity(0.85),
-  //     builder: (BuildContext context) {
-  //       return Dialog(
-  //         backgroundColor: Colors.transparent,
-  //         shape: RoundedRectangleBorder(
-  //           borderRadius: BorderRadius.circular(20),
-  //         ),
-  //         child: Container(
-  //           padding: EdgeInsets.all(20),
-  //           decoration: BoxDecoration(
-  //             color: Colors.white,
-  //             borderRadius: BorderRadius.circular(20),
-  //           ),
-  //           child: Column(
-  //             mainAxisSize: MainAxisSize.min,
-  //             children: [
-  //               Row(
-  //                 children: [
-  //                   Expanded(
-  //                     child: Text(
-  //                       "Course Password Protect",
-  //                       style: GoogleFonts.roboto(
-  //                         fontSize: 20,
-  //                         fontWeight: FontWeight.bold,
-  //                         color: Colors.black,
-  //                       ),
-  //                       textAlign: TextAlign.center,
-  //                     ),
-  //                   ),
-  //                   IconButton(
-  //                     onPressed: () {
-  //                       Navigator.pop(context);
-  //                       Navigator.of(context).maybePop();
-  //                     },
-  //                     icon: Icon(Icons.close, size: 25.sp),
-  //                   ),
-  //                 ],
-  //               ),
-  //               SizedBox(height: 20.h),
-  //               // Password Field
-  //               TextField(
-  //                 controller: passwordController,
-  //                 obscureText: true,
-  //                 onChanged: (value) {
-  //                   isFilled.value = value.trim().isNotEmpty;
-  //                 },
-  //                 decoration: InputDecoration(
-  //                   hintText: "Enter Password",
-  //                   hintStyle: TextStyle(color: Colors.grey.shade400),
-  //                   filled: true,
-  //                   fillColor: Colors.blue.shade50,
-  //                   border: OutlineInputBorder(
-  //                     borderRadius: BorderRadius.circular(15),
-  //                     borderSide: BorderSide.none,
-  //                   ),
-  //                   prefixIcon: Icon(Icons.lock, color: Colors.blue.shade600),
-  //                 ),
-  //               ),
-  //               const SizedBox(height: 25),
-  //               // Submit Button Only (Cancel removed)
-  //               ValueListenableBuilder<bool>(
-  //                 valueListenable: isFilled,
-  //                 builder: (context, filled, _) {
-  //                   return ElevatedButton(
-  //                     style: ElevatedButton.styleFrom(
-  //                       backgroundColor: filled
-  //                           ? Colors.blue.shade600
-  //                           : Colors.grey.shade400,
-  //                       foregroundColor: Colors.white,
-  //                       minimumSize: const Size(double.infinity, 48),
-  //                       shape: RoundedRectangleBorder(
-  //                         borderRadius: BorderRadius.circular(12),
-  //                       ),
-  //                     ),
-  //                     onPressed: filled
-  //                         ? () {
-  //                             if (passwordController.text == password) {
-  //                             } else {
-  //                               ScaffoldMessenger.of(context).showSnackBar(
-  //                                 SnackBar(
-  //                                   content: Text("Invallid Password"),
-  //                                   backgroundColor: Colors.red,
-  //                                 ),
-  //                               );
-  //                             }
-  //                           }
-  //                         : null, // disable jab tak empty
-  //                     child: const Text("Submit"),
-  //                   );
-  //                 },
-  //               ),
-  //             ],
-  //           ),
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
+  bool _dialogShown = false;
+  bool _accessGranted = false;
 
   Future<bool?> showPasswordDialog(
     BuildContext context,
@@ -224,127 +122,165 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
   ) async {
     final TextEditingController passwordController = TextEditingController();
     final ValueNotifier<bool> isFilled = ValueNotifier(false);
+    final ValueNotifier<String?> errorMessage = ValueNotifier(null);
+    final ValueNotifier<bool> isPasswordVisible = ValueNotifier(false);
 
-    return showDialog<bool>(
+    final result = await showDialog<bool>(
       context: context,
       barrierDismissible: false,
-      barrierColor: Colors.black.withOpacity(0.7),
+      barrierColor: Colors.black.withOpacity(0.6),
       builder: (BuildContext context) {
-        return Stack(
-          children: [
-            BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
-              child: SizedBox(width: double.infinity, height: double.infinity),
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          insetPadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 40.h),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.r),
+          ),
+          child: Container(
+            width: double.maxFinite,
+            padding: EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
             ),
-            Center(
-              child: Dialog(
-                backgroundColor: Colors.transparent,
-                insetPadding: EdgeInsets.symmetric(
-                  horizontal: 20.w,
-                  vertical: 40.h,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Container(
-                  width: double.maxFinite,
-                  padding: EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            "Course Password Protect",
-                            style: GoogleFonts.roboto(
-                              fontSize: 20.sp,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                          Spacer(),
-                          IconButton(
-                            onPressed: () {
-                              Navigator.of(context).pop(false);
-                            },
-                            icon: Icon(Icons.close, size: 25.sp),
-                          ),
-                        ],
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      "Course Password Protect",
+                      style: GoogleFonts.roboto(
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
                       ),
-                      SizedBox(height: 20.h),
-                      TextField(
-                        controller: passwordController,
-                        obscureText: true,
-                        onChanged: (value) {
-                          isFilled.value = value.trim().isNotEmpty;
-                        },
-                        decoration: InputDecoration(
-                          hintText: "Enter Password",
-                          hintStyle: TextStyle(color: Colors.grey.shade400),
-                          filled: true,
-                          fillColor: Colors.blue.shade50,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                            borderSide: BorderSide.none,
-                          ),
-                          prefixIcon: Icon(
-                            Icons.lock,
-                            color: Colors.blue.shade600,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 25),
-                      ValueListenableBuilder<bool>(
-                        valueListenable: isFilled,
-                        builder: (context, filled, _) {
-                          return ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: filled
-                                  ? Colors.blue.shade600
-                                  : Colors.grey.shade400,
-                              foregroundColor: Colors.white,
-                              minimumSize: const Size(double.infinity, 48),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
+                      textAlign: TextAlign.center,
+                    ),
+                    Spacer(),
+                    IconButton(
+                      onPressed: () {
+                        Navigator.of(context).pop(false);
+                      },
+                      icon: Icon(Icons.close, size: 25.sp),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 20.h),
+                ValueListenableBuilder<String?>(
+                  valueListenable: errorMessage,
+                  builder: (context, error, _) {
+                    return ValueListenableBuilder<bool>(
+                      valueListenable: isPasswordVisible,
+                      builder: (context, visible, _) {
+                        return Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            TextField(
+                              controller: passwordController,
+                              obscureText: !visible,
+                              autofocus: true,
+                              onChanged: (value) {
+                                isFilled.value = value.trim().isNotEmpty;
+                                if (errorMessage.value != null) {
+                                  errorMessage.value = null;
+                                }
+                              },
+                              decoration: InputDecoration(
+                                hintText: "Enter Password",
+                                hintStyle: TextStyle(
+                                  color: Colors.grey.shade400,
+                                ),
+                                filled: true,
+                                fillColor: Colors.blue.shade50,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                  borderSide: BorderSide.none,
+                                ),
+                                prefixIcon: Icon(
+                                  Icons.lock,
+                                  color: Colors.blue.shade600,
+                                ),
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    visible
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
+                                    color: Colors.blue.shade600,
+                                  ),
+                                  onPressed: () {
+                                    isPasswordVisible.value =
+                                        !isPasswordVisible.value;
+                                  },
+                                ),
                               ),
                             ),
-                            onPressed: filled
-                                ? () {
-                                    if (passwordController.text.trim() ==
-                                        correctPassword) {
-                                      Navigator.of(
-                                        context,
-                                      ).pop(true); // password match
-                                    } else {
-                                      ScaffoldMessenger.of(
-                                        context,
-                                      ).showSnackBar(
-                                        const SnackBar(
-                                          content: Text("Invalid Password"),
-                                          backgroundColor: Colors.red,
-                                        ),
-                                      );
-                                    }
-                                  }
-                                : null,
-                            child: const Text("Submit"),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
+                            if (error != null) ...[
+                              SizedBox(height: 8.h),
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.error,
+                                    color: Colors.red,
+                                    size: 16.sp,
+                                  ),
+                                  SizedBox(width: 4.w),
+                                  Text(
+                                    error,
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                      fontSize: 12.sp,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ],
+                        );
+                      },
+                    );
+                  },
                 ),
-              ),
+                const SizedBox(height: 25),
+                ValueListenableBuilder<bool>(
+                  valueListenable: isFilled,
+                  builder: (context, filled, _) {
+                    return ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: filled
+                            ? Colors.blue.shade600
+                            : Colors.grey.shade400,
+                        foregroundColor: Colors.white,
+                        minimumSize: const Size(double.infinity, 48),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      onPressed: filled
+                          ? () {
+                              if (passwordController.text.trim() ==
+                                  correctPassword) {
+                                Navigator.of(
+                                  context,
+                                ).pop(true); // password match
+                              } else {
+                                errorMessage.value = "Invalid password";
+                              }
+                            }
+                          : null,
+                      child: const Text("Submit"),
+                    );
+                  },
+                ),
+              ],
             ),
-          ],
+          ),
         );
       },
     );
+
+    return result;
   }
 
   @override
@@ -367,459 +303,336 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
               courseDetails.price.toString().toLowerCase() == "free";
 
           log("Is Free: $isFree");
+          final unlockedKey = 'course_unlocked_${widget.id}';
+          final alreadyUnlocked =
+              box.get(unlockedKey, defaultValue: false) == true;
+          if (courseDetails.protected == true && !alreadyUnlocked) {
+            if (!_dialogShown) {
+              _dialogShown = true;
+              Future.microtask(() async {
+                final isCorrect = await showPasswordDialog(
+                  context,
+                  courseDetails.password.toString(),
+                );
 
-          if (courseDetails.protected == true) {
-            Future.microtask(() async {
-              final isCorrect = await showPasswordDialog(
-                context,
-                courseDetails.password.toString(),
-              );
-
-              if (isCorrect != true) {
-                Navigator.of(context).maybePop();
-              }
-            });
+                if (isCorrect == true) {
+                  setState(() {
+                    _accessGranted = true;
+                  });
+                  box.put(unlockedKey, true);
+                } else {
+                  Navigator.of(context).maybePop();
+                }
+              });
+              return const Center(child: CircularProgressIndicator());
+            } else {
+              return const Center(child: CircularProgressIndicator());
+            }
           }
-          return Scaffold(
-            body: Stack(
-              children: [
-                Positioned(
-                  left: -120,
-                  top: -100.h,
-                  child: Image.asset(
-                    "assets/vect.png",
-                    width: 363.w,
-                    height: 270.h,
-                    fit: BoxFit.fitHeight,
-                  ),
-                ),
-                Positioned(
-                  bottom: -40.h,
-                  left: 0,
-                  right: 0,
-                  child: Image.asset(
-                    "assets/vec.png",
-                    width: 470.w,
-                    height: 450.h,
-                    fit: BoxFit.fill,
-                  ),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: 33.h),
-                    Row(
-                      children: [
-                        SizedBox(width: 20.w),
-                        Container(
-                          width: 37.w,
-                          height: 37.h,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Color.fromARGB(25, 0, 0, 0),
-                          ),
-                          child: IconButton(
-                            style: IconButton.styleFrom(
-                              minimumSize: Size(0, 0),
-                              padding: EdgeInsets.zero,
-                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                            ),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            icon: Icon(
-                              Icons.arrow_back,
-                              color: Color(0xFF001E6C),
-                              size: 20.sp,
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 50.w),
-                        Text(
-                          "Course Details",
-                          style: GoogleFonts.roboto(
-                            fontSize: 26.sp,
-                            fontWeight: FontWeight.w700,
-                            color: Color(0xFF1B1B1B),
-                            letterSpacing: -0.4,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 20.h),
-                    Expanded(
-                      child: SingleChildScrollView(
-                        child: Padding(
-                          padding: EdgeInsets.only(left: 20.w, right: 20.h),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Stack(
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(10.r),
-                                    child: Image.network(
-                                      courseDetails.thumbnail ??
-                                          'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/832px-No-Image-Placeholder.png',
-                                      width: 400.w,
-                                      height: 254.h,
-                                      fit: BoxFit.fill,
-                                      errorBuilder: (context, error, stackTrace) {
-                                        return Image.network(
-                                          "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/832px-No-Image-Placeholder.png",
 
-                                          width: 400.w,
-                                          height: 254.h,
-                                          fit: BoxFit.cover,
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                  Align(
-                                    alignment: Alignment.topRight,
-                                    child: IconButton(
-                                      onPressed: isLoading
-                                          ? null
-                                          : () async {
-                                              if (token == null) {
-                                                Navigator.push(
-                                                  context,
-                                                  CupertinoPageRoute(
-                                                    builder: (context) =>
-                                                        LoginPage(),
-                                                  ),
-                                                );
-                                                showSuccessMessage(
-                                                  context,
-                                                  "please login first",
-                                                );
-                                                return;
-                                              }
-                                              setState(() => isLoading = true);
-                                              isWishlisted =
-                                                  await WishlistControllerClass.toggle(
-                                                    context: context,
-                                                    courseId:
-                                                        courseDetails.id ?? 0,
-                                                    userId: box.get("storeId"),
-                                                    currentStatus: isWishlisted,
-                                                  );
-                                              setState(() => isLoading = false);
-                                            },
-                                      icon: isLoading
-                                          ? SizedBox(
-                                              height: 20,
-                                              width: 20,
-                                              child: CircularProgressIndicator(
-                                                strokeWidth: 2,
-                                                color: Color(0xFF001E6C),
-                                              ),
-                                            )
-                                          : Icon(
-                                              isWishlisted
-                                                  ? Icons.favorite
-                                                  : Icons.favorite_border,
-                                              color: isWishlisted
-                                                  ? Colors.red
-                                                  : Colors.black,
-                                              size: 25.sp,
-                                            ),
-                                    ),
-                                  ),
-                                ],
+          if (courseDetails.protected != true ||
+              alreadyUnlocked ||
+              _accessGranted) {
+            return Scaffold(
+              body: Stack(
+                children: [
+                  Positioned(
+                    left: -120,
+                    top: -100.h,
+                    child: Image.asset(
+                      "assets/vect.png",
+                      width: 363.w,
+                      height: 270.h,
+                      fit: BoxFit.fitHeight,
+                    ),
+                  ),
+                  Positioned(
+                    bottom: -40.h,
+                    left: 0,
+                    right: 0,
+                    child: Image.asset(
+                      "assets/vec.png",
+                      width: 470.w,
+                      height: 450.h,
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 33.h),
+                      Row(
+                        children: [
+                          SizedBox(width: 20.w),
+                          Container(
+                            width: 37.w,
+                            height: 37.h,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Color.fromARGB(25, 0, 0, 0),
+                            ),
+                            child: IconButton(
+                              style: IconButton.styleFrom(
+                                minimumSize: Size(0, 0),
+                                padding: EdgeInsets.zero,
+                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                               ),
-                              SizedBox(height: 20.h),
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.access_time,
-                                    color: Color(0xFFFE4A55),
-                                    size: 18.sp,
-                                  ),
-                                  SizedBox(width: 8.w),
-                                  Text(
-                                    // "10 week",
-                                    "${courseDetails.direction?.hours ?? 0}h ${courseDetails.direction?.minutes ?? 0}m",
-                                    style: GoogleFonts.roboto(
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w400,
-                                      color: Color(0xFF747272),
-                                      letterSpacing: -0.4,
-                                    ),
-                                  ),
-                                  SizedBox(width: 8.w),
-                                  Icon(
-                                    Icons.person,
-                                    color: Color(0xFFFE4A55),
-                                    size: 18.sp,
-                                  ),
-                                  SizedBox(width: 8.w),
-                                  Text(
-                                    // "332",
-                                    courseDetails.enrollCount.toString(),
-                                    style: GoogleFonts.roboto(
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w400,
-                                      color: Color(0xFF747272),
-                                      letterSpacing: -0.4,
-                                    ),
-                                  ),
-                                  Spacer(),
-                                  Text(
-                                    // "${(courseDetails.price == null || courseDetails.price.toString().isEmpty) ? "0" : courseDetails.price}",
-                                    courseDetails.price.toString(),
-                                    style: GoogleFonts.roboto(
-                                      fontSize: 18.sp,
-                                      fontWeight: FontWeight.w400,
-                                      color: Color(0xFF001E6C),
-                                    ),
-                                  ),
-                                ],
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              icon: Icon(
+                                Icons.arrow_back,
+                                color: Color(0xFF001E6C),
+                                size: 20.sp,
                               ),
-                              SizedBox(height: 19.h),
-                              Text(
-                                courseDetails.title ?? "",
-                                style: GoogleFonts.roboto(
-                                  fontSize: 20.sp,
-                                  fontWeight: FontWeight.w600,
-                                  color: Color(0xFF000000),
-                                  letterSpacing: -1,
-                                ),
-                              ),
-                              SizedBox(height: 14.h),
-                              Text(
-                                courseDetails.description ?? "",
-                                style: GoogleFonts.roboto(
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.w400,
-                                  color: Color(0xFF000000),
-                                  letterSpacing: -0.4,
-                                ),
-                              ),
-                              SizedBox(height: 15.h),
-                              Row(
-                                children: [
-                                  Image.asset("assets/modul.png"),
-                                  SizedBox(width: 10.w),
-                                  Text(
-                                    "5 Modules",
-                                    style: GoogleFonts.roboto(
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w400,
-                                      color: Color(0xFF000000),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 15.h),
-                              Row(
-                                children: [
-                                  Image.asset("assets/time.png"),
-                                  SizedBox(width: 10.w),
-                                  Text(
-                                    "Life time Access",
-                                    style: GoogleFonts.roboto(
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w400,
-                                      color: Color(0xFF000000),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 25.h),
-                              Text(
-                                "Overview",
-                                style: GoogleFonts.roboto(
-                                  fontSize: 20.sp,
-                                  fontWeight: FontWeight.w700,
-                                  color: Color(0xFF000000),
-                                  letterSpacing: -0.2,
-                                ),
-                              ),
-                              SizedBox(height: 12.h),
-                              Text(
-                                (courseDetails.courseOverview != null &&
-                                        courseDetails
-                                            .courseOverview!
-                                            .isNotEmpty)
-                                    ? courseDetails.courseOverview!.first
-                                    : "No overview available", // fallback text
-                                style: GoogleFonts.roboto(
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.w400,
-                                  color: Color(0xFF000000),
-                                  letterSpacing: -0.4,
-                                ),
-                              ),
-                              SizedBox(height: 25.h),
-                              Text(
-                                "Key highlights",
-                                style: GoogleFonts.roboto(
-                                  fontSize: 20.sp,
-                                  fontWeight: FontWeight.w700,
-                                  color: Color(0xFF000000),
-                                  letterSpacing: -0.2,
-                                ),
-                              ),
-                              SizedBox(height: 15.h),
-                              Row(
-                                children: [
-                                  SizedBox(width: 6.w),
-                                  CircleAvatar(
-                                    backgroundColor: Color(0xFF000000),
-                                    radius: 3.r,
-                                  ),
-                                  SizedBox(width: 10.w),
-                                  Text(
-                                    "Ancient wisdom exploration",
-                                    style: GoogleFonts.roboto(
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w400,
-                                      color: Color(0xFF000000),
-                                      letterSpacing: -0.4,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 10.h),
-                              Row(
-                                children: [
-                                  SizedBox(width: 6.w),
-                                  CircleAvatar(
-                                    backgroundColor: Color(0xFF000000),
-                                    radius: 3.r,
-                                  ),
-                                  SizedBox(width: 10.w),
-                                  Text(
-                                    "Personal growth insights",
-                                    style: GoogleFonts.roboto(
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w400,
-                                      color: Color(0xFF000000),
-                                      letterSpacing: -0.4,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 10.h),
-                              Row(
-                                children: [
-                                  SizedBox(width: 6.w),
-                                  CircleAvatar(
-                                    backgroundColor: Color(0xFF000000),
-                                    radius: 3.r,
-                                  ),
-                                  SizedBox(width: 10.w),
-                                  Text(
-                                    "Interactive learning sessions",
-                                    style: GoogleFonts.roboto(
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w400,
-                                      color: Color(0xFF000000),
-                                      letterSpacing: -0.4,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 10.h),
-                              Row(
-                                children: [
-                                  SizedBox(width: 6.w),
-                                  CircleAvatar(
-                                    backgroundColor: Color(0xFF000000),
-                                    radius: 3.r,
-                                  ),
-                                  SizedBox(width: 10.w),
-                                  Text(
-                                    "Ancient wisdom exploration",
-                                    style: GoogleFonts.roboto(
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w400,
-                                      color: Color(0xFF000000),
-                                      letterSpacing: -0.4,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 10.h),
-                              Row(
-                                children: [
-                                  SizedBox(width: 6.w),
-                                  CircleAvatar(
-                                    backgroundColor: Color(0xFF000000),
-                                    radius: 3.r,
-                                  ),
-                                  SizedBox(width: 10.w),
-                                  Text(
-                                    "Personal growth insights",
-                                    style: GoogleFonts.roboto(
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w400,
-                                      color: Color(0xFF000000),
-                                      letterSpacing: -0.4,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 10.h),
-                              Row(
-                                children: [
-                                  SizedBox(width: 6.w),
-                                  CircleAvatar(
-                                    backgroundColor: Color(0xFF000000),
-                                    radius: 3.r,
-                                  ),
-                                  SizedBox(width: 10.w),
-                                  Text(
-                                    "Interactive learning sessions",
-                                    style: GoogleFonts.roboto(
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w400,
-                                      color: Color(0xFF000000),
-                                      letterSpacing: -0.4,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 16.h),
-                              Text(
-                                "What you will learn",
-                                style: GoogleFonts.roboto(
-                                  fontSize: 20.sp,
-                                  fontWeight: FontWeight.w700,
-                                  color: Color(0xFF000000),
-                                  letterSpacing: -0.2,
-                                ),
-                              ),
-                              SizedBox(height: 15.h),
-                              Container(
-                                padding: EdgeInsets.only(
-                                  left: 20.w,
-                                  right: 20.w,
-                                  top: 16.h,
-                                  bottom: 16.h,
-                                ),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10.r),
-                                  color: Color.fromARGB(40, 16, 30, 108),
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                            ),
+                          ),
+                          SizedBox(width: 50.w),
+                          Text(
+                            "Course Details",
+                            style: GoogleFonts.roboto(
+                              fontSize: 26.sp,
+                              fontWeight: FontWeight.w700,
+                              color: Color(0xFF1B1B1B),
+                              letterSpacing: -0.4,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 20.h),
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 20.w, right: 20.h),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Stack(
                                   children: [
-                                    Image.asset("assets/play.png"),
-                                    SizedBox(height: 12.h),
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(10.r),
+                                      child: Image.network(
+                                        courseDetails.thumbnail ??
+                                            'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/832px-No-Image-Placeholder.png',
+                                        width: 400.w,
+                                        height: 254.h,
+                                        fit: BoxFit.fill,
+                                        errorBuilder: (context, error, stackTrace) {
+                                          return Image.network(
+                                            "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/832px-No-Image-Placeholder.png",
+
+                                            width: 400.w,
+                                            height: 254.h,
+                                            fit: BoxFit.cover,
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                    Align(
+                                      alignment: Alignment.topRight,
+                                      child: IconButton(
+                                        onPressed: isLoading
+                                            ? null
+                                            : () async {
+                                                if (token == null) {
+                                                  Navigator.push(
+                                                    context,
+                                                    CupertinoPageRoute(
+                                                      builder: (context) =>
+                                                          LoginPage(),
+                                                    ),
+                                                  );
+                                                  showSuccessMessage(
+                                                    context,
+                                                    "please login first",
+                                                  );
+                                                  return;
+                                                }
+                                                setState(
+                                                  () => isLoading = true,
+                                                );
+                                                isWishlisted =
+                                                    await WishlistControllerClass.toggle(
+                                                      context: context,
+                                                      courseId:
+                                                          courseDetails.id ?? 0,
+                                                      userId: box.get(
+                                                        "storeId",
+                                                      ),
+                                                      currentStatus:
+                                                          isWishlisted,
+                                                    );
+                                                setState(
+                                                  () => isLoading = false,
+                                                );
+                                              },
+                                        icon: isLoading
+                                            ? SizedBox(
+                                                height: 20,
+                                                width: 20,
+                                                child:
+                                                    CircularProgressIndicator(
+                                                      strokeWidth: 2,
+                                                      color: Color(0xFF001E6C),
+                                                    ),
+                                              )
+                                            : Icon(
+                                                isWishlisted
+                                                    ? Icons.favorite
+                                                    : Icons.favorite_border,
+                                                color: isWishlisted
+                                                    ? Colors.red
+                                                    : Colors.black,
+                                                size: 25.sp,
+                                              ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 20.h),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.access_time,
+                                      color: Color(0xFFFE4A55),
+                                      size: 18.sp,
+                                    ),
+                                    SizedBox(width: 8.w),
                                     Text(
-                                      "Explore Ancient Treatises",
+                                      // "10 week",
+                                      "${courseDetails.direction?.hours ?? 0}h ${courseDetails.direction?.minutes ?? 0}m",
                                       style: GoogleFonts.roboto(
                                         fontSize: 16.sp,
-                                        fontWeight: FontWeight.w500,
-                                        color: Color(0xFF000000),
+                                        fontWeight: FontWeight.w400,
+                                        color: Color(0xFF747272),
                                         letterSpacing: -0.4,
                                       ),
                                     ),
-                                    SizedBox(height: 10.h),
+                                    SizedBox(width: 8.w),
+                                    Icon(
+                                      Icons.person,
+                                      color: Color(0xFFFE4A55),
+                                      size: 18.sp,
+                                    ),
+                                    SizedBox(width: 8.w),
                                     Text(
-                                      "Dive into the depths of ancient scriptures and texts to unravel timeless wisdom.",
+                                      // "332",
+                                      courseDetails.enrollCount.toString(),
+                                      style: GoogleFonts.roboto(
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.w400,
+                                        color: Color(0xFF747272),
+                                        letterSpacing: -0.4,
+                                      ),
+                                    ),
+                                    Spacer(),
+                                    Text(
+                                      // "${(courseDetails.price == null || courseDetails.price.toString().isEmpty) ? "0" : courseDetails.price}",
+                                      courseDetails.price.toString(),
+                                      style: GoogleFonts.roboto(
+                                        fontSize: 18.sp,
+                                        fontWeight: FontWeight.w400,
+                                        color: Color(0xFF001E6C),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 19.h),
+                                Text(
+                                  courseDetails.title ?? "",
+                                  style: GoogleFonts.roboto(
+                                    fontSize: 20.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: Color(0xFF000000),
+                                    letterSpacing: -1,
+                                  ),
+                                ),
+                                SizedBox(height: 14.h),
+                                Text(
+                                  courseDetails.description ?? "",
+                                  style: GoogleFonts.roboto(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w400,
+                                    color: Color(0xFF000000),
+                                    letterSpacing: -0.4,
+                                  ),
+                                ),
+                                SizedBox(height: 15.h),
+                                Row(
+                                  children: [
+                                    Image.asset("assets/modul.png"),
+                                    SizedBox(width: 10.w),
+                                    Text(
+                                      "5 Modules",
+                                      style: GoogleFonts.roboto(
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.w400,
+                                        color: Color(0xFF000000),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 15.h),
+                                Row(
+                                  children: [
+                                    Image.asset("assets/time.png"),
+                                    SizedBox(width: 10.w),
+                                    Text(
+                                      "Life time Access",
+                                      style: GoogleFonts.roboto(
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.w400,
+                                        color: Color(0xFF000000),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 25.h),
+                                Text(
+                                  "Overview",
+                                  style: GoogleFonts.roboto(
+                                    fontSize: 20.sp,
+                                    fontWeight: FontWeight.w700,
+                                    color: Color(0xFF000000),
+                                    letterSpacing: -0.2,
+                                  ),
+                                ),
+                                SizedBox(height: 12.h),
+                                Text(
+                                  (courseDetails.courseOverview != null &&
+                                          courseDetails
+                                              .courseOverview!
+                                              .isNotEmpty)
+                                      ? courseDetails.courseOverview!.first
+                                      : "No overview available", // fallback text
+                                  style: GoogleFonts.roboto(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w400,
+                                    color: Color(0xFF000000),
+                                    letterSpacing: -0.4,
+                                  ),
+                                ),
+                                SizedBox(height: 25.h),
+                                Text(
+                                  "Key highlights",
+                                  style: GoogleFonts.roboto(
+                                    fontSize: 20.sp,
+                                    fontWeight: FontWeight.w700,
+                                    color: Color(0xFF000000),
+                                    letterSpacing: -0.2,
+                                  ),
+                                ),
+                                SizedBox(height: 15.h),
+                                Row(
+                                  children: [
+                                    SizedBox(width: 6.w),
+                                    CircleAvatar(
+                                      backgroundColor: Color(0xFF000000),
+                                      radius: 3.r,
+                                    ),
+                                    SizedBox(width: 10.w),
+                                    Text(
+                                      "Ancient wisdom exploration",
                                       style: GoogleFonts.roboto(
                                         fontSize: 16.sp,
                                         fontWeight: FontWeight.w400,
@@ -829,221 +642,610 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                     ),
                                   ],
                                 ),
-                              ),
-                              SizedBox(height: 20.h),
-                              Text(
-                                "Modules",
-                                style: GoogleFonts.roboto(
-                                  fontSize: 20.sp,
-                                  fontWeight: FontWeight.w500,
-                                  color: Color(0xFF000000),
-                                  letterSpacing: -0.4,
-                                ),
-                              ),
-                              SizedBox(height: 10.h),
-                              Container(
-                                padding: EdgeInsets.only(
-                                  left: 10.w,
-                                  right: 10.w,
-                                  top: 10.h,
-                                  bottom: 10.h,
-                                ),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10.r),
-                                  color: Color(0xFFFFFFFF),
-                                  border: Border.all(
-                                    color: Color.fromARGB(63, 0, 0, 0),
-                                  ),
-                                ),
-
-                                // child: Column(
-                                //   children: courseDetails.topics!
-                                //       .expand(
-                                //         (topic) => topic.lessons!.map(
-                                //           (lesson) => ModuleWidget(
-                                //             title: lesson.lessonTitle ?? "",
-                                //             videoUrl:
-                                //                 lesson
-                                //                     .lessonMeta
-                                //                     ?.video
-                                //                     ?.firstOrNull ??
-                                //                 "",
-                                //             attachments: lesson.attachments,
-                                //             isFree: isFree,
-                                //           ),
-                                //         ),
-                                //       )
-                                //       .toList(),
-                                // ),
-                                child: Column(
-                                  children: courseDetails.topics!
-                                      .expand(
-                                        (topic) => topic.lessons!.map(
-                                          (lesson) => ModuleWidget(
-                                            title: lesson.lessonTitle ?? "",
-                                            videoUrl:
-                                                lesson
-                                                    .lessonMeta
-                                                    ?.video
-                                                    ?.firstOrNull ??
-                                                "",
-                                            attachments: lesson.attachments,
-                                            lessonContent: lesson
-                                                .lessonContent, // Pass lesson_content
-                                            isFree: isFree,
-                                          ),
-                                        ),
-                                      )
-                                      .toList(),
-                                ),
-                              ),
-                              SizedBox(height: 15.h),
-                              Text(
-                                "FAQs ",
-                                style: GoogleFonts.roboto(
-                                  fontSize: 20.sp,
-                                  fontWeight: FontWeight.w500,
-                                  color: Color(0xFF000000),
-                                  letterSpacing: -0.4,
-                                ),
-                              ),
-                              SizedBox(height: 10.h),
-                              Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10.r),
-                                  color: Color(0xFFFFFFFF),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      offset: Offset(0, 1),
-                                      spreadRadius: 0,
-                                      blurRadius: 4,
-                                      color: Color.fromARGB(63, 0, 0, 0),
-                                    ),
-                                  ],
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                SizedBox(height: 10.h),
+                                Row(
                                   children: [
-                                    faq(
-                                      "How can I enrol in a course?",
-                                      "Enroling in a course is simple! Just browse through our website, select the course you are interest in, and click on the Enroll Now button. Follow the prompts to complete the enrolment process, and you'll gain immediate access to the course materials.",
+                                    SizedBox(width: 6.w),
+                                    CircleAvatar(
+                                      backgroundColor: Color(0xFF000000),
+                                      radius: 3.r,
                                     ),
-                                    SizedBox(height: 6.h),
-                                    Divider(color: Color(0xFFBFBFBF)),
-                                    faq(
-                                      "Can l access the course materials any device?",
-                                      "Yes, our platform is designed to be accessible on various devices, including computers, laptops, tabletsm and smartphones. you can access the course materials anytime, anywherem as long as you have an internet connection.",
+                                    SizedBox(width: 10.w),
+                                    Text(
+                                      "Personal growth insights",
+                                      style: GoogleFonts.roboto(
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.w400,
+                                        color: Color(0xFF000000),
+                                        letterSpacing: -0.4,
+                                      ),
                                     ),
-                                    SizedBox(height: 6.h),
-                                    Divider(color: Color(0xFFBFBFBF)),
-                                    faq(
-                                      "How can I access the course materials?",
-                                      "Once you enrol in a course you well gain access to a dedicated online learning plaform. All course materials, including video lessons, lecture notes and supplementary resourseces, can be accessed conveniently through the plarform at any time.",
-                                    ),
-                                    SizedBox(height: 6.h),
-                                    Divider(color: Color(0xFFBFBFBF)),
-                                    faq(
-                                      "Can I interact with the instructor during the course?",
-                                      "Absolutely! we are committed to providing an engaging and interactive learning experience, You will have oppourtunities to interact with them through our community. Take full advantage to enhance your understanding to enhance your understanding and gain insights directly from the expert.",
-                                    ),
-                                    SizedBox(height: 6.h),
                                   ],
                                 ),
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  SizedBox(height: 20.h),
-                                  Text(
-                                    "About the Creator",
-                                    style: GoogleFonts.roboto(
-                                      fontSize: 20.sp,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.black,
+                                SizedBox(height: 10.h),
+                                Row(
+                                  children: [
+                                    SizedBox(width: 6.w),
+                                    CircleAvatar(
+                                      backgroundColor: Color(0xFF000000),
+                                      radius: 3.r,
                                     ),
+                                    SizedBox(width: 10.w),
+                                    Text(
+                                      "Interactive learning sessions",
+                                      style: GoogleFonts.roboto(
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.w400,
+                                        color: Color(0xFF000000),
+                                        letterSpacing: -0.4,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 10.h),
+                                Row(
+                                  children: [
+                                    SizedBox(width: 6.w),
+                                    CircleAvatar(
+                                      backgroundColor: Color(0xFF000000),
+                                      radius: 3.r,
+                                    ),
+                                    SizedBox(width: 10.w),
+                                    Text(
+                                      "Ancient wisdom exploration",
+                                      style: GoogleFonts.roboto(
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.w400,
+                                        color: Color(0xFF000000),
+                                        letterSpacing: -0.4,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 10.h),
+                                Row(
+                                  children: [
+                                    SizedBox(width: 6.w),
+                                    CircleAvatar(
+                                      backgroundColor: Color(0xFF000000),
+                                      radius: 3.r,
+                                    ),
+                                    SizedBox(width: 10.w),
+                                    Text(
+                                      "Personal growth insights",
+                                      style: GoogleFonts.roboto(
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.w400,
+                                        color: Color(0xFF000000),
+                                        letterSpacing: -0.4,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 10.h),
+                                Row(
+                                  children: [
+                                    SizedBox(width: 6.w),
+                                    CircleAvatar(
+                                      backgroundColor: Color(0xFF000000),
+                                      radius: 3.r,
+                                    ),
+                                    SizedBox(width: 10.w),
+                                    Text(
+                                      "Interactive learning sessions",
+                                      style: GoogleFonts.roboto(
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.w400,
+                                        color: Color(0xFF000000),
+                                        letterSpacing: -0.4,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 16.h),
+                                Text(
+                                  "What you will learn",
+                                  style: GoogleFonts.roboto(
+                                    fontSize: 20.sp,
+                                    fontWeight: FontWeight.w700,
+                                    color: Color(0xFF000000),
+                                    letterSpacing: -0.2,
                                   ),
-                                  Container(
-                                    margin: EdgeInsets.only(top: 20.h),
-                                    width: 50.w,
-                                    height: 50.h,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Colors.grey,
-                                      image: DecorationImage(
-                                        image: NetworkImage(
-                                          courseDetails.author?.avatarUrl ??
-                                              "https://www.google.com/url?sa=i&url=https%3A%2F%2Fcommons.wikimedia.org%2Fwiki%2FFile%3ANo-Image-Placeholder.svg&psig=AOvVaw1MZ0Y-EQnAjmnyZjr5zMZ3&ust=1755926612664000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCPiV9cHWnY8DFQAAAAAdAAAAABAE",
+                                ),
+                                SizedBox(height: 15.h),
+                                Container(
+                                  padding: EdgeInsets.only(
+                                    left: 20.w,
+                                    right: 20.w,
+                                    top: 16.h,
+                                    bottom: 16.h,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.r),
+                                    color: Color.fromARGB(40, 16, 30, 108),
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Image.asset("assets/play.png"),
+                                      SizedBox(height: 12.h),
+                                      Text(
+                                        "Explore Ancient Treatises",
+                                        style: GoogleFonts.roboto(
+                                          fontSize: 16.sp,
+                                          fontWeight: FontWeight.w500,
+                                          color: Color(0xFF000000),
+                                          letterSpacing: -0.4,
                                         ),
                                       ),
-                                    ),
-                                  ),
-                                  SizedBox(height: 10.h),
-                                  Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Image.asset(
-                                        "assets/birds.png",
-                                        color: Color(0xFFA0A0A0),
-                                      ),
-                                      SizedBox(width: 10.w),
-                                      Image.asset(
-                                        "assets/call.png",
-                                        color: Color(0xFFA0A0A0),
-                                      ),
-                                      SizedBox(width: 10.w),
-                                      Image.asset(
-                                        "assets/insta.png",
-                                        color: Color(0xFFA0A0A0),
-                                      ),
-                                      SizedBox(width: 10.w),
-                                      Image.asset(
-                                        "assets/a.png",
-                                        color: Color(0xFFA0A0A0),
+                                      SizedBox(height: 10.h),
+                                      Text(
+                                        "Dive into the depths of ancient scriptures and texts to unravel timeless wisdom.",
+                                        style: GoogleFonts.roboto(
+                                          fontSize: 16.sp,
+                                          fontWeight: FontWeight.w400,
+                                          color: Color(0xFF000000),
+                                          letterSpacing: -0.4,
+                                        ),
                                       ),
                                     ],
                                   ),
-                                  SizedBox(height: 20.h),
-                                  Text(
-                                    courseDetails.author?.name ?? "",
-                                    style: GoogleFonts.roboto(
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w400,
-                                      color: Color(0xFF666666),
-                                      letterSpacing: -0.4,
+                                ),
+                                SizedBox(height: 20.h),
+                                Text(
+                                  "Modules",
+                                  style: GoogleFonts.roboto(
+                                    fontSize: 20.sp,
+                                    fontWeight: FontWeight.w500,
+                                    color: Color(0xFF000000),
+                                    letterSpacing: -0.4,
+                                  ),
+                                ),
+                                SizedBox(height: 10.h),
+                                Container(
+                                  padding: EdgeInsets.only(
+                                    left: 10.w,
+                                    right: 10.w,
+                                    top: 10.h,
+                                    bottom: 10.h,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.r),
+                                    color: Color(0xFFFFFFFF),
+                                    border: Border.all(
+                                      color: Color.fromARGB(63, 0, 0, 0),
                                     ),
                                   ),
-                                  SizedBox(height: 20.h),
-                                ],
-                              ),
-                            ],
+
+                                  // child: Column(
+                                  //   children: courseDetails.topics!
+                                  //       .expand(
+                                  //         (topic) => topic.lessons!.map(
+                                  //           (lesson) => ModuleWidget(
+                                  //             title: lesson.lessonTitle ?? "",
+                                  //             videoUrl:
+                                  //                 lesson
+                                  //                     .lessonMeta
+                                  //                     ?.video
+                                  //                     ?.firstOrNull ??
+                                  //                 "",
+                                  //             attachments: lesson.attachments,
+                                  //             isFree: isFree,
+                                  //           ),
+                                  //         ),
+                                  //       )
+                                  //       .toList(),
+                                  // ),
+                                  child: Column(
+                                    children: courseDetails.topics!
+                                        .expand(
+                                          (topic) => topic.lessons!.map(
+                                            (lesson) => ModuleWidget(
+                                              title: lesson.lessonTitle ?? "",
+                                              videoUrl:
+                                                  lesson
+                                                      .lessonMeta
+                                                      ?.video
+                                                      ?.firstOrNull ??
+                                                  "",
+                                              attachments: lesson.attachments,
+                                              lessonContent: lesson
+                                                  .lessonContent, // Pass lesson_content
+                                              isFree: isFree,
+                                            ),
+                                          ),
+                                        )
+                                        .toList(),
+                                  ),
+                                ),
+                                SizedBox(height: 15.h),
+                                Text(
+                                  "FAQs ",
+                                  style: GoogleFonts.roboto(
+                                    fontSize: 20.sp,
+                                    fontWeight: FontWeight.w500,
+                                    color: Color(0xFF000000),
+                                    letterSpacing: -0.4,
+                                  ),
+                                ),
+                                SizedBox(height: 10.h),
+                                Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.r),
+                                    color: Color(0xFFFFFFFF),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        offset: Offset(0, 1),
+                                        spreadRadius: 0,
+                                        blurRadius: 4,
+                                        color: Color.fromARGB(63, 0, 0, 0),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      faq(
+                                        "How can I enrol in a course?",
+                                        "Enroling in a course is simple! Just browse through our website, select the course you are interest in, and click on the Enroll Now button. Follow the prompts to complete the enrolment process, and you'll gain immediate access to the course materials.",
+                                      ),
+                                      SizedBox(height: 6.h),
+                                      Divider(color: Color(0xFFBFBFBF)),
+                                      faq(
+                                        "Can l access the course materials any device?",
+                                        "Yes, our platform is designed to be accessible on various devices, including computers, laptops, tabletsm and smartphones. you can access the course materials anytime, anywherem as long as you have an internet connection.",
+                                      ),
+                                      SizedBox(height: 6.h),
+                                      Divider(color: Color(0xFFBFBFBF)),
+                                      faq(
+                                        "How can I access the course materials?",
+                                        "Once you enrol in a course you well gain access to a dedicated online learning plaform. All course materials, including video lessons, lecture notes and supplementary resourseces, can be accessed conveniently through the plarform at any time.",
+                                      ),
+                                      SizedBox(height: 6.h),
+                                      Divider(color: Color(0xFFBFBFBF)),
+                                      faq(
+                                        "Can I interact with the instructor during the course?",
+                                        "Absolutely! we are committed to providing an engaging and interactive learning experience, You will have oppourtunities to interact with them through our community. Take full advantage to enhance your understanding to enhance your understanding and gain insights directly from the expert.",
+                                      ),
+                                      SizedBox(height: 6.h),
+                                    ],
+                                  ),
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SizedBox(height: 20.h),
+                                    Text(
+                                      "About the Creator",
+                                      style: GoogleFonts.roboto(
+                                        fontSize: 20.sp,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.only(top: 20.h),
+                                      width: 50.w,
+                                      height: 50.h,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.grey,
+                                        image: DecorationImage(
+                                          image: NetworkImage(
+                                            courseDetails.author?.avatarUrl ??
+                                                "https://www.google.com/url?sa=i&url=https%3A%2F%2Fcommons.wikimedia.org%2Fwiki%2FFile%3ANo-Image-Placeholder.svg&psig=AOvVaw1MZ0Y-EQnAjmnyZjr5zMZ3&ust=1755926612664000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCPiV9cHWnY8DFQAAAAAdAAAAABAE",
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(height: 10.h),
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Image.asset(
+                                          "assets/birds.png",
+                                          color: Color(0xFFA0A0A0),
+                                        ),
+                                        SizedBox(width: 10.w),
+                                        Image.asset(
+                                          "assets/call.png",
+                                          color: Color(0xFFA0A0A0),
+                                        ),
+                                        SizedBox(width: 10.w),
+                                        Image.asset(
+                                          "assets/insta.png",
+                                          color: Color(0xFFA0A0A0),
+                                        ),
+                                        SizedBox(width: 10.w),
+                                        Image.asset(
+                                          "assets/a.png",
+                                          color: Color(0xFFA0A0A0),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 20.h),
+                                    Text(
+                                      courseDetails.author?.name ?? "",
+                                      style: GoogleFonts.roboto(
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.w400,
+                                        color: Color(0xFF666666),
+                                        letterSpacing: -0.4,
+                                      ),
+                                    ),
+                                    SizedBox(height: 20.h),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            bottomNavigationBar: isFree
-                ? Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
-                          blurRadius: 8,
-                          offset: Offset(0, -2),
+                    ],
+                  ),
+                ],
+              ),
+              bottomNavigationBar: isFree
+                  ? Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            blurRadius: 8,
+                            offset: Offset(0, -2),
+                          ),
+                        ],
+                      ),
+                      child: BottomAppBar(
+                        color: Colors.transparent,
+                        elevation: 0,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                minimumSize: Size(60.w, 50.h),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.r),
+                                ),
+                                backgroundColor: Color(0xFF3e64de),
+                              ),
+                              onPressed: () async {
+                                if (token == null) {
+                                  Navigator.push(
+                                    context,
+                                    CupertinoPageRoute(
+                                      builder: (context) => LoginPage(),
+                                    ),
+                                  );
+                                  showSuccessMessage(
+                                    context,
+                                    "Please Login First",
+                                  );
+                                  return;
+                                }
+
+                                if (enrolled) {
+                                  Navigator.push(
+                                    context,
+                                    CupertinoPageRoute(
+                                      builder: (context) =>
+                                          EnrolledDourseDetailsPage(
+                                            id: courseDetails.id.toString(),
+                                          ),
+                                    ),
+                                  );
+                                } else {
+                                  showDialog(
+                                    context: context,
+                                    barrierDismissible: false,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            16,
+                                          ),
+                                        ),
+                                        content: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            CircularProgressIndicator(),
+                                            SizedBox(height: 16),
+                                            Text(
+                                              "Loading...",
+                                              style: GoogleFonts.roboto(
+                                                fontSize: 16.sp,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.black87,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  );
+
+                                  final body = EnrollBodyModel(
+                                    courseId: courseDetails.id ?? 0,
+                                  );
+                                  try {
+                                    final service = APIStateNetwork(
+                                      createDio(),
+                                    );
+                                    final response = await service.enroll(body);
+
+                                    Navigator.pop(context);
+
+                                    if (response.success == true) {
+                                      setState(() {
+                                        enrolled = true;
+                                      });
+                                      // Store in Hive
+                                      var box = Hive.box("userBox");
+                                      List<String> enrolledCourses = box.get(
+                                        "enrolledCourses",
+                                        defaultValue: <String>[],
+                                      );
+                                      if (!enrolledCourses.contains(
+                                        courseDetails.id.toString(),
+                                      )) {
+                                        enrolledCourses.add(
+                                          courseDetails.id.toString(),
+                                        );
+                                        box.put(
+                                          "enrolledCourses",
+                                          enrolledCourses,
+                                        );
+                                      }
+
+                                      // Invalidate provider to refresh enrolled courses
+                                      ref.invalidate(enrollCourseController);
+                                      await showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(16),
+                                            ),
+                                            title: Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.check_circle,
+                                                  color: Colors.green,
+                                                  size: 28,
+                                                ),
+                                                SizedBox(width: 8),
+                                                Text(
+                                                  "Success",
+                                                  style: GoogleFonts.roboto(
+                                                    fontSize: 18.sp,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Colors.black87,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            content: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Text(
+                                                  response.message.toString(),
+                                                  textAlign: TextAlign.center,
+                                                  style: GoogleFonts.roboto(
+                                                    fontSize: 14.sp,
+                                                    fontWeight: FontWeight.w400,
+                                                    color: Colors.black54,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            actionsAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                style: TextButton.styleFrom(
+                                                  foregroundColor:
+                                                      Colors.redAccent,
+                                                ),
+                                                child: Text(
+                                                  "Close",
+                                                  style: GoogleFonts.roboto(
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
+                                              ),
+                                              ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor: Color(
+                                                    0xFF3e64de,
+                                                  ),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                          8,
+                                                        ),
+                                                  ),
+                                                ),
+                                                onPressed: () {
+                                                  // ✅ pehle enrollCourseController ko refresh kar do
+                                                  ref.refresh(
+                                                    enrollCourseController,
+                                                  );
+                                                  Navigator.pushAndRemoveUntil(
+                                                    context,
+                                                    CupertinoPageRoute(
+                                                      builder: (context) =>
+                                                          const LibraryPage(),
+                                                      settings:
+                                                          const RouteSettings(
+                                                            name: "LibraryPage",
+                                                          ),
+                                                    ),
+                                                    (route) => route.isFirst,
+                                                  );
+                                                },
+                                                child: Text(
+                                                  "Go to Library",
+                                                  style: GoogleFonts.roboto(
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    }
+                                  } catch (err) {
+                                    Navigator.pop(context);
+                                    log(err.toString());
+                                  }
+                                }
+                              },
+                              child: Text(
+                                enrolled ? "Continue" : "Get for free",
+                                style: GoogleFonts.roboto(
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                    child: BottomAppBar(
-                      color: Colors.transparent,
-                      elevation: 0,
+                      ),
+                    )
+                  : Container(
+                      margin: EdgeInsets.only(
+                        left: 20.w,
+                        right: 20.w,
+                        top: 10.h,
+                        bottom: 10.h,
+                      ),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
+                          Text(
+                            courseDetails.price != null
+                                ? "${courseDetails.price.toString()}"
+                                : "N/A",
+                            style: GoogleFonts.roboto(
+                              fontSize: 20.sp,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black87,
+                            ),
+                          ),
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               minimumSize: Size(60.w, 50.h),
@@ -1053,343 +1255,116 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                               backgroundColor: Color(0xFF3e64de),
                             ),
                             onPressed: () async {
-                              if (token == null) {
-                                Navigator.push(
-                                  context,
-                                  CupertinoPageRoute(
-                                    builder: (context) => LoginPage(),
-                                  ),
-                                );
-                                showSuccessMessage(
-                                  context,
-                                  "Please Login First",
-                                );
-                                return;
-                              }
-
-                              if (enrolled) {
-                                Navigator.push(
-                                  context,
-                                  CupertinoPageRoute(
-                                    builder: (context) =>
-                                        EnrolledDourseDetailsPage(
-                                          id: courseDetails.id.toString(),
-                                        ),
-                                  ),
-                                );
-                              } else {
-                                showDialog(
-                                  context: context,
-                                  barrierDismissible: false,
-                                  builder: (context) {
-                                    return AlertDialog(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(16),
-                                      ),
-                                      content: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          CircularProgressIndicator(),
-                                          SizedBox(height: 16),
-                                          Text(
-                                            "Loading...",
-                                            style: GoogleFonts.roboto(
-                                              fontSize: 16.sp,
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.black87,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  },
+                              setState(() {
+                                isCheck = true;
+                              });
+                              try {
+                                final body = CreateOrderCourseBodyModel(
+                                  courseId: courseDetails.id.toString(),
+                                  price: parseAmountInRupees(
+                                    courseDetails.price.toString(),
+                                  ).toString(),
                                 );
 
-                                final body = EnrollBodyModel(
-                                  courseId: courseDetails.id ?? 0,
+                                final sevice = APIStateNetwork(createDio());
+                                final respnse = await sevice.courseCreateOrder(
+                                  body,
                                 );
-                                try {
-                                  final service = APIStateNetwork(createDio());
-                                  final response = await service.enroll(body);
 
-                                  Navigator.pop(context);
-
-                                  if (response.success == true) {
-                                    setState(() {
-                                      enrolled = true;
-                                    });
-                                    // Store in Hive
-                                    var box = Hive.box("userBox");
-                                    List<String> enrolledCourses = box.get(
-                                      "enrolledCourses",
-                                      defaultValue: <String>[],
-                                    );
-                                    if (!enrolledCourses.contains(
-                                      courseDetails.id.toString(),
-                                    )) {
-                                      enrolledCourses.add(
-                                        courseDetails.id.toString(),
-                                      );
-                                      box.put(
-                                        "enrolledCourses",
-                                        enrolledCourses,
-                                      );
-                                    }
-
-                                    // Invalidate provider to refresh enrolled courses
-                                    ref.invalidate(enrollCourseController);
-                                    await showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return AlertDialog(
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(
-                                              16,
-                                            ),
-                                          ),
-                                          title: Row(
-                                            children: [
-                                              Icon(
-                                                Icons.check_circle,
-                                                color: Colors.green,
-                                                size: 28,
-                                              ),
-                                              SizedBox(width: 8),
-                                              Text(
-                                                "Success",
-                                                style: GoogleFonts.roboto(
-                                                  fontSize: 18.sp,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: Colors.black87,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          content: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Text(
-                                                response.message.toString(),
-                                                textAlign: TextAlign.center,
-                                                style: GoogleFonts.roboto(
-                                                  fontSize: 14.sp,
-                                                  fontWeight: FontWeight.w400,
-                                                  color: Colors.black54,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          actionsAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              style: TextButton.styleFrom(
-                                                foregroundColor:
-                                                    Colors.redAccent,
-                                              ),
-                                              child: Text(
-                                                "Close",
-                                                style: GoogleFonts.roboto(
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                              ),
-                                            ),
-                                            ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor: Color(
-                                                  0xFF3e64de,
-                                                ),
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(8),
-                                                ),
-                                              ),
-                                              onPressed: () {
-                                                // ✅ pehle enrollCourseController ko refresh kar do
-                                                ref.refresh(
-                                                  enrollCourseController,
-                                                );
-                                                Navigator.pushAndRemoveUntil(
-                                                  context,
-                                                  CupertinoPageRoute(
-                                                    builder: (context) =>
-                                                        const LibraryPage(),
-                                                    settings:
-                                                        const RouteSettings(
-                                                          name: "LibraryPage",
-                                                        ),
-                                                  ),
-                                                  (route) => route.isFirst,
-                                                );
-                                              },
-                                              child: Text(
-                                                "Go to Library",
-                                                style: GoogleFonts.roboto(
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  }
-                                } catch (err) {
-                                  Navigator.pop(context);
-                                  log(err.toString());
+                                if (respnse == null) {
+                                  showErrorMessage(
+                                    "Order create failed, please try again",
+                                  );
+                                  setState(() => isCheck = false);
+                                  return;
                                 }
+
+                                final razorpay = Razorpay();
+
+                                final options = {
+                                  "order_id": respnse.orderId,
+                                  "amount": respnse.amount,
+                                  "currency": respnse.currency,
+                                  "receipt": respnse.receipt,
+                                  "key": respnse.razorpayKey,
+                                  "tutor_order_id": 8,
+                                  "user": {
+                                    "name": respnse.user.name,
+                                    "email": respnse.user.email,
+                                    "contact": respnse.user.contact,
+                                  },
+                                  "course_id": respnse.courseId,
+                                };
+
+                                razorpay.open(options);
+
+                                razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, (
+                                  PaymentSuccessResponse response,
+                                ) {
+                                  log(
+                                    "Payment Success : ${response.paymentId}",
+                                  );
+                                  showSuccessMessage(
+                                    context,
+                                    "Payment Successful",
+                                  );
+                                  Navigator.pushAndRemoveUntil(
+                                    context,
+                                    CupertinoPageRoute(
+                                      builder: (context) => HomePage(),
+                                    ),
+                                    (route) => false,
+                                  );
+                                });
+
+                                razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, (
+                                  PaymentFailureResponse response,
+                                ) {
+                                  log("Payment Failed : ${response.message}");
+                                  showErrorMessage(
+                                    "Payment Failed : ${response.message}",
+                                  );
+                                });
+
+                                razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, (
+                                  ExternalWalletResponse response,
+                                ) {
+                                  log(
+                                    "External Wallet : ${response.walletName}",
+                                  );
+                                });
+                              } catch (e) {
+                                showErrorMessage("Something went wrong: $e");
+                                log(e.toString());
+                              } finally {
+                                setState(() => isCheck = false);
                               }
                             },
-                            child: Text(
-                              enrolled ? "Continue" : "Get for free",
-                              style: GoogleFonts.roboto(
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white,
-                              ),
-                            ),
+                            child: isCheck
+                                ? SizedBox(
+                                    height: 22,
+                                    width: 22,
+                                    child: Center(
+                                      child: CircularProgressIndicator(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  )
+                                : Text(
+                                    "Buy Now",
+                                    style: GoogleFonts.roboto(
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.white,
+                                    ),
+                                  ),
                           ),
                         ],
                       ),
                     ),
-                  )
-                : Container(
-                    margin: EdgeInsets.only(
-                      left: 20.w,
-                      right: 20.w,
-                      top: 10.h,
-                      bottom: 10.h,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          courseDetails.price != null
-                              ? "${courseDetails.price.toString()}"
-                              : "N/A",
-                          style: GoogleFonts.roboto(
-                            fontSize: 20.sp,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black87,
-                          ),
-                        ),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            minimumSize: Size(60.w, 50.h),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.r),
-                            ),
-                            backgroundColor: Color(0xFF3e64de),
-                          ),
-                          onPressed: () async {
-                            setState(() {
-                              isCheck = true;
-                            });
-                            try {
-                              final body = CreateOrderCourseBodyModel(
-                                courseId: courseDetails.id.toString(),
-                                price: parseAmountInRupees(
-                                  courseDetails.price.toString(),
-                                ).toString(),
-                              );
-
-                              final sevice = APIStateNetwork(createDio());
-                              final respnse = await sevice.courseCreateOrder(
-                                body,
-                              );
-
-                              if (respnse == null) {
-                                showErrorMessage(
-                                  "Order create failed, please try again",
-                                );
-                                setState(() => isCheck = false);
-                                return;
-                              }
-
-                              final razorpay = Razorpay();
-
-                              final options = {
-                                "order_id": respnse.orderId,
-                                "amount": respnse.amount,
-                                "currency": respnse.currency,
-                                "receipt": respnse.receipt,
-                                "key": respnse.razorpayKey,
-                                "tutor_order_id": 8,
-                                "user": {
-                                  "name": respnse.user.name,
-                                  "email": respnse.user.email,
-                                  "contact": respnse.user.contact,
-                                },
-                                "course_id": respnse.courseId,
-                              };
-
-                              razorpay.open(options);
-
-                              razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, (
-                                PaymentSuccessResponse response,
-                              ) {
-                                log("Payment Success : ${response.paymentId}");
-                                showSuccessMessage(
-                                  context,
-                                  "Payment Successful",
-                                );
-                                Navigator.pushAndRemoveUntil(
-                                  context,
-                                  CupertinoPageRoute(
-                                    builder: (context) => HomePage(),
-                                  ),
-                                  (route) => false,
-                                );
-                              });
-
-                              razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, (
-                                PaymentFailureResponse response,
-                              ) {
-                                log("Payment Failed : ${response.message}");
-                                showErrorMessage(
-                                  "Payment Failed : ${response.message}",
-                                );
-                              });
-
-                              razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, (
-                                ExternalWalletResponse response,
-                              ) {
-                                log("External Wallet : ${response.walletName}");
-                              });
-                            } catch (e) {
-                              showErrorMessage("Something went wrong: $e");
-                              log(e.toString());
-                            } finally {
-                              setState(() => isCheck = false);
-                            }
-                          },
-                          child: isCheck
-                              ? SizedBox(
-                                  height: 22,
-                                  width: 22,
-                                  child: Center(
-                                    child: CircularProgressIndicator(
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                )
-                              : Text(
-                                  "Buy Now",
-                                  style: GoogleFonts.roboto(
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                        ),
-                      ],
-                    ),
-                  ),
-          );
+            );
+          }
+          return const SizedBox.shrink();
         },
 
         error: (error, stackTrace) => Center(child: Text(error.toString())),
