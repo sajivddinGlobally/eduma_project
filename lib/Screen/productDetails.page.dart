@@ -16,6 +16,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -176,21 +177,57 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                           },
                           child: Padding(
                             padding: EdgeInsets.only(left: 10.w, right: 10.w),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(15.r),
-                              child: Image.network(
-                                data.images[index].src ??
-                                    data.images[index].the2048X2048,
-                                fit: BoxFit.cover,
-                                width: double.infinity,
-                                errorBuilder: (context, error, stackTrace) {
-                                  return Image.network(
-                                    "https://thumbs.dreamstime.com/b/no-image-vector-symbol-missing-available-icon-gallery-moment-placeholder-246411909.jpg",
+                            child: Stack(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(15.r),
+                                  child: Image.network(
+                                    data.images[index].src ??
+                                        data.images[index].the2048X2048,
                                     fit: BoxFit.cover,
                                     width: double.infinity,
-                                  );
-                                },
-                              ),
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return Image.network(
+                                        "https://thumbs.dreamstime.com/b/no-image-vector-symbol-missing-available-icon-gallery-moment-placeholder-246411909.jpg",
+                                        fit: BoxFit.cover,
+                                        width: double.infinity,
+                                      );
+                                    },
+                                  ),
+                                ),
+                                Positioned(
+                                  top: 10.h,
+                                  right: 5,
+                                  child: IconButton(
+                                    style: IconButton.styleFrom(
+                                      backgroundColor: Color(0xFF3e64de),
+                                    ),
+                                    onPressed: () {
+                                      // Use permalink from API response
+                                      final String shareUrl = data.permalink;
+
+                                      final String shareText =
+                                          '''
+📚 ${data.name}
+
+${data.description}
+
+👉 Check out this course:
+$shareUrl
+''';
+
+                                      Share.share(
+                                        shareText,
+                                        subject: "Check out this course!",
+                                      );
+                                    },
+                                    icon: Icon(
+                                      Icons.share,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         );
