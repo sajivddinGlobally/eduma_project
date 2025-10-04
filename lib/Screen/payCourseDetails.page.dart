@@ -28,6 +28,7 @@ import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
+import 'package:share_plus/share_plus.dart';
 
 class PayCourseDetailsPage extends ConsumerStatefulWidget {
   final String id;
@@ -419,7 +420,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                         fit: BoxFit.fill,
                                         errorBuilder: (context, error, stackTrace) {
                                           return Image.network(
-                                              "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/832px-No-Image-Placeholder.png",
+                                            "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/832px-No-Image-Placeholder.png",
                                             width: 400.w,
                                             height: 254.h,
                                             fit: BoxFit.cover,
@@ -427,6 +428,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                         },
                                       ),
                                     ),
+
                                     Align(
                                       alignment: Alignment.topRight,
                                       child: IconButton(
@@ -484,6 +486,40 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                                     : Colors.black,
                                                 size: 25.sp,
                                               ),
+                                      ),
+                                    ),
+                                    Positioned(
+                                      bottom: 10.h,
+                                      right: 5,
+                                      child: IconButton(
+                                        style: IconButton.styleFrom(
+                                          backgroundColor: Color(0xFF3e64de),
+                                        ),
+                                        onPressed: () {
+                                          // Use permalink from API response
+                                          final String shareUrl =
+                                              courseDetails.permalink ??
+                                              "https://atatcsurat.com/courses/${widget.id}";
+
+                                          final String shareText =
+                                              '''
+📚 ${courseDetails.title ?? "Course Title"}
+
+${courseDetails.description ?? "No description available."}
+
+👉 Check out this course:
+$shareUrl
+''';
+
+                                          Share.share(
+                                            shareText,
+                                            subject: "Check out this course!",
+                                          );
+                                        },
+                                        icon: Icon(
+                                          Icons.share,
+                                          color: Colors.white,
+                                        ),
                                       ),
                                     ),
                                   ],
