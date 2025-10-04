@@ -267,7 +267,7 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
                                           ),
                                         ),
                                         child: Text(
-                                          order.status.toUpperCase(),
+                                          order.status,
                                           style: GoogleFonts.roboto(
                                             color: Colors.white,
                                             fontSize: 12.sp,

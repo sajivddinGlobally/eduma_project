@@ -419,8 +419,7 @@ class _PayCourseDetailsPageState extends ConsumerState<PayCourseDetailsPage> {
                                         fit: BoxFit.fill,
                                         errorBuilder: (context, error, stackTrace) {
                                           return Image.network(
-                                            "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/832px-No-Image-Placeholder.png",
-
+                                              "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/832px-No-Image-Placeholder.png",
                                             width: 400.w,
                                             height: 254.h,
                                             fit: BoxFit.cover,

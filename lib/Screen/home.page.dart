@@ -178,6 +178,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                             ),
                           );
                         },
+                        readOnly: true,
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.only(
                             left: 20.w,
