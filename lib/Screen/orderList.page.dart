@@ -1,7 +1,9 @@
 import 'dart:developer';
 import 'package:eduma_app/Screen/apiCall/api.register.dart';
+import 'package:eduma_app/Screen/home.page.dart';
 import 'package:eduma_app/Screen/productDetails.page.dart';
 import 'package:eduma_app/Screen/tracking.page.dart';
+import 'package:eduma_app/config/core/showFlushbar.dart';
 import 'package:eduma_app/data/Controller/orderListController.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +11,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 class OrderListPage extends ConsumerStatefulWidget {
   const OrderListPage({super.key});
@@ -18,6 +21,7 @@ class OrderListPage extends ConsumerStatefulWidget {
 }
 
 class _OrderListPageState extends ConsumerState<OrderListPage> {
+  bool isCheck = false;
   @override
   Widget build(BuildContext context) {
     var box = Hive.box("userBox");
@@ -297,8 +301,87 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
                                                   BorderRadius.circular(10.r),
                                             ),
                                           ),
-                                          onPressed: () {},
-                                          child: Text("Pay Now"),
+                                          onPressed: () {
+                                            final razorpay = Razorpay();
+                                            final options = {
+                                              "order_id": order.id,
+                                              "amount":
+                                                  (double.tryParse(
+                                                        order.total ?? '0',
+                                                      ) ??
+                                                      0) *
+                                                  100,
+                                              "currency": "INR",
+                                              //"receipt": order.,
+                                              "key": "rzp_test_RIeIwZBZ2NZi6w",
+                                              "wc_order_id": order.customerId,
+                                              "prefill": {
+                                                "name": order.billing.firstName,
+                                                "email": order.billing.email,
+                                                "contact": order.billing.phone,
+                                              },
+                                            };
+                                            razorpay.open(options);
+                                            razorpay.on(
+                                              Razorpay.EVENT_PAYMENT_SUCCESS,
+                                              (
+                                                PaymentSuccessResponse response,
+                                              ) {
+                                                log(
+                                                  "Payment Success : ${response.paymentId}",
+                                                );
+                                                Navigator.pushAndRemoveUntil(
+                                                  context,
+                                                  CupertinoPageRoute(
+                                                    builder: (context) =>
+                                                        HomePage(),
+                                                  ),
+                                                  (route) => false,
+                                                );
+                                                showSuccessMessage(
+                                                  context,
+                                                  "Payment Successful",
+                                                );
+                                                setState(() => isCheck = false);
+                                                showSuccessMessage(
+                                                  context,
+                                                  "Payment Successful",
+                                                );
+                                              },
+                                            );
+                                            razorpay.on(
+                                              Razorpay.EVENT_PAYMENT_ERROR,
+                                              (
+                                                PaymentFailureResponse response,
+                                              ) {
+                                                log(
+                                                  "Payment Failed : ${response.message}",
+                                                );
+                                                setState(() => isCheck = false);
+                                                showErrorMessage(
+                                                  "Payment Failed : ${response.message}",
+                                                );
+                                              },
+                                            );
+
+                                            razorpay.on(
+                                              Razorpay.EVENT_EXTERNAL_WALLET,
+                                              (
+                                                ExternalWalletResponse response,
+                                              ) {
+                                                log(
+                                                  "External Wallet : ${response.walletName}",
+                                                );
+                                                setState(() => isCheck = false);
+                                              },
+                                            );
+                                          },
+                                          child: isCheck
+                                              ? Center(
+                                                  child:
+                                                      CircularProgressIndicator(),
+                                                )
+                                              : Text("Pay Now"),
                                         ),
                                     ],
                                   ),

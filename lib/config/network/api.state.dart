@@ -46,6 +46,7 @@ import 'package:eduma_app/data/Model/resetPassResModel.dart';
 import 'package:eduma_app/data/Model/sendOTPBodyModel.dart';
 import 'package:eduma_app/data/Model/sendOTPResModel.dart';
 import 'package:eduma_app/data/Model/updateProfileResModel.dart';
+import 'package:eduma_app/data/Model/variationResModel.dart';
 import 'package:eduma_app/data/Model/verifyOTPBodyModel.dart';
 import 'package:eduma_app/data/Model/verifyOTPResModel.dart';
 import 'package:eduma_app/data/Model/wishlistBodyModel.dart';
@@ -200,4 +201,7 @@ abstract class APIStateNetwork {
 
   @POST("/cwcc/v1/create-order")
   Future<CreateResModel> create(@Body() CreateBodyModel body);
+
+  @GET("/wc/v3/products/{id}/variations")
+  Future<List<VariationResModel>> variationProduct(@Path("id") String id);
 }
