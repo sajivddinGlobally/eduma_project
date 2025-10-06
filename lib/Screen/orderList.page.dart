@@ -313,7 +313,7 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
                                                       0) *
                                                   100,
                                               "currency": "INR",
-                                              //"receipt": order.,
+                                              //"receipt": order.orderKey,
                                               "key": "rzp_test_RIeIwZBZ2NZi6w",
                                               "wc_order_id": order.id,
                                               "prefill": {
@@ -379,14 +379,8 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
                                           },
                                           child: isCheck
                                               ? Center(
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                          8.0,
-                                                        ),
-                                                    child:
-                                                        CircularProgressIndicator(),
-                                                  ),
+                                                  child:
+                                                      CircularProgressIndicator(),
                                                 )
                                               : Text("Pay Now"),
                                         ),
