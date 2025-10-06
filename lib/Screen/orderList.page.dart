@@ -277,7 +277,7 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
                                       ),
                                     ],
                                   ),
-                                  SizedBox(height: 4.h),
+                                  // SizedBox(height: 4.h),
                                   Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -293,13 +293,14 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
                                       if (order.status == "pending")
                                         OutlinedButton(
                                           style: OutlinedButton.styleFrom(
+                                            padding: EdgeInsets.zero,
+                                            minimumSize: Size(80.w, 40.h),
                                             shape: RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.circular(10.r),
                                             ),
                                           ),
                                           onPressed: () {
-                                            
                                             final razorpay = Razorpay();
                                             final options = {
                                               "order_id": order.id,
@@ -340,11 +341,6 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
                                                   context,
                                                   "Payment Successful",
                                                 );
-
-                                                showSuccessMessage(
-                                                  context,
-                                                  "Payment Successful",
-                                                );
                                               },
                                             );
                                             razorpay.on(
@@ -356,9 +352,9 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
                                                   "Payment Failed : ${response.message}",
                                                 );
 
-                                                showErrorMessage(
-                                                  "Payment Failed : ${response.message}",
-                                                );
+                                                // showErrorMessage(
+                                                //   "Payment Failed : ${response.message}",
+                                                // );
                                               },
                                             );
 
@@ -373,11 +369,16 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
                                               },
                                             );
                                           },
-                                          child: Text("Pay Now"),
+                                          child: Text(
+                                            "Pay Now",
+                                            style: GoogleFonts.inter(
+                                              fontSize: 14.sp,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
                                         ),
                                     ],
                                   ),
-                                  SizedBox(height: 10.h),
                                 ],
                               ),
                             ),
