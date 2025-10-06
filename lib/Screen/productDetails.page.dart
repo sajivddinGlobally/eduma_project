@@ -37,7 +37,6 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
   int currentIndex = 0;
   PageController _controller = PageController(initialPage: 0);
   String selectedLang = "en";
-  String da = "";
 
   @override
   Widget build(BuildContext context) {
@@ -70,303 +69,189 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
       ),
       body: productDetailsProvider.when(
         data: (data) {
-          return Stack(
-            children: [
-              Positioned(
-                left: -120,
-                top: -100.h,
-                child: Image.asset(
-                  "assets/vect.png",
-                  width: 363.w,
-                  height: 270.h,
-                  fit: BoxFit.fitHeight,
-                ),
-              ),
-              Positioned(
-                bottom: -40.h,
-                left: 0,
-                right: 0,
-                child: Image.asset(
-                  "assets/vec.png",
-                  width: 470.w,
-                  height: 450.h,
-                  fit: BoxFit.fill,
-                ),
-              ),
-              SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      height: 280.h,
-                      child: PageView.builder(
-                        controller: _pageController,
-                        itemCount: data.images.length,
-                        itemBuilder: (context, index) {
-                          return InkWell(
-                            onTap: () {
-                              showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return Dialog(
-                                    insetPadding: EdgeInsets.zero,
-                                    child: StatefulBuilder(
-                                      builder: (context, setState) {
-                                        return Stack(
-                                          children: [
-                                            PhotoViewGallery.builder(
-                                              itemCount: data.images.length,
-                                              pageController: _controller,
-                                              backgroundDecoration:
-                                                  const BoxDecoration(
-                                                    color: Colors.black,
-                                                  ),
-                                              builder: (context, i) {
-                                                return PhotoViewGalleryPageOptions(
-                                                  imageProvider: NetworkImage(
-                                                    data.images[i].src,
-                                                  ),
-                                                  minScale:
-                                                      PhotoViewComputedScale
-                                                          .contained,
-                                                  maxScale:
-                                                      PhotoViewComputedScale
-                                                          .covered *
-                                                      3,
-                                                  heroAttributes:
-                                                      PhotoViewHeroAttributes(
-                                                        tag: data
-                                                            .images[i]
-                                                            .medium,
+          return variationProductProvider.when(
+            data: (variationData) {
+              // Current imagesToShow decide करें
+              final List<dynamic> imagesToShow = variationData.isNotEmpty
+                  ? variationData
+                  : data.images;
+              // Image URLs कंप्यूट करें (lang-specific provider refresh से handle होगा)
+              final List<String> imageUrls = imagesToShow.asMap().entries.map((
+                entry,
+              ) {
+                final int idx = entry.key;
+                final dynamic item = entry.value;
+                String url = "";
+                if (variationData.isNotEmpty) {
+                  final variationItem = item; // Variation model
+                  url =
+                      variationItem.image.src ??
+                      ""; // Provider refresh से en/hi images आएंगे
+                } else {
+                  final productImage = data.images[idx];
+                  url = productImage.src ?? "";
+                }
+                return url.isNotEmpty
+                    ? url
+                    : "https://via.placeholder.com/300x200.png?text=No+Image";
+              }).toList();
+
+              return Stack(
+                children: [
+                  Positioned(
+                    left: -120,
+                    top: -100.h,
+                    child: Image.asset(
+                      "assets/vect.png",
+                      width: 363.w,
+                      height: 270.h,
+                      fit: BoxFit.fitHeight,
+                    ),
+                  ),
+                  Positioned(
+                    bottom: -40.h,
+                    left: 0,
+                    right: 0,
+                    child: Image.asset(
+                      "assets/vec.png",
+                      width: 470.w,
+                      height: 450.h,
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                  SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: 280.h,
+                          child: PageView.builder(
+                            controller: _pageController,
+                            itemCount: imageUrls.length,
+                            itemBuilder: (context, index) {
+                              return InkWell(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return Dialog(
+                                        insetPadding: EdgeInsets.zero,
+                                        child: StatefulBuilder(
+                                          builder: (context, setState) {
+                                            return Stack(
+                                              children: [
+                                                PhotoViewGallery.builder(
+                                                  itemCount: imageUrls.length,
+                                                  pageController: _controller,
+                                                  backgroundDecoration:
+                                                      const BoxDecoration(
+                                                        color: Colors.black,
                                                       ),
-                                                );
-                                              },
-                                              onPageChanged: (i) {
-                                                setState(() {
-                                                  currentIndex = i;
-                                                });
-                                              },
-                                            ),
-                                            Positioned(
-                                              top: 20,
-                                              left: 10,
-                                              right: 10,
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  IconButton(
-                                                    icon: const Icon(
-                                                      Icons.close,
-                                                      color: Colors.white,
-                                                      size: 28,
-                                                    ),
-                                                    onPressed: () =>
-                                                        Navigator.pop(context),
-                                                  ),
-                                                  Text(
-                                                    "${currentIndex + 1} / ${data.images.length}", // 1-based index
-                                                    style: const TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 16,
-                                                    ),
-                                                  ),
-                                                  SizedBox(width: 48.w),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    ),
-                                  );
-                                },
-                              );
-                            },
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 10.w, right: 10.w),
-                              child: Stack(
-                                children: [
-                                  // SizedBox(
-                                  //   height: 280.h,
-                                  //   child: variationProductProvider.when(
-                                  //     data: (variationData) {
-                                  //       final imagesToShow =
-                                  //           variationData.isNotEmpty
-                                  //           ? variationData
-                                  //           : data.images;
-
-                                  //       return ListView.builder(
-                                  //         padding: EdgeInsets.zero,
-                                  //         itemCount: imagesToShow.length,
-                                  //         scrollDirection: Axis.horizontal,
-                                  //         itemBuilder: (context, index) {
-                                  //           String imageUrl = "";
-
-                                  //           if (variationData.isNotEmpty) {
-                                  //             final variationItem =
-                                  //                 variationData[index];
-                                  //             imageUrl = selectedLang == "en"
-                                  //                 ? (variationItem.image.src)
-                                  //                 : (variationItem.image.src);
-                                  //           } else {
-                                  //             final productImage =
-                                  //                 data.images[index];
-                                  //             imageUrl = productImage.src ?? "";
-                                  //           }
-
-                                  //           return ClipRRect(
-                                  //             borderRadius:
-                                  //                 BorderRadius.circular(15.r),
-                                  //             child: Image.network(
-                                  //               imageUrl.isNotEmpty
-                                  //                   ? imageUrl
-                                  //                   : "https://via.placeholder.com/300x200.png?text=No+Image",
-                                  //               height: 260.h,
-                                  //               width: 400.w,
-                                  //               fit: BoxFit.cover,
-                                  //               errorBuilder:
-                                  //                   (
-                                  //                     context,
-                                  //                     error,
-                                  //                     stackTrace,
-                                  //                   ) {
-                                  //                     return Image.network(
-                                  //                       "https://static.vecteezy.com/system/resources/thumbnails/048/910/778/small/default-image-missing-placeholder-free-vector.jpg",
-
-                                  //                       width: 400.w,
-                                  //                       height: 260.h,
-                                  //                       fit: BoxFit.cover,
-                                  //                     );
-                                  //                   },
-                                  //             ),
-                                  //           );
-                                  //         },
-                                  //       );
-                                  //     },
-                                  //     error: (error, stackTrace) {
-                                  //       log(stackTrace.toString());
-                                  //       return Center(
-                                  //         child: Text(error.toString()),
-                                  //       );
-                                  //     },
-                                  //     loading: () => const Center(
-                                  //       child: CircularProgressIndicator(),
-                                  //     ),
-                                  //   ),
-                                  // ),
-                                  SizedBox(
-                                    height: 280.h,
-                                    child: variationProductProvider.when(
-                                      data: (variationData) {
-                                        final List<dynamic> imagesToShow =
-                                            variationData.isNotEmpty
-                                            ? variationData
-                                            : data.images;
-
-                                        return ListView.builder(
-                                          padding: EdgeInsets.zero,
-                                          itemCount: imagesToShow.length,
-                                          scrollDirection: Axis.horizontal,
-                                          itemBuilder: (context, index) {
-                                            String imageUrl = "";
-
-                                            if (variationData.isNotEmpty) {
-                                              final variationItem =
-                                                  variationData[index];
-
-                                              imageUrl = selectedLang == "en"
-                                                  ? (variationItem.image.src ??
-                                                        "")
-                                                  : (variationItem.image.src ??
-                                                        "");
-                                            } else {
-                                              final productImage =
-                                                  data.images[index];
-                                              imageUrl = productImage.src ?? "";
-                                            }
-
-                                            return Padding(
-                                              padding: EdgeInsets.only(
-                                                left: 10.w,
-                                                right: 10.w,
-                                              ),
-                                              child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(15.r),
-                                                child: Image.network(
-                                                  imageUrl.isNotEmpty
-                                                      ? imageUrl
-                                                      : "https://via.placeholder.com/300x200.png?text=No+Image", // default placeholder अगर image empty
-                                                  height: 260.h,
-                                                  width: 360.w,
-                                                  fit: BoxFit.cover,
-                                                  errorBuilder:
-                                                      (
-                                                        context,
-                                                        error,
-                                                        stackTrace,
-                                                      ) {
-                                                        return Image.network(
-                                                          "https://static.vecteezy.com/system/resources/thumbnails/048/910/778/small/default-image-missing-placeholder-free-vector.jpg",
-                                                          width: 400.w,
-                                                          height: 260.h,
-                                                          fit: BoxFit.cover,
-                                                        );
-                                                      },
+                                                  builder: (context, i) {
+                                                    return PhotoViewGalleryPageOptions(
+                                                      imageProvider:
+                                                          NetworkImage(
+                                                            imageUrls[i],
+                                                          ),
+                                                      minScale:
+                                                          PhotoViewComputedScale
+                                                              .contained,
+                                                      maxScale:
+                                                          PhotoViewComputedScale
+                                                              .covered *
+                                                          3,
+                                                      heroAttributes:
+                                                          PhotoViewHeroAttributes(
+                                                            tag: imageUrls[i],
+                                                          ),
+                                                    );
+                                                  },
+                                                  onPageChanged: (i) {
+                                                    setState(() {
+                                                      currentIndex = i;
+                                                    });
+                                                  },
                                                 ),
-                                              ),
+                                                Positioned(
+                                                  top: 20,
+                                                  left: 10,
+                                                  right: 10,
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      IconButton(
+                                                        icon: const Icon(
+                                                          Icons.close,
+                                                          color: Colors.white,
+                                                          size: 28,
+                                                        ),
+                                                        onPressed: () =>
+                                                            Navigator.pop(
+                                                              context,
+                                                            ),
+                                                      ),
+                                                      Text(
+                                                        "${currentIndex + 1} / ${imageUrls.length}",
+                                                        style: const TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 16,
+                                                        ),
+                                                      ),
+                                                      SizedBox(width: 48.w),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
                                             );
                                           },
-                                        );
-                                      },
-                                      error: (error, stackTrace) {
-                                        // Error case: log करें और error message दिखाएँ
-                                        log(stackTrace.toString());
-                                        return Center(
-                                          child: Text(
-                                            error.toString(),
-                                            style: TextStyle(
-                                              color: Colors.red,
-                                            ), // red color में error text
-                                          ),
-                                        );
-                                      },
-                                      loading: () => const Center(
-                                        child:
-                                            CircularProgressIndicator(), // loading spinner
-                                      ),
-                                    ),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                    left: 10.w,
+                                    right: 10.w,
                                   ),
-                                  // ClipRRect(
-                                  //   borderRadius: BorderRadius.circular(15.r),
-                                  //   child: Image.network(
-                                  //     data.images[index].src,
-                                  //     fit: BoxFit.cover,
-                                  //     width: double.infinity,
-                                  //     errorBuilder: (context, error, stackTrace) {
-                                  //       return Image.network(
-                                  //         "https://thumbs.dreamstime.com/b/no-image-vector-symbol-missing-available-icon-gallery-moment-placeholder-246411909.jpg",
-                                  //         fit: BoxFit.cover,
-                                  //         width: double.infinity,
-                                  //       );
-                                  //     },
-                                  //   ),
-                                  // ),
-                                  Positioned(
-                                    top: 10.h,
-                                    right: 5,
-                                    child: IconButton(
-                                      style: IconButton.styleFrom(
-                                        backgroundColor: Color(0xFF3e64de),
+                                  child: Stack(
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(
+                                          15.r,
+                                        ),
+                                        child: Image.network(
+                                          imageUrls[index],
+                                          height: 280.h,
+                                          width: double.infinity,
+                                          fit: BoxFit.cover,
+                                          errorBuilder:
+                                              (context, error, stackTrace) {
+                                                return Image.network(
+                                                  "https://static.vecteezy.com/system/resources/thumbnails/048/910/778/small/default-image-missing-placeholder-free-vector.jpg",
+                                                  height: 280.h,
+                                                  width: double.infinity,
+                                                  fit: BoxFit.cover,
+                                                );
+                                              },
+                                        ),
                                       ),
-                                      onPressed: () {
-                                        // Use permalink from API response
-                                        final String shareUrl = data.permalink;
-
-                                        final String shareText =
-                                            '''
+                                      Positioned(
+                                        top: 10.h,
+                                        right: 5,
+                                        child: IconButton(
+                                          style: IconButton.styleFrom(
+                                            backgroundColor: const Color(
+                                              0xFF3e64de,
+                                            ),
+                                          ),
+                                          onPressed: () {
+                                            final String shareUrl =
+                                                data.permalink;
+                                            final String shareText =
+                                                '''
 📚 ${data.name}
 
 ${data.description}
@@ -374,293 +259,15 @@ ${data.description}
 👉 Check out this course:
 $shareUrl
 ''';
-
-                                        Share.share(
-                                          shareText,
-                                          subject: "Check out this course!",
-                                        );
-                                      },
-                                      icon: Icon(
-                                        Icons.share,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                    SizedBox(height: 12.h),
-                    Center(
-                      child: SmoothPageIndicator(
-                        controller: _pageController,
-                        count: data.images.length,
-                        effect: ExpandingDotsEffect(
-                          dotHeight: 10.h,
-                          dotWidth: 10.w,
-                          activeDotColor: Color(0xFF3e64de),
-                          dotColor: Colors.grey.shade300,
-                          spacing: 6.w,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 20.h),
-                    Padding(
-                      padding: EdgeInsets.only(left: 20.w, right: 20.w),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  //  "Create an LMS Website With LearnPress",
-                                  data.name.toString(),
-                                  style: GoogleFonts.roboto(
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w500,
-                                    color: Color(0xFF000000),
-                                    letterSpacing: -0.4,
-                                  ),
-                                ),
-                              ),
-
-                              if (variationProductProvider
-                                      .asData
-                                      ?.value
-                                      .isNotEmpty ??
-                                  false)
-                                DropdownButton<String>(
-                                  value: selectedLang,
-                                  underline: const SizedBox(),
-                                  icon: const Icon(
-                                    Icons.arrow_drop_down,
-                                    color: Colors.black,
-                                  ),
-                                  items: const [
-                                    DropdownMenuItem(
-                                      value: "en",
-                                      child: Text("English"),
-                                    ),
-                                    DropdownMenuItem(
-                                      value: "hi",
-                                      child: Text("Hindi"),
-                                    ),
-                                  ],
-                                  onChanged: (value) {
-                                    log("start=============================");
-                                    setState(() {
-                                      selectedLang = value!;
-                                    });
-                                  },
-                                ),
-                            ],
-                          ),
-                          SizedBox(height: 12.h),
-                          Row(
-                            children: [
-                              Text(
-                                "${data.salePrice ?? '45k'}",
-                                style: GoogleFonts.roboto(
-                                  fontSize: 22.sp,
-                                  fontWeight: FontWeight.w700,
-                                  color: Color(0xFF001E6C),
-                                ),
-                              ),
-                              // if (data.regularPrice != null)
-                              Text(
-                                "₹ ${data.price}",
-                                style: GoogleFonts.roboto(
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.w400,
-                                  color: Color(0xFF001E6C),
-                                  //decoration: TextDecoration.lineThrough,
-                                ),
-                              ),
-                              SizedBox(width: 12.w),
-                              // if (data.backorders != null)
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 8.w,
-                                  vertical: 4.h,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Color(0xFF1BB93D).withOpacity(0.1),
-                                  borderRadius: BorderRadius.circular(6.r),
-                                ),
-                                child: Text(
-                                  "${data.amsPriceToDisplay} % off",
-                                  style: GoogleFonts.roboto(
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w500,
-                                    color: Color(0xFF1BB93D),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-
-                          SizedBox(height: 24.h),
-                          Text(
-                            "Description",
-                            style: GoogleFonts.roboto(
-                              fontSize: 18.sp,
-                              fontWeight: FontWeight.w600,
-                              color: Color(0xFF1B1B1B),
-                            ),
-                          ),
-                          SizedBox(height: 8.h),
-                          Container(
-                            //   color: Colors.yellow,
-                            child: Html(data: data.description.toString()),
-                          ),
-
-                          SizedBox(height: 18.h),
-                          Text(
-                            "Category",
-                            style: GoogleFonts.roboto(
-                              fontSize: 18.sp,
-                              fontWeight: FontWeight.w600,
-                              color: Color(0xFF1B1B1B),
-                            ),
-                          ),
-                          SizedBox(height: 8.h),
-                          Text(
-                            data.categories[0].name ?? 'Uncategorized',
-                            style: GoogleFonts.roboto(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.grey[800],
-                            ),
-                          ),
-                          SizedBox(height: 20.h),
-                          Text(
-                            "Shipping Policy",
-                            style: GoogleFonts.roboto(
-                              fontSize: 18.sp,
-                              fontWeight: FontWeight.w600,
-                              color: Color(0xFF1B1B1B),
-                            ),
-                          ),
-                          SizedBox(height: 8.h),
-                          Html(
-                            data: data.wcfmProductPolicyData.shippingPolicy
-                                .toString(),
-                            style: {
-                              "body": Style(
-                                fontSize: FontSize(14.sp),
-                                fontWeight: FontWeight.w400,
-                                color: Colors.grey[800],
-                                lineHeight: LineHeight(1.5),
-                                fontFamily: GoogleFonts.roboto().fontFamily,
-                              ),
-                            },
-                          ),
-                          SizedBox(height: 24.h),
-                          Text(
-                            "Related Products",
-                            style: GoogleFonts.roboto(
-                              fontSize: 18.sp,
-                              fontWeight: FontWeight.w600,
-                              color: Color(0xFF1B1B1B),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 16.h),
-                    related.when(
-                      data: (data) {
-                        return SizedBox(
-                          height: 180.h,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: data.length,
-                            itemBuilder: (context, index) {
-                              return InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    CupertinoPageRoute(
-                                      builder: (context) => ProductDetailsPage(
-                                        id: data[index].id.toString(),
-                                      ),
-                                    ),
-                                  );
-                                },
-                                child: Container(
-                                  margin: EdgeInsets.only(
-                                    left: 20.w,
-                                    bottom: 10.h,
-                                  ),
-                                  width: 160.w,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(12.r),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.1),
-                                        spreadRadius: 1,
-                                        blurRadius: 4,
-                                        offset: Offset(0, 2),
-                                      ),
-                                    ],
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      ClipRRect(
-                                        borderRadius: BorderRadius.vertical(
-                                          top: Radius.circular(12.r),
-                                        ),
-                                        child: Image.network(
-                                          data[index].image,
-                                          height: 100.h,
-                                          width: double.infinity,
-                                          fit: BoxFit.cover,
-                                          errorBuilder:
-                                              (context, error, stackTrace) {
-                                                return Image.network(
-                                                  "https://thumbs.dreamstime.com/b/no-image-vector-symbol-missing-available-icon-gallery-moment-placeholder-246411909.jpg",
-                                                  height: 100.h,
-                                                  width: double.infinity,
-                                                  fit: BoxFit.fill,
-                                                );
-                                              },
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.all(8.w),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            SizedBox(
-                                              width: 160.w,
-                                              child: Text(
-                                                data[index].name,
-                                                style: GoogleFonts.roboto(
-                                                  fontSize: 14.sp,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                                maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
-                                            ),
-                                            SizedBox(height: 4.h),
-                                            Text(
-                                              "₹ ${data[index].price.toString()}",
-                                              style: GoogleFonts.roboto(
-                                                fontSize: 14.sp,
-                                                fontWeight: FontWeight.w600,
-                                                color: Color(0xFF001E6C),
-                                              ),
-                                            ),
-                                          ],
+                                            Share.share(
+                                              shareText,
+                                              subject: "Check out this course!",
+                                            );
+                                          },
+                                          icon: const Icon(
+                                            Icons.share,
+                                            color: Colors.white,
+                                          ),
                                         ),
                                       ),
                                     ],
@@ -669,112 +276,352 @@ $shareUrl
                               );
                             },
                           ),
-                        );
-                      },
-                      error: (error, stackTrace) {
-                        log(stackTrace.toString());
-                        return Center(child: Text(error.toString()));
-                      },
-                      loading: () => SizedBox(
-                        height: 190.h,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: 3,
-                          itemBuilder: (context, index) {
-                            return Shimmer.fromColors(
-                              baseColor: Colors.grey[300]!,
-                              highlightColor: Colors.grey[100]!,
-                              child: Container(
-                                width: 160.w,
-                                height: 160.h,
-                                margin: EdgeInsets.only(bottom: 15.h),
-                                padding: EdgeInsets.all(12.w),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(16.r),
-                                  color: Colors.white,
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      width: 120.w,
-                                      height: 30.h,
-                                      color: Colors.grey[400],
+                        ),
+                        SizedBox(height: 12.h),
+                        Center(
+                          child: SmoothPageIndicator(
+                            controller: _pageController,
+                            count: imageUrls.length,
+                            effect: ExpandingDotsEffect(
+                              dotHeight: 10.h,
+                              dotWidth: 10.w,
+                              activeDotColor: const Color(0xFF3e64de),
+                              dotColor: Colors.grey.shade300,
+                              spacing: 6.w,
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 20.h),
+                        Padding(
+                          padding: EdgeInsets.only(left: 20.w, right: 20.w),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      data.name.toString(),
+                                      style: GoogleFonts.roboto(
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.w500,
+                                        color: const Color(0xFF000000),
+                                        letterSpacing: -0.4,
+                                      ),
                                     ),
-                                    SizedBox(width: 12.w),
-                                    Container(
-                                      width: 100.w,
-                                      height: 16.h,
-                                      color: Colors.grey[400],
+                                  ),
+                                  if (variationData
+                                      .isNotEmpty) // variationData से check, लेकिन watch data यूज
+                                    DropdownButton<String>(
+                                      value: selectedLang,
+                                      underline: const SizedBox(),
+                                      icon: const Icon(
+                                        Icons.arrow_drop_down,
+                                        color: Colors.black,
+                                      ),
+                                      items: const [
+                                        DropdownMenuItem(
+                                          value: "en",
+                                          child: Text("English"),
+                                        ),
+                                        DropdownMenuItem(
+                                          value: "hi",
+                                          child: Text("Hindi"),
+                                        ),
+                                      ],
+                                      onChanged: (value) {
+                                        log(
+                                          "start=============================",
+                                        );
+                                        setState(() {
+                                          selectedLang = value!;
+                                        });
+                                      },
                                     ),
-                                  ],
+                                ],
+                              ),
+                              SizedBox(height: 12.h),
+                              Row(
+                                children: [
+                                  Text(
+                                    "${data.salePrice ?? '45k'}",
+                                    style: GoogleFonts.roboto(
+                                      fontSize: 22.sp,
+                                      fontWeight: FontWeight.w700,
+                                      color: const Color(0xFF001E6C),
+                                    ),
+                                  ),
+                                  Text(
+                                    "₹ ${data.price}",
+                                    style: GoogleFonts.roboto(
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w400,
+                                      color: const Color(0xFF001E6C),
+                                    ),
+                                  ),
+                                  SizedBox(width: 12.w),
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 8.w,
+                                      vertical: 4.h,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: const Color(
+                                        0xFF1BB93D,
+                                      ).withOpacity(0.1),
+                                      borderRadius: BorderRadius.circular(6.r),
+                                    ),
+                                    child: Text(
+                                      "${data.amsPriceToDisplay} % off",
+                                      style: GoogleFonts.roboto(
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w500,
+                                        color: const Color(0xFF1BB93D),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 24.h),
+                              Text(
+                                "Description",
+                                style: GoogleFonts.roboto(
+                                  fontSize: 18.sp,
+                                  fontWeight: FontWeight.w600,
+                                  color: const Color(0xFF1B1B1B),
                                 ),
+                              ),
+                              SizedBox(height: 8.h),
+                              Container(
+                                child: Html(data: data.description.toString()),
+                              ),
+                              SizedBox(height: 18.h),
+                              Text(
+                                "Category",
+                                style: GoogleFonts.roboto(
+                                  fontSize: 18.sp,
+                                  fontWeight: FontWeight.w600,
+                                  color: const Color(0xFF1B1B1B),
+                                ),
+                              ),
+                              SizedBox(height: 8.h),
+                              Text(
+                                data.categories[0].name ?? 'Uncategorized',
+                                style: GoogleFonts.roboto(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.grey[800],
+                                ),
+                              ),
+                              SizedBox(height: 20.h),
+                              Text(
+                                "Shipping Policy",
+                                style: GoogleFonts.roboto(
+                                  fontSize: 18.sp,
+                                  fontWeight: FontWeight.w600,
+                                  color: const Color(0xFF1B1B1B),
+                                ),
+                              ),
+                              SizedBox(height: 8.h),
+                              Html(
+                                data: data.wcfmProductPolicyData.shippingPolicy
+                                    .toString(),
+                                style: {
+                                  "body": Style(
+                                    fontSize: FontSize(14.sp),
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.grey[800],
+                                    lineHeight: LineHeight(1.5),
+                                    fontFamily: GoogleFonts.roboto().fontFamily,
+                                  ),
+                                },
+                              ),
+                              SizedBox(height: 24.h),
+                              Text(
+                                "Related Products",
+                                style: GoogleFonts.roboto(
+                                  fontSize: 18.sp,
+                                  fontWeight: FontWeight.w600,
+                                  color: const Color(0xFF1B1B1B),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 16.h),
+                        related.when(
+                          data: (data) {
+                            return SizedBox(
+                              height: 180.h,
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: data.length,
+                                itemBuilder: (context, index) {
+                                  return InkWell(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        CupertinoPageRoute(
+                                          builder: (context) =>
+                                              ProductDetailsPage(
+                                                id: data[index].id.toString(),
+                                              ),
+                                        ),
+                                      );
+                                    },
+                                    child: Container(
+                                      margin: EdgeInsets.only(
+                                        left: 20.w,
+                                        bottom: 10.h,
+                                      ),
+                                      width: 160.w,
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(
+                                          12.r,
+                                        ),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.1),
+                                            spreadRadius: 1,
+                                            blurRadius: 4,
+                                            offset: const Offset(0, 2),
+                                          ),
+                                        ],
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          ClipRRect(
+                                            borderRadius:
+                                                const BorderRadius.vertical(
+                                                  top: Radius.circular(12),
+                                                ),
+                                            child: Image.network(
+                                              data[index].image,
+                                              height: 100.h,
+                                              width: double.infinity,
+                                              fit: BoxFit.cover,
+                                              errorBuilder:
+                                                  (context, error, stackTrace) {
+                                                    return Image.network(
+                                                      "https://thumbs.dreamstime.com/b/no-image-vector-symbol-missing-available-icon-gallery-moment-placeholder-246411909.jpg",
+                                                      height: 100.h,
+                                                      width: double.infinity,
+                                                      fit: BoxFit.fill,
+                                                    );
+                                                  },
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.all(8.w),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                SizedBox(
+                                                  width: 160.w,
+                                                  child: Text(
+                                                    data[index].name,
+                                                    style: GoogleFonts.roboto(
+                                                      fontSize: 14.sp,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  ),
+                                                ),
+                                                SizedBox(height: 4.h),
+                                                Text(
+                                                  "₹ ${data[index].price.toString()}",
+                                                  style: GoogleFonts.roboto(
+                                                    fontSize: 14.sp,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: const Color(
+                                                      0xFF001E6C,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
                               ),
                             );
                           },
+                          error: (error, stackTrace) {
+                            log(stackTrace.toString());
+                            return Center(child: Text(error.toString()));
+                          },
+                          loading: () => SizedBox(
+                            height: 190.h,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: 3,
+                              itemBuilder: (context, index) {
+                                return Shimmer.fromColors(
+                                  baseColor: Colors.grey[300]!,
+                                  highlightColor: Colors.grey[100]!,
+                                  child: Container(
+                                    width: 160.w,
+                                    height: 160.h,
+                                    margin: EdgeInsets.only(bottom: 15.h),
+                                    padding: EdgeInsets.all(12.w),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(16.r),
+                                      color: Colors.white,
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          width: 120.w,
+                                          height: 30.h,
+                                          color: Colors.grey[400],
+                                        ),
+                                        SizedBox(
+                                          height: 12.w,
+                                        ), // Fix: height के लिए SizedBox
+                                        Container(
+                                          width: 100.w,
+                                          height: 16.h,
+                                          color: Colors.grey[400],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
                         ),
-                      ),
+                        SizedBox(height: 70.h),
+                      ],
                     ),
-                    SizedBox(height: 70.h),
-
-                    // variationProductProvider.when(
-                    //   data: (data) {
-                    //     if (data.isEmpty) {
-                    //       return const SizedBox(child: Text("No data available"));
-                    //     }
-                    //     return SizedBox(
-                    //       height: 280.h,
-                    //       child: ListView.builder(
-                    //         padding: EdgeInsets.zero,
-                    //         itemCount: data.length,
-                    //         scrollDirection: Axis.horizontal,
-                    //         itemBuilder: (context, index) {
-                    //           // final imageUrl = data[index].image?.src ?? "";
-                    //           final imageUrl = selectedLang == "en"
-                    //               ? (data[index].image?.src ?? "")
-                    //               : (data[index].image?.src ?? "");
-
-                    //           return Container(
-                    //             margin: EdgeInsets.only(right: 20.w, left: 20.w),
-                    //             child: Column(
-                    //               crossAxisAlignment: CrossAxisAlignment.start,
-                    //               children: [
-                    //                 Image.network(
-                    //                   imageUrl.isNotEmpty
-                    //                       ? imageUrl
-                    //                       : "https://via.placeholder.com/300x200.png?text=No+Image",
-                    //                   height: 150.h,
-                    //                   width: 300.w,
-                    //                   fit: BoxFit.cover,
-                    //                   errorBuilder: (context, error, stackTrace) {
-                    //                     return Image.network(
-                    //                       "https://static.vecteezy.com/system/resources/thumbnails/048/910/778/small/default-image-missing-placeholder-free-vector.jpg",
-                    //                       height: 150.h,
-                    //                       width: 300.w,
-                    //                       fit: BoxFit.cover,
-                    //                     );
-                    //                   },
-                    //                 ),
-                    //               ],
-                    //             ),
-                    //           );
-                    //         },
-                    //       ),
-                    //     );
-                    //   },
-                    //   error: (error, stackTrace) {
-                    //     log(stackTrace.toString());
-                    //     return Center(child: Text(error.toString()));
-                    //   },
-                    //   loading: () =>
-                    //       const Center(child: CircularProgressIndicator()),
-                    // ),
-                  ],
+                  ),
+                ],
+              );
+            },
+            error: (error, stackTrace) {
+              log(stackTrace.toString());
+              return Center(
+                child: Text(
+                  error.toString(),
+                  style: const TextStyle(color: Colors.red),
                 ),
-              ),
-            ],
+              );
+            },
+            loading: () => const Center(child: CircularProgressIndicator()),
           );
         },
         error: (error, stackTrace) {
@@ -805,7 +652,7 @@ $shareUrl
                   onPressed: () =>
                       ref.refresh(productDetailsController(widget.id)),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF001E6C),
+                    backgroundColor: const Color(0xFF001E6C),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.r),
                     ),
@@ -826,7 +673,7 @@ $shareUrl
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              CircularProgressIndicator(color: Color(0xFF001E6C)),
+              const CircularProgressIndicator(color: Color(0xFF001E6C)),
               SizedBox(height: 16.h),
               Text(
                 "Loading product details...",
@@ -998,3 +845,696 @@ $shareUrl
     );
   }
 }
+
+
+
+ //       body: productDetailsProvider.when(
+      //         data: (data) {
+      //           return Stack(
+      //             children: [
+      //               Positioned(
+      //                 left: -120,
+      //                 top: -100.h,
+      //                 child: Image.asset(
+      //                   "assets/vect.png",
+      //                   width: 363.w,
+      //                   height: 270.h,
+      //                   fit: BoxFit.fitHeight,
+      //                 ),
+      //               ),
+      //               Positioned(
+      //                 bottom: -40.h,
+      //                 left: 0,
+      //                 right: 0,
+      //                 child: Image.asset(
+      //                   "assets/vec.png",
+      //                   width: 470.w,
+      //                   height: 450.h,
+      //                   fit: BoxFit.fill,
+      //                 ),
+      //               ),
+      //               SingleChildScrollView(
+      //                 child: Column(
+      //                   crossAxisAlignment: CrossAxisAlignment.start,
+      //                   children: [
+      //                     SizedBox(
+      //                       height: 280.h,
+      //                       child: PageView.builder(
+      //                         controller: _pageController,
+      //                         itemCount: data.images.length,
+      //                         itemBuilder: (context, index) {
+      //                           return InkWell(
+      //                             onTap: () {
+      //                               showDialog(
+      //                                 context: context,
+      //                                 builder: (context) {
+      //                                   return Dialog(
+      //                                     insetPadding: EdgeInsets.zero,
+      //                                     child: StatefulBuilder(
+      //                                       builder: (context, setState) {
+      //                                         return Stack(
+      //                                           children: [
+      //                                             PhotoViewGallery.builder(
+      //                                               itemCount: data.images.length,
+      //                                               pageController: _controller,
+      //                                               backgroundDecoration:
+      //                                                   const BoxDecoration(
+      //                                                     color: Colors.black,
+      //                                                   ),
+      //                                               builder: (context, i) {
+      //                                                 return PhotoViewGalleryPageOptions(
+      //                                                   imageProvider: NetworkImage(
+      //                                                     data.images[i].src,
+      //                                                   ),
+      //                                                   minScale:
+      //                                                       PhotoViewComputedScale
+      //                                                           .contained,
+      //                                                   maxScale:
+      //                                                       PhotoViewComputedScale
+      //                                                           .covered *
+      //                                                       3,
+      //                                                   heroAttributes:
+      //                                                       PhotoViewHeroAttributes(
+      //                                                         tag: data
+      //                                                             .images[i]
+      //                                                             .medium,
+      //                                                       ),
+      //                                                 );
+      //                                               },
+      //                                               onPageChanged: (i) {
+      //                                                 setState(() {
+      //                                                   currentIndex = i;
+      //                                                 });
+      //                                               },
+      //                                             ),
+      //                                             Positioned(
+      //                                               top: 20,
+      //                                               left: 10,
+      //                                               right: 10,
+      //                                               child: Row(
+      //                                                 mainAxisAlignment:
+      //                                                     MainAxisAlignment
+      //                                                         .spaceBetween,
+      //                                                 children: [
+      //                                                   IconButton(
+      //                                                     icon: const Icon(
+      //                                                       Icons.close,
+      //                                                       color: Colors.white,
+      //                                                       size: 28,
+      //                                                     ),
+      //                                                     onPressed: () =>
+      //                                                         Navigator.pop(context),
+      //                                                   ),
+      //                                                   Text(
+      //                                                     "${currentIndex + 1} / ${data.images.length}", // 1-based index
+      //                                                     style: const TextStyle(
+      //                                                       color: Colors.white,
+      //                                                       fontSize: 16,
+      //                                                     ),
+      //                                                   ),
+      //                                                   SizedBox(width: 48.w),
+      //                                                 ],
+      //                                               ),
+      //                                             ),
+      //                                           ],
+      //                                         );
+      //                                       },
+      //                                     ),
+      //                                   );
+      //                                 },
+      //                               );
+      //                             },
+      //                             child: Padding(
+      //                               padding: EdgeInsets.only(left: 10.w, right: 10.w),
+      //                               child: Stack(
+      //                                 children: [
+      //                                   SizedBox(
+      //                                     height: 280.h,
+      //                                     child: variationProductProvider.when(
+      //                                       data: (variationData) {
+      //                                         final List<dynamic> imagesToShow =
+      //                                             variationData.isNotEmpty
+      //                                             ? variationData
+      //                                             : data.images;
+      //                                         return ListView.builder(
+      //                                           padding: EdgeInsets.zero,
+      //                                           itemCount: imagesToShow.length,
+      //                                           scrollDirection: Axis.horizontal,
+      //                                           itemBuilder: (context, index) {
+      //                                             String imageUrl = "";
+      //                                             if (variationData.isNotEmpty) {
+      //                                               final variationItem =
+      //                                                   variationData[index];
+      //                                               imageUrl = selectedLang == "en"
+      //                                                   ? (variationItem.image.src ??
+      //                                                         "")
+      //                                                   : (variationItem.image.src ??
+      //                                                         "");
+      //                                             } else {
+      //                                               final productImage =
+      //                                                   data.images[index];
+      //                                               imageUrl = productImage.src ?? "";
+      //                                             }
+      //                                             return Padding(
+      //                                               padding: EdgeInsets.only(
+      //                                                 left: 10.w,
+      //                                                 right: 10.w,
+      //                                               ),
+      //                                               child: ClipRRect(
+      //                                                 borderRadius:
+      //                                                     BorderRadius.circular(15.r),
+      //                                                 child: Image.network(
+      //                                                   imageUrl.isNotEmpty
+      //                                                       ? imageUrl
+      //                                                       : "https://via.placeholder.com/300x200.png?text=No+Image", // default placeholder अगर image empty
+      //                                                   height: 260.h,
+      //                                                   width: 360.w,
+      //                                                   fit: BoxFit.cover,
+      //                                                   errorBuilder:
+      //                                                       (
+      //                                                         context,
+      //                                                         error,
+      //                                                         stackTrace,
+      //                                                       ) {
+      //                                                         return Image.network(
+      //                                                           "https://static.vecteezy.com/system/resources/thumbnails/048/910/778/small/default-image-missing-placeholder-free-vector.jpg",
+      //                                                           width: 400.w,
+      //                                                           height: 260.h,
+      //                                                           fit: BoxFit.cover,
+      //                                                         );
+      //                                                       },
+      //                                                 ),
+      //                                               ),
+      //                                             );
+      //                                           },
+      //                                         );
+      //                                       },
+      //                                       error: (error, stackTrace) {
+      //                                         // Error case: log करें और error message दिखाएँ
+      //                                         log(stackTrace.toString());
+      //                                         return Center(
+      //                                           child: Text(
+      //                                             error.toString(),
+      //                                             style: TextStyle(
+      //                                               color: Colors.red,
+      //                                             ), // red color में error text
+      //                                           ),
+      //                                         );
+      //                                       },
+      //                                       loading: () => const Center(
+      //                                         child:
+      //                                             CircularProgressIndicator(), // loading spinner
+      //                                       ),
+      //                                     ),
+      //                                   ),
+      //                                   // ClipRRect(
+      //                                   //   borderRadius: BorderRadius.circular(15.r),
+      //                                   //   child: Image.network(
+      //                                   //     data.images[index].src,
+      //                                   //     fit: BoxFit.cover,
+      //                                   //     width: double.infinity,
+      //                                   //     errorBuilder: (context, error, stackTrace) {
+      //                                   //       return Image.network(
+      //                                   //         "https://thumbs.dreamstime.com/b/no-image-vector-symbol-missing-available-icon-gallery-moment-placeholder-246411909.jpg",
+      //                                   //         fit: BoxFit.cover,
+      //                                   //         width: double.infinity,
+      //                                   //       );
+      //                                   //     },
+      //                                   //   ),
+      //                                   // ),
+      //                                   Positioned(
+      //                                     top: 10.h,
+      //                                     right: 5,
+      //                                     child: IconButton(
+      //                                       style: IconButton.styleFrom(
+      //                                         backgroundColor: Color(0xFF3e64de),
+      //                                       ),
+      //                                       onPressed: () {
+      //                                         // Use permalink from API response
+      //                                         final String shareUrl = data.permalink;
+      //                                         final String shareText =
+      //                                             '''
+      // 📚 ${data.name}
+      // ${data.description}
+      // 👉 Check out this course:
+      // $shareUrl
+      // ''';
+      //                                         Share.share(
+      //                                           shareText,
+      //                                           subject: "Check out this course!",
+      //                                         );
+      //                                       },
+      //                                       icon: Icon(
+      //                                         Icons.share,
+      //                                         color: Colors.white,
+      //                                       ),
+      //                                     ),
+      //                                   ),
+      //                                 ],
+      //                               ),
+      //                             ),
+      //                           );
+      //                         },
+      //                       ),
+      //                     ),
+      //                     SizedBox(height: 12.h),
+      //                     Center(
+      //                       child: SmoothPageIndicator(
+      //                         controller: _pageController,
+      //                         count: data.images.length,
+      //                         effect: ExpandingDotsEffect(
+      //                           dotHeight: 10.h,
+      //                           dotWidth: 10.w,
+      //                           activeDotColor: Color(0xFF3e64de),
+      //                           dotColor: Colors.grey.shade300,
+      //                           spacing: 6.w,
+      //                         ),
+      //                       ),
+      //                     ),
+      //                     SizedBox(height: 20.h),
+      //                     Padding(
+      //                       padding: EdgeInsets.only(left: 20.w, right: 20.w),
+      //                       child: Column(
+      //                         crossAxisAlignment: CrossAxisAlignment.start,
+      //                         children: [
+      //                           Row(
+      //                             children: [
+      //                               Expanded(
+      //                                 child: Text(
+      //                                   //  "Create an LMS Website With LearnPress",
+      //                                   data.name.toString(),
+      //                                   style: GoogleFonts.roboto(
+      //                                     fontSize: 16.sp,
+      //                                     fontWeight: FontWeight.w500,
+      //                                     color: Color(0xFF000000),
+      //                                     letterSpacing: -0.4,
+      //                                   ),
+      //                                 ),
+      //                               ),
+      //                               if (variationProductProvider
+      //                                       .asData
+      //                                       ?.value
+      //                                       .isNotEmpty ??
+      //                                   false)
+      //                                 DropdownButton<String>(
+      //                                   value: selectedLang,
+      //                                   underline: const SizedBox(),
+      //                                   icon: const Icon(
+      //                                     Icons.arrow_drop_down,
+      //                                     color: Colors.black,
+      //                                   ),
+      //                                   items: const [
+      //                                     DropdownMenuItem(
+      //                                       value: "en",
+      //                                       child: Text("English"),
+      //                                     ),
+      //                                     DropdownMenuItem(
+      //                                       value: "hi",
+      //                                       child: Text("Hindi"),
+      //                                     ),
+      //                                   ],
+      //                                   onChanged: (value) {
+      //                                     log("start=============================");
+      //                                     setState(() {
+      //                                       selectedLang = value!;
+      //                                     });
+      //                                   },
+      //                                 ),
+      //                             ],
+      //                           ),
+      //                           SizedBox(height: 12.h),
+      //                           Row(
+      //                             children: [
+      //                               Text(
+      //                                 "${data.salePrice ?? '45k'}",
+      //                                 style: GoogleFonts.roboto(
+      //                                   fontSize: 22.sp,
+      //                                   fontWeight: FontWeight.w700,
+      //                                   color: Color(0xFF001E6C),
+      //                                 ),
+      //                               ),
+      //                               // if (data.regularPrice != null)
+      //                               Text(
+      //                                 "₹ ${data.price}",
+      //                                 style: GoogleFonts.roboto(
+      //                                   fontSize: 16.sp,
+      //                                   fontWeight: FontWeight.w400,
+      //                                   color: Color(0xFF001E6C),
+      //                                   //decoration: TextDecoration.lineThrough,
+      //                                 ),
+      //                               ),
+      //                               SizedBox(width: 12.w),
+      //                               // if (data.backorders != null)
+      //                               Container(
+      //                                 padding: EdgeInsets.symmetric(
+      //                                   horizontal: 8.w,
+      //                                   vertical: 4.h,
+      //                                 ),
+      //                                 decoration: BoxDecoration(
+      //                                   color: Color(0xFF1BB93D).withOpacity(0.1),
+      //                                   borderRadius: BorderRadius.circular(6.r),
+      //                                 ),
+      //                                 child: Text(
+      //                                   "${data.amsPriceToDisplay} % off",
+      //                                   style: GoogleFonts.roboto(
+      //                                     fontSize: 14.sp,
+      //                                     fontWeight: FontWeight.w500,
+      //                                     color: Color(0xFF1BB93D),
+      //                                   ),
+      //                                 ),
+      //                               ),
+      //                             ],
+      //                           ),
+      //                           SizedBox(height: 24.h),
+      //                           Text(
+      //                             "Description",
+      //                             style: GoogleFonts.roboto(
+      //                               fontSize: 18.sp,
+      //                               fontWeight: FontWeight.w600,
+      //                               color: Color(0xFF1B1B1B),
+      //                             ),
+      //                           ),
+      //                           SizedBox(height: 8.h),
+      //                           Container(
+      //                             //   color: Colors.yellow,
+      //                             child: Html(data: data.description.toString()),
+      //                           ),
+      //                           SizedBox(height: 18.h),
+      //                           Text(
+      //                             "Category",
+      //                             style: GoogleFonts.roboto(
+      //                               fontSize: 18.sp,
+      //                               fontWeight: FontWeight.w600,
+      //                               color: Color(0xFF1B1B1B),
+      //                             ),
+      //                           ),
+      //                           SizedBox(height: 8.h),
+      //                           Text(
+      //                             data.categories[0].name ?? 'Uncategorized',
+      //                             style: GoogleFonts.roboto(
+      //                               fontSize: 14.sp,
+      //                               fontWeight: FontWeight.w400,
+      //                               color: Colors.grey[800],
+      //                             ),
+      //                           ),
+      //                           SizedBox(height: 20.h),
+      //                           Text(
+      //                             "Shipping Policy",
+      //                             style: GoogleFonts.roboto(
+      //                               fontSize: 18.sp,
+      //                               fontWeight: FontWeight.w600,
+      //                               color: Color(0xFF1B1B1B),
+      //                             ),
+      //                           ),
+      //                           SizedBox(height: 8.h),
+      //                           Html(
+      //                             data: data.wcfmProductPolicyData.shippingPolicy
+      //                                 .toString(),
+      //                             style: {
+      //                               "body": Style(
+      //                                 fontSize: FontSize(14.sp),
+      //                                 fontWeight: FontWeight.w400,
+      //                                 color: Colors.grey[800],
+      //                                 lineHeight: LineHeight(1.5),
+      //                                 fontFamily: GoogleFonts.roboto().fontFamily,
+      //                               ),
+      //                             },
+      //                           ),
+      //                           SizedBox(height: 24.h),
+      //                           Text(
+      //                             "Related Products",
+      //                             style: GoogleFonts.roboto(
+      //                               fontSize: 18.sp,
+      //                               fontWeight: FontWeight.w600,
+      //                               color: Color(0xFF1B1B1B),
+      //                             ),
+      //                           ),
+      //                         ],
+      //                       ),
+      //                     ),
+      //                     SizedBox(height: 16.h),
+      //                     related.when(
+      //                       data: (data) {
+      //                         return SizedBox(
+      //                           height: 180.h,
+      //                           child: ListView.builder(
+      //                             scrollDirection: Axis.horizontal,
+      //                             itemCount: data.length,
+      //                             itemBuilder: (context, index) {
+      //                               return InkWell(
+      //                                 onTap: () {
+      //                                   Navigator.push(
+      //                                     context,
+      //                                     CupertinoPageRoute(
+      //                                       builder: (context) => ProductDetailsPage(
+      //                                         id: data[index].id.toString(),
+      //                                       ),
+      //                                     ),
+      //                                   );
+      //                                 },
+      //                                 child: Container(
+      //                                   margin: EdgeInsets.only(
+      //                                     left: 20.w,
+      //                                     bottom: 10.h,
+      //                                   ),
+      //                                   width: 160.w,
+      //                                   decoration: BoxDecoration(
+      //                                     color: Colors.white,
+      //                                     borderRadius: BorderRadius.circular(12.r),
+      //                                     boxShadow: [
+      //                                       BoxShadow(
+      //                                         color: Colors.grey.withOpacity(0.1),
+      //                                         spreadRadius: 1,
+      //                                         blurRadius: 4,
+      //                                         offset: Offset(0, 2),
+      //                                       ),
+      //                                     ],
+      //                                   ),
+      //                                   child: Column(
+      //                                     crossAxisAlignment:
+      //                                         CrossAxisAlignment.start,
+      //                                     children: [
+      //                                       ClipRRect(
+      //                                         borderRadius: BorderRadius.vertical(
+      //                                           top: Radius.circular(12.r),
+      //                                         ),
+      //                                         child: Image.network(
+      //                                           data[index].image,
+      //                                           height: 100.h,
+      //                                           width: double.infinity,
+      //                                           fit: BoxFit.cover,
+      //                                           errorBuilder:
+      //                                               (context, error, stackTrace) {
+      //                                                 return Image.network(
+      //                                                   "https://thumbs.dreamstime.com/b/no-image-vector-symbol-missing-available-icon-gallery-moment-placeholder-246411909.jpg",
+      //                                                   height: 100.h,
+      //                                                   width: double.infinity,
+      //                                                   fit: BoxFit.fill,
+      //                                                 );
+      //                                               },
+      //                                         ),
+      //                                       ),
+      //                                       Padding(
+      //                                         padding: EdgeInsets.all(8.w),
+      //                                         child: Column(
+      //                                           crossAxisAlignment:
+      //                                               CrossAxisAlignment.start,
+      //                                           children: [
+      //                                             SizedBox(
+      //                                               width: 160.w,
+      //                                               child: Text(
+      //                                                 data[index].name,
+      //                                                 style: GoogleFonts.roboto(
+      //                                                   fontSize: 14.sp,
+      //                                                   fontWeight: FontWeight.w500,
+      //                                                 ),
+      //                                                 maxLines: 1,
+      //                                                 overflow: TextOverflow.ellipsis,
+      //                                               ),
+      //                                             ),
+      //                                             SizedBox(height: 4.h),
+      //                                             Text(
+      //                                               "₹ ${data[index].price.toString()}",
+      //                                               style: GoogleFonts.roboto(
+      //                                                 fontSize: 14.sp,
+      //                                                 fontWeight: FontWeight.w600,
+      //                                                 color: Color(0xFF001E6C),
+      //                                               ),
+      //                                             ),
+      //                                           ],
+      //                                         ),
+      //                                       ),
+      //                                     ],
+      //                                   ),
+      //                                 ),
+      //                               );
+      //                             },
+      //                           ),
+      //                         );
+      //                       },
+      //                       error: (error, stackTrace) {
+      //                         log(stackTrace.toString());
+      //                         return Center(child: Text(error.toString()));
+      //                       },
+      //                       loading: () => SizedBox(
+      //                         height: 190.h,
+      //                         child: ListView.builder(
+      //                           scrollDirection: Axis.horizontal,
+      //                           shrinkWrap: true,
+      //                           physics: NeverScrollableScrollPhysics(),
+      //                           itemCount: 3,
+      //                           itemBuilder: (context, index) {
+      //                             return Shimmer.fromColors(
+      //                               baseColor: Colors.grey[300]!,
+      //                               highlightColor: Colors.grey[100]!,
+      //                               child: Container(
+      //                                 width: 160.w,
+      //                                 height: 160.h,
+      //                                 margin: EdgeInsets.only(bottom: 15.h),
+      //                                 padding: EdgeInsets.all(12.w),
+      //                                 decoration: BoxDecoration(
+      //                                   borderRadius: BorderRadius.circular(16.r),
+      //                                   color: Colors.white,
+      //                                 ),
+      //                                 child: Column(
+      //                                   crossAxisAlignment: CrossAxisAlignment.start,
+      //                                   children: [
+      //                                     Container(
+      //                                       width: 120.w,
+      //                                       height: 30.h,
+      //                                       color: Colors.grey[400],
+      //                                     ),
+      //                                     SizedBox(width: 12.w),
+      //                                     Container(
+      //                                       width: 100.w,
+      //                                       height: 16.h,
+      //                                       color: Colors.grey[400],
+      //                                     ),
+      //                                   ],
+      //                                 ),
+      //                               ),
+      //                             );
+      //                           },
+      //                         ),
+      //                       ),
+      //                     ),
+      //                     SizedBox(height: 70.h),
+      //                     // variationProductProvider.when(
+      //                     //   data: (data) {
+      //                     //     if (data.isEmpty) {
+      //                     //       return const SizedBox(child: Text("No data available"));
+      //                     //     }
+      //                     //     return SizedBox(
+      //                     //       height: 280.h,
+      //                     //       child: ListView.builder(
+      //                     //         padding: EdgeInsets.zero,
+      //                     //         itemCount: data.length,
+      //                     //         scrollDirection: Axis.horizontal,
+      //                     //         itemBuilder: (context, index) {
+      //                     //           // final imageUrl = data[index].image?.src ?? "";
+      //                     //           final imageUrl = selectedLang == "en"
+      //                     //               ? (data[index].image?.src ?? "")
+      //                     //               : (data[index].image?.src ?? "");
+      //                     //           return Container(
+      //                     //             margin: EdgeInsets.only(right: 20.w, left: 20.w),
+      //                     //             child: Column(
+      //                     //               crossAxisAlignment: CrossAxisAlignment.start,
+      //                     //               children: [
+      //                     //                 Image.network(
+      //                     //                   imageUrl.isNotEmpty
+      //                     //                       ? imageUrl
+      //                     //                       : "https://via.placeholder.com/300x200.png?text=No+Image",
+      //                     //                   height: 150.h,
+      //                     //                   width: 300.w,
+      //                     //                   fit: BoxFit.cover,
+      //                     //                   errorBuilder: (context, error, stackTrace) {
+      //                     //                     return Image.network(
+      //                     //                       "https://static.vecteezy.com/system/resources/thumbnails/048/910/778/small/default-image-missing-placeholder-free-vector.jpg",
+      //                     //                       height: 150.h,
+      //                     //                       width: 300.w,
+      //                     //                       fit: BoxFit.cover,
+      //                     //                     );
+      //                     //                   },
+      //                     //                 ),
+      //                     //               ],
+      //                     //             ),
+      //                     //           );
+      //                     //         },
+      //                     //       ),
+      //                     //     );
+      //                     //   },
+      //                     //   error: (error, stackTrace) {
+      //                     //     log(stackTrace.toString());
+      //                     //     return Center(child: Text(error.toString()));
+      //                     //   },
+      //                     //   loading: () =>
+      //                     //       const Center(child: CircularProgressIndicator()),
+      //                     // ),
+      //                   ],
+      //                 ),
+      //               ),
+      //             ],
+      //           );
+      //         },
+      //         error: (error, stackTrace) {
+      //           log(stackTrace.toString());
+      //           return Center(
+      //             child: Column(
+      //               mainAxisAlignment: MainAxisAlignment.center,
+      //               children: [
+      //                 Icon(Icons.error_outline, color: Colors.red, size: 48.sp),
+      //                 SizedBox(height: 16.h),
+      //                 Text(
+      //                   "Failed to load product details",
+      //                   style: GoogleFonts.roboto(
+      //                     fontSize: 16.sp,
+      //                     fontWeight: FontWeight.w500,
+      //                   ),
+      //                 ),
+      //                 SizedBox(height: 8.h),
+      //                 Text(
+      //                   error.toString(),
+      //                   style: GoogleFonts.roboto(
+      //                     fontSize: 14.sp,
+      //                     color: Colors.grey[600],
+      //                   ),
+      //                 ),
+      //                 SizedBox(height: 16.h),
+      //                 ElevatedButton(
+      //                   onPressed: () =>
+      //                       ref.refresh(productDetailsController(widget.id)),
+      //                   style: ElevatedButton.styleFrom(
+      //                     backgroundColor: Color(0xFF001E6C),
+      //                     shape: RoundedRectangleBorder(
+      //                       borderRadius: BorderRadius.circular(8.r),
+      //                     ),
+      //                   ),
+      //                   child: Text(
+      //                     "Retry",
+      //                     style: GoogleFonts.roboto(
+      //                       fontSize: 14.sp,
+      //                       color: Colors.white,
+      //                     ),
+      //                   ),
+      //                 ),
+      //               ],
+      //             ),
+      //           );
+      //         },
+      //         loading: () => Center(
+      //           child: Column(
+      //             mainAxisAlignment: MainAxisAlignment.center,
+      //             children: [
+      //               CircularProgressIndicator(color: Color(0xFF001E6C)),
+      //               SizedBox(height: 16.h),
+      //               Text(
+      //                 "Loading product details...",
+      //                 style: GoogleFonts.roboto(
+      //                   fontSize: 16.sp,
+      //                   fontWeight: FontWeight.w500,
+      //                 ),
+      //               ),
+      //             ],
+      //           ),
+      //         ),
+      //       ),
