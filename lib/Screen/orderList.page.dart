@@ -277,7 +277,7 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
                                       ),
                                     ],
                                   ),
-                                  // SizedBox(height: 4.h),
+                                  SizedBox(height: 4.h),
                                   Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -285,7 +285,7 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
                                       Text(
                                         "Total: ₹${order.total}",
                                         style: GoogleFonts.roboto(
-                                          fontSize: 14.sp,
+                                          fontSize: 18.sp,
                                           fontWeight: FontWeight.bold,
                                           color: Color(0xFF001E6C),
                                         ),
@@ -352,9 +352,9 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
                                                   "Payment Failed : ${response.message}",
                                                 );
 
-                                                // showErrorMessage(
-                                                //   "Payment Failed : ${response.message}",
-                                                // );
+                                                showErrorMessage(
+                                                  "Payment Failed : ${response.message}",
+                                                );
                                               },
                                             );
 
