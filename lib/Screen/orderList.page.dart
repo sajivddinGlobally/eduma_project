@@ -1,8 +1,6 @@
 import 'dart:developer';
 import 'package:eduma_app/Screen/apiCall/api.register.dart';
 import 'package:eduma_app/Screen/home.page.dart';
-import 'package:eduma_app/Screen/productDetails.page.dart';
-import 'package:eduma_app/Screen/tracking.page.dart';
 import 'package:eduma_app/config/core/showFlushbar.dart';
 import 'package:eduma_app/data/Controller/orderListController.dart';
 import 'package:flutter/cupertino.dart';
@@ -21,7 +19,6 @@ class OrderListPage extends ConsumerStatefulWidget {
 }
 
 class _OrderListPageState extends ConsumerState<OrderListPage> {
-  bool isCheck = false;
   @override
   Widget build(BuildContext context) {
     var box = Hive.box("userBox");
@@ -302,7 +299,7 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
                                             ),
                                           ),
                                           onPressed: () {
-                                            setState(() => isCheck = false);
+                                            
                                             final razorpay = Razorpay();
                                             final options = {
                                               "order_id": order.id,
@@ -343,7 +340,7 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
                                                   context,
                                                   "Payment Successful",
                                                 );
-                                                setState(() => isCheck = false);
+
                                                 showSuccessMessage(
                                                   context,
                                                   "Payment Successful",
@@ -358,7 +355,7 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
                                                 log(
                                                   "Payment Failed : ${response.message}",
                                                 );
-                                                setState(() => isCheck = false);
+
                                                 showErrorMessage(
                                                   "Payment Failed : ${response.message}",
                                                 );
@@ -373,16 +370,10 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
                                                 log(
                                                   "External Wallet : ${response.walletName}",
                                                 );
-                                                setState(() => isCheck = false);
                                               },
                                             );
                                           },
-                                          child: isCheck
-                                              ? Center(
-                                                  child:
-                                                      CircularProgressIndicator(),
-                                                )
-                                              : Text("Pay Now"),
+                                          child: Text("Pay Now"),
                                         ),
                                     ],
                                   ),
