@@ -302,7 +302,7 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
                                             ),
                                           ),
                                           onPressed: () {
-                                            setState(() => isCheck = true);
+                                            setState(() => isCheck = false);
                                             final razorpay = Razorpay();
                                             final options = {
                                               "order_id": order.id,
@@ -315,7 +315,7 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
                                               "currency": "INR",
                                               //"receipt": order.,
                                               "key": "rzp_test_RIeIwZBZ2NZi6w",
-                                              "wc_order_id": 7121,
+                                              "wc_order_id": order.id,
                                               "prefill": {
                                                 "name": order.billing.firstName,
                                                 "email": order.billing.email,
