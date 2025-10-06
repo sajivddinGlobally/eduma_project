@@ -8,8 +8,9 @@ import 'package:eduma_app/data/Controller/productDetailsController.dart';
 import 'package:eduma_app/data/Controller/relatedProductController.dart';
 import 'package:eduma_app/data/Controller/variationProductController.dart';
 import 'package:eduma_app/data/Model/addCartBodyModel.dart';
+import 'package:eduma_app/data/Model/variationResModel.dart' hide Image;
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Image;
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -37,6 +38,30 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
   int currentIndex = 0;
   PageController _controller = PageController(initialPage: 0);
   String selectedLang = "en";
+  List<VariationResModel> variation = [];
+  void initData() async {
+    final service = APIStateNetwork(createWooCommerceDio());
+    variation = await service.variationProduct(widget.id);
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    initData();
+  }
+
+  String landKaImage = "";
+  void setImage() {
+    for (final v in variation) {
+      if (v.attributes[0].option.toLowerCase().contains(selectedLang)) {
+        setState(() {
+          landKaImage = v.image.src;
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,9 +71,9 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
       productDetailsController(widget.id),
     );
     final related = ref.watch(relatedProductController(widget.id));
-    final variationProductProvider = ref.watch(
-      variationProductController(widget.id),
-    );
+    // final variationProductProvider = ref.watch(
+    //   variationProductController(widget.id),
+    // );
     return Scaffold(
       backgroundColor: Color(0xFFF5F5F5),
       appBar: AppBar(
@@ -96,226 +121,276 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(
-                      height: 280.h,
-                      child: PageView.builder(
-                        controller: _pageController,
-                        itemCount: data.images.length,
-                        itemBuilder: (context, index) {
-                          return InkWell(
-                            onTap: () {
-                              showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return Dialog(
-                                    insetPadding: EdgeInsets.zero,
-                                    child: StatefulBuilder(
-                                      builder: (context, setState) {
-                                        return Stack(
-                                          children: [
-                                            PhotoViewGallery.builder(
-                                              itemCount: data.images.length,
-                                              pageController: _controller,
-                                              backgroundDecoration:
-                                                  const BoxDecoration(
-                                                    color: Colors.black,
-                                                  ),
-                                              builder: (context, i) {
-                                                return PhotoViewGalleryPageOptions(
-                                                  imageProvider: NetworkImage(
-                                                    data.images[i].src,
-                                                  ),
-                                                  minScale:
-                                                      PhotoViewComputedScale
-                                                          .contained,
-                                                  maxScale:
-                                                      PhotoViewComputedScale
-                                                          .covered *
-                                                      3,
-                                                  heroAttributes:
-                                                      PhotoViewHeroAttributes(
-                                                        tag: data
-                                                            .images[i]
-                                                            .medium,
+                    if (landKaImage.trim().isEmpty) ...[
+                      SizedBox(
+                        height: 280.h,
+                        child: PageView.builder(
+                          controller: _pageController,
+                          itemCount: data.images.length,
+                          itemBuilder: (context, index) {
+                            return InkWell(
+                              onTap: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return Dialog(
+                                      insetPadding: EdgeInsets.zero,
+                                      child: StatefulBuilder(
+                                        builder: (context, setState) {
+                                          return Stack(
+                                            children: [
+                                              PhotoViewGallery.builder(
+                                                itemCount: data.images.length,
+                                                pageController: _controller,
+                                                backgroundDecoration:
+                                                    const BoxDecoration(
+                                                      color: Colors.black,
+                                                    ),
+                                                builder: (context, i) {
+                                                  return PhotoViewGalleryPageOptions(
+                                                    imageProvider: NetworkImage(
+                                                      data.images[i].src,
+                                                    ),
+                                                    minScale:
+                                                        PhotoViewComputedScale
+                                                            .contained,
+                                                    maxScale:
+                                                        PhotoViewComputedScale
+                                                            .covered *
+                                                        3,
+                                                    heroAttributes:
+                                                        PhotoViewHeroAttributes(
+                                                          tag: data
+                                                              .images[i]
+                                                              .medium,
+                                                        ),
+                                                  );
+                                                },
+                                                onPageChanged: (i) {
+                                                  setState(() {
+                                                    currentIndex = i;
+                                                  });
+                                                },
+                                              ),
+                                              Positioned(
+                                                top: 20,
+                                                left: 10,
+                                                right: 10,
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    IconButton(
+                                                      icon: const Icon(
+                                                        Icons.close,
+                                                        color: Colors.white,
+                                                        size: 28,
                                                       ),
-                                                );
-                                              },
-                                              onPageChanged: (i) {
-                                                setState(() {
-                                                  currentIndex = i;
-                                                });
-                                              },
-                                            ),
-                                            Positioned(
-                                              top: 20,
-                                              left: 10,
-                                              right: 10,
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  IconButton(
-                                                    icon: const Icon(
-                                                      Icons.close,
-                                                      color: Colors.white,
-                                                      size: 28,
+                                                      onPressed: () =>
+                                                          Navigator.pop(
+                                                            context,
+                                                          ),
                                                     ),
-                                                    onPressed: () =>
-                                                        Navigator.pop(context),
-                                                  ),
-                                                  Text(
-                                                    "${currentIndex + 1} / ${data.images.length}", // 1-based index
-                                                    style: const TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 16,
+                                                    Text(
+                                                      "${currentIndex + 1} / ${data.images.length}", // 1-based index
+                                                      style: const TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 16,
+                                                      ),
                                                     ),
-                                                  ),
-                                                  SizedBox(width: 48.w),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    ),
-                                  );
-                                },
-                              );
-                            },
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 10.w, right: 10.w),
-                              child: Stack(
-                                children: [
-                                  SizedBox(
-                                    height: 280.h,
-                                    child: variationProductProvider.when(
-                                      data: (variationData) {
-                                        final List<dynamic> imagesToShow =
-                                            variationData.isNotEmpty
-                                            ? variationData
-                                            : data.images;
-                                        return ListView.builder(
-                                          padding: EdgeInsets.zero,
-                                          itemCount: imagesToShow.length,
-                                          scrollDirection: Axis.horizontal,
-                                          itemBuilder: (context, index) {
-                                            String imageUrl = "";
-                                            if (variationData.isNotEmpty) {
-                                              final variationItem =
-                                                  variationData[index];
-                                              imageUrl = selectedLang == "en"
-                                                  ? (variationItem.image.src ??
-                                                        "")
-                                                  : (variationItem.image.src ??
-                                                        "");
-                                            } else {
-                                              final productImage =
-                                                  data.images[index];
-                                              imageUrl = productImage.src ?? "";
-                                            }
-                                            return Padding(
-                                              padding: EdgeInsets.only(
-                                                left: 10.w,
-                                                right: 10.w,
-                                              ),
-                                              child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(15.r),
-                                                child: Image.network(
-                                                  imageUrl.isNotEmpty
-                                                      ? imageUrl
-                                                      : "https://via.placeholder.com/300x200.png?text=No+Image", // default placeholder अगर image empty
-                                                  height: 260.h,
-                                                  width: 360.w,
-                                                  fit: BoxFit.cover,
-                                                  errorBuilder:
-                                                      (
-                                                        context,
-                                                        error,
-                                                        stackTrace,
-                                                      ) {
-                                                        return Image.network(
-                                                          "https://static.vecteezy.com/system/resources/thumbnails/048/910/778/small/default-image-missing-placeholder-free-vector.jpg",
-                                                          width: 400.w,
-                                                          height: 260.h,
-                                                          fit: BoxFit.cover,
-                                                        );
-                                                      },
+                                                    SizedBox(width: 48.w),
+                                                  ],
                                                 ),
                                               ),
-                                            );
-                                          },
-                                        );
-                                      },
-                                      error: (error, stackTrace) {
-                                        // Error case: log करें और error message दिखाएँ
-                                        log(stackTrace.toString());
-                                        return Center(
-                                          child: Text(
-                                            error.toString(),
-                                            style: TextStyle(
-                                              color: Colors.red,
-                                            ), // red color में error text
-                                          ),
-                                        );
-                                      },
-                                      loading: () => const Center(
-                                        child:
-                                            CircularProgressIndicator(), // loading spinner
+                                            ],
+                                          );
+                                        },
                                       ),
-                                    ),
-                                  ),
-                                  // ClipRRect(
-                                  //   borderRadius: BorderRadius.circular(15.r),
-                                  //   child: Image.network(
-                                  //     data.images[index].src,
-                                  //     fit: BoxFit.cover,
-                                  //     width: double.infinity,
-                                  //     errorBuilder: (context, error, stackTrace) {
-                                  //       return Image.network(
-                                  //         "https://thumbs.dreamstime.com/b/no-image-vector-symbol-missing-available-icon-gallery-moment-placeholder-246411909.jpg",
-                                  //         fit: BoxFit.cover,
-                                  //         width: double.infinity,
-                                  //       );
-                                  //     },
-                                  //   ),
-                                  // ),
-                                  Positioned(
-                                    top: 10.h,
-                                    right: 5,
-                                    child: IconButton(
-                                      style: IconButton.styleFrom(
-                                        backgroundColor: Color(0xFF3e64de),
+                                    );
+                                  },
+                                );
+                              },
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                  left: 10.w,
+                                  right: 10.w,
+                                ),
+                                child: Stack(
+                                  children: [
+                                    // SizedBox(
+                                    //   height: 280.h,
+                                    //   child: variationProductProvider.when(
+                                    //     data: (variationData) {
+                                    //       final List<dynamic> imagesToShow =
+                                    //           variationData.isNotEmpty
+                                    //           ? variationData
+                                    //           : data.images;
+                                    //       return ListView.builder(
+                                    //         padding: EdgeInsets.zero,
+                                    //         itemCount: imagesToShow.length,
+                                    //         scrollDirection: Axis.horizontal,
+                                    //         itemBuilder: (context, index) {
+                                    //           String imageUrl = "";
+                                    //           if (variationData.isNotEmpty) {
+                                    //             final variationItem =
+                                    //                 variationData[index];
+                                    //             imageUrl = selectedLang == "en"
+                                    //                 ? (variationItem.image.src ??
+                                    //                       "")
+                                    //                 : (variationItem.image.src ??
+                                    //                       "");
+                                    //           } else {
+                                    //             final productImage =
+                                    //                 data.images[index];
+                                    //             imageUrl = productImage.src ?? "";
+                                    //           }
+                                    //           return Padding(
+                                    //             padding: EdgeInsets.only(
+                                    //               left: 10.w,
+                                    //               right: 10.w,
+                                    //             ),
+                                    //             child: ClipRRect(
+                                    //               borderRadius:
+                                    //                   BorderRadius.circular(15.r),
+                                    //               child: Image.network(
+                                    //                 imageUrl.isNotEmpty
+                                    //                     ? imageUrl
+                                    //                     : "https://via.placeholder.com/300x200.png?text=No+Image", // default placeholder अगर image empty
+                                    //                 height: 260.h,
+                                    //                 width: 360.w,
+                                    //                 fit: BoxFit.cover,
+                                    //                 errorBuilder:
+                                    //                     (
+                                    //                       context,
+                                    //                       error,
+                                    //                       stackTrace,
+                                    //                     ) {
+                                    //                       return Image.network(
+                                    //                         "https://static.vecteezy.com/system/resources/thumbnails/048/910/778/small/default-image-missing-placeholder-free-vector.jpg",
+                                    //                         width: 400.w,
+                                    //                         height: 260.h,
+                                    //                         fit: BoxFit.cover,
+                                    //                       );
+                                    //                     },
+                                    //               ),
+                                    //             ),
+                                    //           );
+                                    //         },
+                                    //       );
+                                    //     },
+                                    //     error: (error, stackTrace) {
+                                    //       // Error case: log करें और error message दिखाएँ
+                                    //       log(stackTrace.toString());
+                                    //       return Center(
+                                    //         child: Text(
+                                    //           error.toString(),
+                                    //           style: TextStyle(
+                                    //             color: Colors.red,
+                                    //           ), // red color में error text
+                                    //         ),
+                                    //       );
+                                    //     },
+                                    //     loading: () => const Center(
+                                    //       child:
+                                    //           CircularProgressIndicator(), // loading spinner
+                                    //     ),
+                                    //   ),
+                                    // ),
+                                    if (landKaImage.isEmpty) ...[
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(
+                                          15.r,
+                                        ),
+                                        child: Image.network(
+                                          data.images[index].src,
+                                          width: double.infinity,
+                                          fit: BoxFit.cover,
+                                          errorBuilder:
+                                              (context, error, stackTrace) {
+                                                return Image.network(
+                                                  "https://thumbs.dreamstime.com/b/no-image-vector-symbol-missing-available-icon-gallery-moment-placeholder-246411909.jpg",
+                                                  width: double.infinity,
+                                                  fit: BoxFit.cover,
+                                                );
+                                              },
+                                        ),
                                       ),
-                                      onPressed: () {
-                                        // Use permalink from API response
-                                        final String shareUrl = data.permalink;
-                                        final String shareText =
-                                            '''
+                                    ] else ...[
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(
+                                          15.r,
+                                        ),
+                                        child: Image.network(
+                                          landKaImage,
+                                          fit: BoxFit.cover,
+                                          width: double.infinity,
+                                          errorBuilder:
+                                              (context, error, stackTrace) {
+                                                return Image.network(
+                                                  "https://thumbs.dreamstime.com/b/no-image-vector-symbol-missing-available-icon-gallery-moment-placeholder-246411909.jpg",
+                                                  fit: BoxFit.cover,
+                                                  width: double.infinity,
+                                                );
+                                              },
+                                        ),
+                                      ),
+                                    ],
+
+                                    Positioned(
+                                      top: 10.h,
+                                      right: 5,
+                                      child: IconButton(
+                                        style: IconButton.styleFrom(
+                                          backgroundColor: Color(0xFF3e64de),
+                                        ),
+                                        onPressed: () {
+                                          // Use permalink from API response
+                                          final String shareUrl =
+                                              data.permalink;
+                                          final String shareText =
+                                              '''
       📚 ${data.name}
       ${data.description}
       👉 Check out this course:
       $shareUrl
       ''';
-                                        Share.share(
-                                          shareText,
-                                          subject: "Check out this course!",
-                                        );
-                                      },
-                                      icon: Icon(
-                                        Icons.share,
-                                        color: Colors.white,
+                                          Share.share(
+                                            shareText,
+                                            subject: "Check out this course!",
+                                          );
+                                        },
+                                        icon: Icon(
+                                          Icons.share,
+                                          color: Colors.white,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                          );
-                        },
+                            );
+                          },
+                        ),
                       ),
-                    ),
+                    ] else ...[
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(15.r),
+                        child: Image.network(
+                          landKaImage,
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Image.network(
+                              "https://thumbs.dreamstime.com/b/no-image-vector-symbol-missing-available-icon-gallery-moment-placeholder-246411909.jpg",
+                              fit: BoxFit.cover,
+                              width: double.infinity,
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+
                     SizedBox(height: 12.h),
                     Center(
                       child: SmoothPageIndicator(
@@ -350,35 +425,32 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                   ),
                                 ),
                               ),
-                              if (variationProductProvider
-                                      .asData
-                                      ?.value
-                                      .isNotEmpty ??
-                                  false)
-                                DropdownButton<String>(
-                                  value: selectedLang,
-                                  underline: const SizedBox(),
-                                  icon: const Icon(
-                                    Icons.arrow_drop_down,
-                                    color: Colors.black,
-                                  ),
-                                  items: const [
-                                    DropdownMenuItem(
-                                      value: "en",
-                                      child: Text("English"),
-                                    ),
-                                    DropdownMenuItem(
-                                      value: "hi",
-                                      child: Text("Hindi"),
-                                    ),
-                                  ],
-                                  onChanged: (value) {
-                                    log("start=============================");
-                                    setState(() {
-                                      selectedLang = value!;
-                                    });
-                                  },
+                              DropdownButton<String>(
+                                value: selectedLang,
+                                underline: const SizedBox(),
+                                padding: EdgeInsets.zero,
+                                icon: const Icon(
+                                  Icons.arrow_drop_down,
+                                  color: Colors.black,
                                 ),
+                                items: const [
+                                  DropdownMenuItem(
+                                    value: "en",
+                                    child: Text("English"),
+                                  ),
+                                  DropdownMenuItem(
+                                    value: "hi",
+                                    child: Text("Hindi"),
+                                  ),
+                                ],
+                                onChanged: (value) {
+                                  log("start=============================");
+                                  setState(() {
+                                    selectedLang = value!;
+                                  });
+                                  setImage();
+                                },
+                              ),
                             ],
                           ),
                           SizedBox(height: 12.h),
