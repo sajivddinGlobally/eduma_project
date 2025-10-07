@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:eduma_app/Screen/home.page.dart';
+import 'package:eduma_app/Screen/orderList.page.dart';
 import 'package:eduma_app/config/core/showFlushbar.dart';
 import 'package:eduma_app/config/network/api.state.dart';
 import 'package:eduma_app/config/utils/navigatorKey.dart';
@@ -155,6 +156,7 @@ class _FillAddressPageState extends State<FillAddressPage> {
                     child: _buildTextField(
                       label: "Pin Code",
                       controller: pinCodeController,
+                      maxlengh: 6,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return "Pin code is required";
@@ -174,6 +176,7 @@ class _FillAddressPageState extends State<FillAddressPage> {
               _buildTextField(
                 label: "Phone Number",
                 controller: phoneNumberController,
+                maxlengh: 10,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return "Phone number is required";
@@ -241,7 +244,8 @@ class _FillAddressPageState extends State<FillAddressPage> {
                             "amount": response.amount * 100,
                             "currency": "INR",
                             "receipt": response.receipt,
-                            "key": "rzp_test_RIeIwZBZ2NZi6w",
+                            // "key": "rzp_test_RIeIwZBZ2NZi6w",
+                            "key": "rzp_live_RQVbHR68ibVPuJ",
                             "wc_order_id": response.wcOrderId,
                             "prefill": {
                               "name": response.user.name,
@@ -256,12 +260,18 @@ class _FillAddressPageState extends State<FillAddressPage> {
                           ) {
                             log("Payment Success : ${response.paymentId}");
 
-                            Navigator.pushAndRemoveUntil(
+                            // Navigator.pushAndRemoveUntil(
+                            //   context,
+                            //   CupertinoPageRoute(
+                            //     builder: (context) => HomePage(),
+                            //   ),
+                            //   (route) => false,
+                            // );
+                            Navigator.pushReplacement(
                               context,
                               CupertinoPageRoute(
-                                builder: (context) => HomePage(),
+                                builder: (context) => OrderListPage(),
                               ),
-                              (route) => false,
                             );
                             showSuccessMessage(context, "Payment Successful");
                             setState(() => isCheck = false);
@@ -328,6 +338,7 @@ class _FillAddressPageState extends State<FillAddressPage> {
     required String label,
     required TextEditingController controller,
     required String? Function(String?)? validator,
+    int maxlengh = 0,
     IconData? icon,
     TextInputType? keyboardType,
     int maxLines = 1,
@@ -345,10 +356,12 @@ class _FillAddressPageState extends State<FillAddressPage> {
         ),
         SizedBox(height: 12.h),
         TextFormField(
+          maxLength: maxlengh > 0 ? maxlengh : null,
           controller: controller,
           maxLines: maxLines,
           keyboardType: keyboardType,
           decoration: InputDecoration(
+            counterText: "",
             prefixIcon: icon != null
                 ? Icon(icon, size: 20.w, color: const Color(0xff9CA3AF))
                 : null,

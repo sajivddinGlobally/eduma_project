@@ -319,8 +319,10 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
                                               final options = {
                                                 "order_id":
                                                     order.metaData[0].value,
+                                                // "key":
+                                                //     "rzp_test_RIeIwZBZ2NZi6w",
                                                 "key":
-                                                    "rzp_test_RIeIwZBZ2NZi6w",
+                                                    "rzp_live_RQVbHR68ibVPuJ",
                                                 "amount":
                                                     (double.tryParse(
                                                           order.total ?? '0',
@@ -328,7 +330,7 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
                                                         0) *
                                                     100,
                                                 "currency": "INR",
-                                                "name": "Test Payment",
+                                                // "name": "Test Payment",
                                                 "wc_order_id": "${order.id}",
                                                 "prefill": {
                                                   "name":
@@ -348,13 +350,12 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
                                                   log(
                                                     "Payment Success : ${response.paymentId}",
                                                   );
-                                                  Navigator.pushAndRemoveUntil(
+                                                  Navigator.pushReplacement(
                                                     context,
                                                     CupertinoPageRoute(
                                                       builder: (context) =>
-                                                          HomePage(),
+                                                          OrderListPage(),
                                                     ),
-                                                    (route) => false,
                                                   );
                                                   showSuccessMessage(
                                                     context,
