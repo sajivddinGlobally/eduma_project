@@ -270,15 +270,16 @@ class _FillAddressPageState extends State<FillAddressPage> {
                             PaymentFailureResponse response,
                           ) {
                             log("Payment Failed : ${response.message}");
+                            setState(() => isCheck = false);
                             showErrorMessage(
                               "Payment Failed : ${response.message}",
                             );
                           });
-
                           razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, (
                             ExternalWalletResponse response,
                           ) {
                             log("External Wallet : ${response.walletName}");
+                            setState(() => isCheck = false);
                           });
                         } else {
                           setState(() => isCheck = false);
@@ -300,7 +301,11 @@ class _FillAddressPageState extends State<FillAddressPage> {
                     ),
                   ),
                   child: isCheck
-                      ? const CircularProgressIndicator(color: Colors.white)
+                      ? SizedBox(
+                          width: 20.w,
+                          height: 20.h,
+                          child: CircularProgressIndicator(color: Colors.white),
+                        )
                       : Text(
                           "Save Address",
                           style: GoogleFonts.roboto(
