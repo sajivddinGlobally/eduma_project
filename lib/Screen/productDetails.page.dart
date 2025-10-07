@@ -425,31 +425,41 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                   ),
                                 ),
                               ),
-                              DropdownButton<String>(
-                                value: selectedLang,
-                                underline: const SizedBox(),
-                                padding: EdgeInsets.zero,
-                                icon: const Icon(
-                                  Icons.arrow_drop_down,
-                                  color: Colors.black,
+                              Container(
+                                padding: EdgeInsets.only(
+                                  left: 10.w,
+                                  right: 10.w,
                                 ),
-                                items: const [
-                                  DropdownMenuItem(
-                                    value: "en",
-                                    child: Text("English"),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20.r),
+                                  border: Border.all(color: Colors.black),
+                                ),
+                                child: DropdownButton<String>(
+                                  value: selectedLang,
+                                  underline: const SizedBox(),
+                                  padding: EdgeInsets.zero,
+                                  icon: const Icon(
+                                    Icons.arrow_drop_down,
+                                    color: Colors.black,
                                   ),
-                                  DropdownMenuItem(
-                                    value: "hi",
-                                    child: Text("Hindi"),
-                                  ),
-                                ],
-                                onChanged: (value) {
-                                  log("start=============================");
-                                  setState(() {
-                                    selectedLang = value!;
-                                  });
-                                  setImage();
-                                },
+                                  items: const [
+                                    DropdownMenuItem(
+                                      value: "en",
+                                      child: Text("English"),
+                                    ),
+                                    DropdownMenuItem(
+                                      value: "hi",
+                                      child: Text("Hindi"),
+                                    ),
+                                  ],
+                                  onChanged: (value) {
+                                    log("start=============================");
+                                    setState(() {
+                                      selectedLang = value!;
+                                    });
+                                    setImage();
+                                  },
+                                ),
                               ),
                             ],
                           ),
