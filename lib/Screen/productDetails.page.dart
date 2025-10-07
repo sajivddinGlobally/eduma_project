@@ -218,85 +218,6 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                 ),
                                 child: Stack(
                                   children: [
-                                    // SizedBox(
-                                    //   height: 280.h,
-                                    //   child: variationProductProvider.when(
-                                    //     data: (variationData) {
-                                    //       final List<dynamic> imagesToShow =
-                                    //           variationData.isNotEmpty
-                                    //           ? variationData
-                                    //           : data.images;
-                                    //       return ListView.builder(
-                                    //         padding: EdgeInsets.zero,
-                                    //         itemCount: imagesToShow.length,
-                                    //         scrollDirection: Axis.horizontal,
-                                    //         itemBuilder: (context, index) {
-                                    //           String imageUrl = "";
-                                    //           if (variationData.isNotEmpty) {
-                                    //             final variationItem =
-                                    //                 variationData[index];
-                                    //             imageUrl = selectedLang == "en"
-                                    //                 ? (variationItem.image.src ??
-                                    //                       "")
-                                    //                 : (variationItem.image.src ??
-                                    //                       "");
-                                    //           } else {
-                                    //             final productImage =
-                                    //                 data.images[index];
-                                    //             imageUrl = productImage.src ?? "";
-                                    //           }
-                                    //           return Padding(
-                                    //             padding: EdgeInsets.only(
-                                    //               left: 10.w,
-                                    //               right: 10.w,
-                                    //             ),
-                                    //             child: ClipRRect(
-                                    //               borderRadius:
-                                    //                   BorderRadius.circular(15.r),
-                                    //               child: Image.network(
-                                    //                 imageUrl.isNotEmpty
-                                    //                     ? imageUrl
-                                    //                     : "https://via.placeholder.com/300x200.png?text=No+Image", // default placeholder अगर image empty
-                                    //                 height: 260.h,
-                                    //                 width: 360.w,
-                                    //                 fit: BoxFit.cover,
-                                    //                 errorBuilder:
-                                    //                     (
-                                    //                       context,
-                                    //                       error,
-                                    //                       stackTrace,
-                                    //                     ) {
-                                    //                       return Image.network(
-                                    //                         "https://static.vecteezy.com/system/resources/thumbnails/048/910/778/small/default-image-missing-placeholder-free-vector.jpg",
-                                    //                         width: 400.w,
-                                    //                         height: 260.h,
-                                    //                         fit: BoxFit.cover,
-                                    //                       );
-                                    //                     },
-                                    //               ),
-                                    //             ),
-                                    //           );
-                                    //         },
-                                    //       );
-                                    //     },
-                                    //     error: (error, stackTrace) {
-                                    //       // Error case: log करें और error message दिखाएँ
-                                    //       log(stackTrace.toString());
-                                    //       return Center(
-                                    //         child: Text(
-                                    //           error.toString(),
-                                    //           style: TextStyle(
-                                    //             color: Colors.red,
-                                    //           ), // red color में error text
-                                    //         ),
-                                    //       );
-                                    //     },
-                                    //     loading: () => const Center(
-                                    //       child:
-                                    //           CircularProgressIndicator(), // loading spinner
-                                    //     ),
-                                    //   ),
-                                    // ),
                                     if (landKaImage.isEmpty) ...[
                                       ClipRRect(
                                         borderRadius: BorderRadius.circular(
@@ -425,42 +346,48 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                   ),
                                 ),
                               ),
-                              Container(
-                                padding: EdgeInsets.only(
-                                  left: 10.w,
-                                  right: 10.w,
-                                ),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20.r),
-                                  border: Border.all(color: Colors.black),
-                                ),
-                                child: DropdownButton<String>(
-                                  value: selectedLang,
-                                  underline: const SizedBox(),
-                                  padding: EdgeInsets.zero,
-                                  icon: const Icon(
-                                    Icons.arrow_drop_down,
-                                    color: Colors.black,
-                                  ),
-                                  items: const [
-                                    DropdownMenuItem(
-                                      value: "en",
-                                      child: Text("English"),
-                                    ),
-                                    DropdownMenuItem(
-                                      value: "hi",
-                                      child: Text("Hindi"),
-                                    ),
-                                  ],
-                                  onChanged: (value) {
-                                    log("start=============================");
-                                    setState(() {
-                                      selectedLang = value!;
-                                    });
-                                    setImage();
-                                  },
-                                ),
-                              ),
+                              variation.isNotEmpty
+                                  ? Container(
+                                      padding: EdgeInsets.only(
+                                        left: 10.w,
+                                        right: 10.w,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(
+                                          20.r,
+                                        ),
+                                        border: Border.all(color: Colors.black),
+                                      ),
+                                      child: DropdownButton<String>(
+                                        value: selectedLang,
+                                        underline: const SizedBox(),
+                                        padding: EdgeInsets.zero,
+                                        icon: const Icon(
+                                          Icons.arrow_drop_down,
+                                          color: Colors.black,
+                                        ),
+                                        items: const [
+                                          DropdownMenuItem(
+                                            value: "en",
+                                            child: Text("English"),
+                                          ),
+                                          DropdownMenuItem(
+                                            value: "hi",
+                                            child: Text("Hindi"),
+                                          ),
+                                        ],
+                                        onChanged: (value) {
+                                          log(
+                                            "start=============================",
+                                          );
+                                          setState(() {
+                                            selectedLang = value!;
+                                          });
+                                          setImage();
+                                        },
+                                      ),
+                                    )
+                                  : SizedBox.shrink(),
                             ],
                           ),
                           SizedBox(height: 12.h),
