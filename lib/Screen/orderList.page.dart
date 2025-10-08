@@ -20,6 +20,17 @@ class OrderListPage extends ConsumerStatefulWidget {
 
 class _OrderListPageState extends ConsumerState<OrderListPage> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      var box = Hive.box("userBox");
+      var id = box.get("storeId");
+      ref.invalidate(orderListController(id.toString()));
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     var box = Hive.box("userBox");
     var id = box.get("storeId");
@@ -303,7 +314,8 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
                                             color: Color(0xFF001E6C),
                                           ),
                                         ),
-                                        if (order.status == "pending")
+                                        if (order.status == "pending" ||
+                                            order.status == "failed")
                                           OutlinedButton(
                                             style: OutlinedButton.styleFrom(
                                               padding: EdgeInsets.zero,
