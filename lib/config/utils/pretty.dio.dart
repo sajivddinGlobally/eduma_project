@@ -46,7 +46,7 @@ Dio createDio() {
             .trim();
         log("API Error ($statusCode): $cleanedMessage");
         if (globalContext != null) {
-          if (statusCode == 401) {
+          if (statusCode == 401 || statusCode == 403) {
             Hive.box("userBox").delete("token");
             Navigator.pushAndRemoveUntil(
               globalContext,
