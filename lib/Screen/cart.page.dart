@@ -304,11 +304,12 @@ class _CartPageState extends ConsumerState<CartPage> {
                                           builder: (context) => FillAddressPage(
                                             productId: data.items[0].productId
                                                 .toString(),
-                                                quantity: data.count.toString(),
+                                            quantity: data.count.toString(),
                                           ),
                                           fullscreenDialog: true,
                                         ),
                                       );
+
                                       // setState(() => isCheck = true);
 
                                       // try {

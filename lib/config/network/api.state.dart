@@ -46,6 +46,7 @@ import 'package:eduma_app/data/Model/resetPassResModel.dart';
 import 'package:eduma_app/data/Model/sendOTPBodyModel.dart';
 import 'package:eduma_app/data/Model/sendOTPResModel.dart';
 import 'package:eduma_app/data/Model/updateProfileResModel.dart';
+import 'package:eduma_app/data/Model/userAddressResModel.dart';
 import 'package:eduma_app/data/Model/variationResModel.dart';
 import 'package:eduma_app/data/Model/verifyOTPBodyModel.dart';
 import 'package:eduma_app/data/Model/verifyOTPResModel.dart';
@@ -204,4 +205,7 @@ abstract class APIStateNetwork {
 
   @GET("/wc/v3/products/{id}/variations")
   Future<List<VariationResModel>> variationProduct(@Path("id") String id);
+
+  @GET("/custom/v1/user-addresses")
+  Future<UserAddressResModel> fetchAddress();
 }
