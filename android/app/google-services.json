@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:798764963681:android:6f3c674c69c744bf801720",
+        "mobilesdk_app_id": "1:798764963681:android:52fb0667dda8c6c2801720",
         "android_client_info": {
-          "package_name": "com.eduma.app"
+          "package_name": "com.eduma.new"
         }
       },
       "oauth_client": [

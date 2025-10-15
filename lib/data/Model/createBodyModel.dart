@@ -14,7 +14,7 @@ class CreateBodyModel {
 
     CreateBodyModel({
         required this.cart,
-        required this.billing,
+        required this.billing, Object? shipping,
     });
 
     factory CreateBodyModel.fromJson(Map<String, dynamic> json) => CreateBodyModel(

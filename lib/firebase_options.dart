@@ -17,29 +17,17 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for ios - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return ios;
       case TargetPlatform.macOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return macos;
       case TargetPlatform.windows:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for windows - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return windows;
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -54,9 +42,52 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCPyUznhrikWOcGpoamNEdvolUa-G8ArY4',
-    appId: '1:798764963681:android:6f3c674c69c744bf801720',
+    appId: '1:798764963681:android:52fb0667dda8c6c2801720',
     messagingSenderId: '798764963681',
     projectId: 'atatc-surat',
     storageBucket: 'atatc-surat.firebasestorage.app',
   );
+
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyBO6hJybBT4SvNH5NMINNsnhDYrc_JwM7w',
+    appId: '1:798764963681:web:44f8d73b2413bfb8801720',
+    messagingSenderId: '798764963681',
+    projectId: 'atatc-surat',
+    authDomain: 'atatc-surat.firebaseapp.com',
+    storageBucket: 'atatc-surat.firebasestorage.app',
+    measurementId: 'G-J7D7DDC0RT',
+  );
+
+  static const FirebaseOptions macos = FirebaseOptions(
+    apiKey: 'AIzaSyAVVs-_CLFZ0YN6hDfOTSr5lQVJEIJR3mU',
+    appId: '1:798764963681:ios:502b4501c445f4bb801720',
+    messagingSenderId: '798764963681',
+    projectId: 'atatc-surat',
+    storageBucket: 'atatc-surat.firebasestorage.app',
+    androidClientId: '798764963681-j70mf840n698lmdbf42sm537qu0t8rf7.apps.googleusercontent.com',
+    iosClientId: '798764963681-c3eooef72gn24uofnjmsnbh22fjekmi5.apps.googleusercontent.com',
+    iosBundleId: 'com.example.newEducationApp',
+  );
+
+  static const FirebaseOptions ios = FirebaseOptions(
+    apiKey: 'AIzaSyAVVs-_CLFZ0YN6hDfOTSr5lQVJEIJR3mU',
+    appId: '1:798764963681:ios:502b4501c445f4bb801720',
+    messagingSenderId: '798764963681',
+    projectId: 'atatc-surat',
+    storageBucket: 'atatc-surat.firebasestorage.app',
+    androidClientId: '798764963681-j70mf840n698lmdbf42sm537qu0t8rf7.apps.googleusercontent.com',
+    iosClientId: '798764963681-c3eooef72gn24uofnjmsnbh22fjekmi5.apps.googleusercontent.com',
+    iosBundleId: 'com.example.newEducationApp',
+  );
+
+  static const FirebaseOptions windows = FirebaseOptions(
+    apiKey: 'AIzaSyBO6hJybBT4SvNH5NMINNsnhDYrc_JwM7w',
+    appId: '1:798764963681:web:df9d44f7359a3d79801720',
+    messagingSenderId: '798764963681',
+    projectId: 'atatc-surat',
+    authDomain: 'atatc-surat.firebaseapp.com',
+    storageBucket: 'atatc-surat.firebasestorage.app',
+    measurementId: 'G-4MEHLDMQCE',
+  );
+
 }
