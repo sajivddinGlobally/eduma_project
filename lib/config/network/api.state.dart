@@ -14,6 +14,8 @@ import 'package:eduma_app/data/Model/createOrderBodyModel.dart';
 import 'package:eduma_app/data/Model/createOrderCourseModel.dart';
 import 'package:eduma_app/data/Model/createResModel.dart';
 import 'package:eduma_app/data/Model/deleteWishlistResModel.dart';
+import 'package:eduma_app/data/Model/editAddresBodyModel.dart';
+import 'package:eduma_app/data/Model/editAddresResModel.dart';
 import 'package:eduma_app/data/Model/enrollBodyModel.dart';
 import 'package:eduma_app/data/Model/enrollCourseStudentModel.dart';
 import 'package:eduma_app/data/Model/enrollResModel.dart';
@@ -208,4 +210,7 @@ abstract class APIStateNetwork {
 
   @GET("/custom/v1/user-addresses")
   Future<UserAddressResModel> fetchAddress();
+
+  @POST("/cwcc/v1/create-order?edit_address=true")
+  Future<EditAddressResModel> editAddress(@Body() EditAddressBodyModel body);
 }
