@@ -59,7 +59,7 @@ class AuthNotifier extends StateNotifier<AsyncValue<LoginResModel?>> {
       }
     } catch (e, st) {
       state = AsyncValue.error(e, st);
-      log("❌ Error: $e");
+      log(" Error:-- $e");
       log(st.toString());
     }
   }
