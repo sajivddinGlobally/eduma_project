@@ -90,7 +90,7 @@ class Ing {
         city: json["city"],
         state: json["state"],
         postcode: json["postcode"],
-        country: json["country"],
+        country: json["country"].toString(),
         phone: json["phone"],
         email: json["email"],
     );

@@ -322,7 +322,7 @@ class _CartPageState extends ConsumerState<CartPage> {
                                                 .toString(),
                                             quantity: data.count.toString(),
                                           ),
-                                          fullscreenDialog: true,
+                                          // fullscreenDialog: true,
                                         ),
                                       );
 
