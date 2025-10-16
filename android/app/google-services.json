@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "798764963681-t70teej6nducp1faf48f7jpn2gbkq25u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.eduma.new",
+            "certificate_hash": "c3b13890be57921878420816a6993cf2c81d16b5"
+          }
+        },
+        {
           "client_id": "798764963681-r65mq79qqu1rfsefprppo62d8uldei4r.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,6 +37,13 @@
             {
               "client_id": "798764963681-r65mq79qqu1rfsefprppo62d8uldei4r.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "798764963681-c3eooef72gn24uofnjmsnbh22fjekmi5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.newEducationApp"
+              }
             }
           ]
         }
