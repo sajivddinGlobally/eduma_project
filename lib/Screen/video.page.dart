@@ -672,7 +672,6 @@
 ///////////////////////////////////////////////////////////////////////////////////
 ///import 'dart:async';
 
-
 import 'dart:async';
 import 'dart:io'; // Add this for Platform.isAndroid
 import 'package:flutter/material.dart';
@@ -681,7 +680,7 @@ import 'package:hive/hive.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:android_pip/android_pip.dart'; 
+import 'package:android_pip/android_pip.dart';
 
 class VideoPage extends StatefulWidget {
   final String videoId;
@@ -706,6 +705,7 @@ class _VideoPageState extends State<VideoPage> {
   int? _savedPositionMs;
   bool _hasSoughtToSaved = false;
   DateTime? _lastSaveTime;
+  DateTime? _lastUpdateTime; // For throttling setState
 
   String timeAgo(DateTime date) {
     final diff = DateTime.now().difference(date);
@@ -844,27 +844,33 @@ class _VideoPageState extends State<VideoPage> {
           ),
         )..addListener(() {
           if (mounted) {
+            final now = DateTime.now();
             final position = _controller.value.position.inSeconds;
             final duration = _controller.metadata.duration.inSeconds;
-            setState(() {
-              _isPlaying = _controller.value.isPlaying;
-              // Update progress
-              if (_controller.metadata.duration != Duration.zero) {
-                _progress =
-                    _controller.value.position.inMilliseconds.toDouble() /
-                    _controller.metadata.duration.inMilliseconds.toDouble();
-              }
-              // Handle video completion
-              if (_isVideoCompleted && _controller.value.isPlaying) {
-                _isVideoCompleted = false;
-              }
-              if (!_controller.value.isPlaying &&
-                  position >= (duration - 1) &&
-                  !_isVideoCompleted &&
-                  duration > 0) {
-                _isVideoCompleted = true;
-              }
-            });
+            // Throttle setState to avoid excessive rebuilds
+            if (_lastUpdateTime == null ||
+                now.difference(_lastUpdateTime!).inMilliseconds > 200) {
+              setState(() {
+                _isPlaying = _controller.value.isPlaying;
+                // Update progress
+                if (_controller.metadata.duration != Duration.zero) {
+                  _progress =
+                      _controller.value.position.inMilliseconds.toDouble() /
+                      _controller.metadata.duration.inMilliseconds.toDouble();
+                }
+                // Handle video completion
+                if (_isVideoCompleted && _controller.value.isPlaying) {
+                  _isVideoCompleted = false;
+                }
+                if (!_controller.value.isPlaying &&
+                    position >= (duration - 1) &&
+                    !_isVideoCompleted &&
+                    duration > 0) {
+                  _isVideoCompleted = true;
+                }
+              });
+              _lastUpdateTime = now;
+            }
 
             // Seek to saved position when initialized
             if (!_hasSoughtToSaved && _controller.value.isReady) {
@@ -1388,7 +1394,6 @@ class _VideoPageState extends State<VideoPage> {
     );
   }
 }
-
 
 
 

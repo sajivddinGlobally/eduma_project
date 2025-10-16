@@ -285,9 +285,14 @@ class _CustomProfileDrawerState extends ConsumerState<CustomProfileDrawer> {
                     Navigator.pop(context);
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        duration: Duration(seconds: 2),
+                        //duration: Duration(seconds: 2),
                         content: Text("Logout Successfull"),
+                        margin: EdgeInsets.all(20),
+                        behavior: SnackBarBehavior.floating,
                         backgroundColor: Colors.red,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.r),
+                        ),
                       ),
                     );
                     Navigator.pushAndRemoveUntil(
