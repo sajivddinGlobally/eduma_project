@@ -64,7 +64,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '798764963681',
     projectId: 'atatc-surat',
     storageBucket: 'atatc-surat.firebasestorage.app',
-    androidClientId: '798764963681-j70mf840n698lmdbf42sm537qu0t8rf7.apps.googleusercontent.com',
+    androidClientId: '798764963681-apu0b6ne2c3voc85oenbktd293tblktl.apps.googleusercontent.com',
     iosClientId: '798764963681-c3eooef72gn24uofnjmsnbh22fjekmi5.apps.googleusercontent.com',
     iosBundleId: 'com.example.newEducationApp',
   );
@@ -75,7 +75,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '798764963681',
     projectId: 'atatc-surat',
     storageBucket: 'atatc-surat.firebasestorage.app',
-    androidClientId: '798764963681-j70mf840n698lmdbf42sm537qu0t8rf7.apps.googleusercontent.com',
+    androidClientId: '798764963681-apu0b6ne2c3voc85oenbktd293tblktl.apps.googleusercontent.com',
     iosClientId: '798764963681-c3eooef72gn24uofnjmsnbh22fjekmi5.apps.googleusercontent.com',
     iosBundleId: 'com.example.newEducationApp',
   );
