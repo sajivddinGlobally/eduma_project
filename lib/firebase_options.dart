@@ -40,54 +40,53 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCPyUznhrikWOcGpoamNEdvolUa-G8ArY4',
-    appId: '1:798764963681:android:52fb0667dda8c6c2801720',
-    messagingSenderId: '798764963681',
-    projectId: 'atatc-surat',
-    storageBucket: 'atatc-surat.firebasestorage.app',
-  );
-
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBO6hJybBT4SvNH5NMINNsnhDYrc_JwM7w',
-    appId: '1:798764963681:web:44f8d73b2413bfb8801720',
-    messagingSenderId: '798764963681',
-    projectId: 'atatc-surat',
-    authDomain: 'atatc-surat.firebaseapp.com',
-    storageBucket: 'atatc-surat.firebasestorage.app',
-    measurementId: 'G-J7D7DDC0RT',
+    apiKey: 'AIzaSyBdFYb_QfE2aoY5xVniG5BxUNBqCjmqJfM',
+    appId: '1:798534355553:web:03504a1b9d6ff436a57820',
+    messagingSenderId: '798534355553',
+    projectId: 'edumaappnew',
+    authDomain: 'edumaappnew.firebaseapp.com',
+    storageBucket: 'edumaappnew.firebasestorage.app',
+    measurementId: 'G-QLHH7F61XS',
   );
 
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyAVVs-_CLFZ0YN6hDfOTSr5lQVJEIJR3mU',
-    appId: '1:798764963681:ios:502b4501c445f4bb801720',
-    messagingSenderId: '798764963681',
-    projectId: 'atatc-surat',
-    storageBucket: 'atatc-surat.firebasestorage.app',
-    androidClientId: '798764963681-apu0b6ne2c3voc85oenbktd293tblktl.apps.googleusercontent.com',
-    iosClientId: '798764963681-c3eooef72gn24uofnjmsnbh22fjekmi5.apps.googleusercontent.com',
-    iosBundleId: 'com.example.newEducationApp',
+  static const FirebaseOptions android = FirebaseOptions(
+    apiKey: 'AIzaSyDNasxF3h_cCXJtzIsvWL8dppgaqjl8btw',
+    appId: '1:798534355553:android:048da4e68ed52d5ca57820',
+    messagingSenderId: '798534355553',
+    projectId: 'edumaappnew',
+    storageBucket: 'edumaappnew.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAVVs-_CLFZ0YN6hDfOTSr5lQVJEIJR3mU',
-    appId: '1:798764963681:ios:502b4501c445f4bb801720',
-    messagingSenderId: '798764963681',
-    projectId: 'atatc-surat',
-    storageBucket: 'atatc-surat.firebasestorage.app',
-    androidClientId: '798764963681-apu0b6ne2c3voc85oenbktd293tblktl.apps.googleusercontent.com',
-    iosClientId: '798764963681-c3eooef72gn24uofnjmsnbh22fjekmi5.apps.googleusercontent.com',
+    apiKey: 'AIzaSyBcilx9Aic3i1xrhEZoRXdCwPbGu334_QY',
+    appId: '1:798534355553:ios:932d2f7479409eb5a57820',
+    messagingSenderId: '798534355553',
+    projectId: 'edumaappnew',
+    storageBucket: 'edumaappnew.firebasestorage.app',
+    androidClientId: '798534355553-pr5a7ag85kumfrfnmdvi30qi0nir8fuj.apps.googleusercontent.com',
+    iosClientId: '798534355553-njdab13bu0muvvvi46dv7b7280cnkqqn.apps.googleusercontent.com',
+    iosBundleId: 'com.example.newEducationApp',
+  );
+
+  static const FirebaseOptions macos = FirebaseOptions(
+    apiKey: 'AIzaSyBcilx9Aic3i1xrhEZoRXdCwPbGu334_QY',
+    appId: '1:798534355553:ios:932d2f7479409eb5a57820',
+    messagingSenderId: '798534355553',
+    projectId: 'edumaappnew',
+    storageBucket: 'edumaappnew.firebasestorage.app',
+    androidClientId: '798534355553-pr5a7ag85kumfrfnmdvi30qi0nir8fuj.apps.googleusercontent.com',
+    iosClientId: '798534355553-njdab13bu0muvvvi46dv7b7280cnkqqn.apps.googleusercontent.com',
     iosBundleId: 'com.example.newEducationApp',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyBO6hJybBT4SvNH5NMINNsnhDYrc_JwM7w',
-    appId: '1:798764963681:web:df9d44f7359a3d79801720',
-    messagingSenderId: '798764963681',
-    projectId: 'atatc-surat',
-    authDomain: 'atatc-surat.firebaseapp.com',
-    storageBucket: 'atatc-surat.firebasestorage.app',
-    measurementId: 'G-4MEHLDMQCE',
+    apiKey: 'AIzaSyBdFYb_QfE2aoY5xVniG5BxUNBqCjmqJfM',
+    appId: '1:798534355553:web:27b036834c997e27a57820',
+    messagingSenderId: '798534355553',
+    projectId: 'edumaappnew',
+    authDomain: 'edumaappnew.firebaseapp.com',
+    storageBucket: 'edumaappnew.firebasestorage.app',
+    measurementId: 'G-X0KE4RJN7V',
   );
-
 }

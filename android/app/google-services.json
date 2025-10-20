@@ -1,45 +1,45 @@
 {
   "project_info": {
-    "project_number": "798764963681",
-    "project_id": "atatc-surat",
-    "storage_bucket": "atatc-surat.firebasestorage.app"
+    "project_number": "798534355553",
+    "project_id": "edumaappnew",
+    "storage_bucket": "edumaappnew.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:798764963681:android:52fb0667dda8c6c2801720",
+        "mobilesdk_app_id": "1:798534355553:android:048da4e68ed52d5ca57820",
         "android_client_info": {
-          "package_name": "com.eduma.new"
+          "package_name": "com.edumaAppNew"
         }
       },
       "oauth_client": [
         {
-          "client_id": "798764963681-t70teej6nducp1faf48f7jpn2gbkq25u.apps.googleusercontent.com",
+          "client_id": "798534355553-pr5a7ag85kumfrfnmdvi30qi0nir8fuj.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.eduma.new",
-            "certificate_hash": "c3b13890be57921878420816a6993cf2c81d16b5"
+            "package_name": "com.edumaAppNew",
+            "certificate_hash": "8c877291d6b57a9e2337df7b8c927f4946f90311"
           }
         },
         {
-          "client_id": "798764963681-r65mq79qqu1rfsefprppo62d8uldei4r.apps.googleusercontent.com",
+          "client_id": "798534355553-3urc561oa73j3hnduokhkq294gvjfrcj.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCPyUznhrikWOcGpoamNEdvolUa-G8ArY4"
+          "current_key": "AIzaSyDNasxF3h_cCXJtzIsvWL8dppgaqjl8btw"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "798764963681-r65mq79qqu1rfsefprppo62d8uldei4r.apps.googleusercontent.com",
+              "client_id": "798534355553-3urc561oa73j3hnduokhkq294gvjfrcj.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "798764963681-c3eooef72gn24uofnjmsnbh22fjekmi5.apps.googleusercontent.com",
+              "client_id": "798534355553-njdab13bu0muvvvi46dv7b7280cnkqqn.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
                 "bundle_id": "com.example.newEducationApp"

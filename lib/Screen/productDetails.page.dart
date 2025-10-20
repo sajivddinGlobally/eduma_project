@@ -411,29 +411,29 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                   //decoration: TextDecoration.lineThrough,
                                 ),
                               ),
-                              SizedBox(width: 12.w),
-                              // if (data.backorders != null)
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 8.w,
-                                  vertical: 4.h,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Color(0xFF1BB93D).withOpacity(0.1),
-                                  borderRadius: BorderRadius.circular(6.r),
-                                ),
-                                child: Text(
-                                  "${data.amsPriceToDisplay} % off",
-                                  style: GoogleFonts.roboto(
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w500,
-                                    color: Color(0xFF1BB93D),
-                                  ),
-                                ),
-                              ),
+                              // SizedBox(width: 12.w),
+                              // // if (data.backorders != null)
+                              // Container(
+                              //   padding: EdgeInsets.symmetric(
+                              //     horizontal: 8.w,
+                              //     vertical: 4.h,
+                              //   ),
+                              //   decoration: BoxDecoration(
+                              //     color: Color(0xFF1BB93D).withOpacity(0.1),
+                              //     borderRadius: BorderRadius.circular(6.r),
+                              //   ),
+                              //   child: Text(
+                              //     "${data.p} % off",
+                              //     style: GoogleFonts.roboto(
+                              //       fontSize: 14.sp,
+                              //       fontWeight: FontWeight.w500,
+                              //       color: Color(0xFF1BB93D),
+                              //     ),
+                              //   ),
+                              // ),
                             ],
                           ),
-                          SizedBox(height: 24.h),
+                          SizedBox(height: 20.h),
                           Text(
                             "Description",
                             style: GoogleFonts.roboto(

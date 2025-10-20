@@ -30,7 +30,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.eduma.new"
+        applicationId = "com.edumaAppNew"
         minSdk = 24
         targetSdk = 34
         versionCode = flutter.versionCode
