@@ -5,6 +5,8 @@ import 'package:eduma_app/config/network/api.state.dart';
 import 'package:eduma_app/config/utils/navigatorKey.dart';
 import 'package:eduma_app/config/utils/pretty.dio.dart';
 import 'package:eduma_app/data/Model/loginResModel.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hive_flutter/adapters.dart';
