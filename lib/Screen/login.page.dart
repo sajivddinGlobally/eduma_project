@@ -96,7 +96,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(40.r),
                         borderSide: BorderSide(
-                          color: Color.fromARGB(25, 0, 0, 0),
+                         color: Color(0xFF3e64de),
                           width: 1.w,
                         ),
                       ),
@@ -132,7 +132,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(40.r),
                         borderSide: BorderSide(
-                          color: Color.fromARGB(25, 0, 0, 0),
+                          color: Color(0xFF3e64de),
                           width: 1.w,
                         ),
                       ),

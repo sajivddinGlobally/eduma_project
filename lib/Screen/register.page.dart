@@ -81,8 +81,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage>
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(40.r),
                       borderSide: BorderSide(
-                        color: Color.fromARGB(25, 0, 0, 0),
-                        width: 1.w,
+                         color: Color(0xFF3e64de),
                       ),
                     ),
                     errorBorder: OutlineInputBorder(
@@ -95,7 +94,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage>
                     focusedErrorBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(40.r),
                       borderSide: BorderSide(
-                        color: Color.fromARGB(25, 0, 0, 0),
+                        color: Colors.red,
                         width: 1.w,
                       ),
                     ),
@@ -139,7 +138,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage>
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(40.r),
                       borderSide: BorderSide(
-                        color: Color.fromARGB(25, 0, 0, 0),
+                        color: Color(0xFF3e64de),
                         width: 1.w,
                       ),
                     ),
@@ -153,7 +152,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage>
                     focusedErrorBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(40.r),
                       borderSide: BorderSide(
-                        color: Color.fromARGB(25, 0, 0, 0),
+                        color: Colors.red,
                         width: 1.w,
                       ),
                     ),
@@ -201,7 +200,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage>
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(40.r),
                       borderSide: BorderSide(
-                        color: Color.fromARGB(25, 0, 0, 0),
+                        color: Color(0xFF3e64de),
                         width: 1.w,
                       ),
                     ),
@@ -215,7 +214,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage>
                     focusedErrorBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(40.r),
                       borderSide: BorderSide(
-                        color: Color.fromARGB(25, 0, 0, 0),
+                        color: Colors.red,
                         width: 1.w,
                       ),
                     ),
@@ -270,7 +269,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage>
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(40.r),
                       borderSide: BorderSide(
-                        color: Color.fromARGB(25, 0, 0, 0),
+                        color: Color(0xFF3e64de),
                         width: 1.w,
                       ),
                     ),
@@ -284,7 +283,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage>
                     focusedErrorBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(40.r),
                       borderSide: BorderSide(
-                        color: Color.fromARGB(25, 0, 0, 0),
+                        color: Colors.red,
                         width: 1.w,
                       ),
                     ),

@@ -376,7 +376,7 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage>
                                 ),
                               ),
                       ),
-                      SizedBox(height: 10.h,)
+                      SizedBox(height: 10.h),
                     ],
                   ),
                 ),
@@ -435,7 +435,7 @@ class ProfileBody extends StatelessWidget {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(40.r),
-              borderSide: const BorderSide(color: Color.fromARGB(25, 0, 0, 0)),
+              borderSide: const BorderSide(color: Color(0xFF3e64de)),
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(40.r),
@@ -443,7 +443,7 @@ class ProfileBody extends StatelessWidget {
             ),
             focusedErrorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(40.r),
-              borderSide: const BorderSide(color: Color.fromARGB(25, 0, 0, 0)),
+              borderSide: const BorderSide(color: Colors.red),
             ),
           ),
           validator: (value) {
