@@ -126,7 +126,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                         height: 280.h,
                         child: PageView.builder(
                           controller: _pageController,
-                          itemCount: data.images.length,
+                          itemCount: data.images!.length,
                           itemBuilder: (context, index) {
                             return InkWell(
                               onTap: () {
@@ -140,7 +140,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                           return Stack(
                                             children: [
                                               PhotoViewGallery.builder(
-                                                itemCount: data.images.length,
+                                                itemCount: data.images!.length,
                                                 pageController: _controller,
                                                 backgroundDecoration:
                                                     const BoxDecoration(
@@ -149,7 +149,8 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                                 builder: (context, i) {
                                                   return PhotoViewGalleryPageOptions(
                                                     imageProvider: NetworkImage(
-                                                      data.images[i].src,
+                                                      data.images![i].src
+                                                          .toString(),
                                                     ),
                                                     minScale:
                                                         PhotoViewComputedScale
@@ -161,8 +162,9 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                                     heroAttributes:
                                                         PhotoViewHeroAttributes(
                                                           tag: data
-                                                              .images[i]
-                                                              .medium,
+                                                              .images![i]
+                                                              .medium
+                                                              .toString(),
                                                         ),
                                                   );
                                                 },
@@ -193,7 +195,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                                           ),
                                                     ),
                                                     Text(
-                                                      "${currentIndex + 1} / ${data.images.length}", // 1-based index
+                                                      "${currentIndex + 1} / ${data.images!.length}", // 1-based index
                                                       style: const TextStyle(
                                                         color: Colors.white,
                                                         fontSize: 16,
@@ -224,7 +226,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                           15.r,
                                         ),
                                         child: Image.network(
-                                          data.images[index].src,
+                                          data.images![index].src.toString(),
                                           width: double.infinity,
                                           fit: BoxFit.cover,
                                           errorBuilder:
@@ -267,8 +269,8 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                         ),
                                         onPressed: () {
                                           // Use permalink from API response
-                                          final String shareUrl =
-                                              data.permalink;
+                                          final String shareUrl = data.permalink
+                                              .toString();
                                           final String shareText =
                                               '''
       📚 ${data.name}
@@ -316,7 +318,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                     Center(
                       child: SmoothPageIndicator(
                         controller: _pageController,
-                        count: data.images.length,
+                        count: data.images!.length,
                         effect: ExpandingDotsEffect(
                           dotHeight: 10.h,
                           dotWidth: 10.w,
@@ -458,7 +460,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                           ),
                           SizedBox(height: 8.h),
                           Text(
-                            data.categories[0].name ?? 'Uncategorized',
+                            data.categories![0].name ?? 'Uncategorized',
                             style: GoogleFonts.roboto(
                               fontSize: 14.sp,
                               fontWeight: FontWeight.w400,
@@ -476,7 +478,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                           ),
                           SizedBox(height: 8.h),
                           Html(
-                            data: data.wcfmProductPolicyData.shippingPolicy
+                            data: data.wcfmProductPolicyData!.shippingPolicy
                                 .toString(),
                             style: {
                               "body": Style(
@@ -786,7 +788,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                 return;
               }
               final body = ProductAddCartBodyModel(
-                productId: data.id,
+                productId: data.id ?? 0,
                 quantity: 1,
               );
 

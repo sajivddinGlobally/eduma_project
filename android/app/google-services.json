@@ -14,11 +14,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "798534355553-pr5a7ag85kumfrfnmdvi30qi0nir8fuj.apps.googleusercontent.com",
+          "client_id": "798534355553-rq2bjbtp15cfkbtp81v1f1d077em7to9.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.edumaAppNew",
-            "certificate_hash": "8c877291d6b57a9e2337df7b8c927f4946f90311"
+            "certificate_hash": "c3b13890be57921878420816a6993cf2c81d16b5"
           }
         },
         {

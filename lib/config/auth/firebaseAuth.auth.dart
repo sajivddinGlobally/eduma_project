@@ -55,6 +55,18 @@ class AuthRepository {
 
       return response;
     } catch (e, st) {
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //                 SnackBar(
+      //                   //duration: Duration(seconds: 2),
+      //                   content: Text("Logout Successfull"),
+      //                   margin: EdgeInsets.all(20),
+      //                   behavior: SnackBarBehavior.floating,
+      //                   backgroundColor: Colors.red,
+      //                   shape: RoundedRectangleBorder(
+      //                     borderRadius: BorderRadius.circular(20.r),
+      //                   ),
+      //                 ),
+      //               );
       log("Google Sign-In Error: $e");
       log("STACK: $st");
       return null;
