@@ -426,6 +426,7 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
               },
               error: (error, stackTrace) {
                 log(stackTrace.toString());
+                log(error.toString());
                 return Center(
                   child: Text(
                     "Error: $error",
