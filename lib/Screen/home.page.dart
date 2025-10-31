@@ -1177,7 +1177,7 @@ class _LearningBodyState extends ConsumerState<LearningBody> {
                       ),
                       SizedBox(height: 10.h),
                       Container(
-                        width: 295.w,
+                        width: 290.w,
                         height: 14.h,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(16.r),
