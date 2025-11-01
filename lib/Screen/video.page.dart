@@ -494,6 +494,7 @@ class _VideoPageState extends State<VideoPage> {
               }
             }
           },
+
           child: Scaffold(
             backgroundColor: const Color(0xFFFFFFFF),
             body: _isLoading
