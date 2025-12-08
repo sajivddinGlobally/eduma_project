@@ -348,8 +348,10 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                   ),
                                 ),
                               ),
-                              variation.isNotEmpty
-                                  ? Container(
+                              // variation.isNotEmpty
+                              //     ? 
+                                  
+                                  Container(
                                       padding: EdgeInsets.only(
                                         left: 10.w,
                                         right: 10.w,
@@ -389,7 +391,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                         },
                                       ),
                                     )
-                                  : SizedBox.shrink(),
+                                 // : SizedBox.shrink(),
                             ],
                           ),
                           SizedBox(height: 12.h),
