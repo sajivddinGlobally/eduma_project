@@ -27,6 +27,7 @@ class ShopPage extends ConsumerStatefulWidget {
 
 class _ShopPageState extends ConsumerState<ShopPage> {
   final TextEditingController _searchController = TextEditingController();
+
   String searchQuery = '';
   int tab = 0;
 
@@ -50,12 +51,17 @@ class _ShopPageState extends ConsumerState<ShopPage> {
             child: Row(
               children: [
                 SizedBox(width: 20.w),
-                Padding(
-                  padding: EdgeInsets.only(left: 0.w),
-                  child: Image.asset(
-                    "assets/logo.png",
-                    width: 45.w,
-                    height: 45.h,
+                InkWell(
+                  onTap: () {
+                    Scaffold.of(context).openDrawer();
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 0.w),
+                    child: Image.asset(
+                      "assets/logo.png",
+                      width: 45.w,
+                      height: 45.h,
+                    ),
                   ),
                 ),
                 SizedBox(width: 10.w),

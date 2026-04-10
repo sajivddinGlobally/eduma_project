@@ -226,32 +226,61 @@ final priceTypeValues = EnumValues({
     "paid": PriceType.PAID
 });
 
+// class Stats {
+//     int totalStudents;
+//     int totalLessons;
+//     int averageRating;
+//     int ratingCount;
+
+//     Stats({
+//         required this.totalStudents,
+//         required this.totalLessons,
+//         required this.averageRating,
+//         required this.ratingCount,
+//     });
+
+//     factory Stats.fromJson(Map<String, dynamic> json) => Stats(
+//         totalStudents: json["total_students"],
+//         totalLessons: json["total_lessons"],
+//         averageRating: json["average_rating"],
+//         ratingCount: json["rating_count"],
+//     );
+
+//     Map<String, dynamic> toJson() => {
+//         "total_students": totalStudents,
+//         "total_lessons": totalLessons,
+//         "average_rating": averageRating,
+//         "rating_count": ratingCount,
+//     };
+// }
 class Stats {
-    int totalStudents;
-    int totalLessons;
-    int averageRating;
-    int ratingCount;
+  int totalStudents;
+  int totalLessons;
+  // num use karne se int aur double dono accept ho jayenge
+  num averageRating; 
+  int ratingCount;
 
-    Stats({
-        required this.totalStudents,
-        required this.totalLessons,
-        required this.averageRating,
-        required this.ratingCount,
-    });
+  Stats({
+    required this.totalStudents,
+    required this.totalLessons,
+    required this.averageRating,
+    required this.ratingCount,
+  });
 
-    factory Stats.fromJson(Map<String, dynamic> json) => Stats(
-        totalStudents: json["total_students"],
-        totalLessons: json["total_lessons"],
-        averageRating: json["average_rating"],
-        ratingCount: json["rating_count"],
-    );
+  factory Stats.fromJson(Map<String, dynamic> json) => Stats(
+        totalStudents: json["total_students"] ?? 0,
+        totalLessons: json["total_lessons"] ?? 0,
+        // (json["average_rating"] as num) likhna sabse safe hai
+        averageRating: json["average_rating"] ?? 0.0,
+        ratingCount: json["rating_count"] ?? 0,
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "total_students": totalStudents,
         "total_lessons": totalLessons,
         "average_rating": averageRating,
         "rating_count": ratingCount,
-    };
+      };
 }
 
 class EnumValues<T> {

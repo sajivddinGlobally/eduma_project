@@ -25,9 +25,10 @@ Dio createDio() {
       onRequest: (options, handler) {
         var box = Hive.box("userBox");
         var token = box.get("token");
-
+        log("TOKEN FROM HIVE: $token");
         options.headers.addAll({
           'Content-Type': 'application/json',
+          'Accept': 'application/json',
           if (token != null) 'Authorization': 'Bearer $token',
         });
         handler.next(options);
