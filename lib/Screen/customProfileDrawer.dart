@@ -29,6 +29,7 @@ class CustomProfileDrawer extends ConsumerStatefulWidget {
 
 class _CustomProfileDrawerState extends ConsumerState<CustomProfileDrawer> {
   bool isCheck = false;
+  bool isLogoutLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -280,68 +281,104 @@ class _CustomProfileDrawerState extends ConsumerState<CustomProfileDrawer> {
                     showDialog(
                       context: context,
                       builder: (context) {
-                        return AlertDialog(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          title: const Text("Logout"),
-                          content: const Text(
-                            "Are you sure you want to logout?",
-                          ),
-                          actions: [
-                            TextButton(
-                              onPressed: () {
-                                Navigator.pop(context); // ❌ close dialog
-                              },
-                              child: const Text("Cancel"),
-                            ),
+                        bool isLoading = false;
 
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                foregroundColor: Colors.white,
-                                backgroundColor: Colors.red,
+                        return StatefulBuilder(
+                          builder: (context, setStateDialog) {
+                            return AlertDialog(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
                               ),
-                              onPressed: () async {
-                                await AuthRepository().signOut();
-                                box.clear();
-                                final container = ProviderScope.containerOf(
-                                  context,
-                                  listen: false,
-                                );
-
-                                await box.clear();
-
-                                container.invalidate(popularCourseController);
-                                container.invalidate(allCategoryController);
-                                container.invalidate(latestCourseController);
-                                container.invalidate(
-                                  productListBooksController,
-                                );
-                                container.invalidate(enrollCourseController);
-                                log("Clearing Data");
-                                Navigator.pop(context);
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text("Logout Successfull"),
-                                    margin: EdgeInsets.all(20),
-                                    behavior: SnackBarBehavior.floating,
-                                    backgroundColor: Colors.red,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20.r),
+                              title: const Text("Logout"),
+                              content: isLoading
+                                  ? SizedBox(
+                                      height: 60,
+                                      child: Center(
+                                        child: CircularProgressIndicator(),
+                                      ),
+                                    )
+                                  : const Text(
+                                      "Are you sure you want to logout?",
                                     ),
-                                  ),
-                                );
-                                Navigator.pushAndRemoveUntil(
-                                  context,
-                                  CupertinoPageRoute(
-                                    builder: (context) => LoginPage(),
-                                  ),
-                                  (route) => false,
-                                );
-                              },
-                              child: const Text("Logout"),
-                            ),
-                          ],
+                              actions: isLoading
+                                  ? []
+                                  : [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Text("Cancel"),
+                                      ),
+                                      ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          foregroundColor: Colors.white,
+                                          backgroundColor: Colors.red,
+                                        ),
+                                        onPressed: () async {
+                                          setStateDialog(() {
+                                            isLoading = true;
+                                          });
+
+                                          var box = Hive.box("userBox");
+
+                                          await AuthRepository().signOut();
+                                          await box.clear();
+
+                                          final container =
+                                              ProviderScope.containerOf(
+                                                context,
+                                                listen: false,
+                                              );
+
+                                          container.invalidate(
+                                            popularCourseController,
+                                          );
+                                          container.invalidate(
+                                            allCategoryController,
+                                          );
+                                          container.invalidate(
+                                            latestCourseController,
+                                          );
+                                          container.invalidate(
+                                            productListBooksController,
+                                          );
+                                          container.invalidate(
+                                            enrollCourseController,
+                                          );
+
+                                          Navigator.pop(context);
+
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                "Logout Successful",
+                                              ),
+                                              margin: EdgeInsets.all(20),
+                                              behavior:
+                                                  SnackBarBehavior.floating,
+                                              backgroundColor: Colors.red,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(20.r),
+                                              ),
+                                            ),
+                                          );
+
+                                          Navigator.pushAndRemoveUntil(
+                                            context,
+                                            CupertinoPageRoute(
+                                              builder: (context) => LoginPage(),
+                                            ),
+                                            (route) => false,
+                                          );
+                                        },
+                                        child: const Text("Logout"),
+                                      ),
+                                    ],
+                            );
+                          },
                         );
                       },
                     );
