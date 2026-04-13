@@ -196,6 +196,12 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                   content: Text(
                                     "Please Enter User Name and Password",
                                   ),
+                                  margin: EdgeInsets.all(20),
+                                  behavior: SnackBarBehavior.floating,
+                                  backgroundColor: Colors.red,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20.r),
+                                  ),
                                 ),
                               );
                               return;
