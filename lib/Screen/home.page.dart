@@ -832,6 +832,24 @@ class _PopularCourState extends State<PopularCour> {
                       fit: BoxFit.fill,
                     );
                   },
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return Container(
+                      width: 200.w,
+                      height: 130.h,
+                      alignment: Alignment.center,
+                      child: Center(
+                        child: SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            color: Colors.blueAccent,
+                            strokeWidth: 1.w,
+                          ),
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ),
             ),
@@ -1290,6 +1308,24 @@ class _PopularBodyState extends State<PopularBody> {
                           fit: BoxFit.fill,
                         );
                       },
+                      loadingBuilder: (context, child, loadingProgress) {
+                        if (loadingProgress == null) return child;
+                        return Container(
+                          width: 200.w,
+                          height: 130.h,
+                          alignment: Alignment.center,
+                          child: Center(
+                            child: SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                color: Colors.blueAccent,
+                                strokeWidth: 1.w,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   ),
                 ),
@@ -1445,13 +1481,7 @@ class _allProductState extends State<allProduct> {
               },
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10.r),
-                // child: Image.network(
-                //   // "assets/learning1.png",
-                //   productList[index].images[0].medium,
-                //   width: 190.w,
-                //   height: 125.h,
-                //   fit: BoxFit.cover,
-                // ),
+
                 child: Image.network(
                   (widget.data.image != null && widget.data.image!.isNotEmpty)
                       ? widget.data.image
@@ -1459,6 +1489,24 @@ class _allProductState extends State<allProduct> {
                   width: 190.w,
                   height: 125.h,
                   fit: BoxFit.cover,
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return Container(
+                      width: 200.w,
+                      height: 130.h,
+                      alignment: Alignment.center,
+                      child: Center(
+                        child: SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            color: Colors.blueAccent,
+                            strokeWidth: 1.w,
+                          ),
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ),
             ),

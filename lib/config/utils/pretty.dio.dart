@@ -4,8 +4,14 @@ import 'package:eduma_app/Screen/login.page.dart';
 import 'package:eduma_app/config/core/showFlushbar.dart';
 import 'package:eduma_app/config/utils/basiAuth.dart';
 import 'package:eduma_app/config/utils/navigatorKey.dart';
+import 'package:eduma_app/data/Controller/allCategoryController.dart';
+import 'package:eduma_app/data/Controller/enrolleCourseController.dart';
+import 'package:eduma_app/data/Controller/latestCourseController.dart';
+import 'package:eduma_app/data/Controller/popularCourseController.dart';
+import 'package:eduma_app/data/Controller/productListController.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
@@ -50,6 +56,17 @@ Dio createDio() {
           if (statusCode == 401) {
             final box = Hive.box("userBox");
             box.delete("token");
+            final container = ProviderScope.containerOf(
+              globalContext,
+              listen: false,
+            );
+
+            container.invalidate(popularCourseController);
+            container.invalidate(allCategoryController);
+            container.invalidate(latestCourseController);
+            container.invalidate(productListBooksController);
+            container.invalidate(enrollCourseController);
+
             Navigator.pushAndRemoveUntil(
               globalContext,
               CupertinoPageRoute(builder: (context) => const LoginPage()),

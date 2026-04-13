@@ -7,6 +7,7 @@ import 'package:eduma_app/config/core/showFlushbar.dart';
 import 'package:eduma_app/config/network/api.state.dart';
 import 'package:eduma_app/config/utils/pretty.dio.dart';
 import 'package:eduma_app/data/Controller/allCategoryController.dart';
+import 'package:eduma_app/data/Controller/enrolleCourseController.dart';
 import 'package:eduma_app/data/Controller/googleLoginController.dart';
 import 'package:eduma_app/data/Controller/latestCourseController.dart';
 import 'package:eduma_app/data/Controller/popularCourseController.dart';
@@ -224,13 +225,14 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                   context,
                                   listen: false,
                                 );
-
                                 container.invalidate(popularCourseController);
                                 container.invalidate(allCategoryController);
                                 container.invalidate(latestCourseController);
                                 container.invalidate(
                                   productListBooksController,
                                 );
+                                container.invalidate(enrollCourseController);
+
                                 Navigator.pushAndRemoveUntil(
                                   context,
                                   CupertinoPageRoute(
