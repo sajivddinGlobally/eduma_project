@@ -53,19 +53,6 @@ class _HomePageState extends ConsumerState<HomePage> {
     _getToken();
   }
 
-  void refreshHomeApis() {
-    ref.refresh(popularCourseController);
-    ref.refresh(allCategoryController);
-    ref.refresh(latestCourseController);
-    ref.refresh(productListBooksController);
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    refreshHomeApis();
-  }
-
   Future<void> _getToken() async {
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {

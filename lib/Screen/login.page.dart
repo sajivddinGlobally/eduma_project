@@ -6,7 +6,11 @@ import 'package:eduma_app/config/auth/firebaseAuth.auth.dart';
 import 'package:eduma_app/config/core/showFlushbar.dart';
 import 'package:eduma_app/config/network/api.state.dart';
 import 'package:eduma_app/config/utils/pretty.dio.dart';
+import 'package:eduma_app/data/Controller/allCategoryController.dart';
 import 'package:eduma_app/data/Controller/googleLoginController.dart';
+import 'package:eduma_app/data/Controller/latestCourseController.dart';
+import 'package:eduma_app/data/Controller/popularCourseController.dart';
+import 'package:eduma_app/data/Controller/productListController.dart';
 import 'package:eduma_app/data/Model/googleLoginBodyModel.dart';
 import 'package:eduma_app/data/Model/loginBodyModel.dart';
 import 'package:flutter/cupertino.dart';
@@ -205,16 +209,28 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             try {
                               final service = APIStateNetwork(createDio());
                               final response = await service.login(body);
-                              await box.put("storeName", response.storeName);
-                              await box.put(
-                                "userNicename",
-                                response.userNicename,
-                              );
-                              await box.put("token", response.token);
-                              await box.put("userEmail", response.userEmail);
-                              await box.put("storeId", response.storeId);
 
                               if (response != null) {
+                                await box.put("storeName", response.storeName);
+                                await box.put(
+                                  "userNicename",
+                                  response.userNicename,
+                                );
+                                await box.put("token", response.token);
+                                await box.put("userEmail", response.userEmail);
+                                await box.put("storeId", response.storeId);
+
+                                final container = ProviderScope.containerOf(
+                                  context,
+                                  listen: false,
+                                );
+
+                                container.invalidate(popularCourseController);
+                                container.invalidate(allCategoryController);
+                                container.invalidate(latestCourseController);
+                                container.invalidate(
+                                  productListBooksController,
+                                );
                                 Navigator.pushAndRemoveUntil(
                                   context,
                                   CupertinoPageRoute(
