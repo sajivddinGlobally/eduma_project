@@ -187,13 +187,6 @@ class _CustomProfileDrawerState extends ConsumerState<CustomProfileDrawer> {
                       Padding(
                         padding: EdgeInsets.only(left: 12.w),
                         child: Text(
-                          // "Annu Agarwal",
-                          // box.get("storeName").toString(),
-                          // profile..toString() ?? ,
-                          // profile.displayName.isEmpty ||
-                          //         profile.displayName == null
-                          //     ? box.get("storeName")
-                          //     : box.get("userNicename"),
                           profile.displayName,
                           style: GoogleFonts.roboto(
                             fontSize: 16.sp,

@@ -147,7 +147,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 18.h),
+                    SizedBox(height: 15.h),
                     Padding(
                       padding: EdgeInsets.only(left: 20.w, right: 20.w),
                       child: Row(

@@ -64,28 +64,36 @@ class _MyAppState extends ConsumerState<MyApp> {
     var token = box.get("token");
     log("////////////////////////////");
     log(token ?? "No token found");
-    return SafeArea(
-      child: ScreenUtilInit(
-        designSize: Size(440, 956),
-        minTextAdapt: true,
-        splitScreenMode: true,
-        builder: (context, child) {
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            navigatorKey: navigatorKey,
-            title: 'Flutter Demo',
+    return AnnotatedRegion(
+      value: const SystemUiOverlayStyle(
+        // statusBarColor: Colors.grey,
+        statusBarColor: Color(0xFFF5F7FA),
+        statusBarIconBrightness: Brightness.dark,
+        statusBarBrightness: Brightness.light,
+      ),
+      child: SafeArea(
+        child: ScreenUtilInit(
+          designSize: Size(440, 956),
+          minTextAdapt: true,
+          splitScreenMode: true,
+          builder: (context, child) {
+            return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              navigatorKey: navigatorKey,
+              title: 'ATATC Surat',
 
-            theme: lightTheme,
+              theme: lightTheme,
 
-            darkTheme: darkTheme,
+              darkTheme: darkTheme,
 
-            themeMode: themeMode,
+              themeMode: themeMode,
 
-            home: token == null ? OnbordingPage() : HomePage(),
+              home: token == null ? OnbordingPage() : HomePage(),
 
-            routes: {'/networkErrorPage': (context) => NetworkErrorPage()},
-          );
-        },
+              routes: {'/networkErrorPage': (context) => NetworkErrorPage()},
+            );
+          },
+        ),
       ),
     );
   }
