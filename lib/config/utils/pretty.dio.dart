@@ -47,8 +47,9 @@ Dio createDio() {
             .trim();
         log("API Error ($statusCode): $cleanedMessage");
         if (globalContext != null) {
-          if (statusCode == 401 || statusCode == 403) {
-            Hive.box("userBox").delete("token");
+          if (statusCode == 401) {
+            final box = Hive.box("userBox");
+            box.delete("token");
             Navigator.pushAndRemoveUntil(
               globalContext,
               CupertinoPageRoute(builder: (context) => const LoginPage()),

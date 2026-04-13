@@ -4,7 +4,7 @@ import 'package:eduma_app/data/Model/productDetailsModel.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final productDetailsController =
-    FutureProvider.family<ProductDetailsModel, String>((ref, id) async {
+    FutureProvider.family.autoDispose<ProductDetailsModel, String>((ref, id) async {
       final service = APIStateNetwork(createWooCommerceDio());
       return await service.productDetails(id);
     });

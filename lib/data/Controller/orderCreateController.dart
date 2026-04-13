@@ -26,7 +26,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 // });
 
 final courseCreateOrderController =
-    FutureProvider.family<
+    FutureProvider.family.autoDispose<
       CreateOrderCourseResModel,
       CreateOrderCourseBodyModel
     >((ref, body) async {
@@ -35,7 +35,7 @@ final courseCreateOrderController =
     });
 
 final createDataController =
-    FutureProvider.family<CreateResModel, CreateBodyModel>((ref, body) async {
+    FutureProvider.family.autoDispose<CreateResModel, CreateBodyModel>((ref, body) async {
       final service = APIStateNetwork(createDio());
       return await service.create(body);
     });

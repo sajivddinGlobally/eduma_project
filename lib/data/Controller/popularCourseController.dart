@@ -4,16 +4,14 @@ import 'package:eduma_app/data/Model/popularCourseDetailsModel.dart';
 import 'package:eduma_app/data/Model/popularCourseModel.dart';
 import 'package:riverpod/riverpod.dart';
 
-final popularCourseController = FutureProvider<List<PopularCourseModel>>((
-  ref,
-) async {
-  final courseSevice = APIStateNetwork(createDio());
-  return await courseSevice.popularCourse();
-});
+final popularCourseController =
+    FutureProvider.autoDispose<List<PopularCourseModel>>((ref) async {
+      final courseSevice = APIStateNetwork(createDio());
+      return await courseSevice.popularCourse();
+    });
 
-final popularCourseDetailsController =
-    FutureProvider.family<PopularCourseDetailsModel, String>((ref, id) async {
+final popularCourseDetailsController = FutureProvider.family
+    .autoDispose<PopularCourseDetailsModel, String>((ref, id) async {
       final courseDetailService = APIStateNetwork(createDio());
       return await courseDetailService.popularCourseDetails(id);
     });
-

@@ -53,6 +53,19 @@ class _HomePageState extends ConsumerState<HomePage> {
     _getToken();
   }
 
+  void refreshHomeApis() {
+    ref.refresh(popularCourseController);
+    ref.refresh(allCategoryController);
+    ref.refresh(latestCourseController);
+    ref.refresh(productListBooksController);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    refreshHomeApis();
+  }
+
   Future<void> _getToken() async {
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
@@ -86,19 +99,19 @@ class _HomePageState extends ConsumerState<HomePage> {
     if (isLoading) {
       return const ShimmerHomePage();
     }
-    if (popularCourseProvider.hasError ||
-        allCategoryProvider.hasError ||
-        productListBooksProvider.hasError) {
-      return Scaffold(
-        backgroundColor: Colors.white,
-        body: Center(
-          child: Text(
-            popularCourseProvider.error?.toString() ?? "Something went wrong",
-            style: GoogleFonts.inter(fontSize: 20.sp, color: Colors.red),
-          ),
-        ),
-      );
-    }
+    // if (popularCourseProvider.hasError ||
+    //     allCategoryProvider.hasError ||
+    //     productListBooksProvider.hasError) {
+    //   return Scaffold(
+    //     backgroundColor: Colors.white,
+    //     body: Center(
+    //       child: Text(
+    //         popularCourseProvider.error?.toString() ?? "Something went wrong",
+    //         style: GoogleFonts.inter(fontSize: 20.sp, color: Colors.red),
+    //       ),
+    //     ),
+    //   );
+    // }
     return WillPopScope(
       onWillPop: () async {
         if (selectIndex != 0) {
@@ -334,11 +347,46 @@ class _HomePageState extends ConsumerState<HomePage> {
                                               fit: BoxFit.fill,
                                               errorBuilder:
                                                   (context, error, stackTrace) {
-                                                    return Image.network(
-                                                      "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/832px-No-Image-Placeholder.png",
+                                                    return ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                            12.r,
+                                                          ),
+                                                      child: Image.network(
+                                                        "https://t4.ftcdn.net/jpg/07/91/22/59/360_F_791225927_caRPPH99D6D1iFonkCRmCGzkJPf36QDw.jpg",
+                                                        width: 200.w,
+                                                        height: 130.h,
+                                                        fit: BoxFit.fill,
+                                                      ),
+                                                    );
+                                                  },
+                                              // 🔹 Loading state
+                                              loadingBuilder:
+                                                  (
+                                                    context,
+                                                    child,
+                                                    loadingProgress,
+                                                  ) {
+                                                    if (loadingProgress == null)
+                                                      return child;
+                                                    return Container(
                                                       width: 200.w,
                                                       height: 130.h,
-                                                      fit: BoxFit.fill,
+                                                      alignment:
+                                                          Alignment.center,
+                                                      child: Center(
+                                                        child: SizedBox(
+                                                          width: 20,
+                                                          height: 20,
+                                                          child:
+                                                              CircularProgressIndicator(
+                                                                color: Colors
+                                                                    .blueAccent,
+                                                                strokeWidth:
+                                                                    1.w,
+                                                              ),
+                                                        ),
+                                                      ),
                                                     );
                                                   },
                                             ),

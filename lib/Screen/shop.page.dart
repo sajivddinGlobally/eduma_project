@@ -407,6 +407,27 @@ class _ProductCardState extends State<ProductCard> {
                         fit: BoxFit.fill,
                       );
                     },
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return Container(
+                        width: 190.w,
+                        height: widget.boxHeight,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.r),
+                          color: Colors.grey.shade200,
+                        ),
+                        child: Center(
+                          child: SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                              color: Colors.blueAccent,
+                              strokeWidth: 1.w,
+                            ),
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 ),
               ),
@@ -705,6 +726,27 @@ class _ProductBothState extends State<ProductBoth> {
                         width: 190.w,
                         height: widget.boxHeight,
                         fit: BoxFit.fill,
+                      );
+                    },
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return Container(
+                        width: 190.w,
+                        height: widget.boxHeight,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.r),
+                          color: Colors.grey.shade200,
+                        ),
+                        child: Center(
+                          child: SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                              color: Colors.blueAccent,
+                              strokeWidth: 1.w,
+                            ),
+                          ),
+                        ),
                       );
                     },
                   ),

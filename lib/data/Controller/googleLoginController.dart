@@ -10,7 +10,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 final globalContext = navigatorKey.currentContext;
 
 final authController =
-    StateNotifierProvider<AuthNotifier, AsyncValue<LoginResModel?>>(
+    StateNotifierProvider.autoDispose<AuthNotifier, AsyncValue<LoginResModel?>>(
       (ref) => AuthNotifier(AuthRepository()),
     );
 

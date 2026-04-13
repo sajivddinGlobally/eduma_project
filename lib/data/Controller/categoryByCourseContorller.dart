@@ -4,7 +4,7 @@ import 'package:eduma_app/data/Model/categoryByCourseIdModel.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final categoryByIdController =
-    FutureProvider.family<CorurseByCategoryIdModel, String>((ref, id) async {
+    FutureProvider.family.autoDispose<CorurseByCategoryIdModel, String>((ref, id) async {
       final service = APIStateNetwork(createDio());
       return await service.categoryByCourseId(id, 50, 1);
     });

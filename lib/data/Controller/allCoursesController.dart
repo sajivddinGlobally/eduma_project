@@ -3,7 +3,7 @@ import 'package:eduma_app/config/utils/pretty.dio.dart';
 import 'package:eduma_app/data/Model/allCoursesModel.dart';
 import 'package:riverpod/riverpod.dart';
 
-final allCoursesController = FutureProvider<AllCoursesModel>((ref) async {
+final allCoursesController = FutureProvider.autoDispose<AllCoursesModel>((ref) async {
   final allCourseService = APIStateNetwork(createDio());
   return await allCourseService.allCourses(page: 1, perPage: 10);
 });
@@ -58,7 +58,7 @@ class AllCoursesNotifier extends StateNotifier<AsyncValue<AllCoursesModel>> {
 }
 
 final allCoursesProvider =
-    StateNotifierProvider<AllCoursesNotifier, AsyncValue<AllCoursesModel>>((
+    StateNotifierProvider.autoDispose<AllCoursesNotifier, AsyncValue<AllCoursesModel>>((
       ref,
     ) {
       final service = APIStateNetwork(createDio());
