@@ -373,6 +373,9 @@ class _CustomProfileDrawerState extends ConsumerState<CustomProfileDrawer> {
                                             ),
                                             (route) => false,
                                           );
+                                          setStateDialog(() {
+                                            isLoading = false;
+                                          });
                                         },
                                         child: const Text("Logout"),
                                       ),
