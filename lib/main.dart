@@ -66,7 +66,6 @@ class _MyAppState extends ConsumerState<MyApp> {
     log(token ?? "No token found");
     return AnnotatedRegion(
       value: const SystemUiOverlayStyle(
-        // statusBarColor: Colors.grey,
         statusBarColor: Color(0xFFF5F7FA),
         statusBarIconBrightness: Brightness.dark,
         statusBarBrightness: Brightness.light,
