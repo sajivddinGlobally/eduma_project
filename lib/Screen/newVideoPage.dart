@@ -29,26 +29,23 @@ class _NewVideoPageState extends State<NewVideoPage> {
   }
 
   void _initializePlayer() async {
-    
     final box = await Hive.openBox('userBox');
     int savedPosition = box.get('pos_${widget.videoId}', defaultValue: 0);
 
     _controller = YoutubePlayerController(
-      
       initialVideoId: widget.videoId,
       flags: YoutubePlayerFlags(
-        // autoPlay: true,
+        autoPlay: true,
+        mute: false,
+        startAt: savedPosition,
+        disableDragSeek: false,
+        loop: false,
+        isLive: false,
+        forceHD: true,
+        enableCaption: true,
 
-        // mute: false,
-        // startAt: savedPosition,
-        // disableDragSeek: false,
-        // loop: false,
-        // isLive: false,
-        // forceHD: true,
-        // enableCaption: true,
-
-        // hideControls: false,
-        // controlsVisibleAtStart: true,
+        hideControls: false,
+        controlsVisibleAtStart: true,
       ),
     )..addListener(_onPlayerStateChange);
   }
