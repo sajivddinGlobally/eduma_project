@@ -249,6 +249,7 @@
 import 'dart:developer';
 import 'dart:io' show Directory, Platform, File;
 import 'package:dio/dio.dart';
+import 'package:eduma_app/Screen/newVideoPage.dart';
 import 'package:eduma_app/Screen/payCourseDetails.page.dart';
 import 'package:eduma_app/Screen/video.page.dart';
 import 'package:eduma_app/data/Controller/popularCourseController.dart';
@@ -821,10 +822,16 @@ class _NewModuleLessionWidgetState extends State<NewModuleLessionWidget> {
             InkWell(
               onTap: () {
                 if (videoId.isNotEmpty) {
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (_) => VideoPage(videoId: videoId),
+                  //   ),
+                  // );
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (_) => VideoPage(videoId: videoId),
+                      builder: (_) => NewVideoPage(videoId: videoId),
                     ),
                   );
                 } else {
@@ -1183,10 +1190,16 @@ class _ModuleLessionWidgetState extends State<ModuleLessionWidget> {
             InkWell(
               onTap: () {
                 if (videoId.isNotEmpty) {
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (_) => VideoPage(videoId: videoId),
+                  //   ),
+                  // );
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (_) => VideoPage(videoId: videoId),
+                      builder: (_) => NewVideoPage(videoId: videoId),
                     ),
                   );
                 } else {

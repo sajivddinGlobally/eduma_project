@@ -417,6 +417,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                       },
                       error: (error, stackTrace) {
                         log(stackTrace.toString());
+                        log(error.toString());
                         return Center(child: Text(error.toString()));
                       },
 
