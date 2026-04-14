@@ -349,7 +349,7 @@ class _NewVideoPageState extends State<NewVideoPage> {
         disableDragSeek: false,
         loop: false,
         isLive: false,
-        forceHD: false,
+        forceHD: true,
         enableCaption: true,
         hideControls: false,
         controlsVisibleAtStart: true,
@@ -395,7 +395,9 @@ class _NewVideoPageState extends State<NewVideoPage> {
   Widget build(BuildContext context) {
     if (_controller == null) {
       return const Scaffold(
-        body: Center(child: CircularProgressIndicator(color: Colors.red)),
+        body: Center(
+          child: CircularProgressIndicator(color: Colors.blueAccent),
+        ),
       );
     }
 
