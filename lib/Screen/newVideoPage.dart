@@ -29,22 +29,26 @@ class _NewVideoPageState extends State<NewVideoPage> {
   }
 
   void _initializePlayer() async {
+    
     final box = await Hive.openBox('userBox');
     int savedPosition = box.get('pos_${widget.videoId}', defaultValue: 0);
 
     _controller = YoutubePlayerController(
+      
       initialVideoId: widget.videoId,
       flags: YoutubePlayerFlags(
-        autoPlay: true,
-        mute: false,
-        startAt: savedPosition,
-        disableDragSeek: false,
-        loop: false,
-        isLive: false,
-        forceHD: true,
-        enableCaption: true,
-        hideControls: false,
-        controlsVisibleAtStart: true,
+        // autoPlay: true,
+
+        // mute: false,
+        // startAt: savedPosition,
+        // disableDragSeek: false,
+        // loop: false,
+        // isLive: false,
+        // forceHD: true,
+        // enableCaption: true,
+
+        // hideControls: false,
+        // controlsVisibleAtStart: true,
       ),
     )..addListener(_onPlayerStateChange);
   }
@@ -99,12 +103,13 @@ class _NewVideoPageState extends State<NewVideoPage> {
       // Callbacks remove kiye → flicker fix
       player: YoutubePlayer(
         controller: _controller!,
-        showVideoProgressIndicator: true,
-        //progressIndicatorColor: Colors.red,
-        // progressColors: const ProgressBarColors(
-        //   playedColor: Colors.red,
-        //   handleColor: Colors.redAccent,
-        // ),
+        showVideoProgressIndicator: false,
+
+        progressIndicatorColor: Colors.red,
+        progressColors: const ProgressBarColors(
+          playedColor: Colors.red,
+          handleColor: Colors.redAccent,
+        ),
         onReady: () {
           if (mounted) setState(() => _isPlayerReady = true);
         },
