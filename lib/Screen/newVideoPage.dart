@@ -43,7 +43,6 @@ class _NewVideoPageState extends State<NewVideoPage> {
         isLive: false,
         forceHD: true,
         enableCaption: true,
-
         hideControls: false,
         controlsVisibleAtStart: true,
       ),
@@ -101,8 +100,7 @@ class _NewVideoPageState extends State<NewVideoPage> {
       player: YoutubePlayer(
         controller: _controller!,
         showVideoProgressIndicator: false,
-
-        progressIndicatorColor: Colors.red,
+        // progressIndicatorColor: Colors.red,
         progressColors: const ProgressBarColors(
           playedColor: Colors.red,
           handleColor: Colors.redAccent,
@@ -139,26 +137,26 @@ class _NewVideoPageState extends State<NewVideoPage> {
                   player,
 
                   // // Double tap seek sirf portrait mode mein
-                  if (!isFullScreen)
-                    Positioned.fill(
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: GestureDetector(
-                              onDoubleTap: () => _seekRelative(-10),
-                              behavior: HitTestBehavior.translucent,
-                            ),
+                  // if (!isFullScreen)
+                  Positioned.fill(
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: GestureDetector(
+                            onDoubleTap: () => _seekRelative(-10),
+                            behavior: HitTestBehavior.translucent,
                           ),
-                          const Spacer(),
-                          Expanded(
-                            child: GestureDetector(
-                              onDoubleTap: () => _seekRelative(10),
-                              behavior: HitTestBehavior.translucent,
-                            ),
+                        ),
+                        const Spacer(),
+                        Expanded(
+                          child: GestureDetector(
+                            onDoubleTap: () => _seekRelative(10),
+                            behavior: HitTestBehavior.translucent,
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
+                  ),
                 ],
               ),
 

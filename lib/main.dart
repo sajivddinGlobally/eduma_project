@@ -47,7 +47,6 @@ class _MyAppState extends ConsumerState<MyApp> {
         // Agar internet nahi hai -> NetworkErrorPage pe bhej do
         navigatorKey.currentState?.pushNamed("/networkErrorPage");
       } else {
-        // Agar internet wapas aata hai -> sirf tabhi pop karo agar koi page stack me hai
         Future.delayed(Duration(seconds: 1), () {
           if (navigatorKey.currentState?.canPop() ?? false) {
             navigatorKey.currentState?.popUntil((route) => route.isFirst);
