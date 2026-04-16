@@ -4,8 +4,14 @@ import 'package:eduma_app/Screen/home.page.dart';
 import 'package:eduma_app/config/network/api.state.dart';
 import 'package:eduma_app/config/utils/navigatorKey.dart';
 import 'package:eduma_app/config/utils/pretty.dio.dart';
+import 'package:eduma_app/data/Controller/allCategoryController.dart';
+import 'package:eduma_app/data/Controller/enrolleCourseController.dart';
+import 'package:eduma_app/data/Controller/latestCourseController.dart';
+import 'package:eduma_app/data/Controller/popularCourseController.dart';
+import 'package:eduma_app/data/Controller/productListController.dart';
 import 'package:eduma_app/data/Model/loginResModel.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/cupertino.dart';
@@ -45,6 +51,15 @@ class AuthRepository {
       // Navigate after success
       final globalContext = navigatorKey.currentContext;
       if (globalContext != null) {
+        final container = ProviderScope.containerOf(
+          globalContext,
+          listen: false,
+        );
+        container.invalidate(popularCourseController);
+        container.invalidate(allCategoryController);
+        container.invalidate(latestCourseController);
+        container.invalidate(productListBooksController);
+        container.invalidate(enrollCourseController);
         Navigator.pushAndRemoveUntil(
           globalContext,
           CupertinoPageRoute(builder: (context) => const HomePage()),
@@ -56,17 +71,17 @@ class AuthRepository {
       return response;
     } catch (e, st) {
       // ScaffoldMessenger.of(context).showSnackBar(
-      //                 SnackBar(
-      //                   //duration: Duration(seconds: 2),
-      //                   content: Text("Logout Successfull"),
-      //                   margin: EdgeInsets.all(20),
-      //                   behavior: SnackBarBehavior.floating,
-      //                   backgroundColor: Colors.red,
-      //                   shape: RoundedRectangleBorder(
-      //                     borderRadius: BorderRadius.circular(20.r),
-      //                   ),
-      //                 ),
-      //               );
+      //   SnackBar(
+      //     //duration: Duration(seconds: 2),
+      //     content: Text("Logout Successfull"),
+      //     margin: EdgeInsets.all(20),
+      //     behavior: SnackBarBehavior.floating,
+      //     backgroundColor: Colors.red,
+      //     shape: RoundedRectangleBorder(
+      //       borderRadius: BorderRadius.circular(20.r),
+      //     ),
+      //   ),
+      // );
       log("Google Sign-In Error: $e");
       log("STACK: $st");
       return null;

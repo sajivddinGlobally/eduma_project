@@ -73,7 +73,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   @override
   Widget build(BuildContext context) {
     var box = Hive.box("userBox");
-  final profileProvider = ref.watch(profileController);
+    final profileProvider = ref.watch(profileController);
     final popularCourseProvider = ref.watch(popularCourseController);
     final allCategoryProvider = ref.watch(allCategoryController);
     final latestCourseProvider = ref.watch(latestCourseController);
