@@ -135,7 +135,6 @@ class _NewVideoPageState extends State<NewVideoPage> {
               Stack(
                 children: [
                   player,
-
                   // // Double tap seek sirf portrait mode mein
                   // if (!isFullScreen)
                   Positioned.fill(
@@ -312,3 +311,293 @@ class _NewVideoPageState extends State<NewVideoPage> {
     await box.put('comments_${widget.videoId}', _comments);
   }
 }
+
+// import 'dart:async';
+// import 'package:flutter/material.dart';
+// import 'package:flutter/services.dart';
+// import 'package:hive/hive.dart';
+// import 'package:youtube_player_iframe/youtube_player_iframe.dart';
+// import 'package:google_fonts/google_fonts.dart';
+// import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+// class NewVideoPage extends StatefulWidget {
+//   // final String videoId;
+//   final String videoUrl;
+//   const NewVideoPage({
+//     super.key,
+//     // required this.videoId,
+//     required this.videoUrl,
+//   });
+
+//   @override
+//   State<NewVideoPage> createState() => _NewVideoPageState();
+// }
+
+// class _NewVideoPageState extends State<NewVideoPage> {
+//   YoutubePlayerController? _controller;
+//   List<Map<String, dynamic>> _comments = [];
+//   final TextEditingController _commentController = TextEditingController();
+
+//   @override
+//   void initState() {
+//     super.initState();
+//     _initPlayer();
+//     _loadComments();
+//   }
+
+//   Future<void> _initPlayer() async {
+//     final box = await Hive.openBox('userBox');
+//     int savedPosition = box.get('pos_${widget.videoUrl}', defaultValue: 0);
+
+//     _controller = YoutubePlayerController(
+//       params: const YoutubePlayerParams(
+//         showControls: true,
+//         showFullscreenButton: true,
+//         enableCaption: true,
+//         strictRelatedVideos: true,
+//       ),
+//     );
+
+//     // await _controller!.loadVideoById(
+//     //   videoId: widget.videoId,
+//     //   startSeconds: savedPosition.toDouble(),
+//     // );
+//     await _controller!.loadVideoByUrl(
+//       mediaContentUrl: widget.videoUrl,
+//       startSeconds: savedPosition.toDouble(),
+//     );
+
+//     _startTracking();
+//   }
+
+//   void _startTracking() {
+//     Timer.periodic(const Duration(seconds: 2), (timer) async {
+//       if (!mounted) {
+//         timer.cancel();
+//         return;
+//       }
+
+//       final position = await _controller!.currentTime;
+//       final box = await Hive.openBox('userBox');
+//       box.put('pos_${widget.videoUrl}', position.toInt());
+//     });
+//   }
+
+//   void _seekRelative(int seconds) async {
+//     final current = await _controller!.currentTime;
+//     await _controller!.seekTo(seconds: current + seconds);
+//   }
+
+//   @override
+//   void dispose() {
+//     _controller!.close();
+//     _commentController.dispose();
+//     SystemChrome.setPreferredOrientations(DeviceOrientation.values);
+//     super.dispose();
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     if (_controller == null) {
+//       return const Scaffold(body: Center(child: CircularProgressIndicator()));
+//     }
+//     return YoutubePlayerScaffold(
+//       controller: _controller!,
+//       aspectRatio: 16 / 9,
+//       builder: (context, player) {
+//         return Scaffold(
+//           backgroundColor: Colors.white,
+//           appBar: AppBar(
+//             elevation: 0,
+//             backgroundColor: Colors.white,
+//             leading: IconButton(
+//               icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
+//               onPressed: () => Navigator.pop(context),
+//             ),
+//             title: Text(
+//               "Video Player",
+//               style: GoogleFonts.inter(
+//                 color: Colors.black,
+//                 fontWeight: FontWeight.bold,
+//               ),
+//             ),
+//           ),
+//           body: Column(
+//             children: [
+//               /// 🎬 Video Player
+//               Stack(
+//                 children: [
+//                   player,
+
+//                   /// Double tap seek
+//                   Positioned.fill(
+//                     child: Row(
+//                       children: [
+//                         Expanded(
+//                           child: GestureDetector(
+//                             onDoubleTap: () => _seekRelative(-10),
+//                             behavior: HitTestBehavior.translucent,
+//                           ),
+//                         ),
+//                         const Spacer(),
+//                         Expanded(
+//                           child: GestureDetector(
+//                             onDoubleTap: () => _seekRelative(10),
+//                             behavior: HitTestBehavior.translucent,
+//                           ),
+//                         ),
+//                       ],
+//                     ),
+//                   ),
+//                 ],
+//               ),
+
+//               /// 📄 Info + Comments
+//               _buildVideoInfo(),
+//               const Divider(),
+//               _buildCommentSection(),
+//               _buildCommentInput(),
+//             ],
+//           ),
+//         );
+//       },
+//     );
+//   }
+
+//   Widget _buildVideoInfo() {
+//     final metaData = _controller!.metadata;
+
+//     return Padding(
+//       padding: EdgeInsets.all(12.w),
+//       child: Column(
+//         crossAxisAlignment: CrossAxisAlignment.start,
+//         children: [
+//           Text(
+//             metaData.title,
+//             style: GoogleFonts.inter(
+//               fontSize: 16.sp,
+//               fontWeight: FontWeight.bold,
+//             ),
+//             maxLines: 2,
+//             overflow: TextOverflow.ellipsis,
+//           ),
+//           SizedBox(height: 5.h),
+//           Text(
+//             metaData.author,
+//             style: GoogleFonts.inter(fontSize: 12.sp, color: Colors.grey),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+
+//   Widget _buildCommentSection() {
+//     return Expanded(
+//       child: _comments.isEmpty
+//           ? Center(
+//               child: Text(
+//                 "No comments yet",
+//                 style: GoogleFonts.inter(color: Colors.grey),
+//               ),
+//             )
+//           : ListView.builder(
+//               itemCount: _comments.length,
+//               itemBuilder: (context, index) {
+//                 final comment = _comments[index];
+//                 return ListTile(
+//                   leading: CircleAvatar(
+//                     backgroundColor: const Color(0xFF001E6C),
+//                     child: Text(
+//                       comment['username'][0].toUpperCase(),
+//                       style: const TextStyle(color: Colors.white),
+//                     ),
+//                   ),
+//                   title: Text(
+//                     comment['username'],
+//                     style: GoogleFonts.inter(
+//                       fontWeight: FontWeight.bold,
+//                       fontSize: 13.sp,
+//                     ),
+//                   ),
+//                   subtitle: Text(
+//                     comment['comment'],
+//                     style: GoogleFonts.inter(fontSize: 13.sp),
+//                   ),
+//                 );
+//               },
+//             ),
+//     );
+//   }
+
+//   Widget _buildCommentInput() {
+//     return Container(
+//       padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.h),
+//       decoration: BoxDecoration(
+//         color: Colors.white,
+//         boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)],
+//       ),
+//       child: Row(
+//         children: [
+//           Expanded(
+//             child: TextField(
+//               controller: _commentController,
+//               decoration: InputDecoration(
+//                 hintText: "Add a comment...",
+//                 border: InputBorder.none,
+//                 hintStyle: GoogleFonts.inter(fontSize: 14.sp),
+//               ),
+//             ),
+//           ),
+//           IconButton(
+//             icon: const Icon(Icons.send, color: Color(0xFF001E6C)),
+//             onPressed: () => _addComment(_commentController.text),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+
+//   Future<void> _loadComments() async {
+//     final box = await Hive.openBox('userBox');
+//     final dynamic rawData = box.get(
+//       'comments_${widget.videoUrl}',
+//       defaultValue: <Map<String, dynamic>>[],
+//     );
+
+//     List<Map<String, dynamic>> loadedComments = [];
+
+//     if (rawData is List) {
+//       loadedComments = rawData.map((item) {
+//         if (item is Map) {
+//           return Map<String, dynamic>.from(item);
+//         }
+//         return <String, dynamic>{};
+//       }).toList();
+//     }
+
+//     if (mounted) {
+//       setState(() {
+//         _comments = loadedComments;
+//       });
+//     }
+//   }
+
+//   void _addComment(String text) async {
+//     if (text.isEmpty) return;
+
+//     final newComment = {
+//       'username': 'You',
+//       'comment': text,
+//       'timestamp': DateTime.now().toIso8601String(),
+//     };
+
+//     final box = await Hive.openBox('userBox');
+
+//     setState(() {
+//       _comments.add(newComment);
+//       _commentController.clear();
+//     });
+
+//     await box.put('comments_${widget.videoUrl}', _comments);
+//   }
+// }

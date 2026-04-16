@@ -18,6 +18,7 @@ import 'package:eduma_app/data/Controller/enrolleCourseController.dart';
 import 'package:eduma_app/data/Controller/latestCourseController.dart';
 import 'package:eduma_app/data/Controller/popularCourseController.dart';
 import 'package:eduma_app/data/Controller/productListController.dart';
+import 'package:eduma_app/data/Controller/profileController.dart';
 import 'package:eduma_app/data/Controller/wishlistControllerClass.dart';
 import 'package:eduma_app/data/Model/popularCourseModel.dart';
 import 'package:eduma_app/data/Model/productBooksModel.dart';
@@ -72,7 +73,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   @override
   Widget build(BuildContext context) {
     var box = Hive.box("userBox");
-
+  final profileProvider = ref.watch(profileController);
     final popularCourseProvider = ref.watch(popularCourseController);
     final allCategoryProvider = ref.watch(allCategoryController);
     final latestCourseProvider = ref.watch(latestCourseController);

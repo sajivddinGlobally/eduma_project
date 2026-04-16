@@ -115,6 +115,28 @@ class _CustomProfileDrawerState extends ConsumerState<CustomProfileDrawer> {
                               child: Image.network(
                                 profile.avatarUrl!,
                                 fit: BoxFit.cover,
+                                loadingBuilder:
+                                    (context, child, loadingProgress) {
+                                      if (loadingProgress == null) return child;
+                                      return Container(
+                                        width: 45.h,
+                                        height: 45.h,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Colors.grey.shade400,
+                                        ),
+                                        child: Center(
+                                          child: SizedBox(
+                                            width: 20,
+                                            height: 20,
+                                            child: CircularProgressIndicator(
+                                              color: Colors.blueAccent,
+                                              strokeWidth: 1.w,
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
                               ),
                             ),
 

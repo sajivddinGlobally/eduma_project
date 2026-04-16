@@ -359,8 +359,7 @@ class _EnrolledDourseDetailsPageState
                                         ?.toString() ??
                                     "",
                                 attachments: lesson.attachments,
-                                lessonContent: lesson
-                                    .lessonContent, // ✅ Added lesson_content
+                                lessonContent: lesson.lessonContent,
                               ),
                             ),
                           ],
@@ -556,7 +555,6 @@ class _NewModuleLessionWidgetState extends State<NewModuleLessionWidget> {
           }
         },
       );
-
       log("✅ PDF download complete: $filePath");
       if (mounted) {
         setState(() {
@@ -605,6 +603,7 @@ class _NewModuleLessionWidgetState extends State<NewModuleLessionWidget> {
   Widget build(BuildContext context) {
     final videoUrl = parseVideoUrl(widget.videoUrl);
     final videoId = videoUrl != null ? extractYouTubeId(videoUrl) : '';
+
     final isVideoAvailable = videoUrl != null && videoUrl.isNotEmpty;
 
     final bool isPdfTitle = widget.title.toLowerCase().contains("pdf");
@@ -822,18 +821,18 @@ class _NewModuleLessionWidgetState extends State<NewModuleLessionWidget> {
             InkWell(
               onTap: () {
                 if (videoId.isNotEmpty) {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (_) => VideoPage(videoId: videoId),
-                  //   ),
-                  // );
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (_) => NewVideoPage(videoId: videoId),
                     ),
                   );
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (_) => NewVideoPage(videoUrl: videoUrl),
+                  //   ),
+                  // );
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text("No Video Available")),
@@ -1190,18 +1189,18 @@ class _ModuleLessionWidgetState extends State<ModuleLessionWidget> {
             InkWell(
               onTap: () {
                 if (videoId.isNotEmpty) {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (_) => VideoPage(videoId: videoId),
-                  //   ),
-                  // );
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (_) => NewVideoPage(videoId: videoId),
                     ),
                   );
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (_) => NewVideoPage(videoUrl: videoUrl),
+                  //   ),
+                  // );
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text("No Video Available")),

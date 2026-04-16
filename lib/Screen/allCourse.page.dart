@@ -253,7 +253,7 @@ class _AllBodyState extends State<AllBody> {
                   fit: BoxFit.cover,
                   errorBuilder: (context, error, stackTrace) {
                     return Image.network(
-                      "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/832px-No-Image-Placeholder.png",
+                      "https://images.weserv.nl/?url=upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg&output=png",
                       width: 190.w,
                       height: 125.h,
                       fit: BoxFit.fill,
