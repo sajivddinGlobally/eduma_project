@@ -153,7 +153,7 @@ class _ChatingPageState extends State<ChatingPage> {
                       duration: Duration(milliseconds: 100),
                       padding: EdgeInsets.only(bottom: 80.h),
                       child: SingleChildScrollView(
-                        controller: _scrollController, // ✅ Important
+                        controller: _scrollController,
                         child: Padding(
                           padding: EdgeInsets.only(
                             left: 20.w,

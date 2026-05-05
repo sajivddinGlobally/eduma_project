@@ -298,18 +298,6 @@ class _CartPageState extends ConsumerState<CartPage> {
                               onPressed: isLoading
                                   ? null
                                   : () async {
-                                      // Navigator.push(
-                                      //   context,
-                                      //   CupertinoPageRoute(
-                                      //     builder: (context) => FillAddressPage(
-                                      //       productId: data.items[0].productId
-                                      //           .toString(),
-                                      //       quantity: data.count.toString(),
-
-                                      //     ),
-                                      //     fullscreenDialog: true,
-                                      //   ),
-                                      // );
                                       Navigator.push(
                                         context,
                                         CupertinoPageRoute(
@@ -325,89 +313,6 @@ class _CartPageState extends ConsumerState<CartPage> {
                                           // fullscreenDialog: true,
                                         ),
                                       );
-
-                                      // setState(() => isCheck = true);
-
-                                      // try {
-                                      //   final data = await ref.refresh(
-                                      //     orderCreateController.future,
-                                      //   );
-
-                                      //   if (data == null) {
-                                      //     showErrorMessage(
-                                      //       "Order create failed, please try again",
-                                      //     );
-                                      //     setState(() => isCheck = false);
-                                      //     return;
-                                      //   }
-
-                                      //   final razorpay = Razorpay();
-                                      //   final options = {
-                                      //     "order_id": data.orderId,
-                                      //     "amount": data.amount * 100,
-                                      //     "currency": "INR",
-                                      //     "receipt": data.receipt,
-                                      //     "key": "rzp_test_RIeIwZBZ2NZi6w",
-                                      //     "wc_order_id": data.wcOrderId,
-                                      //     "prefill": {
-                                      //       "name": data.user.name,
-                                      //       "email": data.user.email,
-                                      //       "contact": data.user.contact,
-                                      //     },
-                                      //   };
-
-                                      //   razorpay.open(options);
-
-                                      //   razorpay.on(
-                                      //     Razorpay.EVENT_PAYMENT_SUCCESS,
-                                      //     (PaymentSuccessResponse response) {
-                                      //       log(
-                                      //         "Payment Success : ${response.paymentId}",
-                                      //       );
-                                      //       showSuccessMessage(
-                                      //         context,
-                                      //         "Payment Successful",
-                                      //       );
-                                      //       Navigator.pushAndRemoveUntil(
-                                      //         context,
-                                      //         CupertinoPageRoute(
-                                      //           builder: (context) =>
-                                      //               HomePage(),
-                                      //         ),
-                                      //         (route) => false,
-                                      //       );
-                                      //     },
-                                      //   );
-
-                                      //   razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, (
-                                      //     PaymentFailureResponse response,
-                                      //   ) {
-                                      //     log(
-                                      //       "Payment Failed : ${response.message}",
-                                      //     );
-                                      //     // showErrorMessage(
-                                      //     //   "Payment Failed : ${response.message}",
-                                      //     // );
-                                      //   });
-
-                                      //   razorpay.on(
-                                      //     Razorpay.EVENT_EXTERNAL_WALLET,
-                                      //     (ExternalWalletResponse response) {
-                                      //       log(
-                                      //         "External Wallet : ${response.walletName}",
-                                      //       );
-                                      //     },
-                                      //   );
-                                      // } catch (e, st) {
-                                      //   showErrorMessage(
-                                      //     "Something went wrong: $e",
-                                      //   );
-                                      //   log("Error: $e");
-                                      //   log("StackTrace: $st");
-                                      //   log(e.toString());
-                                      // } finally {
-                                      //   setState(() => isCheck = false);
-                                      // }
                                     },
                               child: isCheck
                                   ? const CircularProgressIndicator(

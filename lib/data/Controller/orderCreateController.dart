@@ -4,6 +4,7 @@ import 'package:eduma_app/data/Model/createBodyModel.dart';
 import 'package:eduma_app/data/Model/createOrderBodyModel.dart';
 import 'package:eduma_app/data/Model/createOrderCourseModel.dart';
 import 'package:eduma_app/data/Model/createResModel.dart';
+import 'package:eduma_app/data/Model/razorpayBodyModel.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // final orderCreateController = FutureProvider.autoDispose<OrderCreateModel>((
@@ -35,7 +36,10 @@ final courseCreateOrderController =
     });
 
 final createDataController =
-    FutureProvider.family.autoDispose<CreateResModel, CreateBodyModel>((ref, body) async {
+    FutureProvider.family.autoDispose<CreateResModel, 
+    // CreateBodyModel
+    RazoarpayBodyModel
+    >((ref, body) async {
       final service = APIStateNetwork(createDio());
       return await service.create(body);
     });

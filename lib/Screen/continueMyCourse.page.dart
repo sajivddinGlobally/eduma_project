@@ -136,7 +136,7 @@ class _ContinueMyCoursePageState extends State<ContinueMyCoursePage> {
                                   ),
                                   SizedBox(height: 6.h),
                                   LinearProgressIndicator(
-                                    value: 0.2, // 👈 20% progress
+                                    value: 0.2,
                                     borderRadius: BorderRadius.circular(10.r),
                                     stopIndicatorColor: Color(0xFF011E6C),
                                     backgroundColor: Color(0xFF979797),

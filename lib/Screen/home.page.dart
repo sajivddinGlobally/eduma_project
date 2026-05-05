@@ -400,17 +400,6 @@ class _HomePageState extends ConsumerState<HomePage> {
                                       ),
                                     ),
                                   ),
-                                  // SizedBox(width: 20.w),
-                                  // ClipRRect(
-                                  //   borderRadius: BorderRadius.circular(10.r),
-                                  //   child: Image.asset(
-                                  //     "assets/course.png",
-                                  //     width: 200.w,
-                                  //     height: 130.h,
-                                  //     fit: BoxFit.fill,
-                                  //   ),
-                                  // ),
-                                  // SizedBox(width: 20.w),
                                 ],
                               );
                             },
@@ -829,7 +818,7 @@ class _PopularCourState extends State<PopularCour> {
                   fit: BoxFit.cover,
                   errorBuilder: (context, error, stackTrace) {
                     return Image.network(
-                      "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/832px-No-Image-Placeholder.png",
+                      "https://t4.ftcdn.net/jpg/07/91/22/59/360_F_791225927_caRPPH99D6D1iFonkCRmCGzkJPf36QDw.jpg",
                       width: 190.w,
                       height: 125.h,
                       fit: BoxFit.fill,
@@ -1305,7 +1294,7 @@ class _PopularBodyState extends State<PopularBody> {
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) {
                         return Image.network(
-                          "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/832px-No-Image-Placeholder.png",
+                          "https://t4.ftcdn.net/jpg/07/91/22/59/360_F_791225927_caRPPH99D6D1iFonkCRmCGzkJPf36QDw.jpg",
                           width: 190.w,
                           height: 125.h,
                           fit: BoxFit.fill,

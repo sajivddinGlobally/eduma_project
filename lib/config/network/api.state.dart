@@ -4,7 +4,11 @@ import 'package:eduma_app/data/Model/addCartBodyModel.dart';
 import 'package:eduma_app/data/Model/addCartResModel.dart';
 import 'package:eduma_app/data/Model/allCategoryModel.dart';
 import 'package:eduma_app/data/Model/allCoursesModel.dart';
+import 'package:eduma_app/data/Model/appluCuponBodyModel.dart';
+import 'package:eduma_app/data/Model/applyCuponResModel.dart';
 import 'package:eduma_app/data/Model/avtarResModel.dart';
+import 'package:eduma_app/data/Model/calculateDynamicBodyModel.dart';
+import 'package:eduma_app/data/Model/calculateDynamicResModel.dart';
 import 'package:eduma_app/data/Model/cartModel.dart';
 import 'package:eduma_app/data/Model/cartRemoveBodyModel.dart';
 import 'package:eduma_app/data/Model/categoryByCourseIdModel.dart';
@@ -19,6 +23,7 @@ import 'package:eduma_app/data/Model/editAddresResModel.dart';
 import 'package:eduma_app/data/Model/enrollBodyModel.dart';
 import 'package:eduma_app/data/Model/enrollCourseStudentModel.dart';
 import 'package:eduma_app/data/Model/enrollResModel.dart';
+import 'package:eduma_app/data/Model/getCuponModel.dart';
 import 'package:eduma_app/data/Model/getWishlistModel.dart';
 import 'package:eduma_app/data/Model/latestCourseModel.dart';
 import 'package:eduma_app/data/Model/loginBodyModel.dart';
@@ -37,6 +42,7 @@ import 'package:eduma_app/data/Model/productWishlistBodyModel.dart';
 import 'package:eduma_app/data/Model/productWishlistModel.dart';
 import 'package:eduma_app/data/Model/productWishlistReModel.dart';
 import 'package:eduma_app/data/Model/profileModel.dart';
+import 'package:eduma_app/data/Model/razorpayBodyModel.dart';
 import 'package:eduma_app/data/Model/registerBodyCustomeModel.dart';
 import 'package:eduma_app/data/Model/registerResCustomeModel.dart';
 import 'package:eduma_app/data/Model/relatedProductModel.dart';
@@ -201,7 +207,10 @@ abstract class APIStateNetwork {
   Future<List<RelatedProductModel>> relatedProdut(@Path("id") String id);
 
   @POST("/cwcc/v1/create-order")
-  Future<CreateResModel> create(@Body() CreateBodyModel body);
+  Future<CreateResModel> create(@Body() 
+  // CreateBodyModel
+  RazoarpayBodyModel
+   body);
 
   @GET("/wc/v3/products/{id}/variations")
   Future<List<VariationResModel>> variationProduct(@Path("id") String id);
@@ -211,4 +220,15 @@ abstract class APIStateNetwork {
 
   @POST("/cwcc/v1/create-order?edit_address=true")
   Future<EditAddressResModel> editAddress(@Body() EditAddressBodyModel body);
+
+  @POST("/custom/v1/cart/calculate-dynamic")
+  Future<CalculateDynamicResModel> calculateDynamicAmount(
+    @Body() CalculateDynamicBodyModel body,
+  );
+
+  @POST("/custom/v1/cart/apply-coupon")
+  Future<ApplyCuponResModel> applyCupon(@Body() ApplyCuponBodyModel body);
+
+  @GET("/custom/v1/cart/get-coupon")
+  Future<GetCuponModel> getAllCupon();
 }

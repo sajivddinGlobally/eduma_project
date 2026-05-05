@@ -11,20 +11,25 @@ String createBodyModelToJson(CreateBodyModel data) => json.encode(data.toJson())
 class CreateBodyModel {
     List<Cart> cart;
     Billing billing;
+     Shipping shipping;
 
     CreateBodyModel({
         required this.cart,
-        required this.billing, Object? shipping,
+        required this.billing, 
+        // Object? shipping,
+        required this.shipping,
     });
 
     factory CreateBodyModel.fromJson(Map<String, dynamic> json) => CreateBodyModel(
         cart: List<Cart>.from(json["cart"].map((x) => Cart.fromJson(x))),
         billing: Billing.fromJson(json["billing"]),
+          shipping: Shipping.fromJson(json["shipping"]),
     );
 
     Map<String, dynamic> toJson() => {
         "cart": List<dynamic>.from(cart.map((x) => x.toJson())),
         "billing": billing.toJson(),
+         "shipping": shipping.toJson(),
     };
 }
 
@@ -66,6 +71,22 @@ class Billing {
         "phone": phone,
         "email": email,
     };
+}
+
+class Shipping {
+  String state;
+
+  Shipping({
+    required this.state,
+  });
+
+  factory Shipping.fromJson(Map<String, dynamic> json) => Shipping(
+        state: json["state"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "state": state,
+      };
 }
 
 class Cart {

@@ -52,10 +52,10 @@ mixin RegisterApi<T extends ConsumerStatefulWidget> on ConsumerState<T> {
       }
 
       final body = RegisterBodyModel(
-        username: userNameController.text,
-        email: emailController.text,
-        password: passwordController.text,
-        confirmPassword: confirmPassController.text,
+        username: userNameController.text.trim(),
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+        confirmPassword: confirmPassController.text.trim(),
       );
 
       setState(() {
