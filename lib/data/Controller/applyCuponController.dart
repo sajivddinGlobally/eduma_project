@@ -21,7 +21,12 @@ class ApplyCuponController
       final service = APIStateNetwork(createDio());
       final response = await service.applyCupon(body);
       if (response.success == true) {
-        showSuccessMessage(context, response.message);
+        showSuccessMessage(
+          context,
+          response.message == "20% discount applied successfully"
+              ? "Already Coupon Apply"
+              : "",
+        );
       }
       state = AsyncValue.data(response);
     } catch (e, st) {
