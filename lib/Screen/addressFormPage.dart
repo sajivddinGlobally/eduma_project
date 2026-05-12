@@ -94,9 +94,8 @@ class _AddressFormPageState extends ConsumerState<AddressFormPage> {
     return Scaffold(
       backgroundColor: const Color(0xFFFFFFFF),
       appBar: AppBar(
-        title: Text('Edit Address'), // Changed title for clarity
-        backgroundColor: Colors.blue,
-        foregroundColor: Colors.white,
+        title: Text('Edit Address'),
+        backgroundColor: const Color(0xFFFFFFFF),
       ),
       body: SingleChildScrollView(
         child: Form(

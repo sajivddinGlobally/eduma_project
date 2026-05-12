@@ -118,6 +118,414 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
                     ),
                   );
                 }
+                // return Padding(
+                //   padding: EdgeInsets.symmetric(
+                //     horizontal: 16.w,
+                //     vertical: 8.h,
+                //   ),
+                //   child: Column(
+                //     crossAxisAlignment: CrossAxisAlignment.start,
+                //     children: [
+                //       Expanded(
+                //         child: ListView.builder(
+                //           padding: EdgeInsets.zero,
+                //           itemCount: orderList.length,
+                //           itemBuilder: (context, index) {
+                //  final order = orderList[index];
+                //         final subtotal = order.lineItems.fold<double>(
+                //           0,
+                //           (sum, item) =>
+                //               sum + (double.tryParse(item.total ?? "0") ?? 0),
+                //         );
+                //         final discount = order.feeLines.fold<double>(
+                //           0,
+                //           (sum, item) =>
+                //               sum + (double.tryParse(item.total ?? "0") ?? 0),
+                //         );
+                //         if (order.lineItems.isEmpty) {
+                //           return const Center(child: Text("No data available"));
+                //         }
+                //             final order = orderList[index];
+                //             if (order.lineItems.isEmpty) {
+                //               return Center(child: Text("No data available"));
+                //             }
+                //             return Card(
+                //               margin: EdgeInsets.only(bottom: 12.h),
+                //               color: Colors.white,
+                //               elevation: 2,
+                //               shape: RoundedRectangleBorder(
+                //                 borderRadius: BorderRadius.circular(12.r),
+                //               ),
+                //               child: Padding(
+                //                 padding: EdgeInsets.all(12.w),
+                //                 child: Column(
+                //                   crossAxisAlignment: CrossAxisAlignment.start,
+                //                   children: [
+                //                     Row(
+                //                       mainAxisAlignment:
+                //                           MainAxisAlignment.spaceBetween,
+                //                       children: [
+                //                         Text(
+                //                           "Order ID: #${order.id}",
+                //                           style: GoogleFonts.roboto(
+                //                             fontSize: 15.sp,
+                //                             fontWeight: FontWeight.w500,
+                //                             color: Colors.grey[700],
+                //                           ),
+                //                         ),
+                //                         Text(
+                //                           "Ordered on ${order.dateCreated?.toString().substring(0, 10) ?? ''}",
+                //                           style: GoogleFonts.roboto(
+                //                             fontSize: 14.sp,
+                //                             color: Colors.grey,
+                //                             fontWeight: FontWeight.w500,
+                //                           ),
+                //                         ),
+                //                       ],
+                //                     ),
+                //                     Divider(),
+                //                     ...order.lineItems.map<Widget>((lineItem) {
+                //                       return Padding(
+                //                         padding: EdgeInsets.only(bottom: 8.h),
+                //                         child: Row(
+                //                           crossAxisAlignment:
+                //                               CrossAxisAlignment.start,
+                //                           children: [
+                //                             ClipRRect(
+                //                               borderRadius:
+                //                                   BorderRadius.circular(8.r),
+                //                               child: Image.network(
+                //                                 lineItem.image.src.toString(),
+                //                                 width: 80.w,
+                //                                 height: 80.h,
+                //                                 fit: BoxFit.cover,
+                //                                 errorBuilder:
+                //                                     (
+                //                                       context,
+                //                                       error,
+                //                                       stackTrace,
+                //                                     ) {
+                //                                       return Container(
+                //                                         width: 80.w,
+                //                                         height: 80.h,
+                //                                         color: Colors.grey[300],
+                //                                         child: Icon(
+                //                                           Icons
+                //                                               .image_not_supported,
+                //                                         ),
+                //                                       );
+                //                                     },
+                //                               ),
+                //                             ),
+                //                             SizedBox(width: 12.w),
+                //                             Expanded(
+                //                               child: Column(
+                //                                 crossAxisAlignment:
+                //                                     CrossAxisAlignment.start,
+                //                                 children: [
+                //                                   Text(
+                //                                     lineItem.name,
+                //                                     style: GoogleFonts.roboto(
+                //                                       fontSize: 16.sp,
+                //                                       fontWeight:
+                //                                           FontWeight.w500,
+                //                                     ),
+                //                                     maxLines: 2,
+                //                                     overflow:
+                //                                         TextOverflow.ellipsis,
+                //                                   ),
+                //                                   SizedBox(height: 4.h),
+                //                                   Text(
+                //                                     "₹${lineItem.total}",
+                //                                     style: GoogleFonts.roboto(
+                //                                       fontSize: 15.sp,
+                //                                       fontWeight:
+                //                                           FontWeight.bold,
+                //                                       color: Color(0xFF001E6C),
+                //                                     ),
+                //                                   ),
+                //                                   SizedBox(height: 6.h),
+                //                                   // Text(
+                //                                   //   "Delivered on: ${order.dateCompleted?.toString().substring(0, 10) ?? ''}",
+                //                                   //   style: GoogleFonts.roboto(
+                //                                   //     fontSize: 14.sp,
+                //                                   //     fontWeight:
+                //                                   //         FontWeight.w500,
+                //                                   //     color: Colors.green,
+                //                                   //   ),
+                //                                   // ),
+                //                                 ],
+                //                               ),
+                //                             ),
+                //                           ],
+                //                         ),
+                //                       );
+                //                     }).toList(),
+                //                     Text(
+                //                       "Delivery Address:",
+                //                       style: GoogleFonts.roboto(
+                //                         fontSize: 16.sp,
+                //                         fontWeight: FontWeight.w600,
+                //                         color: Colors.black,
+                //                       ),
+                //                     ),
+                //                     Text(
+                //                       "${order.billing.firstName} ${order.billing.lastName}, "
+                //                       "${order.billing.address1}, "
+                //                       "${order.billing.city}, "
+                //                       "${order.billing.postcode}\n"
+                //                       "Phone: ${order.billing.phone}",
+                //                       style: GoogleFonts.roboto(
+                //                         fontSize: 15.sp,
+                //                         color: Colors.black87,
+                //                       ),
+                //                     ),
+                //                     Row(
+                //                       children: [
+                //                         Text(
+                //                           "Status :",
+                //                           style: GoogleFonts.roboto(
+                //                             fontSize: 15.sp,
+                //                             color: Colors.black87,
+                //                           ),
+                //                         ),
+                //                         SizedBox(width: 4.w),
+                //                         Container(
+                //                           padding: EdgeInsets.symmetric(
+                //                             horizontal: 12.w,
+                //                             vertical: 6.h,
+                //                           ),
+                //                           decoration: BoxDecoration(
+                //                             color: order.status == 'processing'
+                //                                 ? Colors.orange
+                //                                 : (order.status == 'completed'
+                //                                       ? Colors.green
+                //                                       : Colors.red),
+                //                             borderRadius: BorderRadius.circular(
+                //                               20.r,
+                //                             ),
+                //                           ),
+                //                           child: Text(
+                //                             order.status,
+                //                             style: GoogleFonts.roboto(
+                //                               color: Colors.white,
+                //                               fontSize: 12.sp,
+                //                             ),
+                //                           ),
+                //                         ),
+                //                       ],
+                //                     ),
+                //                     SizedBox(height: 4.h),
+                //                     Row(
+                //                       mainAxisAlignment:
+                //                           MainAxisAlignment.spaceBetween,
+                //                       children: [
+                //                         Text(
+                //                           "Total: ₹${order.total}",
+                //                           style: GoogleFonts.roboto(
+                //                             fontSize: 18.sp,
+                //                             fontWeight: FontWeight.bold,
+                //                             color: Color(0xFF001E6C),
+                //                           ),
+                //                         ),
+                //                         if (order.status == "pending" ||
+                //                             order.status == "failed")
+                //                           OutlinedButton(
+                //                             style: OutlinedButton.styleFrom(
+                //                               padding: EdgeInsets.zero,
+                //                               minimumSize: Size(80.w, 40.h),
+                //                               shape: RoundedRectangleBorder(
+                //                                 borderRadius:
+                //                                     BorderRadius.circular(10.r),
+                //                               ),
+                //                             ),
+                //                             onPressed: () {
+                //                               log("Order #${order.id}");
+                //                               final razorpay = Razorpay();
+                //                               final options = {
+                //                                 "order_id":
+                //                                     order.metaData[0].value,
+                //                                 // "key":
+                //                                 //     "rzp_test_RIeIwZBZ2NZi6w",
+                //                                 "key":
+                //                                     "rzp_live_RQVbHR68ibVPuJ",
+                //                                 "amount":
+                //                                     (double.tryParse(
+                //                                           order.total ?? '0',
+                //                                         ) ??
+                //                                         0) *
+                //                                     100,
+                //                                 "currency": "INR",
+                //                                 // "name": "Test Payment",
+                //                                 "wc_order_id": "${order.id}",
+                //                                 "prefill": {
+                //                                   "name":
+                //                                       order.billing.firstName,
+                //                                   "email": order.billing.email,
+                //                                   "contact":
+                //                                       order.billing.phone,
+                //                                 },
+                //                               };
+                //                               razorpay.open(options);
+                //                               razorpay.on(
+                //                                 Razorpay.EVENT_PAYMENT_SUCCESS,
+                //                                 (
+                //                                   PaymentSuccessResponse
+                //                                   response,
+                //                                 ) {
+                //                                   log(
+                //                                     "Payment Success : ${response.paymentId}",
+                //                                   );
+                //                                   Navigator.pushReplacement(
+                //                                     context,
+                //                                     CupertinoPageRoute(
+                //                                       builder: (context) =>
+                //                                           OrderListPage(),
+                //                                     ),
+                //                                   );
+                //                                   showSuccessMessage(
+                //                                     context,
+                //                                     "Payment Successful",
+                //                                   );
+                //                                 },
+                //                               );
+                //                               razorpay.on(
+                //                                 Razorpay.EVENT_PAYMENT_ERROR,
+                //                                 (
+                //                                   PaymentFailureResponse
+                //                                   response,
+                //                                 ) {
+                //                                   log(
+                //                                     "Payment Failed : ${response.message}",
+                //                                   );
+                //                                   showErrorMessage(
+                //                                     "Payment Failed : ${response.message}",
+                //                                   );
+                //                                 },
+                //                              );
+                //                               razorpay.on(
+                //                                 Razorpay.EVENT_EXTERNAL_WALLET,
+                //                                 (
+                //                                   ExternalWalletResponse
+                //                                   response,
+                //                                 ) {
+                //                                   log(
+                //                                     "External Wallet : ${response.walletName}",
+                //                                   );
+                //                                 },
+                //                               );
+                //                             },
+                //                             child: Text(
+                //                               "Pay Now",
+                //                               style: GoogleFonts.inter(
+                //                                 fontSize: 14.sp,
+                //                                 fontWeight: FontWeight.w500,
+                //                               ),
+                //                             ),
+                //                           ),
+                //                       ],
+                //                     ),
+                //                     SizedBox(height: 15.h),
+                //                     Column(
+                //                       crossAxisAlignment:
+                //                           CrossAxisAlignment.start,
+                //                       children: [
+                //                         _rowItem("Subtotal", "₹${lineItem.total}"),
+                //                         Divider(),
+                //                         /// Coupon
+                //                         Row(
+                //                           mainAxisAlignment:
+                //                               MainAxisAlignment.spaceBetween,
+                //                           crossAxisAlignment:
+                //                               CrossAxisAlignment.start,
+                //                           children: [
+                //                             Text(
+                //                               "Discount",
+                //                               style: GoogleFonts.poppins(
+                //                                 fontSize: 14.sp,
+                //                                 fontWeight: FontWeight.w500,
+                //                               ),
+                //                             ),
+                //                             Column(
+                //                               crossAxisAlignment:
+                //                                   CrossAxisAlignment.end,
+                //                               children: order.feeLines.map((e) {
+                //                                 return Text(
+                //                                   "₹${e.total ?? "0"}",
+                //                                   style: const TextStyle(
+                //                                     color: Colors.red,
+                //                                   ),
+                //                                 );
+                //                               }).toList(),
+                //                             ),
+                //                           ],
+                //                         ),
+                //                         Divider(),
+                //                         /// Shipping
+                //                         Row(
+                //                           crossAxisAlignment:
+                //                               CrossAxisAlignment.start,
+                //                           children: [
+                //                             Expanded(
+                //                               flex: 2,
+                //                               child: Text(
+                //                                 "ATATC Surat Shipping",
+                //                                 style: GoogleFonts.poppins(
+                //                                   fontWeight: FontWeight.w600,
+                //                                 ),
+                //                               ),
+                //                             ),
+                //                             Expanded(
+                //                               flex: 3,
+                //                               child: Column(
+                //                                 crossAxisAlignment:
+                //                                     CrossAxisAlignment.start,
+                //                                 children: [
+                //                                   Text(
+                //                                     "Packing, Forwarding & Courier - Rest of India:",
+                //                                     style: GoogleFonts.poppins(
+                //                                       fontSize: 13.sp,
+                //                                     ),
+                //                                   ),
+                //                                   SizedBox(height: 5.h),
+                //                                   Text(
+                //                                     "₹${order.shippingTotal}",
+                //                                     style: GoogleFonts.poppins(
+                //                                       fontWeight:
+                //                                           FontWeight.w600,
+                //                                     ),
+                //                                   ),
+                //                                 ],
+                //                               ),
+                //                             ),
+                //                           ],
+                //                         ),
+                //                         SizedBox(height: 10.h),
+                //                         Text(
+                //                           "${order.billing.address1}, ${order.billing.city}, ${order.billing.postcode} , ${order.billing.phone}",
+                //                           style: GoogleFonts.poppins(
+                //                             fontSize: 14.sp,
+                //                           ),
+                //                         ),
+                //                         Divider(height: 25.h),
+                //                         _rowItem(
+                //                           "Total",
+                //                           "₹${order.total}",
+                //                           isBold: true,
+                //                         ),
+                //                       ],
+                //                     ),
+                //                   ],
+                //                 ),
+                //               ),
+                //             );
+                //           },
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // );
+
                 return Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal: 16.w,
@@ -132,75 +540,79 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
                           itemCount: orderList.length,
                           itemBuilder: (context, index) {
                             final order = orderList[index];
+
+                            final subtotal = order.lineItems.fold<double>(
+                              0,
+                              (sum, item) =>
+                                  sum +
+                                  (double.tryParse(item.total ?? "0") ?? 0),
+                            );
+
+                            final discount = order.feeLines.fold<double>(
+                              0,
+                              (sum, item) =>
+                                  sum +
+                                  (double.tryParse(item.total ?? "0") ?? 0),
+                            );
+
                             if (order.lineItems.isEmpty) {
-                              return Center(child: Text("No data available"));
+                              return const Center(
+                                child: Text("No data available"),
+                              );
                             }
+
                             return Card(
-                              margin: EdgeInsets.only(bottom: 12.h),
+                              margin: EdgeInsets.only(bottom: 15.h),
+                              elevation: 3,
                               color: Colors.white,
-                              elevation: 2,
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12.r),
+                                borderRadius: BorderRadius.circular(15.r),
                               ),
                               child: Padding(
-                                padding: EdgeInsets.all(12.w),
+                                padding: EdgeInsets.all(14.w),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
+                                    /// Header
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          "Order ID: #${order.id}",
+                                          "Order #${order.id}",
                                           style: GoogleFonts.roboto(
-                                            fontSize: 15.sp,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.grey[700],
+                                            fontSize: 16.sp,
+                                            fontWeight: FontWeight.w600,
                                           ),
                                         ),
                                         Text(
-                                          "Ordered on ${order.dateCreated?.toString().substring(0, 10) ?? ''}",
+                                          order.dateCreated
+                                                  ?.toString()
+                                                  .substring(0, 10) ??
+                                              "",
                                           style: GoogleFonts.roboto(
-                                            fontSize: 14.sp,
+                                            fontSize: 13.sp,
                                             color: Colors.grey,
-                                            fontWeight: FontWeight.w500,
                                           ),
                                         ),
                                       ],
                                     ),
-                                    Divider(),
-                                    ...order.lineItems.map<Widget>((lineItem) {
+                                    Divider(height: 20.h),
+
+                                    /// Products
+                                    ...order.lineItems.map((item) {
                                       return Padding(
-                                        padding: EdgeInsets.only(bottom: 8.h),
+                                        padding: EdgeInsets.only(bottom: 12.h),
                                         child: Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
                                           children: [
                                             ClipRRect(
                                               borderRadius:
-                                                  BorderRadius.circular(8.r),
+                                                  BorderRadius.circular(10.r),
                                               child: Image.network(
-                                                lineItem.image.src.toString(),
+                                                item.image.src.toString(),
                                                 width: 80.w,
                                                 height: 80.h,
                                                 fit: BoxFit.cover,
-                                                errorBuilder:
-                                                    (
-                                                      context,
-                                                      error,
-                                                      stackTrace,
-                                                    ) {
-                                                      return Container(
-                                                        width: 80.w,
-                                                        height: 80.h,
-                                                        color: Colors.grey[300],
-                                                        child: Icon(
-                                                          Icons
-                                                              .image_not_supported,
-                                                        ),
-                                                      );
-                                                    },
                                               ),
                                             ),
                                             SizedBox(width: 12.w),
@@ -210,34 +622,27 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
                                                     CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
-                                                    lineItem.name,
-                                                    style: GoogleFonts.roboto(
-                                                      fontSize: 16.sp,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
+                                                    item.name,
                                                     maxLines: 2,
                                                     overflow:
                                                         TextOverflow.ellipsis,
-                                                  ),
-                                                  SizedBox(height: 4.h),
-                                                  Text(
-                                                    "₹${lineItem.total}",
                                                     style: GoogleFonts.roboto(
                                                       fontSize: 15.sp,
                                                       fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Color(0xFF001E6C),
+                                                          FontWeight.w500,
                                                     ),
                                                   ),
-                                                  SizedBox(height: 6.h),
+
+                                                  SizedBox(height: 5.h),
                                                   Text(
-                                                    "Delivered on: ${order.dateCompleted?.toString().substring(0, 10) ?? ''}",
+                                                    "₹${item.total}",
                                                     style: GoogleFonts.roboto(
-                                                      fontSize: 14.sp,
+                                                      fontSize: 16.sp,
+                                                      color: const Color(
+                                                        0xff001E6C,
+                                                      ),
                                                       fontWeight:
-                                                          FontWeight.w500,
-                                                      color: Colors.green,
+                                                          FontWeight.bold,
                                                     ),
                                                   ),
                                                 ],
@@ -246,47 +651,61 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
                                           ],
                                         ),
                                       );
-                                    }).toList(),
+                                    }),
+                                    Divider(),
                                     Text(
-                                      "Delivery Address:",
-                                      style: GoogleFonts.roboto(
-                                        fontSize: 16.sp,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                    Text(
-                                      "${order.billing.firstName} ${order.billing.lastName}, "
-                                      "${order.billing.address1}, "
-                                      "${order.billing.city}, "
-                                      "${order.billing.postcode}\n"
-                                      "Phone: ${order.billing.phone}",
+                                      "Delivery Address",
                                       style: GoogleFonts.roboto(
                                         fontSize: 15.sp,
-                                        color: Colors.black87,
+                                        fontWeight: FontWeight.w600,
+                                        color: const Color(0xFF001E6C),
                                       ),
                                     ),
+                                    SizedBox(height: 6.h),
+                                    Text(
+                                      "${order.billing.firstName} ${order.billing.lastName}",
+                                      style: GoogleFonts.roboto(
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    SizedBox(height: 4.h),
+                                    Text(
+                                      "${order.billing.address1}, ${order.billing.city}, ${order.billing.postcode}, ${order.billing.state}, ${order.billing.country}.",
+                                      style: GoogleFonts.roboto(
+                                        fontSize: 13.sp,
+                                        color: Colors.grey[700],
+                                        height: 1.4,
+                                      ),
+                                    ),
+                                    SizedBox(height: 4.h),
+                                    Text(
+                                      "Phone: ${order.billing.phone}",
+                                      style: GoogleFonts.roboto(
+                                        fontSize: 13.sp,
+                                        color: Colors.grey[700],
+                                      ),
+                                    ),
+                                    SizedBox(height: 12.h),
                                     Row(
                                       children: [
                                         Text(
-                                          "Status :",
+                                          "Status : ",
                                           style: GoogleFonts.roboto(
-                                            fontSize: 15.sp,
-                                            color: Colors.black87,
+                                            fontSize: 14.sp,
                                           ),
                                         ),
-                                        SizedBox(width: 4.w),
                                         Container(
                                           padding: EdgeInsets.symmetric(
                                             horizontal: 12.w,
-                                            vertical: 6.h,
+                                            vertical: 5.h,
                                           ),
                                           decoration: BoxDecoration(
-                                            color: order.status == 'processing'
+                                            color: order.status == "completed"
+                                                ? Colors.green
+                                                : order.status == "processing"
                                                 ? Colors.orange
-                                                : (order.status == 'completed'
-                                                      ? Colors.green
-                                                      : Colors.red),
+                                                : Colors.red,
                                             borderRadius: BorderRadius.circular(
                                               20.r,
                                             ),
@@ -301,118 +720,128 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 4.h),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          "Total: ₹${order.total}",
-                                          style: GoogleFonts.roboto(
-                                            fontSize: 18.sp,
-                                            fontWeight: FontWeight.bold,
-                                            color: Color(0xFF001E6C),
+                                    SizedBox(height: 15.h),
+                                    Container(
+                                      padding: EdgeInsets.all(12.w),
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey.shade50,
+                                        borderRadius: BorderRadius.circular(
+                                          12.r,
+                                        ),
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          _rowItem("Subtotal", "₹$subtotal"),
+                                          Divider(),
+                                          _rowItem("Discount", "₹$discount"),
+                                          Divider(),
+                                          _rowItem(
+                                            "Shipping cost",
+                                            "+₹${order.shippingTotal}",
+                                          ),
+                                          Divider(),
+                                          _rowItem(
+                                            "Total",
+                                            "₹${order.total}",
+                                            isBold: true,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(height: 15.h),
+
+                                    /// Pay Button
+                                    if (order.status == "pending" ||
+                                        order.status == "failed")
+                                      SizedBox(
+                                        width: double.infinity,
+                                        height: 48.h,
+                                        child: ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(12.r),
+                                            ),
+                                          ),
+                                          onPressed: () {
+                                            log("Order #${order.id}");
+                                            final razorpay = Razorpay();
+                                            final options = {
+                                              "order_id":
+                                                  order.metaData[0].value,
+                                              // "key":
+                                              //     "rzp_test_RIeIwZBZ2NZi6w",
+                                              "key": "rzp_live_RQVbHR68ibVPuJ",
+                                              "amount":
+                                                  (double.tryParse(
+                                                        order.total ?? '0',
+                                                      ) ??
+                                                      0) *
+                                                  100,
+                                              "currency": "INR",
+                                              // "name": "Test Payment",
+                                              "wc_order_id": "${order.id}",
+                                              "prefill": {
+                                                "name": order.billing.firstName,
+                                                "email": order.billing.email,
+                                                "contact": order.billing.phone,
+                                              },
+                                            };
+                                            razorpay.open(options);
+                                            razorpay.on(
+                                              Razorpay.EVENT_PAYMENT_SUCCESS,
+                                              (
+                                                PaymentSuccessResponse response,
+                                              ) {
+                                                log(
+                                                  "Payment Success : ${response.paymentId}",
+                                                );
+                                                Navigator.pushReplacement(
+                                                  context,
+                                                  CupertinoPageRoute(
+                                                    builder: (context) =>
+                                                        OrderListPage(),
+                                                  ),
+                                                );
+                                                showSuccessMessage(
+                                                  context,
+                                                  "Payment Successful",
+                                                );
+                                              },
+                                            );
+                                            razorpay.on(
+                                              Razorpay.EVENT_PAYMENT_ERROR,
+                                              (
+                                                PaymentFailureResponse response,
+                                              ) {
+                                                log(
+                                                  "Payment Failed : ${response.message}",
+                                                );
+                                                showErrorMessage(
+                                                  "Payment Failed : ${response.message}",
+                                                );
+                                              },
+                                            );
+                                            razorpay.on(
+                                              Razorpay.EVENT_EXTERNAL_WALLET,
+                                              (
+                                                ExternalWalletResponse response,
+                                              ) {
+                                                log(
+                                                  "External Wallet : ${response.walletName}",
+                                                );
+                                              },
+                                            );
+                                          },
+                                          child: Text(
+                                            "Pay Now",
+                                            style: GoogleFonts.inter(
+                                              fontSize: 15.sp,
+                                              fontWeight: FontWeight.w600,
+                                            ),
                                           ),
                                         ),
-                                        if (order.status == "pending" ||
-                                            order.status == "failed")
-                                          OutlinedButton(
-                                            style: OutlinedButton.styleFrom(
-                                              padding: EdgeInsets.zero,
-                                              minimumSize: Size(80.w, 40.h),
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(10.r),
-                                              ),
-                                            ),
-                                            onPressed: () {
-                                              log("Order #${order.id}");
-                                              final razorpay = Razorpay();
-                                              final options = {
-                                                "order_id":
-                                                    order.metaData[0].value,
-                                                // "key":
-                                                //     "rzp_test_RIeIwZBZ2NZi6w",
-                                                "key":
-                                                    "rzp_live_RQVbHR68ibVPuJ",
-                                                "amount":
-                                                    (double.tryParse(
-                                                          order.total ?? '0',
-                                                        ) ??
-                                                        0) *
-                                                    100,
-                                                "currency": "INR",
-                                                // "name": "Test Payment",
-                                                "wc_order_id": "${order.id}",
-                                                "prefill": {
-                                                  "name":
-                                                      order.billing.firstName,
-                                                  "email": order.billing.email,
-                                                  "contact":
-                                                      order.billing.phone,
-                                                },
-                                              };
-                                              razorpay.open(options);
-                                              razorpay.on(
-                                                Razorpay.EVENT_PAYMENT_SUCCESS,
-                                                (
-                                                  PaymentSuccessResponse
-                                                  response,
-                                                ) {
-                                                  log(
-                                                    "Payment Success : ${response.paymentId}",
-                                                  );
-                                                  Navigator.pushReplacement(
-                                                    context,
-                                                    CupertinoPageRoute(
-                                                      builder: (context) =>
-                                                          OrderListPage(),
-                                                    ),
-                                                  );
-                                                  showSuccessMessage(
-                                                    context,
-                                                    "Payment Successful",
-                                                  );
-                                                },
-                                              );
-                                              razorpay.on(
-                                                Razorpay.EVENT_PAYMENT_ERROR,
-                                                (
-                                                  PaymentFailureResponse
-                                                  response,
-                                                ) {
-                                                  log(
-                                                    "Payment Failed : ${response.message}",
-                                                  );
-
-                                                  showErrorMessage(
-                                                    "Payment Failed : ${response.message}",
-                                                  );
-                                                },
-                                              );
-
-                                              razorpay.on(
-                                                Razorpay.EVENT_EXTERNAL_WALLET,
-                                                (
-                                                  ExternalWalletResponse
-                                                  response,
-                                                ) {
-                                                  log(
-                                                    "External Wallet : ${response.walletName}",
-                                                  );
-                                                },
-                                              );
-                                            },
-                                            child: Text(
-                                              "Pay Now",
-                                              style: GoogleFonts.inter(
-                                                fontSize: 14.sp,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                          ),
-                                      ],
-                                    ),
+                                      ),
                                   ],
                                 ),
                               ),
@@ -441,6 +870,31 @@ class _OrderListPageState extends ConsumerState<OrderListPage> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _rowItem(String title, String value, {bool isBold = false}) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 6.h),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            title,
+            style: GoogleFonts.poppins(
+              fontSize: isBold ? 16.sp : 14.sp,
+              fontWeight: isBold ? FontWeight.w700 : FontWeight.w500,
+            ),
+          ),
+          Text(
+            value,
+            style: GoogleFonts.poppins(
+              fontSize: isBold ? 16.sp : 14.sp,
+              fontWeight: isBold ? FontWeight.w700 : FontWeight.w500,
+            ),
+          ),
+        ],
       ),
     );
   }

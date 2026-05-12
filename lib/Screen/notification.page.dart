@@ -17,7 +17,6 @@ class _NotificationPageState extends ConsumerState<NotificationPage> {
   @override
   void initState() {
     super.initState();
-    // ✅ Page open होने पर unread रीसेट करें
     Future.microtask(() {
       ref.read(showNotification.notifier).resetUnread();
     });

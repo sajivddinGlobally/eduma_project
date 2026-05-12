@@ -71,9 +71,7 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
       productDetailsController(widget.id),
     );
     final related = ref.watch(relatedProductController(widget.id));
-    // final variationProductProvider = ref.watch(
-    //   variationProductController(widget.id),
-    // );
+
     return Scaffold(
       backgroundColor: Color(0xFFF5F5F5),
       appBar: AppBar(
@@ -348,50 +346,46 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                   ),
                                 ),
                               ),
+
                               // variation.isNotEmpty
-                              //     ? 
-                                  
-                                  Container(
-                                      padding: EdgeInsets.only(
-                                        left: 10.w,
-                                        right: 10.w,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(
-                                          20.r,
-                                        ),
-                                        border: Border.all(color: Colors.black),
-                                      ),
-                                      child: DropdownButton<String>(
-                                        value: selectedLang,
-                                        underline: const SizedBox(),
-                                        padding: EdgeInsets.zero,
-                                        icon: const Icon(
-                                          Icons.arrow_drop_down,
-                                          color: Colors.black,
-                                        ),
-                                        items: const [
-                                          DropdownMenuItem(
-                                            value: "en",
-                                            child: Text("English"),
-                                          ),
-                                          DropdownMenuItem(
-                                            value: "hi",
-                                            child: Text("Hindi"),
-                                          ),
-                                        ],
-                                        onChanged: (value) {
-                                          log(
-                                            "start=============================",
-                                          );
-                                          setState(() {
-                                            selectedLang = value!;
-                                          });
-                                          setImage();
-                                        },
-                                      ),
-                                    )
-                                 // : SizedBox.shrink(),
+                              //     ?
+                              Container(
+                                padding: EdgeInsets.only(
+                                  left: 10.w,
+                                  right: 10.w,
+                                ),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20.r),
+                                  border: Border.all(color: Colors.black),
+                                ),
+                                child: DropdownButton<String>(
+                                  value: selectedLang,
+                                  underline: const SizedBox(),
+                                  padding: EdgeInsets.zero,
+                                  icon: const Icon(
+                                    Icons.arrow_drop_down,
+                                    color: Colors.black,
+                                  ),
+                                  items: const [
+                                    DropdownMenuItem(
+                                      value: "en",
+                                      child: Text("English"),
+                                    ),
+                                    DropdownMenuItem(
+                                      value: "hi",
+                                      child: Text("Hindi"),
+                                    ),
+                                  ],
+                                  onChanged: (value) {
+                                    log("start=============================");
+                                    setState(() {
+                                      selectedLang = value!;
+                                    });
+                                    setImage();
+                                  },
+                                ),
+                              ),
+                              // : SizedBox.shrink(),
                             ],
                           ),
                           SizedBox(height: 12.h),
@@ -415,26 +409,6 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                                   //decoration: TextDecoration.lineThrough,
                                 ),
                               ),
-                              // SizedBox(width: 12.w),
-                              // // if (data.backorders != null)
-                              // Container(
-                              //   padding: EdgeInsets.symmetric(
-                              //     horizontal: 8.w,
-                              //     vertical: 4.h,
-                              //   ),
-                              //   decoration: BoxDecoration(
-                              //     color: Color(0xFF1BB93D).withOpacity(0.1),
-                              //     borderRadius: BorderRadius.circular(6.r),
-                              //   ),
-                              //   child: Text(
-                              //     "${data.p} % off",
-                              //     style: GoogleFonts.roboto(
-                              //       fontSize: 14.sp,
-                              //       fontWeight: FontWeight.w500,
-                              //       color: Color(0xFF1BB93D),
-                              //     ),
-                              //   ),
-                              // ),
                             ],
                           ),
                           SizedBox(height: 20.h),
@@ -446,12 +420,12 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                               color: Color(0xFF1B1B1B),
                             ),
                           ),
-                          SizedBox(height: 8.h),
+                          // SizedBox(height: 8.h),
                           Container(
                             //   color: Colors.yellow,
-                            child: Html(data: data.description.toString()),
+                            child: Html(data: data.shortDescription.toString()),
                           ),
-                          SizedBox(height: 18.h),
+                          SizedBox(height: 10.h),
                           Text(
                             "Category",
                             style: GoogleFonts.roboto(
@@ -480,8 +454,9 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                           ),
                           SizedBox(height: 8.h),
                           Html(
-                            data: data.wcfmProductPolicyData!.shippingPolicy
-                                .toString(),
+                            data:
+                                data.wcfmProductPolicyData?.shippingPolicy ??
+                                "",
                             style: {
                               "body": Style(
                                 fontSize: FontSize(14.sp),
@@ -651,57 +626,6 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                       ),
                     ),
                     SizedBox(height: 70.h),
-                    // variationProductProvider.when(
-                    //   data: (data) {
-                    //     if (data.isEmpty) {
-                    //       return const SizedBox(child: Text("No data available"));
-                    //     }
-                    //     return SizedBox(
-                    //       height: 280.h,
-                    //       child: ListView.builder(
-                    //         padding: EdgeInsets.zero,
-                    //         itemCount: data.length,
-                    //         scrollDirection: Axis.horizontal,
-                    //         itemBuilder: (context, index) {
-                    //           // final imageUrl = data[index].image?.src ?? "";
-                    //           final imageUrl = selectedLang == "en"
-                    //               ? (data[index].image?.src ?? "")
-                    //               : (data[index].image?.src ?? "");
-                    //           return Container(
-                    //             margin: EdgeInsets.only(right: 20.w, left: 20.w),
-                    //             child: Column(
-                    //               crossAxisAlignment: CrossAxisAlignment.start,
-                    //               children: [
-                    //                 Image.network(
-                    //                   imageUrl.isNotEmpty
-                    //                       ? imageUrl
-                    //                       : "https://via.placeholder.com/300x200.png?text=No+Image",
-                    //                   height: 150.h,
-                    //                   width: 300.w,
-                    //                   fit: BoxFit.cover,
-                    //                   errorBuilder: (context, error, stackTrace) {
-                    //                     return Image.network(
-                    //                       "https://static.vecteezy.com/system/resources/thumbnails/048/910/778/small/default-image-missing-placeholder-free-vector.jpg",
-                    //                       height: 150.h,
-                    //                       width: 300.w,
-                    //                       fit: BoxFit.cover,
-                    //                     );
-                    //                   },
-                    //                 ),
-                    //               ],
-                    //             ),
-                    //           );
-                    //         },
-                    //       ),
-                    //     );
-                    //   },
-                    //   error: (error, stackTrace) {
-                    //     log(stackTrace.toString());
-                    //     return Center(child: Text(error.toString()));
-                    //   },
-                    //   loading: () =>
-                    //       const Center(child: CircularProgressIndicator()),
-                    // ),
                   ],
                 ),
               ),

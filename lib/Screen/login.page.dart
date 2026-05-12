@@ -258,12 +258,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                 showErrorMessage("Invalid credentials");
                                 log("Login failed");
                               }
-                            } catch (e) {
+                            } catch (e, st) {
                               setState(() {
                                 isLoading = false;
                               });
-                              // showErrorMessage(e.toString());
+                              showErrorMessage(e.toString());
                               log(e.toString());
+                              log(st.toString());
                             }
                           },
                     style: ElevatedButton.styleFrom(
