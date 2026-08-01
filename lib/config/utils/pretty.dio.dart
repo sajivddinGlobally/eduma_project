@@ -60,13 +60,11 @@ Dio createDio() {
               globalContext,
               listen: false,
             );
-
             container.invalidate(popularCourseController);
             container.invalidate(allCategoryController);
             container.invalidate(latestCourseController);
             container.invalidate(productListBooksController);
             container.invalidate(enrollCourseController);
-
             Navigator.pushAndRemoveUntil(
               globalContext,
               CupertinoPageRoute(builder: (context) => const LoginPage()),
@@ -77,18 +75,18 @@ Dio createDio() {
               "Token expired, please login again",
             );
           } else {
-            ScaffoldMessenger.of(globalContext).showSnackBar(
-              SnackBar(
-                content: Text(cleanedMessage),
-                backgroundColor: Colors.red,
-                duration: const Duration(seconds: 3),
-              ),
-            );
+            // ScaffoldMessenger.of(globalContext).showSnackBar(
+            //   SnackBar(
+            //     content: Text(cleanedMessage),
+            //     backgroundColor: Colors.red,
+            //     duration: const Duration(seconds: 3),
+            //   ),
+            // );
+            showErrorMessage(cleanedMessage);
           }
         } else {
           log("Global context is null, cannot show SnackBar or navigate");
         }
-
         handler.next(e);
       },
       onResponse: (response, handler) {

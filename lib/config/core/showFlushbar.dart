@@ -17,16 +17,6 @@ void showErrorMessage(String message) {
       flushbarPosition: FlushbarPosition.TOP,
       animationDuration: const Duration(milliseconds: 500),
     ).show(context);
-
-    // SnackBar
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: Colors.red,
-        // behavior: SnackBarBehavior.floating,
-        // duration: const Duration(seconds: 3),
-      ),
-    );
   } else {
     log("Cannot show Flushbar: Navigator context is null");
   }
